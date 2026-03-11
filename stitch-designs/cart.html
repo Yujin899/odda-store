@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#006be6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display bg-white">
+<!-- Main Content Background (Simulating a shop page) -->
+<div class="relative min-h-screen w-full overflow-hidden">
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-4 lg:px-20">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<svg class="w-8 h-8" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Odda</h1>
+</div>
+<nav class="hidden md:flex gap-8 text-sm font-medium">
+<a class="text-primary" href="#">Shop</a>
+<a class="hover:text-primary transition-colors" href="#">Science</a>
+<a class="hover:text-primary transition-colors" href="#">Our Story</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 bg-primary/10 text-primary rounded-full relative">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-white"></span>
+</button>
+</div>
+</header>
+<main class="p-8 lg:p-20 grid grid-cols-1 md:grid-cols-3 gap-8 opacity-40 pointer-events-none">
+<!-- Background Content Placeholders -->
+<div class="aspect-[4/5] dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-4 bg-white">
+<div class="w-full h-2/3 bg-slate-100 dark:bg-slate-800 rounded-lg"></div>
+<div class="h-4 w-2/3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+<div class="h-4 w-1/3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+</div>
+<div class="aspect-[4/5] dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-4 bg-white">
+<div class="w-full h-2/3 bg-slate-100 dark:bg-slate-800 rounded-lg"></div>
+<div class="h-4 w-2/3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+<div class="h-4 w-1/3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+</div>
+<div class="aspect-[4/5] dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-4 bg-white">
+<div class="w-full h-2/3 bg-slate-100 dark:bg-slate-800 rounded-lg"></div>
+<div class="h-4 w-2/3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+<div class="h-4 w-1/3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+</div>
+</main>
+<!-- Cart Drawer Overlay -->
+<div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40"></div>
+<!-- Cart Drawer -->
+<div class="fixed top-0 right-0 h-full w-full max-w-md z-50 flex flex-col bg-white shadow-none" style="background-color: #FFFFFF;">
+<!-- Drawer Header -->
+<div class="flex items-center justify-between px-6 py-6 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">shopping_basket</span>
+<h2 class="text-xl font-bold tracking-tight">Your Cart</h2>
+<span class="bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+</div>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-500">close</span>
+</button>
+</div>
+<!-- Free Delivery Banner -->
+<div class="px-6 py-3 flex items-center gap-3 border-b border-primary/10">
+<span class="material-symbols-outlined text-primary text-sm">local_shipping</span>
+<p class="text-xs font-medium text-primary uppercase tracking-wider">Free delivery to campus applied</p>
+</div>
+<!-- Cart Items List -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+<!-- Item 1 -->
+<div class="flex gap-4">
+<div class="size-24 bg-slate-100 dark:bg-slate-800 flex-shrink-0 overflow-hidden border border-slate-100 dark:border-slate-800 rounded-sm">
+<img alt="Minimalist serum bottle on clean background" class="w-full h-full object-cover" data-alt="Minimalist serum bottle on clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDAVhrDS8dogqxLAzIhQnRkGE6rsJgwJ3cyEKodr3SFMNqGkbhF9MYP9LxPcbvyTNUwmrGUjs3HOeR96K5LQHn1OmhD_SGptFO7-vmcWGYmZ5beaAF0c5c0l9d40rPQZk-Hwtvi2qA1y0pzfiC48x9_yoBwsUZeKM__MaaH6981tBvLDfM7xE0R49aajYZzgiPyjvmgbKdQ2K-htE2fRG55o3L2cw_Nno2cwiocydTKlZUzKnWQFdg-rY2CtaVmed8m9rgiMl_vg"/>
+</div>
+<div class="flex flex-col justify-between flex-1">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-semibold text-slate-900 dark:text-white leading-tight">Niacinamide Serum</h3>
+<button class="text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<p class="text-xs text-slate-500 mt-1 uppercase tracking-tight">30ml / Anti-blemish</p>
+</div>
+<div class="flex justify-between items-end">
+<div class="flex items-center border border-slate-200 dark:border-slate-700 h-8 px-1 rounded-sm">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="px-3 text-xs font-bold">1</span>
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+<p class="font-bold text-slate-900 dark:text-white">$12.00</p>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4">
+<div class="size-24 bg-slate-100 dark:bg-slate-800 flex-shrink-0 overflow-hidden border border-slate-100 dark:border-slate-800 rounded-sm">
+<img alt="White facial cleanser tube in studio light" class="w-full h-full object-cover" data-alt="White facial cleanser tube in studio light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEsOG_TGALo2Cu6zk7NQV5_h8llTVzBX4eCd4XS1jVhFY0V5uYNB0nwjBkkOgb7kJYR-SxJfO6v-S7YSfzwXneZKAgXYIHgktu9uSZAbdtdSft7rDvQbFXwzBMWidO0cw_SzabPVy7G2z8YPNs-eze4agsAmPuQ-b7pfyVLRa-6S0-ql4sfyxDdcBFx4HB_w_zlxqk6ofkZQOJLHvnCwhZhwIrK1r-xGI2IamPSCEyCCoPyKhjohBY3L6wlsxl0_lQwfGKzqiuXA"/>
+</div>
+<div class="flex flex-col justify-between flex-1">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-semibold text-slate-900 dark:text-white leading-tight">Gentle Cleanser</h3>
+<button class="text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<p class="text-xs text-slate-500 mt-1 uppercase tracking-tight">200ml / Daily pH-Balance</p>
+</div>
+<div class="flex justify-between items-end">
+<div class="flex items-center border border-slate-200 dark:border-slate-700 h-8 px-1 rounded-sm">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="px-3 text-xs font-bold">2</span>
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+<p class="font-bold text-slate-900 dark:text-white">$36.00</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Drawer Footer -->
+<div class="border-t border-slate-100 dark:border-slate-800 p-6 space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between text-sm text-slate-500">
+<span>Subtotal</span>
+<span>$48.00</span>
+</div>
+<div class="flex justify-between text-sm text-slate-500">
+<span>Delivery</span>
+<span class="text-primary font-medium">FREE</span>
+</div>
+<div class="flex justify-between text-lg font-bold text-slate-900 dark:text-white pt-2 border-t border-slate-100 dark:border-slate-800/50">
+<span>Total</span>
+<span>$48.00</span>
+</div>
+</div>
+<div class="pt-2">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 flex items-center justify-center gap-2 shadow-primary/20 transition-all active:scale-[0.98] rounded-sm">
+<span>Proceed to Checkout</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<p class="text-center text-[10px] text-slate-400 uppercase tracking-widest mt-4">Secure Clinical Checkout System</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

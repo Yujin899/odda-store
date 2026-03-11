@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0073E6",
+                        "navy": "#0A192F",
+                        "background-light": "#FFFFFF",
+                        "fire-red": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "sm": "0.125rem",
+                        "md": "0.125rem",
+                        "lg": "0.125rem",
+                        "xl": "0.125rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }</script>
+<style>body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; }
+        .material-symbols-outlined { font-size: 24px; }
+        .glass-header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #e2e8f0;
+        }</style>
+</head>
+<body class="bg-white text-slate-900 font-display">
+<!-- Top Navigation Bar -->
+<header class="glass-header sticky top-0 z-50 border-b border-navy/10 px-6 lg:px-12 py-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-12">
+<a class="flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-primary text-3xl">architecture</span>
+<span class="text-2xl font-black tracking-tighter uppercase italic">Odda</span>
+</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Shop</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden sm:flex items-center border border-navy/20 px-3 py-1.5 rounded-lg rounded-sm">
+<span class="material-symbols-outlined text-navy/50 text-xl">search</span>
+<input class="border-none focus:ring-0 text-sm w-40 bg-transparent" placeholder="Search tools..." type="text"/>
+</div>
+<button class="relative p-2">
+<span class="material-symbols-outlined text-navy text-2xl">shopping_bag</span>
+<span class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-sm text-slate-500 mb-8">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary" href="#">Laptops &amp; Tech</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">Odda Pro Student Edition</span>
+</nav>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Side: Product Image Gallery -->
+<div class="lg:col-span-7 space-y-4">
+<div class="bg-white p-4 border border-slate-200 rounded-sm">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Large main image of premium student laptop" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCzX-51ISE1bwJCMvnXoZt97UE93mbc5TKpPQsfsglXQWhsXscb_zvg1H3PlMRRQ43Mz1hmVNe9sUhUNMca_LpFtWQlNlFoB5XxhpEtRO34kmccu0hk7JpsM-Ny6aRBvmdLemEtyYX02CHKbPfDqHDnJXU9eQQUWEKixo1-ajvv6LMZFVJ6UrmYvfSOHaqSb6R_8loOEAd7DfL-btmgIyaY7dXqb8uuds-tStaRj0nfGtvAcWzwFKmSYOoyBMuaQtcHlG9g1iRZCg')"></div>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-white p-4 border border-slate-200 rounded-sm">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Side profile view of product" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAm3Q254URwI5REW26h4-Gh1Vott1ZgaLdOTW51ATeiemjt1ZLxDgFtUAMMjprTahK_5r3db5tuV46EHqOCgzMAqGFzcrsG_PBQOCqYaB53FIvnLzryVEyDPqAdOlwuQjrCufGF2iq-MrNNxwaXjnvVecl3SLO5tD3GJwWyI-Awn2FdLatD1t9UQ22HssgvwhqGAQUQTKIvKxE7Nc4LHiB_3DY2JzYPz79Xth45ASf47ndEzr3rkq0N6piuQqNQG9Oh44AgvUjjOg')"></div>
+</div>
+<div class="bg-white p-4 border border-slate-200 rounded-sm">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Keyboard and display detail view" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDLK_9FkjlJgeKq2ltXMM1PO-nQpEVr1AzR65Mj89L2QhJkZ5B5YEMeqWRuVFFzjuL-u_os48E-K0DQvMK7Np8ks5IzTWgRhgq6F7cvCxKZeh5N6iHkF4qlGxckSO8lKxPU8SG1pi6Ar7-jTwHZVVuYZ7ZAL6j50TfXA5kGZWDl5wgxNgn9u9UYzWHPqmgiwzMFBGIc33qBkI7e-s3IqS4KYPIWjc7PQx6cgUwz6CA15r2d_3kc5ZSACAUieLYR8v7eSObCLX4PGQ')"></div>
+</div>
+<div class="bg-white p-4 border border-slate-200 rounded-sm">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Student using the product in library" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5uLkWJ64CbM7qBY0Vn9dVlGNrk8S4Q-3p5GD2HXF2SlENVTSqTM0nKuQeCKgOT3M4JIJBaOig3MrDkDWtOGCFaoHZ9b0YW7ey839BCQiDiaik8ykJLdtAqA37xiMdQaubI3L3Pe_zSvbKvZwf4U_FVxf_k1IOZGA9ASQC4a5DFGuYCVXhiqBS_WBbtK8OJEQOCcC9aBmUMAW99SXoTmlpFtPzzseR-ywJbpTqbyeYKYMm0FcmoImkKgK7Q6fppCseiCTbNzp8TQ')"></div>
+</div>
+</div>
+</div>
+<!-- Right Side: Product Details -->
+<div class="lg:col-span-5 flex flex-col">
+<div class="mb-4">
+<span class="inline-flex items-center px-3 py-1 text-xs font-bold uppercase tracking-wider bg-fire-red text-white rounded-lg rounded-sm">
+                        Best Seller
+                    </span>
+</div>
+<h1 class="text-4xl font-extrabold text-slate-900 dark:text-slate-100 mb-2">Odda Pro Student Edition</h1>
+<div class="flex items-center gap-2 mb-6">
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined !text-lg">star</span>
+<span class="material-symbols-outlined !text-lg">star</span>
+<span class="material-symbols-outlined !text-lg">star</span>
+<span class="material-symbols-outlined !text-lg">star</span>
+<span class="material-symbols-outlined !text-lg">star_half</span>
+</div>
+<span class="text-sm font-medium text-slate-500">(128 reviews)</span>
+</div>
+<div class="mb-8">
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-primary">$899.00</span>
+<span class="text-lg text-slate-400 line-through">$1,099.00</span>
+</div>
+<div class="mt-2 flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
+<span class="material-symbols-outlined text-lg">bolt</span>
+<span>Campus Delivery in 24h</span>
+</div>
+</div>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
+                    Designed specifically for the modern academic journey. The Odda Pro combines clinical precision with extreme durability. Featuring an 18-hour battery life, noise-canceling campus mics, and a glare-free retina display perfect for late-night library sessions.
+                </p>
+<div class="flex items-center gap-4 mb-8">
+<div class="bg-white p-4 border border-slate-200 rounded-sm">
+<button class="px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100 min-w-[3rem] text-center">1</span>
+<button class="px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-5 text-lg shadow-lg shadow-primary/20 transition-all transform active:scale-[0.98] mb-8 rounded-lg rounded-sm">
+                    Add to Cart
+                </button>
+<!-- Accordion Section -->
+<div class="space-y-0 divide-y divide-slate-200 dark:divide-slate-800 border-t border-b border-slate-200 dark:border-slate-800">
+<div class="py-4">
+<button class="flex w-full items-center justify-between text-left font-semibold">
+<span>Specifications</span>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+<div class="mt-4 text-sm text-slate-600 dark:text-slate-400 space-y-2">
+<div class="flex justify-between">
+<span class="font-medium">Processor</span>
+<span>M3 Academic Chipset</span>
+</div>
+<div class="flex justify-between">
+<span class="font-medium">Memory</span>
+<span>16GB Unified RAM</span>
+</div>
+<div class="flex justify-between">
+<span class="font-medium">Storage</span>
+<span>512GB SSD Student Cloud Optimized</span>
+</div>
+</div>
+</div>
+<div class="py-4">
+<button class="flex w-full items-center justify-between text-left font-semibold">
+<span>Student Reviews</span>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+<div class="mt-4 hidden text-sm text-slate-600 dark:text-slate-400">
+<!-- Placeholder for expanded content -->
+</div>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-2 gap-4">
+<div class="flex items-center gap-3 p-3 rounded-lg rounded-sm bg-white border border-slate-200">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<span class="text-xs font-medium">2 Year Student Warranty</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg rounded-sm bg-white border border-slate-200">
+<span class="material-symbols-outlined text-primary">history_edu</span>
+<span class="text-xs font-medium">Academic Software Pack</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Related Products / Recommended -->
+<section class="mt-24">
+<h2 class="text-2xl font-bold mb-8">Complete Your Setup</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white rounded-sm">
+<div class="aspect-square dark:bg-slate-700 mb-4 bg-cover bg-center rounded-lg rounded-sm" data-alt="Odda Wireless mouse" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDkjfJQj2DxyoFReaLw8Kyx4zWm6G9qHbMDGq2JP3FBjnsxa87laUsi6Gkpq_fjr32ioRVRD3EnRzHhQJvlsWYzYhD7P_MENKx7tzaOMDemIPZK_GVwQ6tqql0MKs3cxrG2vweltbGXi2bpPrSWwulyvg_E5G31wP15amm6wQ49nS9awvF-EHXoPtCJLhJm23mF8XDMm9pH1MESWbImFDLk38erDnmRFtb3bqrW3oLqNGOdICjIeHSPbH7VaUPDQSkwr8Id0UkJKA')"></div>
+<h3 class="font-bold text-sm mb-1 text-black uppercase tracking-tight">Odda Focus Mouse</h3>
+<p class="text-black font-black">$49.00</p>
+</div>
+<div class="bg-white rounded-sm">
+<div class="aspect-square dark:bg-slate-700 mb-4 bg-cover bg-center rounded-lg rounded-sm" data-alt="Odda laptop sleeve" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBKIyYQ_SQhimpfBWK0mdnzOg91DIhb0R3KmDbyzcKJ9VGNdLEv3Dyxdlr-84lVgK-xWpnU6h7c34Eu7HIpjUa9mCzbdijFC-VK7WB_fV8c1WvbyUS231Ok7ywomRR8ftaagexUPIl0Dba6MHugkiqaAD9ETkPtvMP6VzSnI5_Do_TYQan0IxUXsYLg85KgjqUSlleQZ_JDxb49NwGKSfQq-GT7ZKrZifTShnirrqCW1VEyMzphpmodD_nOL61uj6R8n3Tp0wzeXg')"></div>
+<h3 class="font-bold text-sm mb-1 text-black uppercase tracking-tight">Protective Sleeve</h3>
+<p class="text-black font-black">$35.00</p>
+</div>
+<div class="bg-white rounded-sm">
+<div class="aspect-square dark:bg-slate-700 mb-4 bg-cover bg-center rounded-lg rounded-sm" data-alt="Odda noise canceling headphones" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCSrpLu7zvGZ5z_2xDMPcPb5OOJ6SppUq9nyZljhfhOjUAyajztB35feyIRgvLMMRrGGuSAP8gVwVCcb8mCri_wxJeuooIiwNYhk0z_WYiuoLdJJnfW0R1XpjNCi3kV3XH_A7PUX1arOvEbHp-QmIXoAObg8j88Bfnk9k_AjaiDWyOuwYgdTRwkWMjiWZZRFNpyl2CAk_NL57pEawBhLOxvREXUYKzaVUdH400HxEuDSA9jRQpW6HOLYEa_ycOOzB9UcqwRBn2h1g')"></div>
+<h3 class="font-bold text-sm mb-1 text-black uppercase tracking-tight">DeepFocus ANC</h3>
+<p class="text-black font-black">$199.00</p>
+</div>
+<div class="bg-white rounded-sm">
+<div class="aspect-square dark:bg-slate-700 mb-4 bg-cover bg-center rounded-lg rounded-sm" data-alt="Odda desk mat" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBsga51QnkBsWyyelpmy83L-CvUFc7-s-THb0gtiYFY0oVFOVP0GUFbPO_4NJGdwzf3EGw7qwlVh5rN36bZ0gCNgmuhtBNoMFIzYHgLudMzs9KydkJrFkBCJjjtlLY2EaadCzKtBpRDXf4yBjpbgERrl4lBfdwIueeCex6w972kkAZARBJxY5ZP5MVFySAdxhNOYwCUShx7C9hkSAT5s0W0SLiKzl98Ukwrj5bg_BlmOTcvvDCKyjmjy73wUB3hg48sG7MQbsQQ8g')"></div>
+<h3 class="font-bold text-sm mb-1 text-black uppercase tracking-tight">Ergo Desk Mat</h3>
+<p class="text-black font-black">$29.00</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-navy text-white pt-20 pb-10 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-20">
+<div>
+<a class="flex items-center gap-2 mb-6" href="#">
+<span class="material-symbols-outlined text-primary text-3xl">architecture</span>
+<span class="text-2xl font-black tracking-tighter uppercase italic">Odda</span>
+</a>
+<p class="text-white/60 text-sm leading-relaxed">
+                        The ultimate destination for premium dental instrumentation for the next generation of clinicians.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold uppercase text-xs tracking-widest mb-6">Quick Links</h4>
+<ul class="space-y-4 text-sm text-white/60">
+<li><a class="hover:text-primary transition-colors" href="#">Shop All</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Student Bundles</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold uppercase text-xs tracking-widest mb-6">Support</h4>
+<ul class="space-y-4 text-sm text-white/60">
+<li><a class="hover:text-primary transition-colors" href="#">Shipping Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Returns</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Warranty</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold uppercase text-xs tracking-widest mb-6">Newsletter</h4>
+<p class="text-sm text-white/60 mb-6">Get updates on new inventory and campus events.</p>
+<form class="flex flex-col gap-2">
+<input class="bg-white/5 border border-white/20 px-4 py-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none rounded-sm" placeholder="Email Address" type="email"/>
+<button class="bg-primary hover:bg-white hover:text-navy transition-all py-3 font-bold uppercase text-xs tracking-widest rounded-sm">Subscribe</button>
+</form>
+</div>
+</div>
+<div class="border-t border-white/10 pt-10 flex flex-col md:row items-center justify-between gap-6">
+<p class="text-xs text-white/40 uppercase tracking-widest">© 2024 Odda Dental Tools. All Rights Reserved.</p>
+<div class="flex gap-6">
+<a class="text-white/40 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+</a>
+<a class="text-white/40 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

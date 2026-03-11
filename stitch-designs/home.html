@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Odda | Premium Dental Tools</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0073E6", // Vibrant Dental Blue
+                        "navy": "#0A192F",    // Deep Navy
+                        "background-light": "#FFFFFF",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "none": "0px",
+                        "DEFAULT": "2px",
+                        "sm": "2px",
+                        "lg": "2px",
+                        "xl": "4px",
+                        "full": "9999px",
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #0A192F; }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-white text-navy font-display">
+<!-- 1. Sticky Header -->
+<header class="glass-header sticky top-0 z-50 border-b border-navy/10 px-6 lg:px-12 py-4" style="background: #FFFFFF; backdrop-filter: none; -webkit-backdrop-filter: none;">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-12">
+<a class="flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-primary text-3xl">architecture</span>
+<span class="text-2xl font-black tracking-tighter uppercase italic">Odda</span>
+</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Shop</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden sm:flex items-center border border-navy/20 px-3 py-1.5">
+<span class="material-symbols-outlined text-navy/50 text-xl">search</span>
+<input class="border-none focus:ring-0 text-sm w-40 bg-transparent rounded-sm" placeholder="Search tools..." type="text"/>
+</div>
+<button class="relative p-2 rounded-sm">
+<span class="material-symbols-outlined text-navy text-2xl">shopping_bag</span>
+<span class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+</button>
+</div>
+</div>
+</header>
+<!-- 2. Hero Section -->
+<section class="relative h-[85vh] w-full overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Close up of professional dental examination tools on a tray" style="background-image: linear-gradient(rgba(10, 25, 47, 0.6), rgba(10, 25, 47, 0.6)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_raKXzW8-1YANSU88UDpjTPWY3ejoZPSpu5eHR5v-GAsPC6c9sTeACSVO2wAq8ntts5513gbdA_RdXkJ9WpZUnonq6ZegV6KrRfI6G9dGMvIjRlG-TfR1o01rx3BOfUhE_BtSIKEufemcwDTxliqTKv1xVfrkTEPeU7Z-PTiKADrU9igSUTWWkGF-br3mUTnJ6nBwn5lUlDjet7Y6yDHjpY-6MbiSdGSKmu5Q0bA-FBsPAa6iaD-7DamZtEsQLUX1lOmChdprEA');"></div>
+<div class="relative h-full flex flex-col items-center justify-center text-center px-4">
+<h1 class="text-white text-5xl md:text-7xl font-black mb-6 tracking-tight uppercase">Browse our full collection</h1>
+<p class="text-white/90 text-lg md:text-xl mb-10 max-w-2xl font-light">Precision Dental Tools for the Modern Student. Clinical excellence starts with the right equipment.</p>
+<button class="bg-primary hover:bg-primary/90 text-white px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all rounded-sm">
+                Shop Now
+            </button>
+</div>
+</section>
+<!-- 3. Trust/Authority Banner -->
+<section class="border-b border-navy/10 py-6 bg-white">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="flex items-center gap-3 justify-center md:justify-start">
+<span class="material-symbols-outlined text-navy/60">verified_user</span>
+<span class="text-xs font-bold uppercase tracking-wider text-navy/70">Trusted by Dental Students</span>
+</div>
+<div class="flex items-center gap-3 justify-center md:justify-start">
+<span class="material-symbols-outlined text-navy/60">medical_services</span>
+<span class="text-xs font-bold uppercase tracking-wider text-navy/70">Clinical Grade Quality</span>
+</div>
+<div class="flex items-center gap-3 justify-center md:justify-start">
+<span class="material-symbols-outlined text-navy/60">local_shipping</span>
+<span class="text-xs font-bold uppercase tracking-wider text-navy/70">Campus Delivery</span>
+</div>
+<div class="flex items-center gap-3 justify-center md:justify-start">
+<span class="material-symbols-outlined text-navy/60">lock</span>
+<span class="text-xs font-bold uppercase tracking-wider text-navy/70">Secure Payments</span>
+</div>
+</div>
+</section>
+<!-- 4. Shop By Category -->
+<section class="max-w-7xl mx-auto px-6 py-20">
+<h2 class="text-3xl font-black mb-12 uppercase tracking-tight">Shop By Category</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
+<div class="group relative aspect-square overflow-hidden cursor-pointer rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Complete set of dental tools for students" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBsSDBXC3Tmv35vO3vtTcG7KMSGtXrCuv4jktjlKEs05PyNLcx1oBE7iG6RRwhPUrX_yu8QKZQ8uQMt5cVCCWpdhv72H6g8tA63jVUv0CCnaAfZpeVkF9xmgIUxVV7YzFHMVTK4lmHyMFt-FimzRDxombe2vf-3oZqXyNLRToVIbNvzghnIpJ-4mK-7eb6ECQRE0ZY6f8H6tnOkkqc6X0fH99qURqb4_haYSjAzqqPMMIGWHlKF0tzYFs12BEG1U4Ev1ZANyf0-cQ');"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white text-xl font-bold uppercase tracking-tighter">Student Bundles</span>
+</div>
+</div>
+<div class="group relative aspect-square overflow-hidden cursor-pointer rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Diagnostic dental mirrors and probes" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBsUsQp7EvDPXWeoYCXyeyOW7HinJ2OvusYAGOGuiPMGBzKh3NjeXGrES8orJtiIkpDJVORpIewsffpFEBbyZ12jzKoqKM9BnM_TIxFI9xILKw0MpV9uxJHBdf1NK1HCGmWyOsQtzT4M2Iwtkovxw6QMr05vR00dnqVzjLxHZ8Z4k-d8o-g8_LygNvmzo_3e_hhXtb0PR5KHsCjFmLgG6aFxe3Vi_yJy6tXAug15uLIXSGAB0DB_E_-jHn_Ijpx0zQTSOTtNtG6UA');"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white text-xl font-bold uppercase tracking-tighter">Diagnostic Tools</span>
+</div>
+</div>
+<div class="group relative aspect-square overflow-hidden cursor-pointer rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Stainless steel surgical dental instruments" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBo-si71HWa8mn_-Qr6bwZt_LpcQKbTtygvqa7WM7Bkt3iXCVkxyPUPA5Zy63acVTNqLecHH_o1sdH-lDPfqUoofrWGD5OFi3BQV46aka_QmSPv5iH2sBTTJfg3aK2sK8UtF0I3CqPhP-C1RdeMLzjqQIELZwX_pgAXd_T5Nq9oJTakDtEMORFGmKL9TrO2QBrmJfKa1EPiQ4O5NpAad81wwUxtcrE3JCAdKn4_K-pVj_YRQP41MGpjd4BOOipo4XSCIcEAzwoqgA');"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white text-xl font-bold uppercase tracking-tighter">Surgical Instruments</span>
+</div>
+</div>
+<div class="group relative aspect-square overflow-hidden cursor-pointer rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="Endodontic files and precision tools" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPxHW6mJ7e67DhfYWSptqJzgR0LblgiHNZgSpn26YzJBs7zgGBA27G2uzM2nEDdT0mKpriSEY565CEvFxAoneGMLLVHWkJe44ZSpAP6OjLkK9wiV4TXBOJW-sC3xq76s5gqr6zqdmsd946TsHJYum1I9GwJiJUUeFSnnCeXfYfrkuGrYHf1sXHw6VLgLWEoj8bA40kn71pT1qf96iMHNsbfqdMWU_FWL2FcFbGI9DpepJdIjr5_4XSR-27cdyGSWJcjENipZUYyQ');"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-white text-xl font-bold uppercase tracking-tighter">Endodontics</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Best Sellers Slider (Simulated Carousel Grid) -->
+<section class="py-20 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-12">
+<h2 class="text-3xl font-black uppercase tracking-tight">Best Sellers</h2>
+<div class="flex gap-2">
+<button class="w-12 h-12 border border-navy/20 flex items-center justify-center hover:bg-navy hover:text-white transition-colors rounded-sm">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-12 h-12 border border-navy/20 flex items-center justify-center hover:bg-navy hover:text-white transition-colors rounded-sm">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Product Card 1 -->
+<div class="bg-white group overflow-hidden rounded-sm">
+<div class="aspect-square bg-gray-100 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="High precision dental forceps" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFOnaXf-pcf27Zx2_WgCqc2NASUp-MUlfoqAwkMf1aSdYP87jxU8g1x1dAE78RkutFm_mWBkU5sBkmpCjUpfTxatf8CjUHfQ9aaRBq_md1Yus4HWN1RhsDnO1tyFFTKAfNrL-P9Ef_Lu8wwxLb2tJEG_G7nLRMoUgJ8O5IWSiEupSdhj68-WZLYHlziAscr3DIclGyIojz3-M_EIssCl-HXbMLTcgLIxJSzrP2bgiFQimo_OkK3GaCKGTlWKKw7qA002sAG8J2lg"/>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-1 uppercase tracking-tight text-black">Extraction Forceps Set</h3>
+<p class="font-black mb-4 text-black">2,450 EGP</p>
+<button class="w-full bg-primary py-3 text-white text-xs font-bold uppercase tracking-widest hover:bg-navy transition-colors rounded-sm">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-white group overflow-hidden rounded-sm">
+<div class="aspect-square bg-gray-100 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Dental mirror with ergonomic handle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC320re3pAYJxJ3Eyjk3n29jeYrthqbA1btvSU7mwXbTLf0pmPA9n3QIQLPTAj6Ruo9iAfUp-iudUViUU31ucQZvFMeO01qY5xw_B3qnMHilqoURyaWzGpH1H_s8MjKgBJETKrOnqKItfKzJd3ltgydL505BnYtGJ6GifBovzobM_aRPKfudQ26NEsx_JkoVAUm522rY2nJpdce2ToYtLB_MF9wUDB32zgFKq_NKGfGoKLB8zMQ_7xtY78Nd0UOBGchyjgQ4EDq8w"/>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-1 uppercase tracking-tight text-black">LED Diagnostic Kit</h3>
+<p class="font-black mb-4 text-black">1,890 EGP</p>
+<button class="w-full bg-primary py-3 text-white text-xs font-bold uppercase tracking-widest hover:bg-navy transition-colors rounded-sm">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-white group overflow-hidden rounded-sm">
+<div class="aspect-square bg-gray-100 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Advanced restorative tool set" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLvvMwPU1Vpp0xrBY8ED6EpdspOhRjyBWQilSKmsKfLMxr6IPJWhx-M0zHFaEtJryiNEUK3pizQaz6luJRv0sP9JxhvY6PXjGLk5qokOF_gHRU-mhjh1nOwvmsKbmp5kB3TJQ1Qsf1naaZEBk38wBCK5FNK4iAgKdRPDcc-u3q7fUNMqZJq5b-AGKrm8hUuJdcMVR9d07avZ3EQDAeNqzI0rtuDgf2fw90-pqXBwElSOB4e3JTB_31bS9Pz1UfNogOlUskttiXTw"/>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-1 uppercase tracking-tight text-black">Restorative Master Kit</h3>
+<p class="font-black mb-4 text-black">3,200 EGP</p>
+<button class="w-full bg-primary py-3 text-white text-xs font-bold uppercase tracking-widest hover:bg-navy transition-colors rounded-sm">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-white group overflow-hidden rounded-sm">
+<div class="aspect-square bg-gray-100 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Sterilization tray with tools" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB1ctybgfplfTm0wOfBLlLkoyg7cC0PNR5rjlRuFV-EvIjpt8RcsXq7GuUv8b3R-qvQ2oZDEkbr3_Db2kNYrSnnrPewNgR8_SX0ZSQFz5VeZ5zzHAhpDqDjiADbYp_OEXYirmgM_u3RjkfCrp6BlgVMU2g7i0XUbweEX7ve4ZfYLZWkLGlu2E4PuFE_vjQ5YFdmynmoDIg_i-ROckKgJYL3dYnApUB2LpC5aR2ZJ8HAtuZHiBdUpnaKVp3dPw_zIrvJUKoYuiSFQ"/>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-1 uppercase tracking-tight text-black">Autoclave Safe Trays</h3>
+<p class="font-black mb-4 text-black">750 EGP</p>
+<button class="w-full bg-primary py-3 text-white text-xs font-bold uppercase tracking-widest hover:bg-navy transition-colors rounded-sm">Add to Cart</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. 'Why Odda?' Section -->
+<!-- 7. Peer Reviews -->
+<section class="max-w-7xl mx-auto px-6 py-24 border-t border-navy/10"><h2 class="text-center text-3xl font-black mb-16 uppercase tracking-tight">What Students Say</h2>
+<div class="relative group">
+<!-- Navigation Arrows -->
+<button class="absolute -left-4 lg:-left-12 top-1/2 -translate-y-1/2 z-10 w-10 h-10 border border-navy/10 bg-white flex items-center justify-center hover:bg-navy hover:text-white transition-colors rounded-sm" onclick="scrollTestimonials('left')">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="absolute -right-4 lg:-right-12 top-1/2 -translate-y-1/2 z-10 w-10 h-10 border border-navy/10 bg-white flex items-center justify-center hover:bg-navy hover:text-white transition-colors rounded-sm" onclick="scrollTestimonials('right')">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+<!-- Slider Container -->
+<div class="overflow-x-auto scrollbar-hide snap-x snap-mandatory flex gap-8 scroll-smooth pb-4" id="testimonial-slider">
+<!-- Card 1 -->
+<div class="min-w-[300px] md:min-w-[calc(40%-1.5rem)] flex-shrink-0 snap-start border border-navy/10 p-8 rounded-sm bg-white">
+<div class="flex text-primary mb-4">
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+</div>
+<p class="italic mb-6 text-navy/80">"The quality of the surgical set is indistinguishable from professional kits. Delivery to campus was smooth and right on time."</p>
+<p class="font-bold uppercase text-xs tracking-widest">— Ahmed S., Cairo University</p>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[300px] md:min-w-[calc(40%-1.5rem)] flex-shrink-0 snap-start border border-navy/10 p-8 rounded-sm bg-white">
+<div class="flex text-primary mb-4">
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+</div>
+<p class="italic mb-6 text-navy/80">"Odda saved me a lot of hassle. Getting all my restorative tools in one bundle was a lifesaver during exams."</p>
+<p class="font-bold uppercase text-xs tracking-widest">— Sarah K., Ain Shams</p>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[300px] md:min-w-[calc(40%-1.5rem)] flex-shrink-0 snap-start border border-navy/10 p-8 rounded-sm bg-white">
+<div class="flex text-primary mb-4">
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+</div>
+<p class="italic mb-6 text-navy/80">"Pricing is very competitive for this level of quality. The mirror visibility is amazing compared to cheap alternatives."</p>
+<p class="font-bold uppercase text-xs tracking-widest">— Omar M., Alexandria Uni</p>
+</div>
+</div>
+</div>
+<style>
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style></section>
+<!-- 8. Minimalist Footer -->
+<footer class="bg-navy text-white pt-20 pb-10 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-20">
+<div>
+<a class="flex items-center gap-2 mb-6" href="#">
+<span class="material-symbols-outlined text-primary text-3xl">architecture</span>
+<span class="text-2xl font-black tracking-tighter uppercase italic">Odda</span>
+</a>
+<p class="text-white/60 text-sm leading-relaxed">
+                        The ultimate destination for premium dental instrumentation for the next generation of clinicians.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold uppercase text-xs tracking-widest mb-6">Quick Links</h4>
+<ul class="space-y-4 text-sm text-white/60">
+<li><a class="hover:text-primary transition-colors" href="#">Shop All</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Student Bundles</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold uppercase text-xs tracking-widest mb-6">Support</h4>
+<ul class="space-y-4 text-sm text-white/60">
+<li><a class="hover:text-primary transition-colors" href="#">Shipping Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Returns</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Warranty</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold uppercase text-xs tracking-widest mb-6">Newsletter</h4>
+<p class="text-sm text-white/60 mb-6">Get updates on new inventory and campus events.</p>
+<form class="flex flex-col gap-2">
+<input class="bg-white/5 border border-white/20 px-4 py-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none rounded-sm" placeholder="Email Address" type="email"/>
+<button class="bg-primary hover:bg-white hover:text-navy transition-all py-3 font-bold uppercase text-xs tracking-widest rounded-sm">Subscribe</button>
+</form>
+</div>
+</div>
+<div class="border-t border-white/10 pt-10 flex flex-col md:row items-center justify-between gap-6">
+<p class="text-xs text-white/40 uppercase tracking-widest">© 2024 Odda Dental Tools. All Rights Reserved.</p>
+<div class="flex gap-6">
+<a class="text-white/40 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+</a>
+<a class="text-white/40 hover:text-white transition-colors" href="#">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+function scrollTestimonials(direction) {
+    const slider = document.getElementById('testimonial-slider');
+    const scrollAmount = slider.offsetWidth;
+    if (direction === 'left') {
+        slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+        slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+}
+</script></body></html>
