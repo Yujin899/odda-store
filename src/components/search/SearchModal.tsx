@@ -100,7 +100,7 @@ export function SearchModal() {
             className="relative w-full max-w-2xl bg-background rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] mb-4 sm:mb-8"
           >
             {/* Search Input Area */}
-            <div className="flex items-center px-4 sm:px-6 py-4 border-b border-border shrink-0">
+            <div className="relative flex items-center px-4 sm:px-6 py-4 border-b border-border shrink-0 pr-14">
               <span className="material-symbols-outlined text-muted-foreground mr-4">search</span>
               <input
                 ref={inputRef}
@@ -112,7 +112,7 @@ export function SearchModal() {
               />
               <button 
                 onClick={handleClose}
-                className="p-2 hover:bg-muted rounded-full transition-colors ml-3 outline-none border-none cursor-pointer text-muted-foreground flex items-center justify-center h-9 w-9 shrink-0 bg-transparent"
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors outline-none border-none cursor-pointer text-muted-foreground flex items-center justify-center h-9 w-9 bg-transparent"
               >
                 <span className="material-symbols-outlined font-normal text-xl">close</span>
               </button>
