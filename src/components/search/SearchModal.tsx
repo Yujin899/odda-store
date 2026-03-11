@@ -78,7 +78,7 @@ export function SearchModal() {
       {isOpen && (
         <div 
           key="search-modal-container"
-          className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-16"
+          className="fixed inset-0 z-50 flex items-start justify-center px-2 sm:px-4 pt-4 sm:pt-16"
         >
           {/* Backdrop */}
           <motion.div
@@ -94,14 +94,13 @@ export function SearchModal() {
           {/* Modal Panel — slide in from right, constrained height */}
           <motion.div
             key="search-panel"
-            initial={{ x: 40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 40, opacity: 0 }}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="relative w-full max-w-2xl bg-background rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100vh-8rem)] mb-8"
+            className="relative w-full max-w-2xl bg-background rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] mb-4 sm:mb-8"
           >
             {/* Search Input Area */}
-            <div className="flex items-center px-3 sm:px-6 py-4 border-b border-border shrink-0">
+            <div className="flex items-center px-4 sm:px-6 py-4 border-b border-border shrink-0">
               <span className="material-symbols-outlined text-muted-foreground mr-4">search</span>
               <input
                 ref={inputRef}
