@@ -209,7 +209,7 @@ export default function Home() {
                 >
                   <div className="aspect-square bg-[var(--muted)] relative overflow-hidden">
                     <img 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" 
                       alt={product.name} 
                       src={product.image} 
                     />

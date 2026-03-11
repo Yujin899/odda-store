@@ -198,7 +198,7 @@ export default function ProductDetailsPage() {
               <SwiperSlide key={i}>
                 <div className="group cursor-pointer h-full">
                   <div className="aspect-square mb-6 bg-muted overflow-hidden rounded-sm relative">
-                    <div className="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0" style={{ backgroundImage: `url('${p.img}')` }}></div>
+                    <div className="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700" style={{ backgroundImage: `url('${p.img}')` }}></div>
                   </div>
                   <h3 className="font-black text-xs sm:text-sm mb-1 text-foreground uppercase tracking-tight group-hover:text-(--primary) transition-colors truncate">{p.name}</h3>
                   <p className="text-foreground font-black text-sm sm:text-base">{p.price} EGP</p>

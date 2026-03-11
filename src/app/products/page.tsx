@@ -145,7 +145,7 @@ export default function ProductsPage() {
                   onClick={() => router.push(`/product/${product.id}`)}
                 >
                   <div className="aspect-square relative overflow-hidden bg-muted rounded-none rounded-t-sm">
-                    <img loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-t-sm grayscale group-hover:grayscale-0" alt={product.name} src={product.image}/>
+                    <img loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-t-sm" alt={product.name} src={product.image}/>
                     {product.badge && (
                       <span className={`absolute top-3 left-3 text-background text-[10px] font-bold px-2.5 py-1 rounded-(--radius) uppercase tracking-widest z-10 shadow-lg ${product.badge.includes('Hot') ? 'bg-[#E11D48]' : product.badge.includes('Sale') ? 'bg-[var(--danger)]' : 'bg-(--primary)'}`}>
                         {product.badge}

@@ -140,7 +140,7 @@ export function SearchModal() {
                             src={product.image} 
                             alt={product.name} 
                             fill
-                            className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
+                            className="object-cover group-hover:scale-110 transition-all duration-700" 
                           />
                         </div>
                         <h4 className="text-[11px] font-bold uppercase tracking-tight text-foreground truncate mb-1 group-hover:text-(--primary) transition-colors">{product.name}</h4>
@@ -173,7 +173,7 @@ export function SearchModal() {
                           src={product.image} 
                           alt={product.name} 
                           fill
-                          className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
+                          className="object-cover group-hover:scale-110 transition-all duration-700" 
                         />
                       </div>
                       <h4 className="text-[11px] font-bold uppercase tracking-tight text-foreground truncate mb-1 group-hover:text-(--primary) transition-colors">{product.name}</h4>
