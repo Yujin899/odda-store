@@ -1,0 +1,379 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { 
+  Plus, 
+  Search, 
+  MoreHorizontal, 
+  Pencil, 
+  Trash2,
+  Check,
+  Loader2
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { useToastStore } from '@/store/useToastStore';
+import { ColorPicker } from '@/components/dashboard/ColorPicker';
+
+interface Badge {
+  _id: string;
+  name: string;
+  color: string;
+  textColor: string;
+}
+
+export default function BadgesPage() {
+  const [badges, setBadges] = useState<Badge[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingBadge, setEditingBadge] = useState<Badge | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    color: '#000000',
+    textColor: '#FFFFFF'
+  });
+
+  const { addToast } = useToastStore();
+
+  useEffect(() => {
+    fetchBadges();
+  }, []);
+
+  const fetchBadges = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch('/api/badges');
+      const data = await res.json();
+      if (res.ok) {
+        setBadges(data.badges);
+      } else {
+        addToast({ title: 'Error', description: data.message || 'Failed to fetch badges', type: 'error' });
+      }
+    } catch (error) {
+      addToast({ title: 'Error', description: 'Error loading badges', type: 'error' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const openModal = (badge?: Badge) => {
+    if (badge) {
+      setEditingBadge(badge);
+      setFormData({
+        name: badge.name,
+        color: badge.color,
+        textColor: badge.textColor
+      });
+    } else {
+      setEditingBadge(null);
+      setFormData({
+        name: '',
+        color: '#000000',
+        textColor: '#FFFFFF'
+      });
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSaving(true);
+    try {
+      const url = editingBadge ? `/api/badges/${editingBadge._id}` : '/api/badges';
+      const method = editingBadge ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        addToast({ 
+          title: 'Success', 
+          description: `Badge ${editingBadge ? 'updated' : 'created'} successfully`, 
+          type: 'success' 
+        });
+        setIsModalOpen(false);
+        fetchBadges();
+      } else {
+        addToast({ title: 'Error', description: data.message || 'Failed to save badge', type: 'error' });
+      }
+    } catch (error) {
+      addToast({ title: 'Error', description: 'Error saving badge', type: 'error' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    try {
+      const res = await fetch(`/api/badges/${deleteId}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (res.ok) {
+        addToast({ title: 'Success', description: 'Badge deleted successfully', type: 'success' });
+        fetchBadges();
+      } else {
+        addToast({ title: 'Error', description: data.message || 'Failed to delete badge', type: 'error' });
+      }
+    } catch {
+      addToast({ title: 'Error', description: 'Error deleting badge', type: 'error' });
+    } finally {
+      setDeleteId(null);
+    }
+  };
+
+  const filteredBadges = badges.filter(badge => 
+    badge.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black uppercase tracking-tighter text-[var(--navy)]">Badges</h1>
+          <p className="text-sm text-slate-500 font-medium">Manage product status and discount labels</p>
+        </div>
+        <Button 
+          onClick={() => openModal()}
+          className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-[var(--primary)]/20 rounded-sm"
+        >
+          <Plus className="size-4 mr-2" />
+          Add Badge
+        </Button>
+      </div>
+
+      <div className="bg-white border border-slate-200 rounded-sm shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-slate-100 flex items-center gap-4">
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+            <Input 
+              placeholder="Search badges..." 
+              className="pl-10 h-10 border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 rounded-sm text-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <Table>
+          <TableHeader className="bg-slate-50">
+            <TableRow className="hover:bg-transparent border-slate-100">
+              <TableHead className="w-[120px] text-xs font-bold uppercase tracking-widest text-slate-500">Preview</TableHead>
+              <TableHead className="text-xs font-bold uppercase tracking-widest text-slate-500">Name</TableHead>
+              <TableHead className="text-xs font-bold uppercase tracking-widest text-slate-500">Colors</TableHead>
+              <TableHead className="text-right text-xs font-bold uppercase tracking-widest text-slate-500">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={4} className="h-24 text-center text-sm text-slate-500 italic">
+                  <div className="flex items-center justify-center gap-2">
+                    <Loader2 className="size-4 animate-spin" />
+                    Loading badges...
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : filteredBadges.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} className="h-24 text-center text-sm text-slate-500 italic">
+                  No badges found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredBadges.map((badge) => (
+                <TableRow key={badge._id} className="hover:bg-slate-50 transition-colors border-slate-50">
+                  <TableCell>
+                    <span 
+                      className="px-2.5 py-1 rounded-sm text-[10px] font-black uppercase tracking-widest shadow-sm inline-block"
+                      style={{ backgroundColor: badge.color, color: badge.textColor }}
+                    >
+                      {badge.name}
+                    </span>
+                  </TableCell>
+                  <TableCell className="font-bold text-[var(--navy)]">{badge.name}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <div className="size-4 rounded-sm border border-slate-200" style={{ backgroundColor: badge.color }} />
+                        <code className="text-[9px] font-mono text-slate-500 uppercase">{badge.color}</code>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="size-4 rounded-sm border border-slate-200" style={{ backgroundColor: badge.textColor }} />
+                        <code className="text-[9px] font-mono text-slate-500 uppercase">{badge.textColor}</code>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="size-8 p-0">
+                          <MoreHorizontal className="size-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40 rounded-sm overflow-hidden">
+                        <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-slate-400">Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem 
+                          onClick={() => openModal(badge)}
+                          className="text-xs font-medium focus:bg-slate-50 cursor-pointer"
+                        >
+                          <Pencil className="size-3 mr-2" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-xs font-medium text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer"
+                          onClick={() => setDeleteId(badge._id)}
+                        >
+                          <Trash2 className="size-3 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Add/Edit Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-md rounded-sm">
+          <form onSubmit={handleSave}>
+            <DialogHeader>
+              <DialogTitle className="font-black uppercase tracking-tighter text-xl">
+                {editingBadge ? 'Edit Badge' : 'Add New Badge'}
+              </DialogTitle>
+              <DialogDescription className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                Define a badge and its signature colors
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="py-6 space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Badge Name</Label>
+                <Input 
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g. Discount"
+                  className="rounded-sm border-slate-200 focus:border-[var(--primary)] text-sm"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <ColorPicker 
+                  label="Background Color"
+                  color={formData.color}
+                  onChange={(color) => setFormData({ ...formData, color })}
+                />
+                <ColorPicker 
+                  label="Text Color"
+                  color={formData.textColor}
+                  onChange={(color) => setFormData({ ...formData, textColor: color })}
+                />
+              </div>
+
+              <div className="pt-2">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">Live Preview</Label>
+                <div className="p-8 bg-slate-50 border border-dashed border-slate-200 rounded-sm flex items-center justify-center">
+                  <span 
+                    className="px-4 py-1.5 rounded-sm text-xs font-black uppercase tracking-widest shadow-lg transition-all"
+                    style={{ backgroundColor: formData.color, color: formData.textColor }}
+                  >
+                    {formData.name || 'Preview'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setIsModalOpen(false)}
+                className="rounded-sm font-bold uppercase tracking-widest text-[10px] h-10 px-6 border-slate-200"
+              >
+                Cancel
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={isSaving}
+                className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-[var(--primary)]/20 rounded-sm"
+              >
+                {isSaving ? <Loader2 className="size-4 animate-spin mr-2" /> : <Check className="size-4 mr-2" />}
+                {editingBadge ? 'Update Badge' : 'Create Badge'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
+        <AlertDialogContent className="rounded-sm">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-black uppercase tracking-tighter">Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription className="text-sm font-medium">
+              This action cannot be undone. This will permanently delete the badge and remove it from all products.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-sm font-bold uppercase tracking-widest text-[10px]">Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 text-white rounded-sm font-bold uppercase tracking-widest text-[10px]"
+            >
+              Delete Badge
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+}

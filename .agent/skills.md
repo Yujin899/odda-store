@@ -3,12 +3,15 @@
 # Odda Store - Agent Skills & Project Rules
 
 ## 1. Project Overview
-- Brand: `Odda | Premium Dental Tools`.
-- App type: small Next.js App Router storefront.
-- Public routes: home, product listing, product details, custom 404.
+- Brand: `Odda | Premium Dental Tools` — High-end aesthetic for medical professionals.
+- App type: Enterprise-ready Next.js App Router storefront and management system.
+- Public routes: home, product listing, product details, checkout, order confirmation, custom 404, public order tracking.
 - Planned backend: Next.js API Routes (`src/app/api/`) as the server layer, MongoDB as the database, and Cloudinary for image hosting and delivery.
-- Current state: all data is still hardcoded. Do NOT begin migrating any screen to real data fetching until the API layer is scaffolded and agreed upon.
-- Global chrome is mounted in the root layout on every page: `AnnouncementBar`, `Navbar`, `Footer`, `CartDrawer`, `SearchModal`.
+- Current state: most data is served dynamically from MongoDB via API routes (`src/app/api/products`). The legacy catalog (`src/lib/catalog.ts`) is for fallback purposes only.
+- Global chrome (`AnnouncementBar`, `Navbar`, `Footer`, `CartDrawer`, `SearchModal`, `ToastContainer`) is mounted in `src/app/(store)/layout.tsx`. Auth pages (`/login`, `/register`) have no chrome.
+- **Enterprise Status**: Optimized for production with connection pooling, ISR caching (`StoreSettings`), and automated DevOps cleanup via Vercel Cron.
+- **Limit Protection**: Strategic usage of free-tier resources (Resend 3k/mo limit, Cloudinary storage reclamation via `deleteCloudinaryImage` utility).
+- **Global Configuration**: Centrally managed `StoreSettings` controlling the storefront UI and business parameters.
 
 ## 2. Tech Stack & Versions
 - Next.js `16.1.6`
@@ -16,113 +19,99 @@
 - React DOM `19.2.3`
 - TypeScript `^5` with `strict: true`
 - Tailwind CSS `^4`
-- `@tailwindcss/postcss` `^4`
 - Zustand `^5.0.11`
 - Framer Motion `^12.35.2`
 - Swiper `^12.1.2`
-- Embla Carousel React `^8.6.0`
-- Swiper (`swiper/react`) is the active carousel library. Use it for all sliders and carousels.
-- Embla Carousel (`embla-carousel-react`) is installed as a shadcn dependency but is not actively used in the storefront. Do not use Embla directly.
-- Radix UI via `radix-ui` `^1.4.3`
-- shadcn CLI config `^4.0.5` with `style: "radix-vega"`
-- Lucide React `^0.577.0`
-- `tw-animate-css` `^1.4.0`
-- `class-variance-authority` `^0.7.1`
-- No `tailwind.config.ts` exists in this repo.
-- Remote image allowlist in `next.config.ts`: `https://lh3.googleusercontent.com/**`
+- Lucide React `^0.577.0`. Lucide React is the only icon library. No CDN icons.
+- Mongoose (`mongoose`)
+- NextAuth v5 (`next-auth@beta`)
+- MongoDB Auth Adapter (`@auth/mongodb-adapter`)
+- bcryptjs (`bcryptjs`)
+- Cloudinary (`cloudinary`)
+- Resend (`resend`) — Optimized for transactional notifications.
+- Vercel Cron — For automated maintenance tasks.
 
 ## 3. Project Structure (actual file tree)
-Project-owned files below. Generated `.next/` output and `node_modules/` are intentionally omitted.
-
-- `refactor.js` is a one-off migration script used during initial setup. Do not modify, delete, or re-run it. It is not part of the application runtime.
+- `src/lib/catalog.ts` is the legacy source of truth (kept for fallback). Real data is in MongoDB.
+- Store pages use Server Components to fetch from internal API routes.
 
 ```text
 odda-web/
-  .gitignore
-  components.json
-  eslint.config.mjs
-  next-env.d.ts
-  next.config.ts
-  package-lock.json
-  package.json
-  postcss.config.mjs
-  README.md
-  refactor.js
-  tsconfig.json
-  public/
-    file.svg
-    globe.svg
-    logo.png
-    next.svg
-    vercel.svg
-    window.svg
-  stitch-designs/
-    cart.html
-    details.html
-    home.html
-    listing.html
+  scripts/
+    seed.ts
+    migrate.ts
   src/
     app/
-      favicon.ico
-      globals.css
-      layout.tsx
-      not-found.tsx
-      page.tsx
-      product/
-        [id]/
-          page.tsx
-      products/
-        page.tsx
+      api/
+        auth/
+        badges/
+          route.ts
+          [id]/
+            route.ts
+        categories/
+          route.ts
+          [id]/
+            route.ts
+        cron/
+          cleanup-orders/ # Daily data/asset recycling
+        notifications/   # In-app alert system
+        orders/
+          route.ts
+          [id]/
+          track/         # Public Amazon-style tracker
+        products/
+          route.ts
+          [slug]/
+            route.ts
+        settings/        # Global Storefront Configuration
+          route.ts
+        users/           # Admin customer management
+      (dashboard)/
+        dashboard/
+          badges/
+          categories/
+          customers/
+          notifications/ # Admin activity center
+          orders/
+          products/
+          settings/      # Multi-tab Admin Settings Hub
     components/
-      cart/
-        CartDrawer.tsx
-      layout/
-        AnnouncementBar.tsx
-        Footer.tsx
-        Navbar.tsx
-      search/
-        SearchModal.tsx
-      ui/
-        accordion.tsx
-        badge.tsx
-        button.tsx
-        carousel.tsx
-        input.tsx
-        label.tsx
-        separator.tsx
-        sheet.tsx
-        slider.tsx
-        tabs.tsx
-    lib/
-      utils.ts
-    store/
-      useCartUIStore.ts
-      useSearchUIStore.ts
+      home/
+        Hero.tsx         # Premium Minimalist Hero
+      dashboard/
+        Sidebar.tsx
+        AddProductButton.tsx
+        ColorPicker.tsx # Custom swatch selector
+        CustomersManager.tsx # Full profile/role control
+        NotificationBell.tsx # Real-time polling alert
+        NotificationsList.tsx
+        OrderDetailsModal.tsx # With auto-scroll to proof
+        OrdersManager.tsx # Tabbed "Inbox Zero" workflow
+        ProductForm.tsx # With simulated upload feedback
+        ProductsTable.tsx
+    models/
+      Badge.ts
+      Category.ts
+      Notification.ts # Alert tracking
+      Order.ts
+      Product.ts
+      StoreSettings.ts   # Global Config (Hero, InstaPay, etc.)
+      User.ts
+    auth.ts # RBAC logic & session security
+    middleware.ts # Protected route gates
 ```
 
-## 4. Design System
-### CSS variables (list every `--var` from `globals.css` with its actual value)
-Exact declarations from `src/app/globals.css`:
+> `src/lib/mongodb-adapter.ts` provides the raw MongoClient instance required by `@auth/mongodb-adapter`. It is separate from `mongodb.ts` (which uses Mongoose). Do not use `mongodb-adapter.ts` for data queries — use `mongodb.ts` + Mongoose models instead.
 
+
+## 4. Design System
+### CSS variables
 ```css
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -135,8 +124,6 @@ Exact declarations from `src/app/globals.css`:
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --radius-sm: calc(var(--radius) * 0.6);
@@ -144,8 +131,6 @@ Exact declarations from `src/app/globals.css`:
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
   --color-primary: #0073E6;
   --color-navy: #0A192F;
 }
@@ -167,145 +152,84 @@ Exact declarations from `src/app/globals.css`:
   --success: #059669;
   --card: #FFFFFF;
   --card-foreground: #0A192F;
-  --popover: #FFFFFF;
-  --popover-foreground: #0A192F;
   --primary-foreground: #FFFFFF;
   --secondary: #F1F5F9;
   --secondary-foreground: #0A192F;
   --destructive: #ef4444;
-  --destructive-foreground: #FFFFFF;
   --input: #E2E8F0;
   --ring: #0073E6;
   --radius: 8px;
 }
 ```
 
-```css
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-```
-
-Notes:
-- `--color-primary` is declared twice inside `@theme inline`; the final declaration in that block is `#0073E6`.
-- `--font-geist-mono` is referenced in `globals.css` but is not declared there.
-- `layout.tsx` sets `--font-sans` by loading `Inter` with `variable: "--font-sans"`.
-
 ### Border radius rule
 - Base token is `--radius: 8px`.
-- Derived theme radii are `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`.
-- Most storefront UI uses `rounded-sm`.
-- Use `rounded-[var(--radius)]` or `rounded-(--radius)` when matching the global token exactly.
-- `rounded-full` is allowed ONLY for circular icon buttons and numeric counter badges (e.g. cart item count).
-- `rounded-full` is STRICTLY FORBIDDEN on product badges (Hot Now, New, -20%, Sold Out, etc.). All product badges must use `rounded-[var(--radius)]`.
-
-### Typography
-- Global font source is `Inter` from `next/font/google`.
-- Material Symbols Outlined is loaded globally in `<head>`.
-- Headings and labels are usually uppercase with `font-bold`, `font-extrabold`, or `font-black`.
-- Body copy usually uses default weight or `font-light`.
-- `font-display` appears in JSX, but no matching Tailwind token/config exists. Treat `Inter` as the real configured font, not `font-display`.
+- Use `rounded-(--radius)` for exact matches (preferred over `rounded-[var(--radius)]`).
+- `rounded-full` ONLY for circular buttons/badges; FORBIDDEN on product badges.
 
 ## 5. Component Conventions
 ### Naming rules
-- App-specific components use PascalCase filenames and named exports.
-- UI primitives in `src/components/ui/` use lowercase filenames and named exports.
-- Route entries stay in App Router files: `page.tsx`, `layout.tsx`, `not-found.tsx`.
-
-```tsx
-// App-specific component
-export function Navbar() {}
-
-// UI primitive
-export { Button, buttonVariants }
-```
-
-### File locations
-- `src/app/*`: routes and layout files.
-- `src/components/layout/*`: global chrome.
-- `src/components/cart/*`: cart overlay UI.
-- `src/components/search/*`: search overlay UI.
-- `src/components/ui/*`: shadcn/Radix-style primitives.
-- `src/store/*`: Zustand stores.
-- `src/lib/*`: shared helpers.
-- Keep route-specific mock arrays close to the route/component that renders them until a real data layer exists.
+- Route-specific loaders: `loading.tsx`.
+- Business components: `ToastContainer.tsx`.
+- UI primitives: `skeleton.tsx`, `Toast.tsx`.
+- Route groups: use parentheses e.g. `(store)`, `(auth)`. Auth pages have no shared chrome.
 
 ## 6. State Management
-### Every Zustand store, its file path, and what it manages
-- `src/store/useCartUIStore.ts`
-  - Manages cart drawer UI only.
-  - State: `isOpen: boolean`
-  - Actions: `openCart`, `closeCart`, `toggleCart`
-- `src/store/useSearchUIStore.ts`
-  - Manages search modal UI only.
-  - State: `isOpen: boolean`
-  - Actions: `openSearch`, `closeSearch`, `toggleSearch`
-
-### Rules for creating new stores
-- Put each store in its own file under `src/store/`.
-- Name store hooks `useXStore`.
-- Define a TypeScript interface first, then `create<Interface>()`.
-- Keep stores small and single-purpose.
-- Current stores are UI-only. Do not mix UI visibility flags with product, pricing, or checkout business data.
-- Expose the minimum state and actions needed.
-- Consume stores only from client components.
-
-```ts
-interface ExampleUIStore {
-  isOpen: boolean
-  open: () => void
-  close: () => void
-}
-```
+### Zustand Stores
+- `src/store/useCartUIStore.ts` (UI Only: isOpen, openCart, closeCart)
+- `src/store/useSearchUIStore.ts` (UI Only: isOpen, openSearch, closeSearch)
+- `src/store/useMobileMenuStore.ts` (UI Only: isOpen, open, close, toggle)
+- `src/store/useCartStore.ts`
+  - Manages cart data: `items`, `totalAmount`.
+  - Actions: `addItem`, `removeItem`, `updateQuantity`, `clearCart`.
+- `src/store/useToastStore.ts`
+  - Manages global notifications: `toasts: Toast[]`.
+  - Actions: `addToast`, `removeToast`.
+  - Convenient export: `toast` object for quick usage (`toast.success(description)`).
+  - IMPORTANT: Notifications use `description` property, not `message`.
+- `src/store/useRecentlyViewedStore.ts`
+  - Manages viewed history: `items: Product[]` (max 4).
+  - Actions: `addViewedItem`.
 
 ## 7. Routing
-- App Router root is `src/app/`.
-- Routes:
-  - `/` -> `src/app/page.tsx`
-  - `/products` -> `src/app/products/page.tsx`
-  - `/product/[id]` -> `src/app/product/[id]/page.tsx`
-  - `not-found` -> `src/app/not-found.tsx`
-- Shared layout is `src/app/layout.tsx`.
-- Use `next/link` for static navigation.
-- Use `useRouter().push()` only inside client-side interaction handlers.
-- Current product cards and search results navigate with a template-literal `router.push` call to `/product/${id}`.
-- Current `/product/[id]` page does not read route params. It renders hardcoded product content regardless of `id`.
-
-```tsx
-<Link href="/products">Shop</Link>
-
-router.push(`/product/${id}`)
-```
+- `/` -> Home
+- `/products` -> Product listing with filters.
+- `/dashboard` -> Admin-only overview with stats and charts.
+- `/dashboard/orders` -> Admin-only orders management.
+- `/dashboard/settings` -> Admin-only configuration hub (Tabs: Storefront, Payments, Contact).
+- `/dashboard/customers` -> Admin-only registered users list.
+- **Products**: `/product/[slug]` — The param is the product slug (SEO-friendly). Always look up by `slug` in `CATALOG` or MongoDB.
+- **Search**: `/search?q=query` — Results filtered by name.
+- `/checkout` -> Multi-step checkout process. Now wired to `POST /api/orders`.
+- `/order-confirmation` -> Post-purchase landing. Reads `orderNumber` from URL params.
+- `/orders` -> User's order history, requires auth.
+- `/about` -> Brand mission and features.
+- `/login` -> User auth.
+- `/register` -> New user registration. Wired to `POST /api/auth/register`.
+- API Routes:
+  - `POST /api/auth/register`: User creation.
+  - `GET /api/products`: Paginated/Filtered product list. Supports `featured`, `categoryId`, `search`, `sort` params.
+  - `GET /api/categories`: Returns all product categories.
+  - `POST /api/categories`: Admin category creation.
+  - `PATCH/DELETE /api/categories/[id]`: Admin category management (includes `revalidatePath('/')` and Cloudinary cleanup).
+  - `GET /api/badges`: Returns all product badges.
+  - `POST /api/badges`: Admin badge creation.
+  - `PUT/DELETE /api/badges/[id]`: Admin badge management.
+  - `GET /api/products/[slug]`: Single product lookup (SEO slug or ID).
+  - `POST /api/products`: Admin product creation + Cloudinary upload.
+  - `PUT /api/products/[slug]`: Admin product update.
+  - `DELETE /api/products/[slug]`: Admin product removal + Cloudinary cleanup.
+  - `GET /api/settings`: Returns Global Store Settings (Hero, Announcements, Fees).
+  - `PATCH /api/settings`: Admin settings update (with instant ISR revalidation).
+  - `POST /api/orders`: Order placement (triggers real-time stock deduction).
+  - `GET /api/orders`: Admin order list.
+  - `GET /api/orders/[id]`: Order details.
+  - `PATCH /api/orders/[id]`: Admin order status update (Restores stock automatically on 'cancelled' status).
+  - `GET /api/orders/track/[id]`: Public order tracking status.
+  - `GET /api/notifications`: Admin alerts list.
+  - `POST /api/cron/cleanup-orders`: Daily recycling of data/assets.
+  - `POST /api/upload`: Generic image upload (supports `folder` param and 10MB limit).
+- Route Grouping: `(store)` group has the global chrome layout; `(auth)` group has none.
 
 ## 8. Performance Rules
 - Use `next/image` when the container size is known and the image host is already allowed.
@@ -315,7 +239,12 @@ router.push(`/product/${id}`)
 - If you keep using raw `<img>`, add `loading="lazy"` on non-critical images.
 - Keep heavy interaction libraries in client components only.
 - Do not add a global store for state that can stay local to one route/component.
-- Reuse current hardcoded data shape until a real data layer is introduced. Do not half-migrate one screen to fetching.
+- All product data must be fetched via `GET /api/products`. Do not import `CATALOG` for new features.
+- Components should be Server Components where possible to leverage server-side fetching with revalidation.
+- **Database Optimization**: Always call `connectDB()` at the top of every API Route handler. It implements strict connection pooling (`maxPoolSize: 10`) essential for serverless stability.
+- **ISR Caching**: Public product APIs (`/api/products`) use `revalidate = 3600` (1-hour cache). Use `revalidatePath` in admin mutation handlers to invalidate this cache when data changes.
+- Cloudinary uploads must always go through `src/lib/cloudinary.ts`. Never call Cloudinary SDK directly from a route handler.
+- **Self-Cleaning Storage**: Use `deleteCloudinaryImage(url)` in mutation handlers when an entity with an image is deleted or its image is replaced.
 
 ## 9. Animation Rules (Framer Motion)
 - Use Framer Motion for enter/exit animations in any client component. Prefer CSS transitions for hover and simple state styling.
@@ -324,7 +253,8 @@ router.push(`/product/${id}`)
   - Backdrop fade: `0.2s`
   - Panel fade/slide: `0.25s`
   - Panel initial offset: `y: -20`
-- Use Swiper (`swiper/react`) for all sliders and carousels.
+- **Minimalist Hero**: Prefer high-impact static images with dark overlays and Ghost Buttons (fill-on-hover) over complex Swiper sliders for the storefront hero.
+- Use Swiper (`swiper/react`) for smaller item carousels only.
 - Do not use Embla directly in storefront code.
 - Keep motion short, functional, and inside client components.
 
@@ -347,16 +277,31 @@ router.push(`/product/${id}`)
 - `SearchModal` also sets inline `scrollbarWidth: 'none'` and `msOverflowStyle: 'none'`.
 - Do not use `.scrollbar-hide`; it is referenced once, but it is not defined in `globals.css`.
 
-## 11. STRICTLY FORBIDDEN (things that must never be done)
+## 11. STRICTLY FORBIDDEN
+- Do not use `useEffect` + `useState` for deriving product data from params; use `useMemo`.
+- Do not use hardcoded `PRODUCTS` arrays or `CATALOG` in pages; fetch from `/api/products` using Server Components.
+- Do not perform synchronous `setState` inside `useEffect` (lint warning).
 - Do not assume a `tailwind.config.ts` exists.
 - Do not add remote image domains without updating `next.config.ts`.
 - Do not create business-data Zustand stores next to the current UI stores without an explicit architecture change.
 - Do not treat `font-display` as a valid configured typography utility.
 - Do not use `.scrollbar-hide`; use `.scrollbar-hidden` or add a deliberate replacement first.
 - Do not rename `src/components/ui/*` files to PascalCase.
-- Do not assume `/product/[id]` is param-driven today.
+- `/product/[slug]` is slug-driven. Always read `params.slug` and look up by `slug` from `CATALOG`. If not found, call `notFound()` from `next/navigation`. Never use MongoDB `_id` or numeric `id` in product page URLs.
 - Do not leave duplicate `@keyframes marquee` and `.animate-marquee` blocks in `globals.css`. The file currently contains two copies - this must be cleaned up. Keep only one definition.
-- Do not break the root layout contract that globally mounts `AnnouncementBar`, `Navbar`, `Footer`, `CartDrawer`, and `SearchModal`.
+- Do not break the root layout contract.
+- Do not integrate any real payment gateway.
+- Do not use Material Symbols. Use Lucide React icons ONLY.
+- Do not add store chrome (Navbar, Footer, AnnouncementBar, CartDrawer, SearchModal) to dashboard pages. Dashboard has its own layout.
+- Do not add Navbar, Footer, AnnouncementBar, CartDrawer, or SearchModal to auth pages. Use route groups to isolate layouts.
+- Do not import mongoose models on the client side. Models are server-only.
+- Do not import `src/lib/cloudinary.ts` on the client side. Server-only.
+- **Do not hardcode Order IDs in emails**: Inject `newOrder._id.toString()` dynamically.
+- **Do not send notification emails to admins**: Use the dashboard bell system to save Resend quota.
+- **No Self-Sabotage**: Admins cannot block, demote, or delete their own accounts.
+- **Order Stock Integrity**: Never update an order to `cancelled` without restoring the stock.
+- **Revenue Accuracy**: Never include `cancelled`, `failed`, or `pending` orders in dashboard revenue calculations.
+- **Category UX**: Never implement category uploads without visual feedback (grayscale/progress).
 
 ## 12. Checklist for adding a new feature
 1. Put the file in the correct folder.
@@ -383,3 +328,35 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
   close: () => set({ isOpen: false }),
 }))
 ```
+
+## 13. Known Inconsistencies & Gotchas
+- **Tailwind v4 syntax**: Lint prefers `rounded-(--radius)` over `rounded-[var(--radius)]`.
+- **Image handling**: `next/image` is used in layout; pages still use raw `<img>` with `loading="lazy"`.
+- **Checkout Auth**: Multi-step checkout with an authentication gate (Step 0) providing options for guest checkout or account sign-in.
+- **Payment Verification**: Instapay requires a manual screenshot upload.
+- **Material Symbols**: Fully removed and replaced with Lucide React SVG components.
+- **Auth Pages**: Login and Register forms are fully wired to NextAuth credentials and Google OAuth.
+- **Checkout**: Fully wired to real API routes for orders and payment uploads.
+- **Order Confirmation**: Reads `orderNumber` from URL search params.
+- **Accordions**: Use `Accordion` from `src/components/ui/accordion.tsx` instead of building custom toggle states.
+- **Google Sign-In**: Google OAuth is fully wired via `signIn('google')`.
+- **Navbar Session**: Navbar shows Sign In link for guests and a user dropdown with My Orders + Sign Out for authenticated users.
+- **NextAuth v5 Configuration**: Uses `src/auth.ts` as the main config and `src/auth.config.ts` for Edge-compatible settings (required by middleware). JWT strategy is used to keep roles in the token. DB models must NOT be imported in `auth.config.ts`.
+- **Seed Script**: Run `npm run seed` to populate MongoDB with products from `catalog.ts`. Safe to run multiple times — skips existing slugs.
+- **Dashboard**: Admin-only route group at `(dashboard)/`. Protected at both middleware and layout level. Includes comprehensive Products, Categories, Badges, and Global Settings management.
+- **Inventory Management**: Absolute stock management (deduction on order, restoration on cancellation). Stock sufficiency check occurs during `POST /api/orders`.
+- **Global Settings Hub**: Single-document pattern for managing announcements, fees, and hero content. Includes multi-tab (Storefront, Clinical, Contact) configuration UI.
+- **UI/UX Polished Elements**:
+  - **Hero**: Minimalist static image with Ghost Button (fill-on-hover effect).
+  - **Footer**: Professional 4-column dynamic grid fueled by `StoreSettings`.
+  - **Cart**: Dynamic badge using Zustand `useCartStore` real quantities.
+  - **Checkout**: Shadcn "Check Email" toast triggered post-success.
+  - **Pagination**: Server-side pagination UI for the public Products grid.
+  - **Navbar**: Real category data fetching for dropdowns.
+  - **Uploads**: Grayscale + Progress bar feedback ported to Category uploads.
+- **Storage Management**: Automated Cloudinary asset destruction via centralized `deleteCloudinaryImage` utility.
+
+## 14. SEO & Routing
+- **Product URLs**: All product links must use `product.slug` (e.g., `/product/dental-handpiece-pro`). Never use MongoDB `_id` or numeric `id` in the URL.
+- **Param Handling**: In `[slug]/page.tsx`, always look up by `params.slug` from MongoDB via `GET /api/products/[slug]`. If not found, call `notFound()`.
+- **API Support**: The products API (`/api/products/[slug]`) supports both slug and MongoDB `_id` for backward compatibility, but slug is always preferred.

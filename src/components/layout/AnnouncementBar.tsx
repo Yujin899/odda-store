@@ -11,8 +11,24 @@ const MESSAGES = [
 ];
 
 export function AnnouncementBar() {
-  // Triple the messages to ensure there's always content filling the screen during the transition
-  const displayMessages = [...MESSAGES, ...MESSAGES, ...MESSAGES];
+  const [messages, setMessages] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    fetch('/api/settings').then(res => res.json()).then(data => {
+      if (data.announcements && data.announcements.length > 0) {
+        setMessages(data.announcements);
+      } else {
+        setMessages(MESSAGES.map(m => m.text));
+      }
+    }).catch(() => {
+      setMessages(MESSAGES.map(m => m.text));
+    });
+  }, []);
+
+  if (messages.length === 0) return null;
+
+  // Triple the messages for smooth marquee
+  const displayMessages = [...messages, ...messages, ...messages];
 
   return (
     <div className="w-full bg-navy h-10 overflow-hidden flex items-center relative z-50">
@@ -20,8 +36,8 @@ export function AnnouncementBar() {
         {displayMessages.map((msg, idx) => (
           <React.Fragment key={idx}>
             <div className="text-white text-[11px] sm:text-xs font-medium px-8 flex items-center gap-2">
-              <msg.icon size={14} className="text-white/80" />
-              <span>{msg.text}</span>
+              <Truck size={14} className="text-white/80" />
+              <span>{msg}</span>
             </div>
             <span className="text-white/20 text-xs">•</span>
           </React.Fragment>
