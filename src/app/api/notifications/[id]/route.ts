@@ -5,9 +5,10 @@ import { auth } from '@/auth';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await auth();
     if (!session || session.user?.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -15,7 +16,7 @@ export async function PATCH(
 
     await connectDB();
     const notification = await Notification.findByIdAndUpdate(
-      params.id,
+      id,
       { isRead: true },
       { new: true }
     );

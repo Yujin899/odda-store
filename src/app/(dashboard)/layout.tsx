@@ -5,6 +5,8 @@ import { NotificationBell } from '@/components/dashboard/NotificationBell';
 import { LogOut, User } from 'lucide-react';
 import { signOut } from '@/auth'; // Adjust based on your auth setup later if needed
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardLayout({
   children,
 }: {

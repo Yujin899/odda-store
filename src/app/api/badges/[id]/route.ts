@@ -4,8 +4,9 @@ import Badge from '@/models/Badge';
 import { Product } from '@/models/Product';
 import { auth } from '@/auth';
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const session = await auth();
     if (!session || (session.user as any).role !== 'admin') {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -13,7 +14,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     await connectDB();
     const body = await req.json();
-    const badge = await Badge.findByIdAndUpdate(params.id, body, { new: true });
+    const badge = await Badge.findByIdAndUpdate(id, body, { new: true });
 
     if (!badge) {
       return NextResponse.json({ message: 'Badge not found' }, { status: 404 });
@@ -25,8 +26,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const session = await auth();
     if (!session || (session.user as any).role !== 'admin') {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -35,7 +37,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     await connectDB();
     
     // Check if any products use this badge
-    const productCount = await Product.countDocuments({ badgeId: params.id });
+    const productCount = await Product.countDocuments({ badgeId: id });
     if (productCount > 0) {
       return NextResponse.json(
         { message: `Cannot delete - used by ${productCount} products` },
@@ -43,7 +45,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       );
     }
 
-    const badge = await Badge.findByIdAndDelete(params.id);
+    const badge = await Badge.findByIdAndDelete(id);
     if (!badge) {
       return NextResponse.json({ message: 'Badge not found' }, { status: 404 });
     }

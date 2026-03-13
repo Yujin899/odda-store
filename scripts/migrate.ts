@@ -62,7 +62,11 @@ async function migrate() {
 
     // 3. Migrate products
     console.log('Migrating products...');
-    const productCollection = mongoose.connection.db.collection('products');
+    const db = mongoose.connection.db;
+    if (!db) {
+      throw new Error('Database connection not established');
+    }
+    const productCollection = db.collection('products');
     const products = await productCollection.find({}).toArray();
     
     for (const p of products) {

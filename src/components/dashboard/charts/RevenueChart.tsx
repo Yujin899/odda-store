@@ -53,7 +53,7 @@ export function RevenueChart({ data }: { data: RevenueData[] }) {
             }}
             itemStyle={{ color: 'var(--primary)', fontWeight: 800, fontSize: '12px' }}
             labelStyle={{ color: 'var(--muted-foreground)', fontWeight: 600, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}
-            formatter={(value: number) => [`${value.toLocaleString()} EGP`, 'Revenue']}
+            formatter={(value: any) => [`${(Number(value) || 0).toLocaleString()} EGP`, 'Revenue']}
           />
           <Area 
             type="monotone" 

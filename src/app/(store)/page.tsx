@@ -8,23 +8,33 @@ import {
 import { Hero } from '@/components/home/Hero';
 import { BestSellers } from '@/components/home/BestSellers';
 import { Testimonials } from '@/components/home/Testimonials';
+import { connectDB } from '@/lib/mongodb';
+import { Product } from '@/models/Product';
+import Category from '@/models/Category';
+import Badge from '@/models/Badge';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 60; // Revalidate every minute
 
 async function getFeaturedProducts() {
-  const res = await fetch(`${process.env.AUTH_URL || 'http://localhost:3000'}/api/products?featured=true&limit=8`, {
-    next: { revalidate: 60 }
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.products || [];
+  await connectDB();
+  // Register models for population
+  Category;
+  Badge;
+  
+  const products = await Product.find({ featured: true })
+    .populate({ path: 'categoryId', strictPopulate: false })
+    .populate({ path: 'badgeId', strictPopulate: false })
+    .limit(8)
+    .lean();
+    
+  return JSON.parse(JSON.stringify(products));
 }
 
 async function getCategories() {
-  const res = await fetch(`${process.env.AUTH_URL || 'http://localhost:3000'}/api/categories`, {
-    next: { revalidate: 60 }
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.categories || [];
+  await connectDB();
+  const categories = await Category.find().limit(4).lean();
+  return JSON.parse(JSON.stringify(categories));
 }
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {

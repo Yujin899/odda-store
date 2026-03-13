@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import { Product } from '@/models/Product';
+import { Product, IProduct } from '@/models/Product';
 import { auth } from '@/auth';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
 import Category from '@/models/Category';
@@ -15,9 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
     await connectDB();
     
     // Register models for population
-    // @ts-expect-error - Ensure Category model is initialized
     Category;
-    // @ts-expect-error - Ensure Badge model is initialized
     Badge;
 
     const { slug } = await params;
@@ -50,14 +48,12 @@ export const PUT = auth(async (req, { params }) => {
     await connectDB();
 
     // Register models for population
-    // @ts-expect-error - Ensure Category model is initialized
     Category;
-    // @ts-expect-error - Ensure Badge model is initialized
     Badge;
     
     const product = await Product.findOne({
       $or: [{ _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }, { slug: slug }].filter(Boolean),
-    });
+    }) as any;
     if (!product) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
     const updates = await req.json();
@@ -87,7 +83,7 @@ export const PUT = auth(async (req, { params }) => {
 
     const updatedProduct = await Product.findByIdAndUpdate(product._id, updates, { new: true })
       .populate({ path: 'categoryId', strictPopulate: false })
-      .populate({ path: 'badgeId', strictPopulate: false });
+      .populate({ path: 'badgeId', strictPopulate: false }) as any;
 
     revalidatePath('/api/products');
     revalidatePath(`/api/products/${updatedProduct.slug}`);
@@ -110,7 +106,7 @@ export const DELETE = auth(async (req, { params }) => {
     
     const product = await Product.findOne({
       $or: [{ _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }, { slug: slug }].filter(Boolean),
-    });
+    }) as any;
     if (!product) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
     // Cleanup Cloudinary

@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Package, ChevronRight, AlertCircle } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function OrdersPage() {
   const session = await auth();
 

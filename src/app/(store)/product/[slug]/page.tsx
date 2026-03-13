@@ -1,23 +1,43 @@
 import { notFound } from 'next/navigation';
 import { ProductPageClient } from '@/components/products/ProductPageClient';
+import { connectDB } from '@/lib/mongodb';
+import { Product } from '@/models/Product';
+import Category from '@/models/Category';
+import Badge from '@/models/Badge';
 
 type Params = Promise<{ slug: string }>;
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 60; // Revalidate every minute
+
 async function getProduct(slug: string) {
-  const res = await fetch(`${process.env.AUTH_URL || 'http://localhost:3000'}/api/products/${slug}`, {
-    next: { revalidate: 60 }
-  });
-  if (!res.ok) return null;
-  return res.json();
+  await connectDB();
+  // Register models for population
+  Category;
+  Badge;
+
+  const product = await Product.findOne({
+    $or: [{ slug: slug }, { _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }].filter(Boolean)
+  })
+  .populate({ path: 'categoryId', strictPopulate: false })
+  .populate({ path: 'badgeId', strictPopulate: false })
+  .lean();
+
+  if (!product) return null;
+  return JSON.parse(JSON.stringify(product));
 }
 
 async function getRelatedProducts(categoryId: string, currentProductId: string) {
-  const res = await fetch(`${process.env.AUTH_URL || 'http://localhost:3000'}/api/products?categoryId=${encodeURIComponent(categoryId)}&limit=5`, {
-    next: { revalidate: 3600 }
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return (data.products || []).filter((p: any) => p._id !== currentProductId).slice(0, 4);
+  await connectDB();
+  const products = await Product.find({
+    categoryId: categoryId,
+    _id: { $ne: currentProductId }
+  })
+  .populate({ path: 'badgeId', strictPopulate: false })
+  .limit(4)
+  .lean();
+
+  return JSON.parse(JSON.stringify(products));
 }
 
 export default async function ProductDetailsPage({ params }: { params: Params }) {

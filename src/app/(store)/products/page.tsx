@@ -10,22 +10,56 @@ import {
   PaginationNext, 
   PaginationPrevious 
 } from '@/components/ui/pagination';
+import { connectDB } from '@/lib/mongodb';
+import { Product } from '@/models/Product';
+import Category from '@/models/Category';
+import Badge from '@/models/Badge';
+
+export const dynamic = 'force-dynamic';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 async function getProducts(searchParams: { [key: string]: string | string[] | undefined }) {
-  const params = new URLSearchParams();
-  if (searchParams.categoryId) params.set('categoryId', searchParams.categoryId as string);
-  if (searchParams.sort) params.set('sort', searchParams.sort as string);
-  if (searchParams.search) params.set('search', searchParams.search as string);
-  if (searchParams.page) params.set('page', searchParams.page as string);
-  if (searchParams.limit) params.set('limit', searchParams.limit as string);
+  await connectDB();
+  Category;
+  Badge;
 
-  const res = await fetch(`${process.env.AUTH_URL || 'http://localhost:3000'}/api/products?${params.toString()}`, {
-    next: { revalidate: 30 }
-  });
-  if (!res.ok) return { products: [], pagination: { totalPages: 0, currentPage: 1 } };
-  return res.json();
+  const categoryId = searchParams.categoryId as string | undefined;
+  const search = searchParams.search as string | undefined;
+  const sort = searchParams.sort as string | undefined;
+  const page = parseInt((searchParams.page as string) || '1');
+  const limit = parseInt((searchParams.limit as string) || '12');
+  const skip = (page - 1) * limit;
+
+  const query: Record<string, any> = {};
+  if (categoryId) query.categoryId = categoryId;
+  if (search) query.name = { $regex: search, $options: 'i' };
+
+  let sortOption: any = { createdAt: -1 };
+  if (sort === 'price_asc') sortOption = { price: 1 };
+  if (sort === 'price_desc') sortOption = { price: -1 };
+  if (sort === 'newest') sortOption = { createdAt: -1 };
+
+  const [products, total] = await Promise.all([
+    Product.find(query)
+      .populate({ path: 'categoryId', strictPopulate: false })
+      .populate({ path: 'badgeId', strictPopulate: false })
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+    Product.countDocuments(query),
+  ]);
+
+  return {
+    products: JSON.parse(JSON.stringify(products)),
+    pagination: {
+      totalItems: total,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      limit
+    }
+  };
 }
 
 export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {

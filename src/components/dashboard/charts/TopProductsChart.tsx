@@ -42,7 +42,7 @@ export function TopProductsChart({ data }: { data: TopProductData[] }) {
             dataKey="displayName" 
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 9, fill: 'var(--foreground)', fontWeight: 700, textTransform: 'uppercase' }}
+            tick={{ fontSize: 9, fill: 'var(--foreground)', fontWeight: 700 }}
             width={120}
           />
           <Tooltip 
@@ -55,7 +55,7 @@ export function TopProductsChart({ data }: { data: TopProductData[] }) {
             cursor={{ fill: 'var(--muted)' }}
             itemStyle={{ color: 'var(--primary)', fontWeight: 800, fontSize: '12px' }}
             labelStyle={{ color: 'var(--muted-foreground)', fontWeight: 600, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}
-            formatter={(value: number) => [value, 'Orders']}
+            formatter={(value: any) => [value || 0, 'Orders']}
           />
           <Bar dataKey="orders" radius={[0, 4, 4, 0]} barSize={24}>
             {formattedData.map((entry, index) => (

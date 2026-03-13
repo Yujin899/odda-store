@@ -13,7 +13,9 @@ import {
   Lock 
 } from 'lucide-react';
 
-export default function LoginPage() {
+import { Suspense } from 'react';
+
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { addToast } = useToastStore();
@@ -43,7 +45,7 @@ export default function LoginPage() {
       } else {
         router.push(redirectUrl ?? '/');
       }
-    } catch (err) {
+    } catch {
       addToast({
         title: 'Error',
         description: 'Something went wrong',
@@ -143,5 +145,13 @@ export default function LoginPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center p-6"><div className="w-8 h-8 rounded-full border-2 border-(--primary) border-t-transparent animate-spin"></div></div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

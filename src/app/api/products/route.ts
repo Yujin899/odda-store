@@ -14,10 +14,8 @@ export async function GET(req: NextRequest) {
     await connectDB();
     
     // Register models for population and registration
-    // @ts-expect-error - Ensure Category model is initialized
-    Category.schema;
-    // @ts-expect-error - Ensure Badge model is initialized
-    Badge.schema;
+    Category;
+    Badge;
 
     const { searchParams } = new URL(req.url);
     

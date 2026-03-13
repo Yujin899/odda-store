@@ -18,10 +18,8 @@ export default async function EditProductPage({ params }: Props) {
   const { slug } = await params;
 
   // Register models
-  // @ts-expect-error
-  const _c = Category;
-  // @ts-expect-error
-  const _b = Badge;
+  Category;
+  Badge;
 
   const product = await Product.findOne({ slug })
     .populate({ path: 'categoryId', strictPopulate: false })

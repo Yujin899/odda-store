@@ -2,16 +2,31 @@ import Link from 'next/link';
 import { ChevronRight, Search, Box } from 'lucide-react';
 import { Suspense } from 'react';
 import { ProductCard } from '@/components/products/ProductCard';
+import { connectDB } from '@/lib/mongodb';
+import { Product } from '@/models/Product';
+import Category from '@/models/Category';
+import Badge from '@/models/Badge';
+
+export const dynamic = 'force-dynamic';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 async function getSearchResults(query: string) {
   if (!query) return { products: [], total: 0 };
-  const res = await fetch(`${process.env.AUTH_URL || 'http://localhost:3000'}/api/products?search=${encodeURIComponent(query)}`, {
-    cache: 'no-store'
-  });
-  if (!res.ok) return { products: [], total: 0 };
-  return res.json();
+  
+  await connectDB();
+  Category;
+  Badge;
+
+  const products = await Product.find({ name: { $regex: query, $options: 'i' } })
+    .populate({ path: 'categoryId', strictPopulate: false })
+    .populate({ path: 'badgeId', strictPopulate: false })
+    .lean();
+
+  return { 
+    products: JSON.parse(JSON.stringify(products)), 
+    total: products.length 
+  };
 }
 
 async function SearchResultsContent({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
