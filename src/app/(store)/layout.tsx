@@ -4,7 +4,8 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { SearchModal } from "@/components/search/SearchModal";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { MobileMenu } from "@/components/layout/MobileMenu";
-import { AdminFloatingButton } from "@/components/layout/AdminFloatingButton";
+import { MobileBottomNav } from "@/components/store/MobileBottomNav";
+
 export default function StoreLayout({
   children,
 }: {
@@ -14,14 +15,16 @@ export default function StoreLayout({
     <div className="relative flex flex-col min-h-screen">
       <AnnouncementBar />
       <Navbar />
-      <main className="flex-1">
-        {children}
-      </main>
-      <Footer />
+      <div className="flex-1 flex flex-col pb-[calc(72px+env(safe-area-inset-bottom))] md:pb-0">
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
+      </div>
       <CartDrawer />
       <SearchModal />
       <MobileMenu />
-      <AdminFloatingButton />
+      <MobileBottomNav />
     </div>
   );
 }

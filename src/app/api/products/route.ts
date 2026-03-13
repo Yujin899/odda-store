@@ -14,8 +14,8 @@ export async function GET(req: NextRequest) {
     await connectDB();
     
     // Register models for population and registration
-    Category;
-    Badge;
+    const _c = Category;
+    const _b = Badge;
 
     const { searchParams } = new URL(req.url);
     
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '12');
     const skip = (page - 1) * limit;
-
+    
     const query: Record<string, any> = {};
     if (categoryId) query.categoryId = categoryId;
     if (search) query.name = { $regex: search, $options: 'i' };

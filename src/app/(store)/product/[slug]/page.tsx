@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import mongoose from 'mongoose';
 import { ProductPageClient } from '@/components/products/ProductPageClient';
 import { connectDB } from '@/lib/mongodb';
 import { Product } from '@/models/Product';
@@ -12,9 +13,9 @@ export const revalidate = 60; // Revalidate every minute
 
 async function getProduct(slug: string) {
   await connectDB();
-  // Register models for population
-  Category;
-  Badge;
+  // Register models for population by touching them
+  if (mongoose.models && mongoose.models.Category) Category.modelName;
+  if (mongoose.models && mongoose.models.Badge) Badge.modelName;
 
   const product = await Product.findOne({
     $or: [{ slug: slug }, { _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }].filter(Boolean)
@@ -29,6 +30,8 @@ async function getProduct(slug: string) {
 
 async function getRelatedProducts(categoryId: string, currentProductId: string) {
   await connectDB();
+  // Register models for population
+  if (mongoose.models && mongoose.models.Badge) Badge.modelName;
   const products = await Product.find({
     categoryId: categoryId,
     _id: { $ne: currentProductId }

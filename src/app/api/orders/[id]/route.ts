@@ -55,13 +55,29 @@ export const PATCH = auth(async (req, { params }) => {
     // 2. STOCK RESTORATION: If status changes to 'cancelled', restore stock
     if (status === 'cancelled' && oldStatus !== 'cancelled') {
       try {
-        const bulkOps = order.items.map((item: any) => ({
-          updateOne: {
-            filter: { _id: item.productId },
-            update: { $inc: { stock: item.quantity } }
-          }
-        }));
-        await Product.bulkWrite(bulkOps);
+        const productItems = order.items.filter((item: any) => item.type === 'Product' || !item.type);
+        const bundleItems = order.items.filter((item: any) => item.type === 'Bundle');
+
+        if (productItems.length > 0) {
+          const productOps = productItems.map((item: any) => ({
+            updateOne: {
+              filter: { _id: item.productId },
+              update: { $inc: { stock: item.quantity } }
+            }
+          }));
+          await Product.bulkWrite(productOps);
+        }
+
+        if (bundleItems.length > 0) {
+          const bundleOps = bundleItems.map((item: any) => ({
+            updateOne: {
+              filter: { _id: item.productId },
+              update: { $inc: { stock: item.quantity } }
+            }
+          }));
+          const { Bundle } = await import('@/models/Bundle');
+          await Bundle.bulkWrite(bundleOps);
+        }
       } catch (stockRestoreErr) {
         console.error('Stock restoration error:', stockRestoreErr);
       }
@@ -72,34 +88,63 @@ export const PATCH = auth(async (req, { params }) => {
     if (!updatedOrder) return NextResponse.json({ message: 'Order not found' }, { status: 404 });
 
     // --- ASYNC ACTIONS: STATUS UPDATE EMAIL ---
-    // Rule: Only send for shipped and delivered to save quota
-    if (['shipped', 'delivered'].includes(status) && order.shippingAddress?.email) {
+    // Rule: Only send for 'shipped' status to save quota. 'delivered' is removed.
+    if (status === 'shipped' && updatedOrder.shippingAddress?.email) {
       try {
+        const { StoreSettings } = await import('@/models/StoreSettings');
+        const settings = await StoreSettings.findOne();
         const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-        const statusLabels: Record<string, string> = {
-          'shipped': 'has been shipped',
-          'delivered': 'has been delivered',
-        };
+        const locale = updatedOrder.locale || 'en';
+        
+        let subject = '';
+        let htmlContent = '';
+
+        const fallbackHtmlEn = `
+          <div style="font-family: sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #0f172a; font-size: 24px; font-weight: 800; text-transform: uppercase;">Order Shipped!</h1>
+            <p>Hi ${updatedOrder.shippingAddress.fullName},</p>
+            <p>Great news! Your order <strong>${updatedOrder.orderNumber}</strong> has been shipped and is on its way to you.</p>
+            <a href="${baseUrl}/order-tracking?order=${updatedOrder.orderNumber}" 
+               style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 20px;">
+               Track Your Order
+            </a>
+            <p style="font-size: 12px; color: #64748b; margin-top: 40px;">Odda Store - Premium Dental Tools</p>
+          </div>
+        `;
+
+        const fallbackHtmlAr = `
+          <div style="font-family: 'Cairo', sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto; direction: rtl; text-align: right;">
+            <h1 style="color: #0f172a; font-size: 24px; font-weight: 800;">تم شحن طلبك!</h1>
+            <p>مرحباً ${updatedOrder.shippingAddress.fullName}،</p>
+            <p>أخبار رائعة! تم شحن طلبك رقم <strong>${updatedOrder.orderNumber}</strong> وهو الآن في طريقه إليك.</p>
+            <a href="${baseUrl}/order-tracking?order=${updatedOrder.orderNumber}" 
+               style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 20px;">
+               تتبع طلبك
+            </a>
+            <p style="font-size: 12px; color: #64748b; margin-top: 40px;">متجر عدة - أدوات طب الأسنان المتميزة</p>
+          </div>
+        `;
+
+        if (locale === 'ar' && settings?.shippedSubjectAr && settings?.shippedBodyAr) {
+          subject = settings.shippedSubjectAr.replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
+          htmlContent = settings.shippedBodyAr
+            .replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
+            .replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
+        } else if (locale === 'en' && settings?.shippedSubjectEn && settings?.shippedBodyEn) {
+          subject = settings.shippedSubjectEn.replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
+          htmlContent = settings.shippedBodyEn
+            .replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
+            .replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
+        } else {
+          subject = locale === 'ar' ? `أودا - تم شحن طلبك رقم ${updatedOrder.orderNumber}` : `Odda - Your Order #${updatedOrder.orderNumber} has Shipped!`;
+          htmlContent = locale === 'ar' ? fallbackHtmlAr : fallbackHtmlEn;
+        }
 
         await resend.emails.send({
           from: 'Odda Store <onboarding@resend.dev>',
-          to: order.shippingAddress.email,
-          subject: `Order Update - ${order.orderNumber}`,
-          html: `
-            <div style="font-family: sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto;">
-              <h1 style="color: #0f172a; font-size: 24px; font-weight: 800; text-transform: uppercase;">Order Update</h1>
-              <p>Hi ${order.shippingAddress.fullName},</p>
-              <p>Your order <strong>${order.orderNumber}</strong> ${statusLabels[status]}.</p>
-              <div style="background-color: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <p style="margin: 0; font-weight: 700;">New Status: <span style="text-transform: uppercase; color: #3b82f6;">${status}</span></p>
-              </div>
-              <a href="${baseUrl}/order-confirmation?order=${order._id.toString()}" 
-                 style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block;">
-                 View Tracking Details
-              </a>
-              <p style="font-size: 12px; color: #64748b; margin-top: 40px;">Odda Store - Premium Streetwear</p>
-            </div>
-          `,
+          to: updatedOrder.shippingAddress.email,
+          subject: subject,
+          html: htmlContent,
         });
       } catch (emailErr) {
         console.error('Status update email error:', emailErr);

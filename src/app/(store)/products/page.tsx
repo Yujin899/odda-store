@@ -11,9 +11,12 @@ import {
   PaginationPrevious 
 } from '@/components/ui/pagination';
 import { connectDB } from '@/lib/mongodb';
-import { Product } from '@/models/Product';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
+import { Product } from '@/models/Product';
+import { cookies } from 'next/headers';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export const dynamic = 'force-dynamic';
 
@@ -63,6 +66,10 @@ async function getProducts(searchParams: { [key: string]: string | string[] | un
 }
 
 export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+  const dict = locale === 'en' ? en : ar;
+
   const resolvedParams = await searchParams;
   const { products, pagination } = await getProducts(resolvedParams);
 
@@ -83,12 +90,12 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
       <main className="max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-24 py-12">
         <div className="mb-10">
           <nav className="flex items-center gap-2 text-sm text-[var(--muted-foreground)] mb-4 uppercase tracking-widest font-bold">
-            <Link href="/" className="hover:text-(--primary) transition-colors">Home</Link>
-            <ChevronRight className="size-3 text-muted-foreground stroke-[3px]" />
-            <span className="text-[var(--foreground)]">Instruments</span>
+            <Link href="/" className="hover:text-(--primary) transition-colors">{dict.common.home}</Link>
+            <ChevronRight className="size-3 text-muted-foreground stroke-[3px] rtl:-scale-x-100" />
+            <span className="text-[var(--foreground)]">{dict.productsPage.instruments}</span>
           </nav>
-          <h1 className="text-4xl font-extrabold tracking-tight text-[var(--foreground)] uppercase">Our Catalog</h1>
-          <p className="mt-2 text-[var(--muted-foreground)] max-w-2xl font-light">High-precision clinical tools and diagnostic sets engineered for excellence in modern healthcare environments.</p>
+          <h1 className="text-4xl font-extrabold tracking-tight text-[var(--foreground)] uppercase">{dict.productsPage.ourCatalog}</h1>
+          <p className="mt-2 text-[var(--muted-foreground)] max-w-2xl font-light">{dict.productsPage.catalogDesc}</p>
         </div>
         
         <div className="flex flex-col lg:flex-row gap-12">
@@ -140,13 +147,13 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
             ) : (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <Box className="size-16 text-muted-foreground/10 mb-6 stroke-[1px]" />
-                <p className="text-lg font-bold uppercase tracking-[0.2em] text-foreground">No instruments match your criteria</p>
-                <p className="text-xs text-muted-foreground mt-4 font-medium uppercase tracking-widest leading-loose max-w-sm">Try relaxing your filters or cleaning up your search to find what you are looking for.</p>
+                <p className="text-lg font-bold uppercase tracking-[0.2em] text-foreground">{dict.common.noProductsFound}</p>
+                <p className="text-xs text-muted-foreground mt-4 font-medium uppercase tracking-widest leading-loose max-w-sm">{dict.productsPage.noMatchMsg}</p>
                 <Link 
                    href="/products"
                    className="mt-10 px-10 py-4 bg-(--primary) text-white font-bold rounded-(--radius) uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 transition-all outline-none border-none cursor-pointer"
                 >
-                  Clear All Filters
+                  {dict.productsPage.clearAllFilters}
                 </Link>
               </div>
             )}

@@ -12,6 +12,8 @@ import {
   Mail, 
   Lock 
 } from 'lucide-react';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import { getDictionary } from '@/dictionaries';
 
 import { Suspense } from 'react';
 
@@ -19,6 +21,8 @@ function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { addToast } = useToastStore();
+  const { language } = useLanguageStore();
+  const dict = getDictionary(language);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -38,17 +42,22 @@ function LoginContent() {
 
       if (result?.error) {
         addToast({
-          title: 'Error',
-          description: 'Invalid email or password',
+          title: dict.toasts.error,
+          description: dict.toasts.loginError,
           type: 'error',
         });
       } else {
+        addToast({
+          title: dict.toasts.success,
+          description: dict.toasts.loginSuccess,
+          type: 'success',
+        });
         router.push(redirectUrl ?? '/');
       }
     } catch {
       addToast({
-        title: 'Error',
-        description: 'Something went wrong',
+        title: dict.toasts.error,
+        description: dict.toasts.somethingWentWrong,
         type: 'error',
       });
     } finally {

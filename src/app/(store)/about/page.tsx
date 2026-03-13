@@ -5,23 +5,29 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Truck, HeadphonesIcon, ChevronRight } from 'lucide-react';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export default function AboutPage() {
+  const { language } = useLanguageStore();
+  const dict = language === 'en' ? en : ar;
+
   const features = [
     {
       icon: <ShieldCheck className="size-8 text-(--primary) stroke-[1.5px]" />,
-      title: "Authentic Clinical Tools",
-      description: "100% certified clinical-grade instruments sourced from globally recognized manufacturers."
+      title: dict.aboutPage.clinicalTools,
+      description: dict.aboutPage.clinicalDesc
     },
     {
       icon: <Truck className="size-8 text-(--primary) stroke-[1.5px]" />,
-      title: "Campus-Wide Delivery",
-      description: "Fast, reliable delivery directly to Cairo's major dental universities and clinics within 24 hours."
+      title: dict.aboutPage.campusDelivery,
+      description: dict.aboutPage.campusDesc
     },
     {
       icon: <HeadphonesIcon className="size-8 text-(--primary) stroke-[1.5px]" />,
-      title: "Expert Support",
-      description: "Dedicated clinical advisors available to help you select the right tools for your specific needs."
+      title: dict.aboutPage.expertSupport,
+      description: dict.aboutPage.expertDesc
     }
   ];
 
@@ -54,11 +60,10 @@ export default function AboutPage() {
             className="max-w-3xl space-y-6"
           >
             <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tight leading-none italic">
-              PREMIUM TOOLS FOR THE MODERN CLINICIAN
+              {dict.aboutPage.title}
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground font-medium leading-relaxed">
-              Odda is your trusted source for premium dental and surgical instruments in Egypt. 
-              We supply clinics, hospitals, and dental students with authentic, clinical-grade tools.
+              {dict.aboutPage.desc}
             </p>
           </motion.div>
 
@@ -70,11 +75,11 @@ export default function AboutPage() {
             className="w-full pt-16"
           >
             <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-(--primary) mb-12">
-              Why Odda?
+              {dict.aboutPage.whyOdda}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {features.map((feature, idx) => (
-                <div key={idx} className="bg-slate-50/50 border border-slate-100 p-8 rounded-(--radius) text-left space-y-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div key={idx} className="bg-slate-50/50 border border-slate-100 p-8 rounded-(--radius) text-start space-y-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                   <div className="bg-white size-16 rounded-(--radius) flex items-center justify-center shadow-md border border-slate-50">
                     {feature.icon}
                   </div>
@@ -95,8 +100,8 @@ export default function AboutPage() {
             className="pt-20 w-full"
           >
             <Link href="/products" className="group block w-full md:w-max mx-auto px-12 py-6 bg-foreground text-background flex items-center justify-center gap-4 font-black text-[12px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95">
-              Browse ODDAs
-              <ChevronRight className="size-5 group-hover:translate-x-1 transition-transform stroke-[3px]" />
+              {dict.aboutPage.browseOddas}
+              <ChevronRight className="size-5 transition-transform stroke-[3px] rtl:rotate-180 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1" />
             </Link>
           </motion.div>
         </div>

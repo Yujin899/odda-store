@@ -2,6 +2,7 @@ import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
 export interface IOrderItem {
   productId: Types.ObjectId | string;
+  type: 'product' | 'bundle';
   quantity: number;
   price: number;
 }
@@ -21,6 +22,7 @@ export interface IOrder extends Document {
     city: string;
     email: string;
   };
+  locale: 'en' | 'ar';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,7 +33,17 @@ const OrderSchema = new Schema<IOrder>(
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: false }, // Changed to required: false
     items: [
       {
-        productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+        productId: { 
+          type: Schema.Types.ObjectId, 
+          required: true,
+          refPath: 'items.type' 
+        },
+        type: { 
+          type: String, 
+          required: true, 
+          enum: ['Product', 'Bundle'],
+          default: 'Product'
+        },
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
       },
@@ -51,6 +63,7 @@ const OrderSchema = new Schema<IOrder>(
       city: { type: String, required: true },
       email: { type: String, required: true },
     },
+    locale: { type: String, enum: ['en', 'ar'], default: 'en' },
   },
   { timestamps: true }
 );

@@ -6,6 +6,7 @@ import clientPromise from './lib/mongodb-adapter';
 import { connectDB } from './lib/mongodb';
 import { User } from './models/User';
 import Credentials from 'next-auth/providers/credentials';
+import mongoose from 'mongoose';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -56,9 +57,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     ...authConfig.callbacks,
     async signIn({ user }) {
-      if (user && user.id) {
+      if (user && (user.id || user.email)) {
         await connectDB();
-        const dbUser = await User.findById(user.id);
+        let dbUser;
+        if (user.id && mongoose.Types.ObjectId.isValid(user.id)) {
+          dbUser = await User.findById(user.id);
+        } else if (user.email) {
+          dbUser = await User.findOne({ email: user.email.toLowerCase() });
+        }
+        
         if (dbUser?.isBlocked) {
           throw new Error('Your account has been blocked by an administrator');
         }
@@ -69,13 +76,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // 1. Initial sign-in: capture user data
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role || 'customer';
+        token.role = user.role || 'customer';
       }
 
       // 2. Subsequent calls: fetch from DB if ID exists
-      if (token.id) {
+      if (token.id || token.email) {
         await connectDB();
-        const dbUser = await User.findById(token.id);
+        let dbUser;
+        if (token.id && mongoose.Types.ObjectId.isValid(token.id as string)) {
+          dbUser = await User.findById(token.id);
+        } else if (token.email) {
+          dbUser = await User.findOne({ email: (token.email as string).toLowerCase() });
+        }
         
         if (dbUser?.isBlocked) {
           throw new Error('Account blocked');
@@ -83,6 +95,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (dbUser) {
           token.role = dbUser.role || 'customer';
+          token.id = dbUser._id.toString();
         }
       }
 

@@ -8,10 +8,14 @@ import { useToastStore } from '@/store/useToastStore';
 import { Mail, Lock, User, ChevronRight } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import { getDictionary } from '@/dictionaries';
 
 export default function RegisterPage() {
   const router = useRouter();
   const { addToast } = useToastStore();
+  const { language } = useLanguageStore();
+  const dict = getDictionary(language);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -26,8 +30,8 @@ export default function RegisterPage() {
 
     if (formData.password !== formData.confirmPassword) {
       addToast({
-        title: 'Validation Error',
-        description: 'Passwords do not match.',
+        title: dict.dashboard.productForm.messages.validationError,
+        description: language === 'ar' ? 'كلمات المرور غير متطابقة.' : 'Passwords do not match.',
         type: 'error',
       });
       return;
@@ -54,8 +58,8 @@ export default function RegisterPage() {
         router.push('/');
       } else if (res.status === 400) {
         addToast({
-          title: 'Error',
-          description: 'An account with this email already exists',
+          title: dict.toasts.error,
+          description: language === 'ar' ? 'يوجد حساب بهذا البريد الإلكتروني بالفعل' : 'An account with this email already exists',
           type: 'error',
         });
       } else {
@@ -63,8 +67,8 @@ export default function RegisterPage() {
       }
     } catch (err) {
       addToast({
-        title: 'Error',
-        description: 'Something went wrong. Please try again.',
+        title: dict.toasts.error,
+        description: dict.toasts.somethingWentWrong,
         type: 'error',
       });
     } finally {

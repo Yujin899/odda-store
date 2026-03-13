@@ -4,24 +4,47 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { X, User as UserIcon, Package as PackageIcon, ShieldCheck, Search, Info, ChevronRight } from 'lucide-react';
 import { useMobileMenuStore } from '@/store/useMobileMenuStore';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export function MobileMenu() {
   const { isOpen, close } = useMobileMenuStore();
   const { data: session } = useSession();
+  const { language } = useLanguageStore();
+  const pathname = usePathname();
+  const dict = language === 'en' ? en : ar;
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Products', href: '/products' },
-    { name: 'About', href: '/about' },
-    { name: 'Track Order', href: '/order-tracking' },
-  ];
+  const navLinks = [];
 
-  if (!session) {
-    navLinks.push({ name: 'Login', href: '/login' });
+  if (session?.user) {
+    navLinks.push({ 
+      name: dict.common.profile || 'Profile', 
+      href: '/profile', 
+      icon: UserIcon 
+    });
+    navLinks.push({ 
+      name: dict.common.myOrders, 
+      href: '/orders', 
+      icon: PackageIcon 
+    });
+    if (session.user.role === 'admin') {
+      navLinks.push({ 
+        name: dict.common.dashboard, 
+        href: '/dashboard', 
+        icon: ShieldCheck 
+      });
+    }
+  } else {
+    navLinks.push({ name: dict.common.login, href: '/login', icon: UserIcon });
   }
+
+  navLinks.push({ name: dict.common.trackOrder, href: '/order-tracking', icon: Search });
+  navLinks.push({ name: dict.common.about, href: '/about', icon: Info });
 
   return (
     <AnimatePresence mode="wait">
@@ -38,11 +61,11 @@ export function MobileMenu() {
 
           {/* Drawer */}
           <motion.div
-            initial={{ x: '-100%' }}
+            initial={{ x: language === 'ar' ? '100%' : '-100%' }}
             animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
+            exit={{ x: language === 'ar' ? '100%' : '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200, duration: 0.25 }}
-            className="fixed top-0 left-0 bottom-0 w-[80%] max-w-sm bg-background z-[101] md:hidden shadow-2xl flex flex-col"
+            className="fixed top-0 start-0 bottom-0 w-[80%] max-w-sm bg-background z-[101] md:hidden shadow-2xl flex flex-col"
           >
             {/* Header */}
             <div className="p-6 flex items-center justify-between border-b border-navy/10">
@@ -51,70 +74,48 @@ export function MobileMenu() {
               </Link>
               <button 
                 onClick={close}
-                className="p-2 rounded-[var(--radius)] text-navy hover:bg-navy/5 transition-colors border-none outline-none cursor-pointer bg-transparent"
+                className="p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none outline-none cursor-pointer bg-transparent"
               >
                 <X className="size-6 stroke-[2.5px]" />
               </button>
             </div>
 
-            {/* Links */}
-            <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={close}
-                  className="flex items-center justify-between p-4 rounded-(--radius) text-lg font-black uppercase tracking-tight text-foreground hover:bg-slate-50 hover:text-(--primary) transition-all"
-                >
-                  {link.name}
-                  <ChevronRight className="size-5 opacity-30" />
-                </Link>
-              ))}
-            </nav>
-
-            {/* Footer */}
-            <div className="p-6 border-t border-navy/10 space-y-4">
-              {session && (
-                <div className="flex flex-col gap-2 mb-4">
-                  <div className="flex items-center gap-3 px-2 mb-2">
-                    {session.user?.image ? (
-                      <Image 
-                        src={session.user.image} 
-                        alt={session.user.name || 'User'} 
-                        width={32} 
-                        height={32} 
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <div className="bg-(--primary)/10 text-(--primary) size-8 rounded-full flex items-center justify-center font-bold text-sm uppercase">
-                        {session.user?.name?.charAt(0) || session.user?.email?.charAt(0) || 'U'}
+              <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={close}
+                      className={`flex items-center justify-between p-4 rounded-(--radius) text-lg font-black uppercase tracking-tight transition-all group ${
+                        isActive 
+                          ? 'bg-(--primary) text-white shadow-lg shadow-(--primary)/20' 
+                          : 'text-foreground hover:bg-slate-50 hover:text-(--primary)'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        {link.icon && (
+                          <link.icon className={`size-5 transition-colors ${
+                            isActive ? 'text-white' : 'text-slate-400 group-hover:text-(--primary)'
+                          }`} />
+                        )}
+                        <span>{link.name}</span>
                       </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                       <p className="text-sm font-bold truncate text-foreground">{session.user?.name || 'User'}</p>
-                       <p className="text-[10px] text-muted-foreground truncate">{session.user?.email}</p>
-                    </div>
-                  </div>
-                  <Link
-                    href="/orders"
-                    onClick={close}
-                    className="flex items-center justify-center gap-2 w-full p-3 rounded-sm bg-slate-50 text-foreground text-xs font-bold uppercase tracking-widest hover:bg-slate-100 transition-colors"
-                  >
-                    My Orders
-                  </Link>
-                  <button
-                    onClick={() => {
-                      close();
-                      signOut({ callbackUrl: '/' });
-                    }}
-                    className="flex items-center justify-center gap-2 w-full p-3 rounded-sm bg-red-50 text-red-600 border-none outline-none cursor-pointer text-xs font-bold uppercase tracking-widest hover:bg-red-100 transition-colors"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              )}
+                      <ChevronRight className={`size-5 transition-all ${
+                        isActive 
+                          ? 'text-white/50 translate-x-1' 
+                          : 'opacity-30 rtl:-scale-x-100 group-hover:opacity-100 group-hover:translate-x-1'
+                      }`} />
+                    </Link>
+                  );
+                })}
+              </nav>
+
+            <div className="p-6 border-t border-navy/10">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground text-center">
-                Odda | Premium Dental Tools
+                {dict.common.premiumDentalTools}
               </p>
             </div>
           </motion.div>

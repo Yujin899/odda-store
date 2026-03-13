@@ -2,9 +2,23 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 
 export interface IProduct extends Document {
   name: string;
+  nameAr?: string;
   slug: string;
   description?: string;
+  descriptionAr?: string;
+  features?: string[];
+  featuresAr?: string[];
+  reviews: {
+    userId: mongoose.Types.ObjectId;
+    userName: string;
+    rating: number;
+    comment: string;
+    createdAt: Date;
+  }[];
+  averageRating: number;
+  numReviews: number;
   price: number;
+  compareAtPrice?: number;
   originalPrice?: number;
   // NEW FIELDS
   images: {
@@ -27,10 +41,27 @@ export interface IProduct extends Document {
 const ProductSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true },
+    nameAr: { type: String },
     slug: { type: String, required: true, unique: true },
     description: { type: String },
+    descriptionAr: { type: String },
+    features: [{ type: String }],
+    featuresAr: [{ type: String }],
     price: { type: Number, required: true },
+    compareAtPrice: { type: Number },
     originalPrice: { type: Number },
+    // REVIEWS
+    reviews: [
+      {
+        userId: { type: Schema.Types.ObjectId, ref: 'User' },
+        userName: { type: String, required: true },
+        rating: { type: Number, required: true, min: 1, max: 5 },
+        comment: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
+    averageRating: { type: Number, default: 0 },
+    numReviews: { type: Number, default: 0 },
     // NEW STRUCTURE
     images: [
       {

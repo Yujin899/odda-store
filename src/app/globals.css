@@ -2,6 +2,44 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Cairo Local Font */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/cairo/Cairo-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/cairo/Cairo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/cairo/Cairo-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/cairo/Cairo-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/cairo/Cairo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/cairo/Cairo-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -47,6 +85,11 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-primary: #0073E6;
   --color-navy: #0A192F;
+}
+
+html[lang="ar"] body {
+  --font-sans: 'Cairo', sans-serif !important;
+  font-family: 'Cairo', sans-serif !important;
 }
 
 :root {
@@ -158,18 +201,9 @@
   100% { transform: translateX(-50%); }
 }
 
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 30s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-@keyframes marquee {
+@keyframes marquee-rtl {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(50%); }
 }
 
 .animate-marquee {
@@ -178,6 +212,14 @@
   animation: marquee 30s linear infinite;
 }
 
-.animate-marquee:hover {
+.animate-marquee-rtl {
+  display: flex;
+  width: max-content;
+  animation: marquee-rtl 30s linear infinite;
+}
+
+.animate-marquee:hover,
+.animate-marquee-rtl:hover {
   animation-play-state: paused;
 }
+

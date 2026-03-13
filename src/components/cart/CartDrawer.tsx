@@ -9,12 +9,17 @@ import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export function CartDrawer() {
   const router = useRouter();
   const { isOpen, closeCart } = useCartUIStore();
   const { items, totalAmount, updateQuantity, removeItem } = useCartStore();
   const [settings, setSettings] = useState<any>(null);
+  const { language } = useLanguageStore();
+  const dict = language === 'en' ? en : ar;
 
   useEffect(() => {
     if (isOpen) {
@@ -41,13 +46,13 @@ export function CartDrawer() {
         showCloseButton={false} 
         className="p-0 border-none w-full max-w-md bg-background flex flex-col shadow-none"
       >
-        <SheetTitle className="sr-only">Your Cart</SheetTitle>
+        <SheetTitle className="sr-only">{dict.common.cart}</SheetTitle>
         
         {/* Drawer Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 border-b border-slate-100 shrink-0">
           <div className="flex items-center gap-3">
             <ShoppingBasket className="size-5 text-(--primary) stroke-[2.5px]" />
-            <h2 className="text-xl font-bold tracking-tight text-foreground uppercase">Your Cart</h2>
+            <h2 className="text-xl font-bold tracking-tight text-foreground uppercase">{dict.common.cart}</h2>
             <span className="bg-(--primary) text-white text-[10px] font-bold h-5 min-w-5 px-1 flex items-center justify-center rounded-full">
               {items.reduce((acc, item) => acc + item.quantity, 0)}
             </span>
@@ -63,7 +68,9 @@ export function CartDrawer() {
               {/* Free Delivery Banner */}
               <div className="px-4 sm:px-6 py-3 flex items-center gap-3 border-b border-(--primary)/10 shrink-0">
                 <Truck className="size-4 text-(--primary) stroke-[2.5px]" />
-                <p className="text-[10px] sm:text-xs font-bold text-(--primary) uppercase tracking-widest text-center w-full">Free campus delivery applied</p>
+                <p className="text-[10px] sm:text-xs font-bold text-(--primary) uppercase tracking-widest text-center w-full">
+                  {language === 'ar' ? 'تم تطبيق شحن مجاني' : 'Free delivery applied'}
+                </p>
               </div>
 
               {/* Cart Items List */}
@@ -72,9 +79,9 @@ export function CartDrawer() {
                   {items.map((item) => (
                     <motion.div 
                       layout
-                      initial={{ opacity: 0, x: 20 }}
+                      initial={{ opacity: 0, x: language === 'ar' ? -20 : 20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
+                      exit={{ opacity: 0, x: language === 'ar' ? 20 : -20 }}
                       key={item.id} 
                       className="flex gap-3 sm:gap-4 p-1 hover:bg-slate-50/50 rounded-sm cursor-pointer transition-colors group"
                       onClick={(e) => {
@@ -84,10 +91,11 @@ export function CartDrawer() {
                         closeCart();
                       }}
                     >
-                      <div className="size-20 sm:size-24 bg-muted shrink-0 overflow-hidden border border-slate-100 rounded-[var(--radius)] relative">
+                      <div className="size-20 sm:size-24 bg-muted shrink-0 overflow-hidden border border-slate-100 rounded-(--radius) relative">
                         <Image 
                           alt={item.name} 
                           fill 
+                          sizes="100px"
                           className="object-cover" 
                           src={item.image}
                         />
@@ -95,7 +103,9 @@ export function CartDrawer() {
                       <div className="flex flex-col justify-between flex-1 min-w-0">
                         <div>
                           <div className="flex justify-between items-start gap-2">
-                            <h3 className="font-bold text-foreground leading-tight uppercase tracking-tight text-[11px] sm:text-sm truncate sm:whitespace-normal">{item.name}</h3>
+                            <h3 className="font-bold text-foreground leading-tight uppercase tracking-tight text-[11px] sm:text-sm truncate sm:whitespace-normal">
+                              {(language === 'ar' && item.nameAr) ? item.nameAr : item.name}
+                            </h3>
                             <button 
                               onClick={() => removeItem(item.id)}
                               className="text-muted-foreground hover:text-(--danger) transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent shrink-0"
@@ -106,7 +116,7 @@ export function CartDrawer() {
                           <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-widest font-bold truncate">Professional Grade Tools</p>
                         </div>
                         <div className="flex justify-between items-end gap-2 mt-2">
-                          <div className="flex items-center border border-slate-200 h-7 sm:h-8 px-1 rounded-[var(--radius)]">
+                          <div className="flex items-center border border-slate-200 h-7 sm:h-8 px-1 rounded-(--radius)">
                             <button 
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
                               className="p-1 hover:text-(--primary) transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent"
@@ -121,7 +131,7 @@ export function CartDrawer() {
                               <Plus className="size-3 sm:size-4 stroke-[3px]" />
                             </button>
                           </div>
-                          <p className="font-black text-foreground text-xs sm:text-sm whitespace-nowrap">{(item.price * item.quantity).toLocaleString()} EGP</p>
+                          <p className="font-black text-foreground text-xs sm:text-sm whitespace-nowrap">{(item.price * item.quantity).toLocaleString()} {dict.common.egp}</p>
                         </div>
                       </div>
                     </motion.div>
@@ -133,29 +143,29 @@ export function CartDrawer() {
               <div className="border-t border-slate-100 p-4 sm:p-6 space-y-4 bg-background shrink-0">
                 <div className="space-y-2">
                   <div className="flex justify-between text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    <span>Subtotal</span>
-                    <span>{totalAmount.toLocaleString()} EGP</span>
+                    <span>{dict.common.subtotal}</span>
+                    <span>{totalAmount.toLocaleString()} {dict.common.egp}</span>
                   </div>
                   <div className="flex justify-between text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    <span>Delivery</span>
+                    <span>{dict.common.shipping}</span>
                     {currentShippingFee === 0 ? (
-                      <span className="text-(--primary)">FREE</span>
+                      <span className="text-(--primary)">{dict.common.free}</span>
                     ) : (
-                      <span>{currentShippingFee.toLocaleString()} EGP</span>
+                      <span>{currentShippingFee.toLocaleString()} {dict.common.egp}</span>
                     )}
                   </div>
                   <div className="flex justify-between text-lg sm:text-xl font-black text-foreground pt-3 sm:pt-4 border-t border-slate-100">
-                    <span>Total</span>
-                    <span>{grandTotal.toLocaleString()} EGP</span>
+                    <span>{dict.common.total}</span>
+                    <span>{grandTotal.toLocaleString()} {dict.common.egp}</span>
                   </div>
                 </div>
                 <div className="pt-2 flex flex-col">
                   <button 
                     onClick={handleCheckout}
-                    className="w-full bg-(--primary) hover:bg-foreground hover:text-background text-white font-bold py-4 sm:py-5 flex items-center justify-center gap-2 transition-all active:scale-[0.98] rounded-[var(--radius)] border-none outline-none cursor-pointer uppercase tracking-widest text-[10px] sm:text-xs shadow-xl"
+                    className="w-full bg-(--primary) hover:bg-foreground hover:text-background text-white font-bold py-4 sm:py-5 flex items-center justify-center gap-2 transition-all active:scale-[0.98] rounded-(--radius) border-none outline-none cursor-pointer uppercase tracking-widest text-[10px] sm:text-xs shadow-xl"
                   >
-                    <span>Proceed to Checkout</span>
-                    <ArrowRight className="size-4 stroke-[2.5px]" />
+                    <span>{dict.common.proceedToCheckout}</span>
+                    <ArrowRight className="size-4 stroke-[2.5px] rtl:-scale-x-100" />
                   </button>
                   <p className="text-center text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest mt-4 sm:mt-6 font-bold">Secure Clinical Checkout System</p>
                 </div>
@@ -164,13 +174,15 @@ export function CartDrawer() {
           ) : (
             <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
               <ShoppingCart className="size-16 text-muted-foreground/20 stroke-[1.5px] mb-4" />
-              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">Your cart is empty</h3>
-              <p className="text-xs text-muted-foreground mt-2 max-w-[200px] font-medium uppercase tracking-widest leading-loose">Items you add to your cart will appear here.</p>
+              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">{language === 'ar' ? 'سلتك فارغة' : 'Your cart is empty'}</h3>
+              <p className="text-xs text-muted-foreground mt-2 max-w-[200px] font-medium uppercase tracking-widest leading-loose">
+                {language === 'ar' ? 'المنتجات التي تضيفها للسلة ستظهر هنا.' : 'Items you add to your cart will appear here.'}
+              </p>
               <button 
                 onClick={handleContinueShopping}
-                className="mt-8 px-8 py-4 bg-muted hover:bg-foreground hover:text-white transition-all rounded-[var(--radius)] border-none outline-none cursor-pointer text-[10px] font-bold uppercase tracking-widest"
+                className="mt-8 px-8 py-4 bg-muted hover:bg-foreground hover:text-white transition-all rounded-(--radius) border-none outline-none cursor-pointer text-[10px] font-bold uppercase tracking-widest"
               >
-                Continue Shopping
+                {language === 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
               </button>
             </div>
           )}

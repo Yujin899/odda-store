@@ -3,26 +3,30 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingBag, Menu, User, LogOut, Package, ChevronDown } from 'lucide-react';
+import { Search, ShoppingBag, User as UserIcon, LogOut, Package, ChevronDown } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartUIStore } from '@/store/useCartUIStore';
 import { useSearchUIStore } from '@/store/useSearchUIStore';
-import { useMobileMenuStore } from '@/store/useMobileMenuStore';
 import { useCartStore } from '@/store/useCartStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export function Navbar() {
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<{ _id: string; name: string; nameAr?: string }[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const categoryRef = useRef<HTMLDivElement>(null);
   
   const { openCart } = useCartUIStore();
   const { openSearch } = useSearchUIStore();
-  const { open: openMobileMenu } = useMobileMenuStore();
   const { items } = useCartStore();
+  const { language } = useLanguageStore();
+  const dict = language === 'en' ? en : ar;
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
@@ -54,31 +58,33 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-navy/10 px-6 lg:px-12 py-4 bg-background/80 backdrop-blur-md">
+    <header className="relative md:sticky md:top-0 z-40 border-b border-navy/10 px-6 lg:px-12 py-4 bg-background/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex items-center">
-        {/* Left Side: Hamburger (Mobile) / Logo + Nav (Desktop) */}
-        <div className="flex-1 flex items-center">
-          <button
-            onClick={openMobileMenu}
-            className="flex md:hidden items-center justify-center p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none outline-none cursor-pointer bg-transparent"
-            aria-label="Open menu"
-          >
-            <Menu className="size-6 stroke-[2.5px]" />
-          </button>
-
-          <div className="hidden md:flex items-center gap-12">
+        {/* Main Content Area: Logo + Desktop Nav */}
+        <div className="flex-1 flex items-center justify-between">
+          <div className="flex items-center gap-4 sm:gap-12">
+            {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/logo.png" alt="Odda Logo" width={100} height={36} className="object-contain" />
+              <Image 
+                src="/logo.png" 
+                alt="Odda Logo" 
+                width={100} 
+                height={36} 
+                priority
+                className="object-contain w-[80px] sm:w-[100px]" 
+              />
             </Link>
-            <nav className="flex items-center gap-8">
-              <Link href="/" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">Home</Link>
+
+            {/* Desktop Nav Links */}
+            <nav className="hidden md:flex items-center gap-8">
+              <Link href="/" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.home}</Link>
               
               <div className="relative" ref={categoryRef}>
                 <button 
                   onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                   className="flex items-center gap-1 text-sm font-semibold text-navy hover:text-(--primary) transition-colors border-none outline-none cursor-pointer bg-transparent"
                 >
-                  Products <ChevronDown className={`size-3 transition-transform ${isCategoryOpen ? 'rotate-180' : ''}`} />
+                  {dict.common.categories} <ChevronDown className={`size-3 transition-transform ${isCategoryOpen ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
                   {isCategoryOpen && (
@@ -86,14 +92,14 @@ export function Navbar() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-48 bg-white border border-slate-100 rounded-sm shadow-xl p-2 z-50"
+                      className="absolute top-full start-0 mt-2 w-48 bg-white border border-slate-100 rounded-sm shadow-xl p-2 z-50"
                     >
                       <Link 
                         href="/products" 
                         onClick={() => setIsCategoryOpen(false)}
                         className="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy hover:bg-slate-50 rounded-sm"
                       >
-                        All Categories
+                        {dict.common.allProducts}
                       </Link>
                       {categories.map((cat) => (
                         <Link 
@@ -102,7 +108,7 @@ export function Navbar() {
                           onClick={() => setIsCategoryOpen(false)}
                           className="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy hover:bg-slate-50 rounded-sm"
                         >
-                          {cat.name}
+                          {language === 'ar' && cat.nameAr ? cat.nameAr : cat.name}
                         </Link>
                       ))}
                     </motion.div>
@@ -110,17 +116,15 @@ export function Navbar() {
                 </AnimatePresence>
               </div>
 
-              <Link href="/about" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">About</Link>
-              <Link href="/order-tracking" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">Track Order</Link>
+              <Link href="/profile" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.profile || 'Profile'}</Link>
+              {session?.user?.role === 'admin' && (
+                <Link href="/dashboard" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.dashboard}</Link>
+              )}
+              <Link href="/order-tracking" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.trackOrder}</Link>
+              <Link href="/about" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.about}</Link>
+
             </nav>
           </div>
-        </div>
-
-        {/* Center: Mobile Logo */}
-        <div className="flex md:hidden flex-1 justify-center">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="Odda Logo" width={90} height={32} className="object-contain" />
-          </Link>
         </div>
 
         {/* Right Side: Actions */}
@@ -128,7 +132,7 @@ export function Navbar() {
           {/* Mobile: icon-only search trigger */}
           <button
             onClick={handleOpenSearch}
-            className="flex sm:hidden items-center justify-center p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none outline-none cursor-pointer bg-transparent"
+            className="sm:hidden hidden items-center justify-center p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none outline-none cursor-pointer bg-transparent"
             aria-label="Open search"
           >
             <Search className="size-5 stroke-[2.5px]" />
@@ -140,8 +144,12 @@ export function Navbar() {
             className="hidden sm:flex items-center border border-navy/20 px-3 py-1.5 rounded-sm bg-background cursor-pointer hover:border-navy/40 transition-all"
           >
             <Search className="size-4 text-navy/50 stroke-[2.5px]" />
-            <span className="text-sm w-40 bg-transparent text-navy/50 ml-2">Search instruments...</span>
+            <span className="text-sm w-40 bg-transparent text-navy/50 ms-2">{dict.common.search}</span>
           </div>
+
+          <div className="hidden lg:block border-l border-navy/10 h-6 mx-2" />
+          <LanguageSwitcher />
+          <div className="hidden lg:block border-r border-navy/10 h-6 mx-2" />
 
           {/* User Area */}
           {session ? (
@@ -177,7 +185,7 @@ export function Navbar() {
                   >
                     <div className="px-4 py-3 border-b border-border">
                       <p className="text-sm font-semibold text-foreground truncate">
-                        {session.user?.name || 'User'}
+                        {session.user?.name || dict.profile.userPlaceholder}
                       </p>
                       <p className="text-xs text-muted-foreground truncate">
                         {session.user?.email}
@@ -186,12 +194,20 @@ export function Navbar() {
                     
                     <div className="py-1">
                       <Link 
+                        href="/profile" 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors font-semibold"
+                      >
+                        <UserIcon className="size-4" />
+                        {dict.common.profile || 'Profile'}
+                      </Link>
+                      <Link 
                         href="/orders" 
                         onClick={() => setIsDropdownOpen(false)}
                         className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
                       >
                         <Package className="size-4" />
-                        My Orders
+                        {dict.common.myOrders}
                       </Link>
                     </div>
 
@@ -204,7 +220,7 @@ export function Navbar() {
                         className="flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 w-full text-left transition-colors"
                       >
                         <LogOut className="size-4" />
-                        Sign Out
+                        {dict.common.logout}
                       </button>
                     </div>
                   </motion.div>
@@ -216,11 +232,11 @@ export function Navbar() {
               href="/login"
               className="hidden md:flex p-2 rounded-sm text-navy hover:bg-navy/5 transition-colors items-center justify-center font-semibold text-sm"
             >
-              Sign In
+              {dict.common.login}
             </Link>
           )}
 
-          <button onClick={handleOpenCart} className="relative p-2 rounded-sm text-navy hover:bg-navy/5 transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent">
+          <button onClick={handleOpenCart} className="relative p-2 rounded-sm text-navy hover:bg-navy/5 transition-colors hidden md:flex items-center justify-center border-none outline-none cursor-pointer bg-transparent">
             <ShoppingBag className="size-5 stroke-[2.5px]" />
             {cartItemCount > 0 && (
               <span className="absolute top-1 right-1 bg-(--primary) text-background text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center">

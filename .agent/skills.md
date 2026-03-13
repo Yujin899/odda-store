@@ -5,13 +5,13 @@
 ## 1. Project Overview
 - Brand: `Odda | Premium Dental Tools` — High-end aesthetic for medical professionals.
 - App type: Enterprise-ready Next.js App Router storefront and management system.
-- Public routes: home, product listing, product details, checkout, order confirmation, custom 404, public order tracking.
-- Planned backend: Next.js API Routes (`src/app/api/`) as the server layer, MongoDB as the database, and Cloudinary for image hosting and delivery.
-- Current state: most data is served dynamically from MongoDB via API routes (`src/app/api/products`). The legacy catalog (`src/lib/catalog.ts`) is for fallback purposes only.
+- Public routes: home, product listing, product details, bundle details (/bundle/[slug]), checkout, order confirmation, custom 404, public order tracking.
+- Planned backend: Next.js API Routes (`src/app/api/`) as the server layer, MongoDB as the database (dedicated collections for Products and Bundles), and Cloudinary for image hosting and delivery.
+- Current state: most data is served dynamically from MongoDB via API routes (`src/app/api/products` and `/api/bundles`). The legacy catalog (`src/lib/catalog.ts`) is for fallback purposes only.
 - Global chrome (`AnnouncementBar`, `Navbar`, `Footer`, `CartDrawer`, `SearchModal`, `ToastContainer`) is mounted in `src/app/(store)/layout.tsx`. Auth pages (`/login`, `/register`) have no chrome.
 - **Enterprise Status**: Optimized for production with connection pooling, ISR caching (`StoreSettings`), and automated DevOps cleanup via Vercel Cron.
-- **Limit Protection**: Strategic usage of free-tier resources (Resend 3k/mo limit, Cloudinary storage reclamation via `deleteCloudinaryImage` utility).
-- **Global Configuration**: Centrally managed `StoreSettings` controlling the storefront UI and business parameters.
+- **Limit Protection**: Strategic usage of free-tier resources (Resend 3k/mo limit, Cloudinary storage reclamation). We strictly support ONLY TWO transactional emails: "Order Confirmation" and "Order Shipped" to protect quotas.
+- **Global Configuration**: Centrally managed `StoreSettings` controlling the storefront UI, business parameters, `defaultLanguage` ('en' or 'ar'), and fallback email text to prevent empty dispatches.
 
 ## 2. Tech Stack & Versions
 - Next.js `16.1.6`
@@ -48,6 +48,10 @@ odda-web/
           route.ts
           [id]/
             route.ts
+        bundles/         # Dedicated Bundle Collection API
+          route.ts
+          [slug]/
+            route.ts
         categories/
           route.ts
           [id]/
@@ -63,21 +67,31 @@ odda-web/
           route.ts
           [slug]/
             route.ts
+            reviews/     # Authenticated product reviews
+              route.ts
         settings/        # Global Storefront Configuration
           route.ts
         users/           # Admin customer management
       (dashboard)/
         dashboard/
           badges/
+          bundles/       # Dedicated Bundle Management
           categories/
           customers/
           notifications/ # Admin activity center
           orders/
           products/
           settings/      # Multi-tab Admin Settings Hub
+      (store)/
+        bundle/          # Dedicated Bundle Storefront
+          [slug]/
+            page.tsx
     components/
       home/
         Hero.tsx         # Premium Minimalist Hero
+        HomeBundles.tsx  # Premium grid for Starter Kits
+      bundles/           # Bundle-specific UI
+        BundlePageClient.tsx
       dashboard/
         Sidebar.tsx
         AddProductButton.tsx
@@ -87,10 +101,20 @@ odda-web/
         NotificationsList.tsx
         OrderDetailsModal.tsx # With auto-scroll to proof
         OrdersManager.tsx # Tabbed "Inbox Zero" workflow
-        ProductForm.tsx # With simulated upload feedback
+        ProductForm.tsx # With BYOAI "Magic Fill" logic
         ProductsTable.tsx
+        SettingsForm.tsx # With Store-wide BYOAI config
+      products/
+        ProductCard.tsx
+        ProductFilters.tsx
+        ProductPageClient.tsx # Multi-tab (Overview/Specs/Reviews)
+      store/
+        MobileBottomNav.tsx
+        OrderTracker.tsx
+        OrdersList.tsx
     models/
       Badge.ts
+      Bundle.ts          # Dedicated Mongoose Schema for Kits
       Category.ts
       Notification.ts # Alert tracking
       Order.ts
@@ -160,6 +184,16 @@ odda-web/
   --ring: #0073E6;
   --radius: 8px;
 }
+
+### Dashboard Mobile-First Architecture
+- **Sidebar & Navigation**: The Dashboard Layout uses a responsive Sidebar. On mobile (screens < md), it operates as an off-canvas drawer controlled by a Hamburger menu in the top bar, with a modal backdrop.
+- **Form Layouts**: Complex forms (ProductForm, SettingsForm) must use a 1-column grid on mobile and expand to multi-column on larger screens (`grid-cols-1 lg:grid-cols-3`).
+- **Responsive Dialogs**: Modals/Dialogs must remain fully usable on small screens via bounded widths and internal scrolling (e.g., `max-w-[95vw]`, `max-h-[85vh] overflow-y-auto`).
+- **Toast Sizing**: All global toasts must be constrained on mobile to prevent full-width covering of UI (`max-w-[90vw] sm:max-w-md mx-auto`).
+
+### Mobile Application Navigation Standard
+- **Architecture**: Both Storefront and Admin Dashboard utilize a "Mobile Bottom Navigation Bar" (Glassmorphism, `fixed bottom-0`, `z-50`).
+- **Critical Layout Rule**: To prevent these fixed bars from covering content (like the Footer or data tables), the main wrapper in `src/app/(store)/layout.tsx` and `src/app/(dashboard)/layout.tsx` MUST use responsive bottom padding (e.g., `pb-20 md:pb-0`).
 ```
 
 ### Border radius rule
@@ -174,6 +208,12 @@ odda-web/
 - UI primitives: `skeleton.tsx`, `Toast.tsx`.
 - Route groups: use parentheses e.g. `(store)`, `(auth)`. Auth pages have no shared chrome.
 
+### Dashboard Component Patterns
+- **Table Overflow Rule**: ALL dashboard data tables (Products, Orders, Customers) MUST be wrapped in `<div className="w-full overflow-x-auto">` to prevent horizontal viewport scrolling and layout breakage.
+- **Responsive Action Bars**: Search, Filters, and "Add" button containers must use responsive flex layouts (`flex-col sm:flex-row`) to stack vertically on mobile and horizontally on desktop.
+- **Input Design Rule**: Never use absolute positioning for buttons inside inputs on mobile. Stack components vertically (`flex-col sm:flex-row`) or use relative sizing to prevent overlap.
+- **Overflow Prevention**: Always use `flex-wrap` for badge rows, feature lists, or any dynamic metadata container to ensure content wraps naturally on mobile.
+
 ## 6. State Management
 ### Zustand Stores
 - `src/store/useCartUIStore.ts` (UI Only: isOpen, openCart, closeCart)
@@ -187,15 +227,21 @@ odda-web/
   - Actions: `addToast`, `removeToast`.
   - Convenient export: `toast` object for quick usage (`toast.success(description)`).
   - IMPORTANT: Notifications use `description` property, not `message`.
+  - **Clean UX Rule**: When an action results in a major UI state change (e.g., opening the Cart Drawer upon clicking "Add to Cart"), DO NOT fire a success Toast simultaneously. The visual feedback is sufficient.
 - `src/store/useRecentlyViewedStore.ts`
   - Manages viewed history: `items: Product[]` (max 4).
   - Actions: `addViewedItem`.
+- `src/store/useLanguageStore.ts`
+  - Manages site-wide locale state (`en` vs `ar`).
+  - Persists preference across sessions.
 
 ## 7. Routing
 - `/` -> Home
 - `/products` -> Product listing with filters.
+- `/bundle/[slug]` -> Dedicated storefront page for Bundles/Starter Kits.
 - `/dashboard` -> Admin-only overview with stats and charts.
 - `/dashboard/orders` -> Admin-only orders management.
+- `/dashboard/bundles` -> Admin-only bundle management.
 - `/dashboard/settings` -> Admin-only configuration hub (Tabs: Storefront, Payments, Contact).
 - `/dashboard/customers` -> Admin-only registered users list.
 - **Products**: `/product/[slug]` — The param is the product slug (SEO-friendly). Always look up by `slug` in `CATALOG` or MongoDB.
@@ -204,8 +250,10 @@ odda-web/
 - `/order-confirmation` -> Post-purchase landing. Reads `orderNumber` from URL params.
 - `/orders` -> User's order history, requires auth.
 - `/about` -> Brand mission and features.
+- `/contact` -> **DEPRECATED** (All contact handled via dynamic Footer links).
 - `/login` -> User auth.
 - `/register` -> New user registration. Wired to `POST /api/auth/register`.
+- `/profile` -> **Role-Based Profile Hub**: Acts as the central user hub. Conditionally renders the "Admin Dashboard" link card ONLY if `session?.user?.role === 'admin'`. Floating Admin buttons are strictly forbidden.
 - API Routes:
   - `POST /api/auth/register`: User creation.
   - `GET /api/products`: Paginated/Filtered product list. Supports `featured`, `categoryId`, `search`, `sort` params.
@@ -219,6 +267,11 @@ odda-web/
   - `POST /api/products`: Admin product creation + Cloudinary upload.
   - `PUT /api/products/[slug]`: Admin product update.
   - `DELETE /api/products/[slug]`: Admin product removal + Cloudinary cleanup.
+  - `GET /api/bundles`: Returns all bundles (filtered by `stock` in storefront).
+  - `GET /api/bundles/[slug]`: Single bundle lookup.
+  - `POST /api/bundles`: Admin bundle creation.
+  - `PUT /api/bundles/[slug]`: Admin bundle update.
+  - `DELETE /api/bundles/[slug]`: Admin bundle removal.
   - `GET /api/settings`: Returns Global Store Settings (Hero, Announcements, Fees).
   - `PATCH /api/settings`: Admin settings update (with instant ISR revalidation).
   - `POST /api/orders`: Order placement (triggers real-time stock deduction).
@@ -226,6 +279,7 @@ odda-web/
   - `GET /api/orders/[id]`: Order details.
   - `PATCH /api/orders/[id]`: Admin order status update (Restores stock automatically on 'cancelled' status).
   - `GET /api/orders/track/[id]`: Public order tracking status.
+  - `POST /api/products/[slug]/reviews`: Authenticated product review submission.
   - `GET /api/notifications`: Admin alerts list.
   - `POST /api/cron/cleanup-orders`: Daily recycling of data/assets.
   - `POST /api/upload`: Generic image upload (supports `folder` param and 10MB limit).
@@ -299,9 +353,17 @@ odda-web/
 - **Do not hardcode Order IDs in emails**: Inject `newOrder._id.toString()` dynamically.
 - **Do not send notification emails to admins**: Use the dashboard bell system to save Resend quota.
 - **No Self-Sabotage**: Admins cannot block, demote, or delete their own accounts.
+- **Contact Page**: Do not recreate the standalone `/contact` page. All customer contact is routed through dynamic WhatsApp/Social links in the footer.
 - **Order Stock Integrity**: Never update an order to `cancelled` without restoring the stock.
 - **Revenue Accuracy**: Never include `cancelled`, `failed`, or `pending` orders in dashboard revenue calculations.
 - **Category UX**: Never implement category uploads without visual feedback (grayscale/progress).
+- **Mobile Input Safety**: Do not use absolute buttons inside inputs on mobile viewports.
+- **i18n Safety**: Never set a required constraint on an Arabic field (`*Ar`) in Mongoose; they must remain optional to support legacy data.
+- **Floating Buttons**: Do not use floating Admin buttons on any public storefront page. Admin access must flow through `/profile`.
+- **Email Redundancy**: Never implement or trigger a "Delivered" email template. This is redundant and wastes Resend free-tier quota.
+- **AI Backend**: Do not install or use `@google/generative-ai` or OpenAI SDKs in the backend API. All AI content must be generated via the BYOAI workflow.
+- **Clean Architecture Separation**: Bundles and Products MUST remain separated in the database (dedicated collections) and UI. Re-adding `isBundle` flags inside the `Product` model is STRICTLY FORBIDDEN.
+- **AI Summary Removal**: Do not add `aiSummary` to the `Bundle` model or its storefront pages; bundles use a focused item-list rationale.
 
 ## 12. Checklist for adding a new feature
 1. Put the file in the correct folder.
@@ -313,7 +375,7 @@ odda-web/
 7. If remote images are used, confirm the hostname is already allowed.
 8. Prefer CSS transitions first; use Framer Motion only for real enter/exit animation.
 9. Match the existing scrollbar convention.
-10. Test both mobile and desktop layout behavior.
+10. Test both mobile and desktop layout behavior, ensuring tables use `overflow-x-auto` and action bars stack correctly on small screens.
 11. If the feature requires data fetching, implement it via a Next.js API Route under `src/app/api/`. Do not call MongoDB or Cloudinary directly from client components.
 12. Before copying an old pattern, check whether it is a known inconsistency (`font-display`, `.scrollbar-hide`, duplicate marquee block).
 
@@ -355,8 +417,24 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
   - **Navbar**: Real category data fetching for dropdowns.
   - **Uploads**: Grayscale + Progress bar feedback ported to Category uploads.
 - **Storage Management**: Automated Cloudinary asset destruction via centralized `deleteCloudinaryImage` utility.
+- **Reviews Data**: Reviews are embedded in the `Product` model. Rating averages and counts are updated atomically upon submission. Moderation is currently implicit (direct submission by auth users).
+- **Google OAuth Production Mismatch**: When deploying to Vercel, `NEXTAUTH_URL` and `AUTH_URL` must exactly match the production domain (no trailing slashes). In Google Cloud Console, the "Authorized redirect URIs" MUST be exactly `https://[your-domain]/api/auth/callback/google` to prevent `Error 400: redirect_uri_mismatch`.
 
 ## 14. SEO & Routing
 - **Product URLs**: All product links must use `product.slug` (e.g., `/product/dental-handpiece-pro`). Never use MongoDB `_id` or numeric `id` in the URL.
 - **Param Handling**: In `[slug]/page.tsx`, always look up by `params.slug` from MongoDB via `GET /api/products/[slug]`. If not found, call `notFound()`.
 - **API Support**: The products API (`/api/products/[slug]`) supports both slug and MongoDB `_id` for backward compatibility, but slug is always preferred.
+
+## 15. Internationalization (i18n) Patterns
+- **Database Schema**: We support bilingual data (English/Arabic). Arabic fields use the `*Ar` suffix (e.g., `nameAr`, `descriptionAr`, `featuresAr`).
+- **Data Integrity**: All `*Ar` fields MUST be optional in Mongoose models (`required: false`) to avoid breaking existing data that only has English fields.
+- **Graceful Fallback**: APIs and Frontend components must handle missing Arabic data gracefully, falling back to the English equivalent or an empty state without error.
+- **Dashboard Forms**: Admin forms must accommodate both locales, stacking inputs on mobile and using logical side-by-side layouts on desktop.
+
+- **AI Content Generation (BYOAI)**: 
+  - Admin clicks "Copy AI Prompt" (which includes the entity name).
+  - Admin pastes prompt into an external LLM (ChatGPT/Claude).
+  - Admin pastes resulting JSON into form textarea.
+  - "Magic Fill" button parses this JSON (strips markdown) and populates the form using `react-hook-form`'s `setValue`.
+  - **Bundle Prompting**: `BundleForm` uses a specialized prompt that instructs the AI to generate `bundleItems` and `bundleItemsAr` arrays specifically for starter kits.
+- **Zero-Cost Rationale**: The `Product` model includes `aiSummary` and `aiSummaryAr` which are statically rendered on the storefront as an "AI Rationale" to accelerate customer purchasing decisions.

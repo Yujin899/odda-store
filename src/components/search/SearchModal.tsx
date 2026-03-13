@@ -4,14 +4,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Search, X, SearchX, FileSearch } from 'lucide-react';
+import Image from 'next/image';
 import { useSearchUIStore } from '@/store/useSearchUIStore';
 import { useRecentlyViewedStore } from '@/store/useRecentlyViewedStore';
-import Image from 'next/image';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchUIStore();
   const { items: recentlyViewed, addViewedItem } = useRecentlyViewedStore();
   const router = useRouter();
+  const { language } = useLanguageStore();
+  const dict = language === 'en' ? en : ar;
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +92,7 @@ export function SearchModal() {
       id: String(product._id || product.id),
       slug: product.slug || '',
       name: product.name,
+      nameAr: product.nameAr,
       price: product.price,
       image: getDisplayImage(product),
     });
@@ -121,17 +127,17 @@ export function SearchModal() {
             className="relative w-full max-w-2xl bg-background rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] mb-4 sm:mb-8"
           >
             {/* Search Input Area */}
-            <div className="relative flex items-center px-4 sm:px-6 py-4 border-b border-border shrink-0 pr-14">
+            <div className="relative flex items-center px-4 sm:px-6 py-4 border-b border-border shrink-0 pe-14">
               <button 
                 onClick={() => handleSearchNavigation(searchValue)}
-                className="p-1 hover:bg-muted rounded-md transition-colors mr-3 outline-none border-none bg-transparent cursor-pointer text-muted-foreground"
+                className="p-1 hover:bg-muted rounded-md transition-colors me-3 outline-none border-none bg-transparent cursor-pointer text-muted-foreground"
               >
                 <Search className="size-5 stroke-[2.5px]" />
               </button>
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Search instruments..."
+                placeholder={dict.common.search}
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 onKeyDown={(e) => {
@@ -141,7 +147,7 @@ export function SearchModal() {
               />
               <button 
                 onClick={handleClose}
-                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors outline-none border-none cursor-pointer text-muted-foreground flex items-center justify-center h-9 w-9 bg-transparent"
+                className="absolute end-3 sm:end-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors outline-none border-none cursor-pointer text-muted-foreground flex items-center justify-center h-9 w-9 bg-transparent"
               >
                 <X className="size-5 stroke-[2.5px]" />
               </button>
@@ -153,7 +159,9 @@ export function SearchModal() {
               {!searchValue && recentlyViewed.length > 0 && (
                 <div className="mb-10">
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Recently viewed</h3>
+                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                      {language === 'ar' ? 'شوهد مؤخراً' : 'Recently viewed'}
+                    </h3>
                   </div>
                   <div className="flex gap-6 overflow-x-auto pb-4 -mx-2 px-2 snap-x scrollbar-hidden">
                     {recentlyViewed.map((product) => (
@@ -165,14 +173,16 @@ export function SearchModal() {
                         <div className="aspect-square bg-muted rounded-lg overflow-hidden mb-4 border border-border/40 relative">
                           <Image 
                             src={getDisplayImage(product)} 
-                            alt={product.name} 
+                            alt={(language === 'ar' && product.nameAr) ? product.nameAr : product.name} 
                             fill
                             className="object-cover group-hover:scale-110 transition-all duration-700" 
                           />
                         </div>
-                        <h4 className="text-[11px] font-bold uppercase tracking-tight text-foreground truncate mb-1 group-hover:text-(--primary) transition-colors">{product.name}</h4>
+                        <h4 className="text-[11px] font-bold uppercase tracking-tight text-foreground truncate mb-1 group-hover:text-(--primary) transition-colors">
+                          {(language === 'ar' && product.nameAr) ? product.nameAr : product.name}
+                        </h4>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-xs font-black text-foreground">{product.price.toLocaleString()} EGP</span>
+                          <span className="text-xs font-black text-foreground">{product.price.toLocaleString()} {dict.common.egp}</span>
                         </div>
                       </div>
                     ))}
@@ -185,12 +195,14 @@ export function SearchModal() {
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                      Results for &quot;{searchValue}&quot;
+                      {language === 'ar' ? 'نتائج البحث عن' : 'Results for'} &quot;{searchValue}&quot;
                     </h3>
                     {isLoading && (
                       <div className="flex items-center gap-2">
                         <div className="size-3 border-2 border-(--primary)/20 border-t-(--primary) rounded-full animate-spin" />
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-(--primary)">Searching...</span>
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-(--primary)">
+                          {language === 'ar' ? 'جاري البحث...' : 'Searching...'}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -211,9 +223,13 @@ export function SearchModal() {
                           />
                         </div>
                         <div className="flex flex-col justify-center min-w-0">
-                          <h4 className="text-xs font-bold uppercase tracking-tight text-foreground truncate group-hover:text-(--primary) transition-colors">{product.name}</h4>
-                          <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold mt-1">{product.category}</p>
-                          <span className="text-xs font-black text-foreground mt-1">{product.price.toLocaleString()} EGP</span>
+                          <h4 className="text-xs font-bold uppercase tracking-tight text-foreground truncate group-hover:text-(--primary) transition-colors">
+                            {(language === 'ar' && product.nameAr) ? product.nameAr : product.name}
+                          </h4>
+                          <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold mt-1">
+                            {(language === 'ar' && (product.categoryId?.nameAr || product.categoryAr)) ? (product.categoryId?.nameAr || product.categoryAr) : (product.categoryId?.name || product.category)}
+                          </p>
+                          <span className="text-xs font-black text-foreground mt-1">{product.price.toLocaleString()} {dict.common.egp}</span>
                         </div>
                       </div>
                     ))}
@@ -221,8 +237,12 @@ export function SearchModal() {
                   {!isLoading && searchResults.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-10 text-center">
                       <SearchX className="size-12 text-muted-foreground/30 mb-4 stroke-[1.5px]" />
-                      <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">No instruments found for &quot;{searchValue}&quot;</p>
-                      <p className="text-xs text-muted-foreground/60 mt-2 font-light">Try searching for something else</p>
+                      <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                        {language === 'ar' ? `لم يتم العثور على نتائج لـ "${searchValue}"` : `No instruments found for "${searchValue}"`}
+                      </p>
+                      <p className="text-xs text-muted-foreground/60 mt-2 font-light">
+                        {language === 'ar' ? 'حاول البحث عن شيء آخر' : 'Try searching for something else'}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -231,8 +251,12 @@ export function SearchModal() {
               {!searchValue && recentlyViewed.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                   <FileSearch className="size-16 text-muted-foreground/10 mb-6 stroke-[1px]" />
-                  <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Start typing to search</p>
-                  <p className="text-xs text-muted-foreground/50 mt-3 font-medium uppercase tracking-[0.2em]">Odda Premium Clinical Catalog</p>
+                  <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                    {language === 'ar' ? 'ابدأ الكتابة للبحث' : 'Start typing to search'}
+                  </p>
+                  <p className="text-xs text-muted-foreground/50 mt-3 font-medium uppercase tracking-[0.2em]">
+                    {language === 'ar' ? 'كتالوج أودا للأدوات الطبية المتميزة' : 'Odda Premium Clinical Catalog'}
+                  </p>
                 </div>
               )}
             </div>

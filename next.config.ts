@@ -6,17 +6,27 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
-        pathname: '**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
-        pathname: '**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-        pathname: '**',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'platform-lookaside.fbsbx.com',
+        pathname: '/**',
       },
     ],
   },

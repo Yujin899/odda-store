@@ -1,0 +1,640 @@
+{
+  "common": {
+    "home": "الرئيسية",
+    "search": "بحث...",
+    "cart": "السلة",
+    "login": "تسجيل دخول",
+    "register": "إنشاء حساب",
+    "logout": "تسجيل خروج",
+    "myOrders": "طلباتي",
+    "trackOrder": "تتبع الطلب",
+    "profile": "الملف الشخصي",
+    "contact": "اتصل بنا",
+    "shopNow": "تسوق الآن",
+    "addToCart": "أضف للسلة",
+    "quantity": "الكمية",
+    "total": "الإجمالي",
+    "checkout": "الدفع",
+    "proceedToCheckout": "إتمام الطلب",
+    "shipping": "الشحن",
+    "orderSummary": "ملخص الطلب",
+    "subtotal": "المجموع الفرعي",
+    "free": "مجانًا",
+    "egp": "ج.م",
+    "featured": "مميز",
+    "allProducts": "كل المنتجات",
+    "products": "المنتجات",
+    "bundles": "العروض",
+    "categories": "الأقسام",
+    "about": "عن عدة",
+    "customerService": "خدمة العملاء",
+    "quickLinks": "روابط سريعة",
+    "followUs": "تابعنا",
+    "allRightsReserved": "كل الحقوق محفوظة",
+    "checkEmail": "يرجى مراجعة بريدك الإلكتروني لتأكيد الطلب.",
+    "noProductsFound": "لم يتم العثور على منتجات تطابق بحثك.",
+    "sortBy": "ترتيب حسب",
+    "filterByCategory": "تصفية حسب القسم",
+    "resetFilters": "إعادة ضبط الفلاتر",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "error": "خطأ",
+    "success": "نجاح",
+    "premiumDentalTools": "أودا | أدوات طبية متميزة",
+    "cancel": "إلغاء",
+    "dashboard": "لوحة التحكم"
+  },
+  "products": {
+    "sortNewest": "الأحدث أولاً",
+    "sortPriceAsc": "السعر: من الأقل للأعلى",
+    "sortPriceDesc": "السعر: من الأعلى للأقل",
+    "addToCart": "أضف للسلة",
+    "quickView": "عرض سريع",
+    "features": "المميزات الرئيسية",
+    "description": "الوصف",
+    "relatedProducts": "منتجات ذات صلة"
+  },
+  "dashboard": {
+    "brandInitial": "ع",
+    "brandName": "عدة",
+    "adminTooltip": "لوحة تحكم المسؤول",
+    "topbarTitle": "لوحة تحكم عدة",
+    "backToStore": "العودة للمتجر",
+    "signOut": "تسجيل الخروج",
+    "overview": "نظرة عامة",
+    "storeMetrics": "مقاييس أداء المتجر",
+    "totalRevenue": "إجمالي الإيرادات",
+    "totalOrders": "إجمالي الطلبات",
+    "customers": "العملاء",
+    "products": "المنتجات",
+    "revenueConfirmed": "من الطلبات المؤكدة",
+    "ordersAllTime": "إجمالي الطلبات",
+    "customersRegistered": "مستخدمون مسجلون",
+    "productsActive": "منتجات نشطة",
+    "revenueLast7Days": "الإيرادات (آخر 7 أيام)",
+    "orderStatus": "حالة الطلبات",
+    "topProducts": "الأكثر مبيعاً",
+    "chartLabels": {
+      "revenue": "الإيرادات",
+      "orders": "الطلبات",
+      "noData": "لا توجد بيانات متاحة",
+      "weekdays": {
+        "Sun": "الأحد",
+        "Mon": "الإثنين",
+        "Tue": "الثلاثاء",
+        "Wed": "الأربعاء",
+        "Thu": "الخميس",
+        "Fri": "الجمعة",
+        "Sat": "السبت"
+      }
+    },
+    "statuses": {
+      "pending_payment": "انتظار الدفع",
+      "pending_verification": "قيد التحقق",
+      "processing": "جاري التجهيز",
+      "shipped": "تم الشحن",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغي"
+    },
+    "sidebar": {
+      "overview": "نظرة عامة",
+      "products": "المنتجات",
+      "bundles": "العروض",
+      "categories": "الأقسام",
+      "badges": "الأوسمة",
+      "orders": "الطلبات",
+      "customers": "العملاء",
+      "settings": "الإعدادات",
+      "storefront": "واجهة المتجر"
+    },
+    "productsPage": {
+      "title": "المنتجات",
+      "subtitle": "إدارة مخزون المتجر وتفاصيل المنتجات.",
+      "addProduct": "إضافة منتج",
+      "searchPlaceholder": "البحث عن المنتجات...",
+      "filterByCategory": "تصفية حسب الفئة",
+      "allCategories": "جميع الفئات",
+      "table": {
+        "image": "الصورة",
+        "name": "الاسم",
+        "category": "الفئة",
+        "price": "السعر",
+        "stock": "المخزون",
+        "badges": "الأوسمة",
+        "actions": "الإجراءات"
+      },
+      "badges": {
+        "featured": "مميز",
+        "outOfStock": "نفد",
+        "lowStock": "منخفض"
+      },
+      "empty": "لم يتم العثور على منتجات.",
+      "pagination": {
+        "showing": "عرض",
+        "of": "من",
+        "previous": "السابق",
+        "next": "التالي",
+        "page": "صفحة"
+      },
+      "deleteDialog": {
+        "title": "هل أنت متأكد تماماً؟",
+        "description": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف المنتج نهائياً وإزالته من قاعدة البيانات الخاصة بنا.",
+        "cancel": "إلغاء",
+        "confirm": "حذف",
+        "deleting": "جاري الحذف..."
+      }
+    },
+    "ordersPage": {
+      "title": "الطلبات",
+      "subtitle": "إدارة وتتبع جميع طلبات العملاء والمدفوعات.",
+      "searchPlaceholder": "البحث برقم الطلب أو اسم العميل...",
+      "workflow": "سير العمل النشط",
+      "tabs": {
+        "verify": "التحقق",
+        "ship": "الشحن",
+        "transit": "قيد الانتقال",
+        "delivered": "تم التوصيل"
+      },
+      "table": {
+        "orderId": "رقم الطلب",
+        "customer": "العميل",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "actions": "الإجراءات",
+        "guest": "زائر",
+        "details": "التفاصيل",
+        "verify": "تحقق",
+        "process": "تجهيز",
+        "ship": "شحن",
+        "deliver": "توصيل"
+      },
+      "empty": "لا توجد طلبات نشطة في قائمة الانتظار هذه",
+      "systemNotice": {
+        "title": "تنبيه النظام",
+        "description": "يتم حذف الطلبات الموجودة في تبويب (تم التوصيل) (مع إيصالات الدفع الخاصة بها) تلقائياً بعد 30 يوماً لتوفير مساحة في قاعدة البيانات والتخزين."
+      },
+      "modal": {
+        "title": "تفاصيل الطلب",
+        "updateStatus": "تحديث الحالة",
+        "createdOn": "تاريخ الطلب",
+        "loading": "جاري تحميل تفاصيل الطلب...",
+        "shippingAddress": "عنوان الشحن",
+        "paymentInfo": "معلومات الدفع",
+        "method": "الطريقة",
+        "instapayNumber": "رقم انستاباي",
+        "grandTotal": "الإجمالي الكلي",
+        "orderItems": "عناصر الطلب",
+        "price": "السعر",
+        "paymentProof": "إيصال الدفع",
+        "openOriginal": "فتح الأصل",
+        "notFound": "لم يتم العثور على الطلب"
+      }
+    },
+    "productForm": {
+      "newTitle": "منتج جديد",
+      "editTitle": "تعديل المنتج",
+      "untitled": "بدون عنوان",
+      "cancel": "إلغاء",
+      "update": "تحديث",
+      "publish": "نشر",
+      "sections": {
+        "basicInfo": "المعلومات الأساسية",
+        "media": "إدارة الوسائط",
+        "pricing": "التسعير والمخزون",
+        "organization": "التنظيم"
+      },
+      "labels": {
+        "nameEn": "اسم المنتج (EN)",
+        "nameAr": "اسم المنتج (AR)",
+        "slug": "الرابط (Slug)",
+        "descriptionEn": "الوصف (EN)",
+        "descriptionAr": "الوصف (AR)",
+        "images": "الصور",
+        "price": "السعر (ج.م)",
+        "originalPrice": "السعر الأصلي (ج.م)",
+        "stock": "كمية المخزون",
+        "category": "الفئة",
+        "badge": "الوسام",
+        "featured": "مميز"
+      },
+      "placeholders": {
+        "nameEn": "e.g. Surgical Scalpel Set",
+        "nameAr": "مثال: طقم مشارط جراحية",
+        "slug": "surgical-scalpel-set",
+        "descriptionEn": "Detailed product specifications...",
+        "descriptionAr": "مواصفات المنتج بالتفصيل...",
+        "price": "0.00",
+        "originalPrice": "اختياري",
+        "selectCategory": "اختر الفئة",
+        "noBadge": "بدون وسام",
+        "featuredDescription": "عرض في الصفحة الرئيسية"
+      },
+      "badges": {
+        "none": "لا يوجد",
+        "primary": "أساسية"
+      },
+      "messages": {
+        "upload": "رفع",
+        "uploading": "جاري الرفع...",
+        "noImages": "لم يتم رفع صور",
+        "validationError": "خطأ في التحقق",
+        "imageRequired": "مطلوب صورة واحدة على الأقل",
+        "success": "تم بنجاح",
+        "productSaved": "تم حفظ المنتج بنجاح",
+        "error": "خطأ",
+        "saveFailed": "فشل حفظ المنتج",
+        "fatalError": "خطأ فادح في حفظ المنتج"
+      }
+    },
+    "categoriesPage": {
+      "title": "الأقسام",
+      "subtitle": "إدارة أقسام منتجات المتجر",
+      "addCategory": "إضافة قسم",
+      "searchPlaceholder": "البحث عن الأقسام...",
+      "loading": "جاري تحميل الأقسام...",
+      "empty": "لم يتم العثور على أقسام.",
+      "table": {
+        "image": "الصورة",
+        "name": "الاسم",
+        "slug": "الرابط",
+        "description": "الوصف",
+        "actions": "الإجراءات",
+        "edit": "تعديل"
+      },
+      "modal": {
+        "newTitle": "إضافة قسم جديد",
+        "editTitle": "تعديل القسم",
+        "description": "تنظيم منتجاتك في مجموعات منطقية",
+        "nameEn": "اسم القسم (EN)",
+        "nameAr": "الاسم (AR)",
+        "slug": "الرابط (URL)",
+        "image": "صورة القسم",
+        "uploadImage": "رفع صورة",
+        "descEn": "الوصف (EN)",
+        "descAr": "الوصف (AR)",
+        "descPlaceholderEn": "أخبر العملاء عن هذا القسم...",
+        "descPlaceholderAr": "أخبر العملاء عن هذا القسم...",
+        "cancel": "إلغاء",
+        "update": "تحديث القسم",
+        "create": "إنشاء قسم"
+      },
+      "deleteDialog": {
+        "title": "هل أنت متأكد تماماً؟",
+        "description": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف القسم نهائياً وإزالة الإشارة إليه من جميع المنتجات.",
+        "cancel": "إلغاء",
+        "confirm": "حذف القسم"
+      }
+    },
+    "badgesPage": {
+      "title": "الأوسمة",
+      "subtitle": "إدارة حالة المنتج وملصقات الخصم",
+      "addBadge": "إضافة وسام",
+      "searchPlaceholder": "البحث عن الأوسمة...",
+      "loading": "جاري تحميل الأوسمة...",
+      "empty": "لم يتم العثور على أوسمة.",
+      "table": {
+        "preview": "معاينة",
+        "name": "الاسم",
+        "colors": "الألوان",
+        "actions": "الإجراءات"
+      },
+      "modal": {
+        "newTitle": "إضافة وسام جديد",
+        "editTitle": "تعديل الوسام",
+        "description": "تحديد الوسام وألوانه المميزة",
+        "name": "اسم الوسام",
+        "bg": "لون الخلفية",
+        "text": "لون النص",
+        "preview": "معاينة مباشرة",
+        "cancel": "إلغاء",
+        "update": "تحديث الوسام",
+        "create": "إنشاء وسام"
+      },
+      "deleteDialog": {
+        "title": "هل أنت متأكد تماماً؟",
+        "description": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف الوسام نهائياً وإزالته من جميع المنتجات.",
+        "cancel": "إلغاء",
+        "confirm": "حذف الوسام"
+      }
+    },
+    "customersPage": {
+      "title": "العملاء",
+      "subtitle": "عرض وإدارة العملاء المسجلين وأدوارهم.",
+      "searchPlaceholder": "البحث عن العملاء...",
+      "table": {
+        "avatar": "الصورة",
+        "customer": "العميل",
+        "role": "الدور",
+        "joined": "تاريخ الانضمام",
+        "status": "الحالة",
+        "actions": "الإجراءات",
+        "you": "أنت",
+        "na": "غير متوفر",
+        "empty": "لم يتم العثور على عملاء."
+      },
+      "roles": {
+        "admin": "مشرف",
+        "customer": "عميل"
+      },
+      "statuses": {
+        "active": "نشط",
+        "blocked": "محظور"
+      },
+      "menu": {
+        "label": "إدارة المستخدم",
+        "edit": "تعديل البيانات والدور",
+        "reset": "إعادة تعيين كلمة المرور",
+        "block": "حظر المستخدم",
+        "unblock": "إلغاء حظر المستخدم",
+        "delete": "حذف الحساب"
+      },
+      "modals": {
+        "edit": {
+          "title": "تعديل بيانات المستخدم",
+          "description": "تحديث بيانات تعريف المستخدم وصلاحياته",
+          "name": "الاسم الكامل",
+          "email": "البريد الإلكتروني",
+          "role": "دور النظام",
+          "cancel": "إلغاء",
+          "update": "تحديث المستخدم"
+        },
+        "reset": {
+          "title": "إعادة تعيين كلمة المرور",
+          "description": "تغيير كلمة مرور المستخدم الحالية بشكل آمن",
+          "password": "كلمة المرور الجديدة",
+          "placeholder": "أدخل 6 أحرف على الأقل",
+          "notice": "سيؤدي هذا إلى تغيير كلمة مرور المستخدم على الفور. سيتعين عليهم تسجيل الدخول مرة أخرى.",
+          "cancel": "إلغاء",
+          "confirm": "إعادة تعيين"
+        },
+        "block": {
+          "title": "حظر حساب المستخدم؟",
+          "unblockTitle": "إلغاء حظر الحساب؟",
+          "description": "سيؤدي هذا إلى منع المستخدم من تسجيل الدخول أو استخدام حسابه فوراً.",
+          "unblockDescription": "سيؤدي هذا إلى استعادة وصول المستخدم إلى حسابه والمتجر.",
+          "cancel": "إلغاء",
+          "confirm": "تأكيد الحظر",
+          "confirmUnblock": "تأكيد إلغاء الحظر"
+        },
+        "delete": {
+          "title": "حذف الحساب نهائياً؟",
+          "description": "هل أنت متأكد من حذف هذا الحساب؟ هذا الإجراء غير قابل للتراجع وسيتم فقدان جميع البيانات المرتبطة به.",
+          "cancel": "إلغاء",
+          "confirm": "حذف الحساب"
+        }
+      },
+      "messages": {
+        "updateSuccess": "تم تحديث المستخدم بنجاح",
+        "updateError": "فشل تحديث المستخدم",
+        "resetSuccess": "تم إعادة تعيين كلمة المرور بنجاح",
+        "resetError": "فشل إعادة تعيين كلمة المرور",
+        "blockSuccess": "تم حظر المستخدم بنجاح",
+        "unblockSuccess": "تم إلغاء حظر المستخدم بنجاح",
+        "toggleBlockError": "فشل تغيير حالة الحظر",
+        "deleteSuccess": "تم حذف المستخدم بنجاح",
+        "deleteError": "فشل حذف المستخدم",
+        "fatalError": "حدث خطأ فادح"
+      }
+    },
+    "settingsPage": {
+      "title": "إعدادات المتجر",
+      "subtitle": "التكوين العام لمتجرك",
+      "save": "حفظ التغييرات",
+      "tabs": {
+        "storefront": "واجهة المتجر",
+        "checkout": "الدفع والرسوم"
+      },
+      "storefront": {
+        "announcements": {
+          "titleEn": "Messages (EN)",
+          "titleAr": "الرسائل (بالعربية)",
+          "addEn": "إضافة EN",
+          "addAr": "إضافة AR",
+          "placeholderEn": "الرسالة بالإنجليزية",
+          "placeholderAr": "الرسالة بالعربية",
+          "empty": "لا توجد رسائل نشطة"
+        },
+        "hero": {
+          "title": "قسم الهيرو (Hero)",
+          "bgImage": "صورة خلفية الهيرو",
+          "changeImage": "تغيير الصورة",
+          "uploadImage": "رفع صورة الهيرو",
+          "uploading": "جاري الرفع...",
+          "headingEn": "العنوان (EN)",
+          "headingAr": "العنوان (AR)",
+          "btnTextEn": "نص الزر (EN)",
+          "btnTextAr": "نص الزر (AR)",
+          "btnLink": "رابط الزر",
+          "noticeTitle": "تم تطبيق التخطيط المتميز",
+          "noticeDesc": "ينشئ قسم الهيرو بصورة واحدة انطباعاً أولياً قوياً ومركزاً."
+        },
+        "brand": {
+          "title": "الحضور الاجتماعي للعلامة التجارية",
+          "whatsapp": "تواصل واتساب",
+          "facebook": "رابط فيسبوك",
+          "instagram": "رابط انستجرام"
+        }
+      },
+      "checkout": {
+        "instapay": {
+          "label": "رقم انستاباي",
+          "notice": "يستخدم في خطوة دفع الطلب وتفاصيل الطلب في لوحة التحكم."
+        },
+        "shipping": {
+          "label": "رسوم الشحن (ج.م)",
+          "notice": "أدخل 0 للشحن المجاني افتراضياً."
+        }
+      },
+      "messages": {
+        "success": "تم تحديث إعدادات المتجر",
+        "error": "فشل حفظ الإعدادات",
+        "fatalError": "خطأ فادح أثناء حفظ الإعدادات"
+      }
+    }
+  },
+  "footer": {
+    "builtForExcellence": "صنع للتميز",
+    "fullySecured": "مؤمن بالكامل",
+    "instaPayReady": "جاهز للإرسال عبر InstaPay",
+    "campusExpress": "توصيل سريع للجامعة",
+    "loadingCategories": "جاري تحميل الأقسام..."
+  },
+  "home": {
+    "trustedBy": "موثوق به من كبار الأطباء",
+    "clinicalGrade": "جودة طبية معتمدة",
+    "campusDelivery": "شحن سريع لكافة المناطق",
+    "securePayments": "مدفوعات آمنة",
+    "shopByCategory": "تسوق حسب القسم",
+    "noCategories": "لم يتم العثور على أقسام",
+    "bestSellers": "الأكثر مبيعاً",
+    "starterKits": "حقيبة أودا وعروض التوفير",
+    "bundleAndSave": "وفّر مع المجموعات",
+    "viewBundle": "عرض المجموعة",
+    "whatStudentsSay": "آراء العملاء"
+  },
+  "productsPage": {
+    "instruments": "الأدوات",
+    "ourCatalog": "كتالوج المنتجات",
+    "catalogDesc": "أدوات سريرية وأطقم تشخيصية عالية الدقة مصممة للتميز في بيئات الرعاية الصحية الحديثة.",
+    "clearAllFilters": "مسح كل عوامل التصفية",
+    "noMatchMsg": "حاول تخفيف عوامل التصفية أو تنظيف بحثك للعثور على ما تبحث عنه."
+  },
+  "aboutPage": {
+    "title": "أدوات متميزة للطبيب الحديث",
+    "desc": "عدة هو مصدرك الموثوق لأدوات طب الأسنان والجراحة المتميزة في مصر. نقوم بتوريد أدوات طبية أصلية للمتخصصين والعيادات.",
+    "whyOdda": "لماذا عدة؟",
+    "clinicalTools": "أدوات سريرية أصلية",
+    "clinicalDesc": "أدوات طبية معتمدة بنسبة 100٪ من شركات مصنعة معترف بها عالمياً.",
+    "campusDelivery": "شحن سريع للأطباء",
+    "campusDesc": "توصيل سريع وموثوق مباشرة إلى العيادات والمراكز الطبية الكبرى في القاهرة خلال 24 ساعة.",
+    "expertSupport": "دعم خبراء",
+    "expertDesc": "مستشارون طبيون مخصصون متاحون لمساعدتك في اختيار الأدوات المناسبة لاحتياجاتك الخاصة.",
+    "browseOddas": "تصفح الكتالوج"
+  },
+  "trackingPage": {
+    "title": "تتبع الطلب",
+    "subtitle": "راقب شحنتك في الوقت الفعلي",
+    "placeholder": "أدخل رقم الطلب (مثل 69b3...)",
+    "trackBtn": "تتبع الطلب",
+    "orderId": "رقم الطلب",
+    "customer": "العميل",
+    "total": "المجموع",
+    "method": "طريقة الدفع",
+    "orderItems": "عناصر الطلب",
+    "qty": "الكمية",
+    "ea": "للوحدة",
+    "noOrderData": "لم يتم العثور على بيانات طلب لهذا الرقم.",
+    "enterId": "أدخل رقماً لبدء التتبع"
+  },
+  "checkoutPage": {
+    "emptyCart": "عربة التسوق فارغة",
+    "addTools": "أضف بعض الأدوات السريرية قبل إتمام الدفع",
+    "goToCatalog": "الذهاب للكتالوج",
+    "secureCheckout": "دفع آمن",
+    "auth": "الدخول",
+    "cart": "العربة",
+    "info": "البيانات",
+    "finish": "النهاية",
+    "howToCheckout": "كيف تود إتمام الدفع؟",
+    "chooseOption": "اختر خياراً أدناه للمتابعة في طلبك السريري.",
+    "guestCheckout": "المتابعة كزائر",
+    "or": "أو",
+    "signIn": "تسجيل الدخول",
+    "orderSummary": "ملخص الطلب",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "free": "مجاني",
+    "proceedShipping": "المتابعة للشحن",
+    "shippingInfo": "معلومات الشحن",
+    "fullName": "الاسم الكامل",
+    "phone": "رقم الهاتف",
+    "address": "عنوان التوصيل",
+    "email": "البريد الإلكتروني",
+    "city": "المدينة",
+    "back": "رجوع",
+    "nextPayment": "التالي: الدفع",
+    "choosePayment": "اختر طريقة الدفع",
+    "cod": "الدفع عند الاستلام",
+    "codDesc": "ادفع عند باب منزلك",
+    "instapay": "تحويل انستاباي",
+    "instapayDesc": "تحويل بنكي آمن",
+    "sendTo": "أرسل إلى",
+    "uploadScreenshot": "رفع صورة الإيصال",
+    "uploadNote": "يرجى رفع صورة لتأكيد التحويل الخاص بك لإتمام الطلب.",
+    "completeOrder": "إتمام الطلب"
+  },
+  "orders": {
+    "title": "طلباتي",
+    "noOrders": "لا توجد طلبات بعد",
+    "noOrdersDesc": "عندما تقوم بتقديم طلب، سيظهر هنا. ابدأ بتصفح مجموعتنا وجد ما تحتاجه.",
+    "browseProducts": "تصفح المنتجات",
+    "orderNumber": "رقم الطلب",
+    "date": "التاريخ",
+    "total": "الإجمالي",
+    "qtyShort": "الكمية",
+    "viewDetails": "عرض التفاصيل",
+    "pendingPaymentNote": "طلبك في انتظار التحقق من الدفع. إذا لم تقم برفع لقطة شاشة الدفع بعد، يرجى القيام بذلك من صفحة التأكيد."
+  },
+  "confirmationPage": {
+    "notFoundTitle": "لم يتم العثور على الطلب",
+    "notFoundDesc": "لم نتمكن من العثور على الطلب الذي تبحث عنه. يرجى التحقق من الرابط أو الاتصال بالدعم.",
+    "browseCatalog": "تصفح الكتالوج",
+    "thankYou": "شكراً لطلبك!",
+    "emailSent": "لقد أرسلنا بريداً إلكترونياً للتأكيد يحتوي على تفاصيل طلبك. يرجى التحقق من صندوق الوارد (ومجلد البريد غير الهام) للحصول على التحديثات.",
+    "orderNum": "رقم الطلب",
+    "placed": "تاريخ الطلب",
+    "orderStatus": "حالة الطلب",
+    "itemsOrdered": "العناصر المطلوبة",
+    "shippingTo": "الشحن إلى",
+    "recipient": "المستلم",
+    "paymentDetails": "تفاصيل الدفع",
+    "verificationNote": "ملاحظة التحقق",
+    "verificationDesc": "تحويل انستاباي الخاص بك قيد التحقق. سيبدأ التعقيم بمجرد التحقق منه.",
+    "continueShopping": "مواصلة التسوق",
+    "identifying": "جاري تحديد الطلب..."
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "userPlaceholder": "مستخدم",
+    "orderHistory": "سجل الطلبات",
+    "viewOrders": "عرض سجل طلباتك",
+    "accountSettings": "إعدادات الحساب",
+    "manageAccount": "إدارة ملفك الشخصي (قريباً)",
+    "adminDashboard": "لوحة الإدارة",
+    "adminDesc": "الوصول إلى أدوات إدارة المتجر",
+    "signOut": "تسجيل الخروج",
+    "more": "المزيد"
+  },
+  "toasts": {
+    "success": "تم بنجاح",
+    "error": "خطأ",
+    "info": "معلومات",
+    "orderStatusUpdated": "تم تحديث حالة الطلب",
+    "failedToUpdateStatus": "فشل تحديث الحالة",
+    "somethingWentWrong": "حدث خطأ ما",
+    "failedToLoadOrder": "فشل تحميل تفاصيل الطلب",
+    "numberCopied": "تم نسخ الرقم بنجاح",
+    "addedToCart": "تمت الإضافة للسلة",
+    "addedToCartDesc": "تم إضافة المنتج بنجاح",
+    "magicFillComplete": "تم الملء التلقائي",
+    "magicFillDesc": "تم ملء حقول النموذج بنجاح!",
+    "invalidJson": "JSON غير صالح",
+    "invalidJsonDesc": "يرجى التأكد من أن مخرجات الذكاء الاصطناعي هي كائن JSON صالح.",
+    "promptCopied": "تم نسخ الأمر!",
+    "promptCopiedDesc": "قم بلصقه في Claude 3.5 أو GPT-4o",
+    "uploadFailed": "فشل الرفع",
+    "errorUploading": "خطأ في رفع الصورة",
+    "templatesUpdated": "تم تحديث قوالب البريد!",
+    "itemRemoved": "تم إزالة المنتج",
+    "cartCleared": "تم إفراغ السلة",
+    "categorySaved": "تم حفظ القسم بنجاح",
+    "categoryFailed": "فشل حفظ القسم",
+    "badgeSaved": "تم حفظ الوسام بنجاح",
+    "badgeFailed": "فشل حفظ الوسام",
+    "orderPlaced": "تم تقديم الطلب بنجاح! 📧",
+    "orderPlacedDesc": "يرجى التحقق من بريدك الإلكتروني للحصول على إيصال ورابط التتبع.",
+    "pleaseSignIn": "يرجى تسجيل الدخول للمتابعة",
+    "insufficientStock": "الكمية المطلوبة غير متوفرة",
+    "productDeleted": "تم حذف المنتج بنجاح",
+    "productDeleteFailed": "فشل حذف المنتج",
+    "categoryDeleted": "تم حذف القسم بنجاح",
+    "categoryDeleteFailed": "فشل حذف القسم",
+    "badgeDeleted": "تم حذف الوسام بنجاح",
+    "badgeDeleteFailed": "فشل حذف الوسام",
+    "userUpdated": "تم تحديث المستخدم بنجاح",
+    "userUpdateError": "فشل تحديث المستخدم",
+    "passwordReset": "تم إعادة تعيين كلمة المرور بنجاح",
+    "passwordResetError": "فشل إعادة تعيين كلمة المرور",
+    "userBlocked": "تم حظر المستخدم بنجاح",
+    "userUnblocked": "تم إلغاء حظر المستخدم بنجاح",
+    "userToggleBlockError": "فشل تغيير حالة الحظر",
+    "userDeleted": "تم حذف المستخدم بنجاح",
+    "userDeleteError": "فشل حذف المستخدم",
+    "reviewSubmitted": "تم إرسال التقييم بنجاح",
+    "reviewSubmitFailed": "فشل إرسال التقييم",
+    "loginSuccess": "تم تسجيل الدخول بنجاح",
+    "loginError": "البريد الإلكتروني أو كلمة المرور غير صالحة",
+    "registerSuccess": "تم إنشاء الحساب بنجاح",
+    "registerError": "فشل إنشاء الحساب"
+  }
+}

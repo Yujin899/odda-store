@@ -6,19 +6,21 @@ import {
   Facebook, 
   Instagram, 
   MessageCircle, 
-  Mail, 
-  Phone, 
-  MapPin, 
   ArrowRight,
   ShieldCheck,
   CreditCard,
   Truck
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export function Footer() {
   const [settings, setSettings] = useState<any>(null);
   const [categories, setCategories] = useState<any[]>([]);
+  const { language } = useLanguageStore();
+  const dict = language === 'en' ? en : ar;
 
   useEffect(() => {
     // Fetch categories and settings
@@ -35,7 +37,9 @@ export function Footer() {
   const igLink = settings?.socialLinks?.instagram || "#";
   const waNumber = settings?.whatsappNumber || "";
   const email = settings?.contactEmail || "contact@oddastore.com";
-  const description = settings?.storeDescription || "Precision Clinical Instruments for the next generation of dental professionals. Engineering accuracy for modern healthcare.";
+  const description = (language === 'ar' && settings?.storeDescriptionAr) 
+    ? settings.storeDescriptionAr 
+    : (settings?.storeDescription || "Precision Clinical Instruments for the next generation of dental professionals. Engineering accuracy for modern healthcare.");
 
   return (
     <footer className="w-full bg-navy pt-20 pb-10 text-white overflow-hidden">
@@ -51,6 +55,7 @@ export function Footer() {
                   src="/logo.png" 
                   alt="Odda Logo" 
                   fill 
+                  sizes="(max-width: 768px) 100vw, 128px"
                   className="object-contain"
                 />
               </div>
@@ -75,16 +80,21 @@ export function Footer() {
 
           {/* Column 2: Quick Links */}
           <div className="space-y-8">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">Navigation</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">{dict.common.quickLinks}</h4>
             <ul className="space-y-4">
-              {['Home', 'Products', 'About', 'Order Tracking'].map((link) => (
-                <li key={link}>
+              {[
+                { label: dict.common.home, href: '/' },
+                { label: dict.common.allProducts, href: '/products' },
+                { label: dict.common.about, href: '/about' },
+                { label: dict.common.trackOrder, href: '/order-tracking' }
+              ].map((link) => (
+                <li key={link.label}>
                   <Link 
-                    href={link === 'Home' ? '/' : `/${link.toLowerCase().replace(' ', '-')}`} 
+                    href={link.href} 
                     className="group text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2"
                   >
-                    <ArrowRight className="size-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary)" />
-                    {link}
+                    <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary) ${language === 'ar' ? 'rotate-180' : ''}`} />
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -93,7 +103,7 @@ export function Footer() {
 
           {/* Column 3: Top Categories */}
           <div className="space-y-8">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">Categories</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">{dict.common.categories}</h4>
             <ul className="space-y-4">
               {categories.length > 0 ? categories.slice(0, 5).map((cat) => (
                 <li key={cat._id}>
@@ -101,12 +111,12 @@ export function Footer() {
                     href={`/products?categoryId=${cat._id}`} 
                     className="group text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2"
                   >
-                    <ArrowRight className="size-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary)" />
-                    {cat.name}
+                    <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary) ${language === 'ar' ? 'rotate-180' : ''}`} />
+                    {language === 'ar' && cat.nameAr ? cat.nameAr : cat.name}
                   </Link>
                 </li>
               )) : (
-                <li className="text-sm text-white/20 italic">Loading categories...</li>
+                <li className="text-sm text-white/20 italic">{dict.footer.loadingCategories}</li>
               )}
             </ul>
           </div>
@@ -117,25 +127,25 @@ export function Footer() {
         <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
             <p className="text-[10px] text-white/20 uppercase font-bold tracking-[0.2em]">
-              © 2026 Odda Store. Precision Clinical Assets.
+              © 2026 Odda Store. {dict.common.allRightsReserved}.
             </p>
             <div className="flex items-center gap-4 opacity-30">
-              <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Built for excellence</span>
+              <span className="text-[9px] uppercase font-bold tracking-[0.3em]">{dict.footer.builtForExcellence}</span>
             </div>
           </div>
           
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 sm:gap-6">
             <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
               <ShieldCheck size={14} className="text-(--primary)" />
-              <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">Fully Secured</span>
+              <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">{dict.footer.fullySecured}</span>
             </div>
             <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
               <CreditCard size={14} className="text-(--primary)" />
-              <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">InstaPay Ready</span>
+              <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">{dict.footer.instaPayReady}</span>
             </div>
             <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-(--primary)/10 border border-(--primary)/20 rounded-sm">
               <Truck size={14} className="text-(--primary)" />
-              <span className="text-[9px] font-bold uppercase tracking-widest text-white">Campus Express</span>
+              <span className="text-[9px] font-bold uppercase tracking-widest text-white">{dict.footer.campusExpress}</span>
             </div>
           </div>
         </div>

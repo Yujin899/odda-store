@@ -22,6 +22,9 @@ import { useCartStore } from '@/store/useCartStore';
 import { useToastStore } from '@/store/useToastStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSession } from 'next-auth/react';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 type Step = 'gate' | 'summary' | 'shipping' | 'payment';
 
@@ -29,6 +32,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalAmount, clearCart } = useCartStore();
   const { addToast } = useToastStore();
+  const { language } = useLanguageStore();
+  const dict = language === 'en' ? en : ar;
 
   const [step, setStep] = useState<Step>('gate');
   const [isGuest, setIsGuest] = useState(false);
@@ -75,9 +80,9 @@ export default function CheckoutPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
         <ShoppingBasket className="size-16 text-muted-foreground/20 mb-4 stroke-[1.5px]" />
-        <h2 className="text-xl font-bold uppercase tracking-tight text-foreground">Your cart is empty</h2>
-        <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2">Add some clinical tools before checking out</p>
-        <Link href="/products" className="mt-8 px-10 py-4 bg-foreground text-background font-black rounded-(--radius) uppercase tracking-[0.2em] text-[10px] shadow-2xl hover:-translate-y-1 transition-all">Go To Catalog</Link>
+        <h2 className="text-xl font-bold uppercase tracking-tight text-foreground">{dict.checkoutPage.emptyCart}</h2>
+        <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mt-2">{dict.checkoutPage.addTools}</p>
+        <Link href="/products" className="mt-8 px-10 py-4 bg-foreground text-background font-black rounded-(--radius) uppercase tracking-[0.2em] text-[10px] shadow-2xl hover:-translate-y-1 transition-all">{dict.checkoutPage.goToCatalog}</Link>
       </div>
     );
   }
@@ -89,8 +94,8 @@ export default function CheckoutPage() {
       // Validate shipping fields
       if (!formData.fullName || !formData.phone || !formData.address || !formData.email) {
         addToast({
-          title: 'Missing Information',
-          description: 'Please fill in all shipping details, including your email.',
+          title: language === 'ar' ? 'معلومات ناقصة' : 'Missing Information',
+          description: language === 'ar' ? 'يرجى ملء جميع تفاصيل الشحن، بما في ذلك بريدك الإلكتروني.' : 'Please fill in all shipping details, including your email.',
           type: 'error',
         });
         return;
@@ -131,8 +136,8 @@ export default function CheckoutPage() {
       setUploadedProofUrl(data.url);
     } catch (error) {
       addToast({
-        title: 'Upload Error',
-        description: 'Failed to upload screenshot. Please try again.',
+        title: dict.toasts.uploadFailed,
+        description: dict.toasts.errorUploading,
         type: 'error',
       });
       setScreenshot(null);
@@ -157,6 +162,7 @@ export default function CheckoutPage() {
         items: items.map(item => ({
           productId: item.id,
           name: item.name,
+          nameAr: item.nameAr,
           price: item.price,
           quantity: item.quantity,
           image: item.image,
@@ -164,6 +170,7 @@ export default function CheckoutPage() {
         totalAmount: grandTotal, // Use grand total with shipping fee
         paymentMethod: paymentMethod === 'cod' ? 'COD' : 'InstaPay',
         paymentProof: uploadedProofUrl,
+        locale: language,
       };
 
       const orderRes = await fetch('/api/orders', {
@@ -180,8 +187,8 @@ export default function CheckoutPage() {
       const orderData = await orderRes.json();
 
       addToast({
-        title: 'Order Placed Successfully! 📧',
-        description: 'Please check your email for your receipt and tracking link.',
+        title: dict.toasts.orderPlaced,
+        description: dict.toasts.orderPlacedDesc,
         type: 'success',
       });
 
@@ -189,8 +196,8 @@ export default function CheckoutPage() {
       router.push(`/order-confirmation?id=${orderData.orderNumber}`);
     } catch (error: any) {
       addToast({
-        title: 'Checkout Error',
-        description: error.message || 'Something went wrong. Please try again.',
+        title: dict.toasts.error,
+        description: error.message || dict.toasts.somethingWentWrong,
         type: 'error',
       });
     } finally {
@@ -203,7 +210,7 @@ export default function CheckoutPage() {
       <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20">
         {/* Header */}
         <div className="flex flex-col items-center mb-16">
-          <h1 className="text-3xl font-black uppercase tracking-tighter mb-8">Secure Checkout</h1>
+          <h1 className="text-3xl font-black uppercase tracking-tighter mb-8">{dict.checkoutPage.secureCheckout}</h1>
 
           {/* Progress Bar */}
           <div className="flex items-center w-full max-w-md relative px-4">
@@ -215,10 +222,10 @@ export default function CheckoutPage() {
 
             <div className="flex justify-between w-full">
               {[
-                { id: 'gate', icon: User, label: 'Auth' },
-                { id: 'summary', icon: ShoppingCart, label: 'Cart' },
-                { id: 'shipping', icon: Truck, label: 'Info' },
-                { id: 'payment', icon: WalletCards, label: 'Finish' }
+                { id: 'gate', icon: User, label: dict.checkoutPage.auth },
+                { id: 'summary', icon: ShoppingCart, label: dict.checkoutPage.cart },
+                { id: 'shipping', icon: Truck, label: dict.checkoutPage.info },
+                { id: 'payment', icon: WalletCards, label: dict.checkoutPage.finish }
               ].map((s, idx) => {
                 const isCompleted = idx < ['gate', 'summary', 'shipping', 'payment'].indexOf(step);
                 const isActive = step === s.id;
@@ -251,8 +258,8 @@ export default function CheckoutPage() {
                 className="max-w-md mx-auto w-full space-y-8 py-8"
               >
                 <div className="text-center space-y-4">
-                  <h2 className="text-xl font-black uppercase tracking-tight italic">How would you like to checkout?</h2>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest px-8 leading-relaxed">Choose an option below to proceed with your clinical {isGuest ? 'guest ' : ''}order.</p>
+                  <h2 className="text-xl font-black uppercase tracking-tight italic">{dict.checkoutPage.howToCheckout}</h2>
+                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest px-8 leading-relaxed">{dict.checkoutPage.chooseOption}</p>
                 </div>
 
                 <div className="flex flex-col gap-4">
@@ -260,17 +267,17 @@ export default function CheckoutPage() {
                     onClick={() => { setIsGuest(true); handleNext(); }}
                     className="w-full h-16 bg-white border-2 border-slate-100 text-foreground font-black text-[10px] uppercase tracking-[0.2em] rounded-(--radius) shadow-sm hover:border-(--primary) hover:bg-slate-50 transition-all cursor-pointer outline-none"
                   >
-                    Continue as Guest
+                    {dict.checkoutPage.guestCheckout}
                   </button>
                   <div className="relative flex items-center justify-center py-2">
                     <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100"></div></div>
-                    <span className="relative bg-background px-3 text-[9px] font-black uppercase tracking-widest text-slate-300">or</span>
+                    <span className="relative bg-background px-3 text-[9px] font-black uppercase tracking-widest text-slate-300">{dict.checkoutPage.or}</span>
                   </div>
                   <button
                     onClick={() => router.push('/login?redirect=/checkout')}
                     className="w-full h-16 bg-foreground text-background font-black text-[10px] uppercase tracking-[0.2em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95 cursor-pointer outline-none border-none"
                   >
-                    Sign In to Account
+                    {dict.checkoutPage.signIn}
                   </button>
                 </div>
               </motion.div>
@@ -286,42 +293,42 @@ export default function CheckoutPage() {
               >
                 <div className="bg-white border border-slate-100 rounded-(--radius) shadow-xl overflow-hidden">
                   <div className="p-6 border-b border-slate-50 bg-slate-50/50">
-                    <h2 className="text-xs font-black uppercase tracking-[0.2em]">Order Summary</h2>
+                    <h2 className="text-xs font-black uppercase tracking-[0.2em]">{dict.checkoutPage.orderSummary}</h2>
                   </div>
                   <div className="divide-y divide-slate-50">
                     {items.map((item) => (
                       <div key={item.id} className="p-6 flex items-center gap-6">
                         <div className="w-16 h-16 bg-muted rounded-sm overflow-hidden shrink-0 border border-slate-100 relative">
-                          <Image src={item.image} fill className="object-cover" alt={item.name} />
+                          <Image src={item.image} fill className="object-cover" alt={language === 'ar' && item.nameAr ? item.nameAr : item.name} />
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-xs font-black uppercase tracking-tight">{item.name}</h4>
-                          <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1">Qty: {item.quantity}</p>
+                          <h4 className="text-xs font-black uppercase tracking-tight">{language === 'ar' && item.nameAr ? item.nameAr : item.name}</h4>
+                          <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1">{dict.trackingPage.qty}: {item.quantity}</p>
                         </div>
-                        <p className="text-xs font-black">{(item.price * item.quantity).toLocaleString()} EGP</p>
+                        <p className="text-xs font-black">{(item.price * item.quantity).toLocaleString()} {dict.common.egp}</p>
                       </div>
                     ))}
                   </div>
                   <div className="p-6 bg-slate-50/50 space-y-3">
                     <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      <span>Subtotal</span>
-                      <span>{totalAmount.toLocaleString()} EGP</span>
+                      <span>{dict.checkoutPage.subtotal}</span>
+                      <span>{totalAmount.toLocaleString()} {dict.common.egp}</span>
                     </div>
                     <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      <span>Shipping</span>
+                      <span>{dict.checkoutPage.shipping}</span>
                       {currentShippingFee === 0 ? (
-                        <span className="text-emerald-600">FREE</span>
+                        <span className="text-emerald-600">{dict.checkoutPage.free}</span>
                       ) : (
-                        <span>{currentShippingFee.toLocaleString()} EGP</span>
+                        <span>{currentShippingFee.toLocaleString()} {dict.common.egp}</span>
                       )}
                     </div>
                     <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline">
-                      <span className="text-xs font-black uppercase tracking-widest">Total</span>
-                      <span className="text-xl md:text-2xl font-black">{grandTotal.toLocaleString()} EGP</span>
+                      <span className="text-xs font-black uppercase tracking-widest">{dict.trackingPage.total}</span>
+                      <span className="text-xl md:text-2xl font-black">{grandTotal.toLocaleString()} {dict.common.egp}</span>
                     </div>
                   </div>
                 </div>
-                <button onClick={handleNext} className="w-full h-16 bg-foreground text-background font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95 cursor-pointer outline-none border-none">Proceed to Shipping</button>
+                <button onClick={handleNext} className="w-full h-16 bg-foreground text-background font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95 cursor-pointer outline-none border-none">{dict.checkoutPage.proceedShipping}</button>
               </motion.div>
             )}
 
@@ -334,10 +341,10 @@ export default function CheckoutPage() {
                 className="space-y-8"
               >
                 <div className="bg-white border border-slate-100 rounded-(--radius) shadow-xl p-8 space-y-6">
-                  <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-8">Shipping Information</h2>
+                  <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-8">{dict.checkoutPage.shippingInfo}</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                       <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">Full Name</label>
+                       <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">{dict.checkoutPage.fullName}</label>
                        <input
                          type="text"
                          value={formData.fullName}
@@ -347,7 +354,7 @@ export default function CheckoutPage() {
                        />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">Phone Number</label>
+                      <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">{dict.checkoutPage.phone}</label>
                       <input
                         type="tel"
                         value={formData.phone}
@@ -357,7 +364,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                       <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">Delivery Address</label>
+                       <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">{dict.checkoutPage.address}</label>
                        <input
                          type="text"
                          value={formData.address}
@@ -367,7 +374,7 @@ export default function CheckoutPage() {
                        />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                       <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">Email Address</label>
+                       <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">{dict.checkoutPage.email}</label>
                        <input
                          type="email"
                          value={formData.email}
@@ -378,7 +385,7 @@ export default function CheckoutPage() {
                        />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">City</label>
+                      <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-1">{dict.checkoutPage.city}</label>
                       <select
                         value={formData.city}
                         onChange={(e) => setFormData({...formData, city: e.target.value})}
@@ -392,8 +399,8 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <button onClick={handleBack} className="w-32 h-16 bg-white border border-slate-100 text-foreground font-black text-[10px] uppercase tracking-[0.2em] rounded-(--radius) hover:bg-slate-50 transition-all cursor-pointer outline-none">Back</button>
-                  <button onClick={handleNext} className="flex-1 h-16 bg-foreground text-background font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95 cursor-pointer outline-none border-none">Next: Payment</button>
+                  <button onClick={handleBack} className="w-32 h-16 bg-white border border-slate-100 text-foreground font-black text-[10px] uppercase tracking-[0.2em] rounded-(--radius) hover:bg-slate-50 transition-all cursor-pointer outline-none">{dict.checkoutPage.back}</button>
+                  <button onClick={handleNext} className="flex-1 h-16 bg-foreground text-background font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95 cursor-pointer outline-none border-none">{dict.checkoutPage.nextPayment}</button>
                 </div>
               </motion.div>
             )}
@@ -407,7 +414,7 @@ export default function CheckoutPage() {
                 className="space-y-8"
               >
                 <div className="bg-white border border-slate-100 rounded-(--radius) shadow-xl p-8">
-                  <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-8">Choose Payment Method</h2>
+                  <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-8">{dict.checkoutPage.choosePayment}</h2>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                     <div
@@ -416,8 +423,8 @@ export default function CheckoutPage() {
                     >
                       <Banknote className={`size-6 ${paymentMethod === 'cod' ? 'text-(--primary)' : 'text-slate-300'} stroke-[2px]`} />
                       <div>
-                        <h4 className="text-[10px] font-black uppercase tracking-widest">Cash on Delivery</h4>
-                        <p className="text-[9px] text-muted-foreground font-bold uppercase mt-1">Pay at your doorstep</p>
+                        <h4 className="text-[10px] font-black uppercase tracking-widest">{dict.checkoutPage.cod}</h4>
+                        <p className="text-[9px] text-muted-foreground font-bold uppercase mt-1">{dict.checkoutPage.codDesc}</p>
                       </div>
                     </div>
                     <div
@@ -426,8 +433,8 @@ export default function CheckoutPage() {
                     >
                       <QrCode className={`size-6 ${paymentMethod === 'instapay' ? 'text-(--primary)' : 'text-slate-300'} stroke-[2px]`} />
                       <div>
-                        <h4 className="text-[10px] font-black uppercase tracking-widest">Instapay Transfer</h4>
-                        <p className="text-[9px] text-muted-foreground font-bold uppercase mt-1">Secure bank transfer</p>
+                        <h4 className="text-[10px] font-black uppercase tracking-widest">{dict.checkoutPage.instapay}</h4>
+                        <p className="text-[9px] text-muted-foreground font-bold uppercase mt-1">{dict.checkoutPage.instapayDesc}</p>
                       </div>
                     </div>
                   </div>
@@ -444,14 +451,14 @@ export default function CheckoutPage() {
                             <Landmark className="size-6 text-(--primary) stroke-[2px]" />
                           </div>
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Send to address</p>
+                            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">{dict.checkoutPage.sendTo}</p>
                             <p className="text-xl sm:text-2xl font-black text-foreground tracking-tighter break-all">{currentInstapayNumber}</p>
                           </div>
                         </div>
                         <button 
                           onClick={() => {
                             navigator.clipboard.writeText(currentInstapayNumber);
-                            addToast({ title: 'Success', description: 'Number copied successfully', type: 'success' });
+                            addToast({ title: dict.toasts.success, description: dict.toasts.numberCopied, type: 'success' });
                           }}
                           className="size-10 rounded-full border border-slate-100 flex items-center justify-center hover:bg-white hover:text-(--primary) hover:border-(--primary) transition-all text-slate-400 self-end sm:self-auto shrink-0 bg-transparent cursor-pointer"
                         >
@@ -460,7 +467,7 @@ export default function CheckoutPage() {
                       </div>
 
                       <div className="space-y-4">
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed tracking-wide">Please upload a screenshot of your transfer confirmation to fulfill the order.</p>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase leading-relaxed tracking-wide">{dict.checkoutPage.uploadNote}</p>
                         <div className="relative">
                           {screenshot ? (
                             <div className="relative w-full h-48 rounded-(--radius) overflow-hidden border border-slate-200">
@@ -498,7 +505,7 @@ export default function CheckoutPage() {
                                 className="w-full h-32 border-2 border-dashed border-slate-200 rounded-(--radius) flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-white hover:border-(--primary) transition-all"
                               >
                                 <Camera className="size-6 text-muted-foreground stroke-[2px]" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Upload Screenshot</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{dict.checkoutPage.uploadScreenshot}</span>
                               </label>
                             </>
                           )}
@@ -509,7 +516,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex gap-4">
-                  <button onClick={handleBack} className="w-32 h-16 bg-white border border-slate-100 text-foreground font-black text-[10px] uppercase tracking-[0.2em] rounded-(--radius) hover:bg-slate-50 transition-all cursor-pointer outline-none">Back</button>
+                  <button onClick={handleBack} className="w-32 h-16 bg-white border border-slate-100 text-foreground font-black text-[10px] uppercase tracking-[0.2em] rounded-(--radius) hover:bg-slate-50 transition-all cursor-pointer outline-none">{dict.checkoutPage.back}</button>
                   <button 
                     disabled={isSubmitting || isUploadingScreenshot || (paymentMethod === 'instapay' && !uploadedProofUrl)}
                     onClick={handleSubmitOrder} 
@@ -524,7 +531,7 @@ export default function CheckoutPage() {
                     ) : (
                       <>
                         <CheckCircle2 className="size-5 stroke-[2.5px] shrink-0" />
-                        <span>Complete Order</span>
+                        <span>{dict.checkoutPage.completeOrder}</span>
                       </>
                     )}
                   </button>

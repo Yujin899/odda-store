@@ -4,15 +4,13 @@ import { Order } from '@/models/Order';
 import { User } from '@/models/User';
 import { OrdersManager } from '@/components/dashboard/OrdersManager';
 import { Skeleton } from '@/components/ui/skeleton';
+import { AdminOrdersHeaderClient } from '@/components/dashboard/AdminOrdersHeaderClient';
 
 export const dynamic = 'force-dynamic';
 
-async function OrdersList() {
+async function OrdersListContent() {
   await connectDB();
   
-  // Register User model for population
-  const _u = User;
-
   const orders = await Order.find({})
     .populate('userId', 'name email')
     .sort({ createdAt: -1 })
@@ -26,15 +24,10 @@ async function OrdersList() {
 export default function AdminOrdersPage() {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
-        <p className="text-muted-foreground">
-          Manage and track all customer orders and payments.
-        </p>
-      </div>
+      <AdminOrdersHeaderClient />
 
       <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-        <OrdersList />
+        <OrdersListContent />
       </Suspense>
     </div>
   );

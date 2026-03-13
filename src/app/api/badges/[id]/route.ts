@@ -4,7 +4,7 @@ import Badge from '@/models/Badge';
 import { Product } from '@/models/Product';
 import { auth } from '@/auth';
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const session = await auth();

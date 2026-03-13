@@ -4,10 +4,12 @@ import { Loader2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 export function Hero() {
   const [hero, setHero] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { language } = useLanguageStore();
 
   useEffect(() => {
     fetch('/api/settings')
@@ -32,8 +34,8 @@ export function Hero() {
   // Fallback defaults if no data exists
   const heroData = {
     image: hero?.image || "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
-    heading: hero?.heading || "Precision Clinical Instruments",
-    buttonText: hero?.buttonText || "Shop Collection",
+    heading: (language === 'ar' && hero?.headingAr) ? hero.headingAr : (hero?.heading || "Precision Clinical Instruments"),
+    buttonText: (language === 'ar' && hero?.buttonTextAr) ? hero.buttonTextAr : (hero?.buttonText || "Shop Collection"),
     buttonLink: hero?.buttonLink || "/products"
   };
 
@@ -46,6 +48,7 @@ export function Hero() {
           alt="Odda Hero" 
           fill 
           priority
+          sizes="100vw"
           className="object-cover"
         />
         {/* Premium Overlay */}
@@ -62,6 +65,7 @@ export function Hero() {
           <Link href={heroData.buttonLink}>
             <button className="px-10 py-4 mt-4 border-2 border-white text-white bg-transparent hover:bg-white hover:text-navy transition-all duration-300 ease-in-out font-black uppercase tracking-[0.2em] text-[10px] rounded-sm flex items-center gap-2 group cursor-pointer outline-none shadow-2xl">
               {heroData.buttonText}
+              <ArrowRight className="size-4 rtl:-scale-x-100 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
             </button>
           </Link>
         </div>

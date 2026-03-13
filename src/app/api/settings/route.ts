@@ -26,7 +26,8 @@ export async function GET() {
         shippingFee: 0,
         contactEmail: "contact@oddastore.com",
         storeDescription: "Precision Clinical Instruments for the next generation of dental professionals.",
-        socialLinks: { facebook: "", instagram: "" }
+        socialLinks: { facebook: "", instagram: "" },
+        defaultLanguage: "en"
       });
     }
 

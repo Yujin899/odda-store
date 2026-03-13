@@ -7,11 +7,19 @@ interface TopProductData {
   orders: number;
 }
 
-export function TopProductsChart({ data }: { data: TopProductData[] }) {
+export function TopProductsChart({ 
+  data,
+  language = 'en',
+  label = 'Orders'
+}: { 
+  data: TopProductData[],
+  language?: string,
+  label?: string
+}) {
   if (!data || data.length === 0) {
     return (
-      <div className="h-[300px] w-full flex items-center justify-center text-sm font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
-        No products data
+      <div className="h-[300px] w-full flex items-center justify-center text-sm font-bold uppercase tracking-widest text-muted-foreground">
+        {language === 'ar' ? 'لا توجد بيانات' : 'No products data'}
       </div>
     );
   }
@@ -23,8 +31,9 @@ export function TopProductsChart({ data }: { data: TopProductData[] }) {
   }));
 
   return (
-    <div className="h-[300px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="h-full w-full min-w-0 min-h-[300px] relative" dir="ltr">
+      <div className="absolute inset-0">
+        <ResponsiveContainer width="100%" height="100%" minHeight={300}>
         <BarChart
           data={formattedData}
           layout="vertical"
@@ -55,7 +64,7 @@ export function TopProductsChart({ data }: { data: TopProductData[] }) {
             cursor={{ fill: 'var(--muted)' }}
             itemStyle={{ color: 'var(--primary)', fontWeight: 800, fontSize: '12px' }}
             labelStyle={{ color: 'var(--muted-foreground)', fontWeight: 600, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}
-            formatter={(value: any) => [value || 0, 'Orders']}
+            formatter={(value: any) => [Number(value) || 0, label]}
           />
           <Bar dataKey="orders" radius={[0, 4, 4, 0]} barSize={24}>
             {formattedData.map((entry, index) => (
@@ -64,6 +73,7 @@ export function TopProductsChart({ data }: { data: TopProductData[] }) {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 }

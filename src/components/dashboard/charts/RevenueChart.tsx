@@ -7,18 +7,29 @@ interface RevenueData {
   revenue: number;
 }
 
-export function RevenueChart({ data }: { data: RevenueData[] }) {
+export function RevenueChart({ 
+  data, 
+  language = 'en',
+  label = 'Revenue',
+  currency = 'EGP'
+}: { 
+  data: RevenueData[], 
+  language?: string,
+  label?: string,
+  currency?: string
+}) {
   if (!data || data.length === 0) {
     return (
-      <div className="h-[300px] w-full flex items-center justify-center text-sm font-bold uppercase tracking-widest text-[var(--muted-foreground)]">
-        No revenue data
+      <div className="h-[300px] w-full flex items-center justify-center text-sm font-bold uppercase tracking-widest text-muted-foreground">
+        {language === 'ar' ? 'لا توجد بيانات' : 'No revenue data'}
       </div>
     );
   }
 
   return (
-    <div className="h-[300px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="h-full w-full min-w-0 min-h-[300px] relative" dir="ltr">
+      <div className="absolute inset-0">
+        <ResponsiveContainer width="100%" height="100%" minHeight={300}>
         <AreaChart
           data={data}
           margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
@@ -53,7 +64,7 @@ export function RevenueChart({ data }: { data: RevenueData[] }) {
             }}
             itemStyle={{ color: 'var(--primary)', fontWeight: 800, fontSize: '12px' }}
             labelStyle={{ color: 'var(--muted-foreground)', fontWeight: 600, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}
-            formatter={(value: any) => [`${(Number(value) || 0).toLocaleString()} EGP`, 'Revenue']}
+            formatter={(value: any) => [`${(Number(value) || 0).toLocaleString()} ${currency}`, label]}
           />
           <Area 
             type="monotone" 
@@ -65,6 +76,7 @@ export function RevenueChart({ data }: { data: RevenueData[] }) {
           />
         </AreaChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 }

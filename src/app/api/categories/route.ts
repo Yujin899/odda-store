@@ -10,7 +10,7 @@ export async function GET() {
   try {
     await connectDB();
     const categories = await Category.find({})
-      .select('_id name slug image')
+      .select('_id name nameAr slug description descriptionAr image')
       .sort({ name: 1 });
     return NextResponse.json({ categories });
   } catch (error: any) {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
     const body = await req.json();
-    const { name, slug, description, image } = body;
+    const { name, nameAr, slug, description, descriptionAr, image } = body;
 
     if (!name) {
       return NextResponse.json({ message: 'Category name is required' }, { status: 400 });
@@ -40,7 +40,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Category slug already exists' }, { status: 409 });
     }
 
-    const category = await Category.create({ name, slug: finalSlug, description, image });
+    const category = await Category.create({ 
+      name, 
+      nameAr, 
+      slug: finalSlug, 
+      description, 
+      descriptionAr, 
+      image 
+    });
     
     revalidatePath('/api/categories');
     revalidatePath('/');

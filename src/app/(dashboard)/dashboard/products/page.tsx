@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import mongoose from 'mongoose';
 import { connectDB } from '@/lib/mongodb';
 import { Product } from '@/models/Product';
 import { ProductsTable } from '@/components/dashboard/ProductsTable';
@@ -6,6 +7,8 @@ import { AddProductButton } from '@/components/dashboard/AddProductButton';
 import { Skeleton } from '@/components/ui/skeleton';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
+import { getDictionary } from '@/dictionaries';
+import { Language } from '@/dictionaries';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,23 +17,29 @@ interface Props {
     page?: string;
     search?: string;
     categoryId?: string;
+    lang?: string;
   }>;
 }
 
-async function ProductsList({ searchParams }: { searchParams: Awaited<Props['searchParams']> }) {
+// Extracting to a better named component
+async function ProductsListContent({ 
+  searchParams, 
+  language 
+}: { 
+  searchParams: Awaited<Props['searchParams']>,
+  language: Language
+}) {
   await connectDB();
   
-  // Ensure models are registered (especially Badge)
-  // @ts-ignore - just ensuring they are loaded
-  const _c = Category;
-  // @ts-ignore
-  const _b = Badge;
-
+  // Register models for population by touching them
+  if (mongoose.models && mongoose.models.Category) Category.modelName;
+  if (mongoose.models && mongoose.models.Badge) Badge.modelName;
+  
   const page = Number(searchParams.page) || 1;
   const limit = 20;
   const skip = (page - 1) * limit;
   
-  const query: Record<string, any> = {};
+  const query: Record<string, unknown> = {};
   if (searchParams.search) {
     query.name = { $regex: searchParams.search, $options: 'i' };
   }
@@ -47,7 +56,7 @@ async function ProductsList({ searchParams }: { searchParams: Awaited<Props['sea
       .limit(limit)
       .lean(),
     Product.countDocuments(query),
-    Category.find({}, '_id name').sort({ name: 1 }).lean()
+    Category.find({}, '_id name nameAr').sort({ name: 1 }).lean()
   ]);
 
   return (
@@ -63,22 +72,30 @@ async function ProductsList({ searchParams }: { searchParams: Awaited<Props['sea
 
 export default async function AdminProductsPage({ searchParams }: Props) {
   const resolvedParams = await searchParams;
+  // Note: Language will be handled by client store in the components, 
+  // but for the title/desc we need it here. We can use a default or detect from params if needed.
+  // Actually, since the layout is client-side and handles the language toggle, 
+  // we'll use a Client Component wrapper for the header if we want it to react instantly, 
+  // or just accept it might stay in one language until refresh.
+  // Given the layout structure, let's use a client wrapper for the header or just pass dict.
+  
+  // For now, let's assume 'ar' if we can detect it, else 'en'.
+  // We'll rely on the client components to handle the reactive parts.
   
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Products</h1>
-          <p className="text-muted-foreground">
-            Manage your store inventory and product details.
-          </p>
-        </div>
-        <AddProductButton />
-      </div>
+      <AdminProductsHeader />
 
       <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-        <ProductsList searchParams={resolvedParams} />
+        <ProductsListContent searchParams={resolvedParams} language="en" />
       </Suspense>
     </div>
   );
 }
+
+function AdminProductsHeader() {
+  // We need this to be reactive, so let's make it a client component or move logic
+  return <AdminProductsHeaderClient />;
+}
+
+import { AdminProductsHeaderClient } from '@/components/dashboard/AdminProductsHeaderClient';

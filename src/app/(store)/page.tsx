@@ -7,11 +7,15 @@ import {
 } from 'lucide-react';
 import { Hero } from '@/components/home/Hero';
 import { BestSellers } from '@/components/home/BestSellers';
-import { Testimonials } from '@/components/home/Testimonials';
+import HomeBundles from '@/components/home/HomeBundles';
 import { connectDB } from '@/lib/mongodb';
 import { Product } from '@/models/Product';
+import { Bundle } from '@/models/Bundle';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
+import { cookies } from 'next/headers';
+import en from '@/dictionaries/en.json';
+import ar from '@/dictionaries/ar.json';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60; // Revalidate every minute
@@ -19,7 +23,9 @@ export const revalidate = 60; // Revalidate every minute
 async function getFeaturedProducts() {
   await connectDB();
   // Register models for population
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   Category;
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   Badge;
   
   const products = await Product.find({ featured: true })
@@ -38,7 +44,7 @@ async function getCategories() {
 }
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
-  'Student Bundles': 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop',
+  'Clinical Bundles': 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop',
   'Diagnostics': 'https://images.unsplash.com/photo-1576091160550-217359f4ecf8?q=80&w=2070&auto=format&fit=crop',
   'Surgery': 'https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2070&auto=format&fit=crop',
   'Kits': 'https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop',
@@ -46,6 +52,10 @@ const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
 };
 
 export default async function Home() {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+  const dict = locale === 'en' ? en : ar;
+
   const [featuredProducts, categories] = await Promise.all([
     getFeaturedProducts(),
     getCategories()
@@ -60,28 +70,30 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <ShieldCheck className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">Trusted by Dental Students</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.trustedBy}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Stethoscope className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">Clinical Grade Quality</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.clinicalGrade}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Truck className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">Campus Delivery</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.campusDelivery}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Lock className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">Secure Payments</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.securePayments}</span>
           </div>
         </div>
       </section>
 
       {/* 4. Shop By Category */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-3xl font-black mb-12 uppercase tracking-tight text-[var(--navy)]">Shop By Category</h2>
+        <h2 className="text-3xl font-black mb-12 uppercase tracking-tight text-[var(--navy)]">{dict.home.shopByCategory}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
-          {categories.slice(0, 4).map((cat: any) => (
+          {categories.slice(0, 4).map((cat: { _id: string; name: string; nameAr?: string; image?: string }) => {
+            const catName = (locale === 'ar' && cat.nameAr) ? cat.nameAr : cat.name;
+            return (
             <Link 
               key={cat._id}
               href={`/products?categoryId=${cat._id}`} 
@@ -94,13 +106,13 @@ export default async function Home() {
                 }}
               ></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-white text-xl font-bold uppercase tracking-tighter">{cat.name}</span>
+                <span className="text-white text-xl font-bold uppercase tracking-tighter">{catName}</span>
               </div>
             </Link>
-          ))}
+          )})}
           {categories.length === 0 && (
             <div className="col-span-full py-10 text-center text-muted-foreground uppercase text-xs font-bold tracking-widest">
-              No categories found
+              {dict.home.noCategories}
             </div>
           )}
         </div>
@@ -108,7 +120,7 @@ export default async function Home() {
 
       <BestSellers products={featuredProducts} />
 
-      <Testimonials />
+      <HomeBundles />
     </>
   );
 }

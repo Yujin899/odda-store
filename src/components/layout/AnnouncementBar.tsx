@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Truck, ShieldCheck, RefreshCw, PhoneCall } from 'lucide-react';
+import { useLanguageStore } from '@/store/useLanguageStore';
 
 const MESSAGES = [
   { text: "Free Shipping on orders above 2600 EGP", icon: Truck },
@@ -11,19 +12,25 @@ const MESSAGES = [
 ];
 
 export function AnnouncementBar() {
-  const [messages, setMessages] = React.useState<string[]>([]);
+  const [messages, setMessages] = useState<string[]>([]);
+  const { language } = useLanguageStore();
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch('/api/settings').then(res => res.json()).then(data => {
-      if (data.announcements && data.announcements.length > 0) {
-        setMessages(data.announcements);
+      const arMessages = data.announcementsAr || [];
+      const enMessages = data.announcements || [];
+      
+      if (language === 'ar' && arMessages.length > 0) {
+        setMessages(arMessages);
+      } else if (enMessages.length > 0) {
+        setMessages(enMessages);
       } else {
         setMessages(MESSAGES.map(m => m.text));
       }
     }).catch(() => {
       setMessages(MESSAGES.map(m => m.text));
     });
-  }, []);
+  }, [language]);
 
   if (messages.length === 0) return null;
 
@@ -31,8 +38,8 @@ export function AnnouncementBar() {
   const displayMessages = [...messages, ...messages, ...messages];
 
   return (
-    <div className="w-full bg-navy h-10 overflow-hidden flex items-center relative z-50">
-      <div className="animate-marquee whitespace-nowrap flex items-center">
+    <div className="w-full bg-navy h-10 overflow-hidden flex items-center relative z-50" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={`${language === 'ar' ? 'animate-marquee-rtl' : 'animate-marquee'} whitespace-nowrap flex items-center`}>
         {displayMessages.map((msg, idx) => (
           <React.Fragment key={idx}>
             <div className="text-white text-[11px] sm:text-xs font-medium px-8 flex items-center gap-2">

@@ -1,0 +1,639 @@
+{
+  "common": {
+    "home": "Home",
+    "search": "Search...",
+    "cart": "Cart",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "myOrders": "My Orders",
+    "trackOrder": "Track Order",
+    "profile": "Profile",
+    "contact": "Contact",
+    "shopNow": "Shop Now",
+    "addToCart": "Add to Cart",
+    "quantity": "Quantity",
+    "total": "Total",
+    "checkout": "Checkout",
+    "proceedToCheckout": "Proceed to Checkout",
+    "shipping": "Shipping",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "free": "Free",
+    "egp": "EGP",
+    "featured": "Featured",
+    "allProducts": "All Products",
+    "products": "Products",
+    "bundles": "Bundles",
+    "categories": "Categories",
+    "about": "About",
+    "customerService": "Customer Service",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "allRightsReserved": "All rights reserved",
+    "checkEmail": "Please check your email for order confirmation.",
+    "noProductsFound": "No products found matching your criteria.",
+    "sortBy": "Sort by",
+    "filterByCategory": "Filter by category",
+    "resetFilters": "Reset Filters",
+    "delete": "Delete",
+    "edit": "Edit",
+    "error": "Error",
+    "success": "Success",
+    "premiumDentalTools": "Odda | Premium Dental Tools",
+    "cancel": "Cancel",
+    "dashboard": "Dashboard"
+  },
+  "products": {
+    "sortNewest": "Newest First",
+    "sortPriceAsc": "Price: Low to High",
+    "sortPriceDesc": "Price: High to Low",
+    "addToCart": "Add to Cart",
+    "quickView": "Quick View",
+    "features": "Key Features",
+    "description": "Description",
+    "relatedProducts": "Related Products"
+  },
+  "dashboard": {
+    "brandInitial": "O",
+    "brandName": "Odda",
+    "adminTooltip": "Admin Dashboard",
+    "topbarTitle": "Odda Admin Dashboard",
+    "backToStore": "Back to Store",
+    "signOut": "Sign Out",
+    "overview": "Overview",
+    "storeMetrics": "Store Performance Metrics",
+    "totalRevenue": "Total Revenue",
+    "totalOrders": "Total Orders",
+    "customers": "Customers",
+    "products": "Products",
+    "revenueConfirmed": "From confirmed orders",
+    "ordersAllTime": "All time orders",
+    "customersRegistered": "Registered users",
+    "productsActive": "Active inventory",
+    "revenueLast7Days": "Revenue (Last 7 Days)",
+    "orderStatus": "Order Status",
+    "topProducts": "Top Products",
+    "chartLabels": {
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "noData": "No data available",
+      "weekdays": {
+        "Sun": "Sun",
+        "Mon": "Mon",
+        "Tue": "Tue",
+        "Wed": "Wed",
+        "Thu": "Thu",
+        "Fri": "Fri",
+        "Sat": "Sat"
+      }
+    },
+    "statuses": {
+      "pending_payment": "Wait Pay",
+      "pending_verification": "To Verify",
+      "processing": "To Ship",
+      "shipped": "Transit",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "sidebar": {
+      "overview": "Overview",
+      "products": "Products",
+      "bundles": "Bundles",
+      "categories": "Categories",
+      "badges": "Badges",
+      "orders": "Orders",
+      "customers": "Customers",
+      "settings": "Settings",
+      "storefront": "Storefront"
+    },
+    "productsPage": {
+      "title": "Products",
+      "subtitle": "Manage your store inventory and product details.",
+      "addProduct": "Add Product",
+      "searchPlaceholder": "Search products...",
+      "filterByCategory": "Filter by category",
+      "allCategories": "All Categories",
+      "table": {
+        "image": "Image",
+        "name": "Name",
+        "category": "Category",
+        "price": "Price",
+        "stock": "Stock",
+        "badges": "Badges",
+        "actions": "Actions"
+      },
+      "badges": {
+        "featured": "Featured",
+        "outOfStock": "Out",
+        "lowStock": "Low"
+      },
+      "empty": "No products found.",
+      "pagination": {
+        "showing": "Showing",
+        "of": "of",
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page"
+      },
+      "deleteDialog": {
+        "title": "Are you absolutely sure?",
+        "description": "This action cannot be undone. This will permanently delete the product and remove it from our database.",
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "deleting": "Deleting..."
+      }
+    },
+    "ordersPage": {
+      "title": "Orders",
+      "subtitle": "Manage and track all customer orders and payments.",
+      "searchPlaceholder": "Search order ID or customer name...",
+      "workflow": "Active Workflow",
+      "tabs": {
+        "verify": "Verify",
+        "ship": "Ship",
+        "transit": "In Transit",
+        "delivered": "Delivered"
+      },
+      "table": {
+        "orderId": "Order ID",
+        "customer": "Customer",
+        "amount": "Amount",
+        "status": "Status",
+        "actions": "Actions",
+        "guest": "Guest",
+        "details": "Details",
+        "verify": "Verify",
+        "process": "Process",
+        "ship": "Ship Item",
+        "deliver": "Deliver"
+      },
+      "empty": "No active orders in this queue",
+      "systemNotice": {
+        "title": "System Notice",
+        "description": "Orders in this tab (along with their payment receipts) are permanently deleted automatically after 30 days to free up database and storage space."
+      },
+      "modal": {
+        "title": "Order Details",
+        "updateStatus": "Update Status",
+        "createdOn": "Created on",
+        "loading": "Loading order details...",
+        "shippingAddress": "Shipping Address",
+        "paymentInfo": "Payment Information",
+        "method": "Method",
+        "instapayNumber": "InstaPay Number",
+        "grandTotal": "Grand Total",
+        "orderItems": "Order Items",
+        "price": "Price",
+        "paymentProof": "Payment Proof",
+        "openOriginal": "Open Original",
+        "notFound": "Order not found"
+      }
+    },
+    "productForm": {
+      "newTitle": "New Product",
+      "editTitle": "Edit Product",
+      "untitled": "Untitled",
+      "cancel": "Cancel",
+      "update": "Update",
+      "publish": "Publish",
+      "sections": {
+        "basicInfo": "Basic Information",
+        "media": "Media Management",
+        "pricing": "Pricing & Stock",
+        "organization": "Organization"
+      },
+      "labels": {
+        "nameEn": "Product Name (EN)",
+        "nameAr": "Product Name (AR)",
+        "slug": "Slug (URL Fragment)",
+        "descriptionEn": "Description (EN)",
+        "descriptionAr": "Description (AR)",
+        "images": "Images",
+        "price": "Price (EGP)",
+        "originalPrice": "Original (EGP)",
+        "stock": "Stock Quantity",
+        "category": "Category",
+        "badge": "Badge",
+        "featured": "Featured"
+      },
+      "placeholders": {
+        "nameEn": "e.g. Surgical Scalpel Set",
+        "nameAr": "مثال: طقم مشارط جراحية",
+        "slug": "surgical-scalpel-set",
+        "descriptionEn": "Detailed product specifications...",
+        "descriptionAr": "مواصفات المنتج بالتفصيل...",
+        "price": "0.00",
+        "originalPrice": "Optional",
+        "selectCategory": "Select Category",
+        "noBadge": "No Badge",
+        "featuredDescription": "Show on homepage"
+      },
+      "badges": {
+        "none": "None",
+        "primary": "Primary"
+      },
+      "messages": {
+        "upload": "Upload",
+        "uploading": "Uploading...",
+        "noImages": "No images uploaded",
+        "validationError": "Validation Error",
+        "imageRequired": "At least one image is required",
+        "success": "Success",
+        "productSaved": "Product saved successfully",
+        "error": "Error",
+        "saveFailed": "Failed to save product",
+        "fatalError": "Fatal error saving product"
+      }
+    },
+    "categoriesPage": {
+      "title": "Categories",
+      "subtitle": "Manage your store product categories",
+      "addCategory": "Add Category",
+      "searchPlaceholder": "Search categories...",
+      "loading": "Loading categories...",
+      "empty": "No categories found.",
+      "table": {
+        "image": "Image",
+        "name": "Name",
+        "slug": "Slug",
+        "description": "Description",
+        "actions": "Actions"
+      },
+      "modal": {
+        "newTitle": "Add New Category",
+        "editTitle": "Edit Category",
+        "description": "Organize your products into logical collections",
+        "nameEn": "Category Name (EN)",
+        "nameAr": "Name (AR)",
+        "slug": "Slug (URL)",
+        "image": "Category Image",
+        "uploadImage": "Upload Image",
+        "descEn": "Description (EN)",
+        "descAr": "Description (AR)",
+        "descPlaceholderEn": "Tell customers about this category...",
+        "descPlaceholderAr": "أخبر العملاء عن هذا القسم...",
+        "cancel": "Cancel",
+        "update": "Update Category",
+        "create": "Create Category"
+      },
+      "deleteDialog": {
+        "title": "Are you absolutely sure?",
+        "description": "This action cannot be undone. This will permanently delete the category and remove its reference from all products.",
+        "cancel": "Cancel",
+        "confirm": "Delete Category"
+      }
+    },
+    "badgesPage": {
+      "title": "Badges",
+      "subtitle": "Manage product status and discount labels",
+      "addBadge": "Add Badge",
+      "searchPlaceholder": "Search badges...",
+      "loading": "Loading badges...",
+      "empty": "No badges found.",
+      "table": {
+        "preview": "Preview",
+        "name": "Name",
+        "colors": "Colors",
+        "actions": "Actions"
+      },
+      "modal": {
+        "newTitle": "Add New Badge",
+        "editTitle": "Edit Badge",
+        "description": "Define a badge and its signature colors",
+        "name": "Badge Name",
+        "bg": "Background Color",
+        "text": "Text Color",
+        "preview": "Live Preview",
+        "cancel": "Cancel",
+        "update": "Update Badge",
+        "create": "Create Badge"
+      },
+      "deleteDialog": {
+        "title": "Are you absolutely sure?",
+        "description": "This action cannot be undone. This will permanently delete the badge and remove it from all products.",
+        "cancel": "Cancel",
+        "confirm": "Delete Badge"
+      }
+    },
+    "customersPage": {
+      "title": "Customers",
+      "subtitle": "View and manage registered customers and their roles.",
+      "searchPlaceholder": "Search customers...",
+      "table": {
+        "avatar": "Avatar",
+        "customer": "Customer",
+        "role": "Role",
+        "joined": "Joined Date",
+        "status": "Status",
+        "actions": "Actions",
+        "you": "YOU",
+        "na": "N/A",
+        "empty": "No customers found."
+      },
+      "roles": {
+        "admin": "Administrator",
+        "customer": "Customer"
+      },
+      "statuses": {
+        "active": "Active",
+        "blocked": "Blocked"
+      },
+      "menu": {
+        "label": "Manage User",
+        "edit": "Edit Profile & Role",
+        "reset": "Reset Password",
+        "block": "Block User",
+        "unblock": "Unblock User",
+        "delete": "Delete Account"
+      },
+      "modals": {
+        "edit": {
+          "title": "Edit User Profile",
+          "description": "Update user identification and permissions",
+          "name": "Full Name",
+          "email": "Email Address",
+          "role": "System Role",
+          "cancel": "Cancel",
+          "update": "Update User"
+        },
+        "reset": {
+          "title": "Reset User Password",
+          "description": "Override this user's current password securely",
+          "password": "New Secure Password",
+          "placeholder": "Enter at least 6 characters",
+          "notice": "This will immediately change the user's password. They will need to log in again if using credentials.",
+          "cancel": "Cancel",
+          "confirm": "Reset Password"
+        },
+        "block": {
+          "title": "Block User Account?",
+          "unblockTitle": "Unblock User Account?",
+          "description": "This will immediately prevent this user from logging in or using their account.",
+          "unblockDescription": "This will restore this user's access to their account and the storefront.",
+          "cancel": "Cancel",
+          "confirm": "Confirm Block",
+          "confirmUnblock": "Confirm Unblock"
+        },
+        "delete": {
+          "title": "Delete Account Permanently?",
+          "description": "Are you sure you want to delete this account? This action is irreversible and all associated data will be lost.",
+          "cancel": "Cancel",
+          "confirm": "Delete Account"
+        }
+      },
+      "messages": {
+        "updateSuccess": "User updated successfully",
+        "updateError": "Failed to update user",
+        "resetSuccess": "Password reset successfully",
+        "resetError": "Failed to reset password",
+        "blockSuccess": "User blocked successfully",
+        "unblockSuccess": "User unblocked successfully",
+        "toggleBlockError": "Failed to toggle block status",
+        "deleteSuccess": "User deleted successfully",
+        "deleteError": "Failed to delete user",
+        "fatalError": "Fatal error occurred"
+      }
+    },
+    "settingsPage": {
+      "title": "Store Settings",
+      "subtitle": "Global configuration for your storefront",
+      "save": "Save Changes",
+      "tabs": {
+        "storefront": "Storefront UI",
+        "checkout": "Checkout & Fees"
+      },
+      "storefront": {
+        "announcements": {
+          "titleEn": "English Messages",
+          "titleAr": "الرسائل بالعربية",
+          "addEn": "Add EN",
+          "addAr": "Add AR",
+          "placeholderEn": "English message",
+          "placeholderAr": "الرسالة بالعربية",
+          "empty": "No active announcements"
+        },
+        "hero": {
+          "title": "Hero Section",
+          "bgImage": "Hero Background Image",
+          "changeImage": "Change Image",
+          "uploadImage": "Upload Hero Image",
+          "uploading": "Uploading...",
+          "headingEn": "Heading (EN)",
+          "headingAr": "العنوان (العربية)",
+          "btnTextEn": "Button Text (EN)",
+          "btnTextAr": "نص الزر (العربية)",
+          "btnLink": "Button Link",
+          "noticeTitle": "Premium Layout Applied",
+          "noticeDesc": "The single-image hero creates a centered, high-impact first impression."
+        },
+        "brand": {
+          "title": "Brand Presence & Social",
+          "whatsapp": "WhatsApp Contact",
+          "facebook": "Facebook URL",
+          "instagram": "Instagram URL"
+        }
+      },
+      "checkout": {
+        "instapay": {
+          "label": "InstaPay Phone Number",
+          "notice": "Used in Checkout payment step and Admin Order details."
+        },
+        "shipping": {
+          "label": "Shipping Fee (EGP)",
+          "notice": "Enter 0 for free shipping by default."
+        }
+      },
+      "messages": {
+        "success": "Store settings updated",
+        "error": "Failed to save settings",
+        "fatalError": "Fatal error saving settings"
+      }
+    }
+  },
+  "footer": {
+    "builtForExcellence": "Built for excellence",
+    "fullySecured": "Fully Secured",
+    "instaPayReady": "InstaPay Ready",
+    "campusExpress": "Campus Express",
+    "loadingCategories": "Loading categories..."
+  },
+  "home": {
+    "trustedBy": "Trusted by Leading Clinicians",
+    "clinicalGrade": "Clinical Grade Quality",
+    "campusDelivery": "Priority Shipping",
+    "securePayments": "Secure Payments",
+    "shopByCategory": "Shop By Category",
+    "noCategories": "No categories found",
+    "bestSellers": "Best Sellers",
+    "starterKits": "Odda Starter Kits & Bundles",
+    "bundleAndSave": "Bundle & Save",
+    "viewBundle": "View Bundle",
+    "whatStudentsSay": "Testimonials"
+  },
+  "productsPage": {
+    "instruments": "Instruments",
+    "ourCatalog": "Our Catalog",
+    "catalogDesc": "High-precision clinical tools and diagnostic sets engineered for excellence in modern healthcare environments.",
+    "clearAllFilters": "Clear All Filters",
+    "noMatchMsg": "Try relaxing your filters or cleaning up your search to find what you are looking for."
+  },
+  "aboutPage": {
+    "title": "PREMIUM TOOLS FOR THE MODERN CLINICIAN",
+    "desc": "Odda is your trusted source for premium dental and surgical instruments in Egypt. We supply healthcare professionals and clinics with authentic, clinical-grade tools.",
+    "whyOdda": "Why Odda?",
+    "clinicalTools": "Authentic Clinical Tools",
+    "clinicalDesc": "100% certified clinical-grade instruments sourced from globally recognized manufacturers.",
+    "campusDelivery": "Priority Shipping",
+    "campusDesc": "Fast, reliable delivery directly to major clinics and medical centers within 24 hours.",
+    "expertSupport": "Expert Support",
+    "expertDesc": "Dedicated clinical advisors available to help you select the right tools for your specific needs.",
+    "browseOddas": "Browse Catalog"
+  },
+  "trackingPage": {
+    "title": "Order Tracking",
+    "subtitle": "Monitor your shipment in real-time",
+    "placeholder": "Enter your Order ID (e.g. 69b3...)",
+    "trackBtn": "Track Order",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "total": "Total",
+    "method": "Method",
+    "orderItems": "Order Items",
+    "qty": "Qty",
+    "ea": "ea",
+    "noOrderData": "No order data found for this ID.",
+    "enterId": "Enter an ID to start tracking"
+  },
+  "checkoutPage": {
+    "emptyCart": "Your cart is empty",
+    "addTools": "Add some clinical tools before checking out",
+    "goToCatalog": "Go To Catalog",
+    "secureCheckout": "Secure Checkout",
+    "auth": "Auth",
+    "cart": "Cart",
+    "info": "Info",
+    "finish": "Finish",
+    "howToCheckout": "How would you like to checkout?",
+    "chooseOption": "Choose an option below to proceed with your clinical order.",
+    "guestCheckout": "Continue as Guest",
+    "or": "or",
+    "signIn": "Sign In to Account",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "FREE",
+    "proceedShipping": "Proceed to Shipping",
+    "shippingInfo": "Shipping Information",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "address": "Delivery Address",
+    "email": "Email Address",
+    "city": "City",
+    "back": "Back",
+    "nextPayment": "Next: Payment",
+    "choosePayment": "Choose Payment Method",
+    "cod": "Cash on Delivery",
+    "codDesc": "Pay at your doorstep",
+    "instapay": "Instapay Transfer",
+    "instapayDesc": "Secure bank transfer",
+    "sendTo": "Send to address",
+    "uploadScreenshot": "Upload Screenshot",
+    "uploadNote": "Please upload a screenshot of your transfer confirmation to fulfill the order.",
+    "completeOrder": "Complete Order"
+  },
+  "orders": {
+    "title": "My Orders",
+    "noOrders": "No orders yet",
+    "noOrdersDesc": "When you place an order, it will appear here. Start browsing our collection and find what you need.",
+    "browseProducts": "Browse Products",
+    "orderNumber": "Order Number",
+    "date": "Date",
+    "total": "Total",
+    "qtyShort": "Qty",
+    "viewDetails": "View Details",
+    "pendingPaymentNote": "Your order is pending payment verification. If you haven't uploaded your payment screenshot yet, please do so from the confirmation page."
+  },
+  "confirmationPage": {
+    "notFoundTitle": "Order Not Found",
+    "notFoundDesc": "We couldn't find the order you're looking for. Please check your link or contact support.",
+    "browseCatalog": "Browse Catalog",
+    "thankYou": "Thank You For Your Order!",
+    "emailSent": "We've sent a confirmation email with your order details. Please check your inbox (and spam folder) for further updates.",
+    "orderNum": "Order #",
+    "placed": "PLACED",
+    "orderStatus": "Order Status",
+    "itemsOrdered": "Items Ordered",
+    "shippingTo": "Shipping To",
+    "recipient": "Recipient",
+    "paymentDetails": "Payment Details",
+    "verificationNote": "Verification Note",
+    "verificationDesc": "Your InstaPay transfer is pending verification. Sterilization will begin once verified.",
+    "continueShopping": "Continue Shopping",
+    "identifying": "Identifying Order..."
+  },
+  "profile": {
+    "title": "Profile",
+    "userPlaceholder": "User",
+    "orderHistory": "Order History",
+    "viewOrders": "View your order history",
+    "accountSettings": "Account Settings",
+    "manageAccount": "Manage your profile (Coming soon)",
+    "adminDashboard": "Admin Dashboard",
+    "adminDesc": "Access store management tools",
+    "signOut": "Sign Out",
+    "more": "More"
+  },
+  "toasts": {
+    "success": "Success",
+    "error": "Error",
+    "info": "Info",
+    "orderStatusUpdated": "Order status updated",
+    "failedToUpdateStatus": "Failed to update status",
+    "somethingWentWrong": "Something went wrong",
+    "failedToLoadOrder": "Failed to load order details",
+    "numberCopied": "Number copied successfully",
+    "addedToCart": "Added to cart",
+    "addedToCartDesc": "item added correctly",
+    "magicFillComplete": "Magic Fill Complete",
+    "magicFillDesc": "Form fields populated!",
+    "invalidJson": "Invalid JSON",
+    "invalidJsonDesc": "Please ensure the AI output is a valid JSON object.",
+    "promptCopied": "Prompt Copied!",
+    "promptCopiedDesc": "Paste it into Claude 3.5 or GPT-4o",
+    "uploadFailed": "Upload Failed",
+    "errorUploading": "Error uploading image",
+    "templatesUpdated": "Email templates updated!",
+    "itemRemoved": "Item removed",
+    "cartCleared": "Cart cleared",
+    "categorySaved": "Category saved successfully",
+    "categoryFailed": "Failed to save category",
+    "badgeSaved": "Badge saved successfully",
+    "badgeFailed": "Failed to save badge",
+    "orderPlaced": "Order Placed Successfully! 📧",
+    "orderPlacedDesc": "Please check your email for your receipt and tracking link.",
+    "pleaseSignIn": "Please sign in to continue",
+    "insufficientStock": "Insufficient stock available",
+    "productDeleted": "Product deleted successfully",
+    "productDeleteFailed": "Failed to delete product",
+    "categoryDeleted": "Category deleted successfully",
+    "categoryDeleteFailed": "Failed to delete category",
+    "badgeDeleted": "Badge deleted successfully",
+    "badgeDeleteFailed": "Failed to delete badge",
+    "userUpdated": "User updated successfully",
+    "userUpdateError": "Failed to update user",
+    "passwordReset": "Password reset successfully",
+    "passwordResetError": "Failed to reset password",
+    "userBlocked": "User blocked successfully",
+    "userUnblocked": "User unblocked successfully",
+    "userToggleBlockError": "Failed to toggle block status",
+    "userDeleted": "User deleted successfully",
+    "userDeleteError": "Failed to delete user",
+    "reviewSubmitted": "Review submitted successfully",
+    "reviewSubmitFailed": "Failed to submit review",
+    "loginSuccess": "Logged in successfully",
+    "loginError": "Invalid email or password",
+    "registerSuccess": "Account created successfully",
+    "registerError": "Registration failed"
+  }
+}

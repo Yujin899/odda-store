@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IBadge extends Document {
   name: string;
+  nameAr?: string;
   color: string;
   textColor: string;
   createdAt: Date;
@@ -11,6 +12,7 @@ export interface IBadge extends Document {
 const BadgeSchema: Schema = new Schema(
   {
     name: { type: String, required: true, unique: true, trim: true },
+    nameAr: { type: String, trim: true },
     color: { type: String, required: true }, // Hex color
     textColor: { type: String, required: true }, // Hex color
   },

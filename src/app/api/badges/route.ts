@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
     const body = await req.json();
-    const { name, color, textColor } = body;
+    const { name, nameAr, color, textColor } = body;
 
     if (!name || !color || !textColor) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Badge name already exists' }, { status: 409 });
     }
 
-    const badge = await Badge.create({ name, color, textColor });
+    const badge = await Badge.create({ name, nameAr, color, textColor });
     
     revalidatePath('/api/badges');
     
