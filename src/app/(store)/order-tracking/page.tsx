@@ -96,7 +96,7 @@ function TrackingContent() {
             <div className="mt-8 pt-8 border-t border-slate-50 grid grid-cols-2 md:grid-cols-4 gap-8">
               <div>
                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Order ID</p>
-                <p className="text-[10px] font-bold font-mono truncate">{order._id}</p>
+                <p className="text-[10px] font-bold font-mono truncate">{order.orderNumber}</p>
               </div>
               <div>
                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Customer</p>
@@ -109,6 +109,47 @@ function TrackingContent() {
               <div>
                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Method</p>
                 <p className="text-[10px] font-bold uppercase">{order.paymentMethod}</p>
+              </div>
+            </div>
+
+            {/* Order Items */}
+            <div className="mt-8 pt-8 border-t border-slate-50">
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">Order Items ({order.items?.length || 0})</p>
+              <div className="space-y-4">
+                {order.items?.map((item: any, idx: number) => {
+                  const primaryImage = item.productId?.images?.find((img: any) => img.isPrimary)?.url || item.productId?.images?.[0]?.url || item.productId?.image;
+                  return (
+                    <div key={idx} className="p-4 flex items-center gap-4 sm:gap-6 bg-slate-50/50 rounded-sm border border-slate-100 group">
+                      <div className="size-16 sm:size-20 bg-white rounded-sm overflow-hidden shrink-0 border border-slate-100 relative shadow-sm">
+                        {primaryImage ? (
+                          <img 
+                            src={primaryImage} 
+                            alt={item.productId?.name || 'Product'} 
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-300">
+                             <Package size={24} strokeWidth={1.5} />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] sm:text-xs font-black uppercase tracking-tight truncate text-foreground">{item.productId?.name || 'Deleted Product'}</h4>
+                        <p className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase mt-1 flex items-center gap-2">
+                          Qty: {item.quantity}
+                          <span className="text-slate-200">|</span>
+                          {item.price.toLocaleString()} EGP ea
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-xs sm:text-sm font-black text-(--navy)">
+                          {(item.price * item.quantity).toLocaleString()} 
+                          <span className="text-[8px] uppercase tracking-widest text-muted-foreground ml-1">EGP</span>
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>

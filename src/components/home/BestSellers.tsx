@@ -28,11 +28,6 @@ export function BestSellers({ products }: { products: any[] }) {
       image: primaryImage,
     });
     openCart();
-    addToast({
-      title: 'Added to Cart',
-      description: `${product.name} has been added to your cart.`,
-      type: 'success',
-    });
   };
 
   return (

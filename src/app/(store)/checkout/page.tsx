@@ -186,7 +186,7 @@ export default function CheckoutPage() {
       });
 
       clearCart();
-      router.push(`/order-confirmation?id=${orderData.id}`);
+      router.push(`/order-confirmation?id=${orderData.orderNumber}`);
     } catch (error: any) {
       addToast({
         title: 'Checkout Error',
@@ -445,7 +445,7 @@ export default function CheckoutPage() {
                           </div>
                           <div>
                             <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Send to address</p>
-                            <p className="text-2xl font-black text-foreground tracking-tighter break-all">{currentInstapayNumber}</p>
+                            <p className="text-xl sm:text-2xl font-black text-foreground tracking-tighter break-all">{currentInstapayNumber}</p>
                           </div>
                         </div>
                         <button 

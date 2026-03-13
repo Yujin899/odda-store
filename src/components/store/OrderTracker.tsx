@@ -69,17 +69,20 @@ export function OrderTracker({ status }: OrderTrackerProps) {
 
   return (
     <div className="w-full py-8 px-4">
-      <div className="relative flex justify-between items-start max-w-3xl mx-auto">
+      <div className="relative flex flex-col sm:flex-row justify-between items-start max-w-3xl mx-auto pl-8 sm:pl-0 sm:pr-0">
         {/* Background Line */}
-        <div className="absolute top-6 left-0 w-full h-[2px] bg-slate-100 -z-10 rounded-full"></div>
+        <div className="absolute top-0 bottom-0 left-[1.4rem] w-[2px] sm:w-full sm:h-[2px] sm:top-6 sm:left-0 sm:bottom-auto bg-slate-100 -z-10 rounded-full"></div>
         
         {/* Active Progress Line */}
         <motion.div 
-          initial={{ width: 0 }}
-          animate={{ width: `${(activeIndex / (steps.length - 1)) * 100}%` }}
+          className="absolute top-0 left-[1.4rem] w-[2px] sm:w-[2px] sm:h-[2px] sm:top-6 sm:left-0 sm:bottom-auto bg-(--primary) -z-10 rounded-full shadow-[0_0_10px_rgba(0,115,230,0.3)]"
+          initial={{ height: "0%", width: "0%" }}
+          animate={{ 
+            height: typeof window !== 'undefined' && window.innerWidth < 640 ? `${(activeIndex / (steps.length - 1)) * 100}%` : "100%",
+            width: typeof window !== 'undefined' && window.innerWidth >= 640 ? `${(activeIndex / (steps.length - 1)) * 100}%` : "100%"
+          }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="absolute top-6 left-0 h-[2px] bg-(--primary) -z-10 rounded-full shadow-[0_0_10px_rgba(0,115,230,0.3)]"
-        ></motion.div>
+        />
 
         {steps.map((step, index) => {
           const isCompleted = index < activeIndex;
@@ -87,7 +90,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
           const Icon = step.icon;
 
           return (
-            <div key={step.id} className="flex flex-col items-center gap-4 relative group">
+            <div key={step.id} className="flex flex-row sm:flex-col items-center gap-4 relative group w-full sm:w-auto mb-8 sm:mb-0">
               {/* Step Circle */}
               <motion.div 
                 initial={false}
@@ -111,7 +114,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
               </motion.div>
 
               {/* Label */}
-              <div className="text-center space-y-1 mt-1">
+              <div className="text-left sm:text-center space-y-1 mt-0 sm:mt-1 flex-1">
                 <p className={`text-[10px] font-black uppercase tracking-widest transition-colors duration-300 ${
                   isCompleted || isActive ? 'text-foreground' : 'text-slate-400'
                 }`}>

@@ -112,7 +112,7 @@ export const POST = auth(async (req) => {
                 <li>Payment: ${paymentMethod}</li>
               </ul>
             </div>
-            <a href="${baseUrl}/order-confirmation?order=${order._id.toString()}" 
+            <a href="${baseUrl}/order-confirmation?order=${order.orderNumber}" 
                style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block;">
                Track Your Order
             </a>

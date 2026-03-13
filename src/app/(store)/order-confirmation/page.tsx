@@ -153,26 +153,28 @@ function OrderConfirmationContent() {
               </div>
               <div className="divide-y divide-slate-50">
                 {order.items.map((item: any, idx: number) => (
-                  <div key={idx} className="p-8 flex items-center gap-6 group">
-                    <div className="w-20 h-20 bg-slate-50 rounded-(--radius) overflow-hidden shrink-0 border border-slate-100 relative shadow-sm transition-transform group-hover:scale-105">
-                      <Image 
-                        src={item.productId?.images?.[0]?.url || '/placeholder.png'} 
-                        fill 
-                        className="object-cover" 
-                        alt={item.productId?.name || 'Product'} 
-                      />
+                  <div key={idx} className="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 group border-b border-slate-50 last:border-0">
+                    <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto flex-1">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-50 rounded-(--radius) overflow-hidden shrink-0 border border-slate-100 relative shadow-sm transition-transform group-hover:scale-105">
+                        <Image 
+                          src={item.productId?.images?.[0]?.url || '/placeholder.png'} 
+                          fill 
+                          className="object-cover" 
+                          alt={item.productId?.name || 'Product'} 
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-black uppercase tracking-tight truncate group-hover:text-(--primary) transition-colors">
+                          {item.productId?.name || 'Legacy Product'}
+                        </h4>
+                        <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1.5 flex items-center gap-2">
+                          Qty: {item.quantity}
+                          <span className="text-slate-200">|</span>
+                          {item.price.toLocaleString()} EGP
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xs font-black uppercase tracking-tight truncate group-hover:text-(--primary) transition-colors">
-                        {item.productId?.name || 'Legacy Product'}
-                      </h4>
-                      <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1.5 flex items-center gap-2">
-                        Quantity: {item.quantity}
-                        <span className="text-slate-200">|</span>
-                        {item.price.toLocaleString()} EGP each
-                      </p>
-                    </div>
-                    <div className="text-right">
+                    <div className="text-right self-end sm:self-auto shrink-0 w-full sm:w-auto pt-2 sm:pt-0">
                       <p className="text-sm font-black text-(--navy)">
                         {(item.price * item.quantity).toLocaleString()} <span className="text-[9px] uppercase tracking-widest text-muted-foreground">EGP</span>
                       </p>
