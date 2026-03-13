@@ -65,21 +65,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return true;
     },
-    async jwt({ token }) {
-      // Inherit basic role propagation from authConfig via ...authConfig.callbacks
-      // but we need to keep the DB fallback which is server-only (non-Edge)
-      // DB Fallback for server-side sessions and live block check
+    async jwt({ token, user }) {
+      // 1. Initial sign-in: capture user data
+      if (user) {
+        token.id = user.id;
+        token.role = (user as any).role || 'customer';
+      }
+
+      // 2. Subsequent calls: fetch from DB if ID exists
       if (token.id) {
         await connectDB();
         const dbUser = await User.findById(token.id);
         
-        // Immediate lockout if blocked
         if (dbUser?.isBlocked) {
           throw new Error('Account blocked');
         }
 
-        if (!token.role) {
-          token.role = dbUser?.role ?? 'customer';
+        if (dbUser) {
+          token.role = dbUser.role || 'customer';
         }
       }
 
