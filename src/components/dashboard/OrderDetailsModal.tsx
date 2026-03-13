@@ -177,11 +177,12 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
                   {order.paymentMethod === 'instapay' && (
                     <div className="pt-2 border-t border-slate-100">
                       <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-1">InstaPay Number</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xl font-black tracking-tight text-(--navy)">{currentInstapayNumber}</span>
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <span className="text-xl font-black tracking-tight text-(--navy) break-all">{currentInstapayNumber}</span>
                         <Button 
                           variant="ghost" 
                           size="icon-sm"
+                          className="self-end sm:self-auto"
                           onClick={() => {
                             navigator.clipboard.writeText(currentInstapayNumber);
                             toast.success('Success', 'Number copied successfully');

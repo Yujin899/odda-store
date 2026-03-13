@@ -124,16 +124,16 @@ export function Footer() {
             </div>
           </div>
           
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 sm:gap-6">
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
               <ShieldCheck size={14} className="text-(--primary)" />
               <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">Fully Secured</span>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
               <CreditCard size={14} className="text-(--primary)" />
               <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">InstaPay Ready</span>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-(--primary)/10 border border-(--primary)/20 rounded-sm">
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-(--primary)/10 border border-(--primary)/20 rounded-sm">
               <Truck size={14} className="text-(--primary)" />
               <span className="text-[9px] font-bold uppercase tracking-widest text-white">Campus Express</span>
             </div>

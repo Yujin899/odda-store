@@ -58,21 +58,23 @@ function TrackingContent() {
             <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.2em]">Monitor your shipment in real-time</p>
           </div>
 
-          <form onSubmit={handleSearch} className="w-full max-w-md relative mt-8 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-(--primary) transition-colors" />
-            <input 
-              type="text" 
-              value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
-              placeholder="Enter your Order ID (e.g. 69b3...)"
-              className="w-full h-16 bg-white border-2 border-slate-100 rounded-(--radius) pl-12 pr-6 text-sm font-bold shadow-2xl focus:border-(--primary) transition-all outline-none"
-            />
+          <form onSubmit={handleSearch} className="w-full max-w-md flex flex-col sm:flex-row gap-3 mt-8">
+            <div className="relative flex-1 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-(--primary) transition-colors" />
+              <input 
+                type="text" 
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                placeholder="Enter your Order ID (e.g. 69b3...)"
+                className="w-full h-16 bg-white border-2 border-slate-100 rounded-(--radius) pl-12 pr-4 text-sm font-bold shadow-2xl focus:border-(--primary) transition-all outline-none"
+              />
+            </div>
             <button 
               type="submit"
               disabled={loading}
-              className="absolute right-2 top-2 h-12 px-6 bg-foreground text-background font-black uppercase tracking-widest text-[9px] rounded-sm hover:bg-(--primary) hover:text-white transition-all cursor-pointer disabled:opacity-50"
+              className="h-16 px-10 bg-foreground text-background font-black uppercase tracking-widest text-[10px] rounded-(--radius) hover:bg-(--primary) hover:text-white transition-all cursor-pointer disabled:opacity-50 shadow-2xl shrink-0"
             >
-              {loading ? <Loader2 className="size-4 animate-spin" /> : 'Track'}
+              {loading ? <Loader2 className="size-4 animate-spin" /> : 'Track Order'}
             </button>
           </form>
         </div>

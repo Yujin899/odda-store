@@ -438,14 +438,14 @@ export default function CheckoutPage() {
                       animate={{ opacity: 1, y: 0 }}
                       className="bg-slate-50 border border-slate-100 rounded-(--radius) p-6 space-y-6"
                     >
-                      <div className="flex items-center justify-between border-b border-slate-200 pb-6">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center border border-slate-100 shadow-sm">
+                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center border border-slate-100 shadow-sm shrink-0">
                             <Landmark className="size-6 text-(--primary) stroke-[2px]" />
                           </div>
                           <div>
                             <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Send to address</p>
-                            <p className="text-2xl font-black text-foreground tracking-tighter">{currentInstapayNumber}</p>
+                            <p className="text-2xl font-black text-foreground tracking-tighter break-all">{currentInstapayNumber}</p>
                           </div>
                         </div>
                         <button 
@@ -453,7 +453,7 @@ export default function CheckoutPage() {
                             navigator.clipboard.writeText(currentInstapayNumber);
                             addToast({ title: 'Success', description: 'Number copied successfully', type: 'success' });
                           }}
-                          className="size-10 rounded-full border border-slate-100 flex items-center justify-center hover:bg-white hover:text-(--primary) hover:border-(--primary) transition-all text-slate-400"
+                          className="size-10 rounded-full border border-slate-100 flex items-center justify-center hover:bg-white hover:text-(--primary) hover:border-(--primary) transition-all text-slate-400 self-end sm:self-auto shrink-0 bg-transparent cursor-pointer"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                         </button>
