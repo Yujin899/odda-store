@@ -41,7 +41,7 @@ export function Toast({ id, title, description, type }: ToastMessage) {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.2 }}
       className={cn(
-        'min-w-64 max-w-sm p-4 shadow-xl flex items-start gap-3 rounded-[var(--radius)] pointer-events-auto',
+        'w-full max-w-[90vw] sm:max-w-sm sm:min-w-64 p-4 shadow-xl flex items-start gap-3 rounded-[var(--radius)] pointer-events-auto',
         typeStyles[type]
       )}
     >

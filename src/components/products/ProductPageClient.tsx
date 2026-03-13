@@ -62,11 +62,6 @@ export function ProductPageClient({ product, relatedProducts }: { product: any, 
     }, quantity);
     
     openCart();
-    addToast({
-      title: 'Added to Cart',
-      description: `${quantity}x ${product.name} added successfully.`,
-      type: 'success',
-    });
   };
 
   return (

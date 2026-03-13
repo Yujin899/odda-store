@@ -29,11 +29,6 @@ export function ProductCard({ product }: { product: any }) {
       image: primaryImage,
     });
     openCart();
-    addToast({
-      title: 'Added to Cart',
-      description: `${productToAdd.name} has been added to your cart.`,
-      type: 'success',
-    });
   };
 
   return (

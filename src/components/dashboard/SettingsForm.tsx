@@ -173,10 +173,6 @@ export function SettingsForm({ initialData }: { initialData?: any }) {
             <Wallet className="size-3 mr-2" />
             Checkout & Fees
           </TabsTrigger>
-          <TabsTrigger value="contact" className="text-[10px] font-black uppercase tracking-widest px-6 data-[state=active]:bg-slate-100">
-            <MessageSquare className="size-3 mr-2" />
-            Contact & Social
-          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="storefront" className="space-y-6 outline-none">
@@ -311,50 +307,14 @@ export function SettingsForm({ initialData }: { initialData?: any }) {
               </div>
             </div>
           </div>
-        </TabsContent>
 
-        <TabsContent value="checkout" className="space-y-6 outline-none">
-          <div className="bg-white p-8 rounded-sm border border-slate-200 shadow-sm grid md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="size-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                  <Phone className="size-4" />
-                </div>
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">InstaPay Phone Number</Label>
-              </div>
-              <Input 
-                value={formData.instapayNumber}
-                onChange={(e) => setFormData({ ...formData, instapayNumber: e.target.value })}
-                placeholder="01126131495"
-                className="h-12 text-lg font-black tracking-tighter"
-              />
-              <p className="text-[9px] text-slate-400 uppercase font-medium">Used in Checkout payment step and Admin Order details.</p>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="size-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
-                  <Truck className="size-4" />
-                </div>
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Shipping Fee (EGP)</Label>
-              </div>
-              <Input 
-                type="number"
-                value={formData.shippingFee}
-                onChange={(e) => setFormData({ ...formData, shippingFee: Number(e.target.value) })}
-                className="h-12 text-lg font-black tracking-tighter"
-              />
-              <p className="text-[9px] text-slate-400 uppercase font-medium">Enter 0 for free shipping by default.</p>
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="contact" className="space-y-6 outline-none">
-          <div className="bg-white p-8 rounded-sm border border-slate-200 shadow-sm space-y-8">
+          {/* Social & Brand Presence Section (Relocated) */}
+          <div className="bg-white p-6 rounded-sm border border-slate-200 shadow-sm space-y-6">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Brand Presence & Social</h3>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
-                  <MessageSquare className="size-3" /> WhatsApp Contact
+                  <Phone className="size-3" /> WhatsApp Contact
                 </Label>
                 <Input 
                   value={formData.whatsappNumber}
@@ -396,6 +356,43 @@ export function SettingsForm({ initialData }: { initialData?: any }) {
             </div>
           </div>
         </TabsContent>
+
+        <TabsContent value="checkout" className="space-y-6 outline-none">
+          <div className="bg-white p-8 rounded-sm border border-slate-200 shadow-sm grid md:grid-cols-2 gap-8">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="size-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <Phone className="size-4" />
+                </div>
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">InstaPay Phone Number</Label>
+              </div>
+              <Input 
+                value={formData.instapayNumber}
+                onChange={(e) => setFormData({ ...formData, instapayNumber: e.target.value })}
+                placeholder="01126131495"
+                className="h-12 text-lg font-black tracking-tighter"
+              />
+              <p className="text-[9px] text-slate-400 uppercase font-medium">Used in Checkout payment step and Admin Order details.</p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="size-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <Truck className="size-4" />
+                </div>
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Shipping Fee (EGP)</Label>
+              </div>
+              <Input 
+                type="number"
+                value={formData.shippingFee}
+                onChange={(e) => setFormData({ ...formData, shippingFee: Number(e.target.value) })}
+                className="h-12 text-lg font-black tracking-tighter"
+              />
+              <p className="text-[9px] text-slate-400 uppercase font-medium">Enter 0 for free shipping by default.</p>
+            </div>
+          </div>
+        </TabsContent>
+
       </Tabs>
     </form>
   );

@@ -77,7 +77,7 @@ export function Footer() {
           <div className="space-y-8">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">Navigation</h4>
             <ul className="space-y-4">
-              {['Home', 'Products', 'About', 'Contact', 'Order Tracking'].map((link) => (
+              {['Home', 'Products', 'About', 'Order Tracking'].map((link) => (
                 <li key={link}>
                   <Link 
                     href={link === 'Home' ? '/' : `/${link.toLowerCase().replace(' ', '-')}`} 
@@ -110,41 +110,8 @@ export function Footer() {
               )}
             </ul>
           </div>
-
-          {/* Column 4: Contact info */}
-          <div className="space-y-8">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">Contact Us</h4>
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 group">
-                <div className="size-10 rounded-sm bg-white/5 flex items-center justify-center text-(--primary) shrink-0 group-hover:bg-(--primary) group-hover:text-white transition-colors">
-                  <Mail size={18} />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-1">Email Details</p>
-                  <p className="text-sm font-medium">{email}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 group">
-                <div className="size-10 rounded-sm bg-white/5 flex items-center justify-center text-(--primary) shrink-0 group-hover:bg-(--primary) group-hover:text-white transition-colors">
-                  <Phone size={18} />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-1">WhatsApp Tech</p>
-                  <p className="text-sm font-medium">{waNumber || 'Unavailable'}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 group">
-                <div className="size-10 rounded-sm bg-white/5 flex items-center justify-center text-(--primary) shrink-0 group-hover:bg-(--primary) group-hover:text-white transition-colors">
-                  <MapPin size={18} />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-1">Clinical HQ</p>
-                  <p className="text-sm font-medium">Medical Center, Cairo, Egypt</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
+
 
         {/* Bottom Bar */}
         <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">

@@ -317,7 +317,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline">
                       <span className="text-xs font-black uppercase tracking-widest">Total</span>
-                      <span className="text-xl font-black">{grandTotal.toLocaleString()} EGP</span>
+                      <span className="text-xl md:text-2xl font-black">{grandTotal.toLocaleString()} EGP</span>
                     </div>
                   </div>
                 </div>
@@ -513,7 +513,7 @@ export default function CheckoutPage() {
                   <button 
                     disabled={isSubmitting || isUploadingScreenshot || (paymentMethod === 'instapay' && !uploadedProofUrl)}
                     onClick={handleSubmitOrder} 
-                    className={`flex-1 h-16 font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl transition-all transform active:scale-95 cursor-pointer outline-none border-none flex items-center justify-center gap-3 ${
+                    className={`flex-1 min-h-16 py-4 px-6 font-black text-xs md:text-sm uppercase tracking-[0.2em] rounded-(--radius) shadow-2xl transition-all transform active:scale-95 cursor-pointer outline-none border-none flex items-center justify-center gap-3 text-center leading-tight whitespace-normal ${
                       isSubmitting || isUploadingScreenshot || (paymentMethod === 'instapay' && !uploadedProofUrl)
                         ? 'bg-muted text-muted-foreground cursor-not-allowed' 
                         : 'bg-(--primary) text-white hover:bg-foreground hover:-translate-y-1'
@@ -523,8 +523,8 @@ export default function CheckoutPage() {
                       <Loader2 className="animate-spin size-5 stroke-[2.5px]" />
                     ) : (
                       <>
-                        <CheckCircle2 className="size-5 stroke-[2.5px]" />
-                        Complete Order
+                        <CheckCircle2 className="size-5 stroke-[2.5px] shrink-0" />
+                        <span>Complete Order</span>
                       </>
                     )}
                   </button>
