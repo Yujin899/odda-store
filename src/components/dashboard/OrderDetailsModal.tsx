@@ -138,7 +138,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
             )}
           </div>
           <DialogDescription>
-            Created on {order && new Date(order.createdAt).toLocaleString()}
+            {order ? `Created on ${new Date(order.createdAt).toLocaleString()}` : "Loading order details..."}
           </DialogDescription>
         </DialogHeader>
 
