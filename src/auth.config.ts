@@ -28,6 +28,12 @@ export const authConfig: NextAuthConfig = {
       const isLoggedIn = !!auth?.user;
       const isDashboardRoute = nextUrl.pathname.startsWith('/dashboard');
       if (isDashboardRoute) return isLoggedIn && auth?.user?.role === 'admin';
+      
+      const isAuthRoute = nextUrl.pathname === '/login' || nextUrl.pathname === '/register';
+      if (isLoggedIn && isAuthRoute) {
+        return Response.redirect(new URL('/', nextUrl));
+      }
+
       return true;
     },
     async jwt({ token, user }) {

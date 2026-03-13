@@ -111,6 +111,7 @@ export function Navbar() {
               </div>
 
               <Link href="/about" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">About</Link>
+              <Link href="/order-tracking" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">Track Order</Link>
             </nav>
           </div>
         </div>
