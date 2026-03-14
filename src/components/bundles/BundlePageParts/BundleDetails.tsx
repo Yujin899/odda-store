@@ -1,0 +1,120 @@
+'use client';
+
+import { Truck, ShieldCheck, ShoppingBag, CheckCircle2 } from 'lucide-react';
+import { RatingSummary } from '@/components/shared/RatingSummary';
+import { RatingBreakdown } from '@/components/shared/RatingBreakdown';
+import { getDictionary } from '@/dictionaries';
+
+interface BundleDetailsProps {
+  bundle: any;
+  averageRating: number;
+  numReviews: number;
+  reviews: any[];
+  language: 'en' | 'ar';
+}
+
+export function BundleDetails({ 
+  bundle, 
+  averageRating, 
+  numReviews, 
+  reviews,
+  language 
+}: BundleDetailsProps) {
+  const dict = getDictionary(language);
+  const isRtl = language === 'ar';
+
+  const name = isRtl && bundle.nameAr ? bundle.nameAr : bundle.name;
+  const items = (isRtl && bundle.bundleItemsAr && bundle.bundleItemsAr.length > 0) 
+    ? bundle.bundleItemsAr 
+    : bundle.bundleItems;
+
+  return (
+    <div className="flex flex-col space-y-6">
+      {/* Badges */}
+      <div className={bcn("flex flex-wrap gap-2", isRtl ? "justify-end" : "justify-start")}>
+        <span className="inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white rounded-sm bg-(--navy) shadow-sm">
+          {isRtl ? 'مجموعة متميزة' : 'Premium Bundle'}
+        </span>
+      </div>
+
+      {/* Header Info */}
+      <div className={isRtl ? "text-end" : "text-start"}>
+        <h1 className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tight leading-tight mb-2">
+          {name}
+        </h1>
+        
+        <RatingSummary 
+          rating={averageRating} 
+          numReviews={numReviews} 
+          className="p-0 bg-transparent border-none text-[10px] font-black uppercase tracking-widest text-(--primary)"
+        />
+      </div>
+
+      {/* Pricing & Savings */}
+      <div className={bcn("flex items-baseline gap-3 pt-2", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <span className="text-4xl font-black text-(--primary)">
+          {bundle.price.toLocaleString()} {dict.common.egp}
+        </span>
+        {bundle.compareAtPrice && bundle.compareAtPrice > bundle.price && (
+          <span className="text-xl text-slate-400 line-through font-bold">
+            {bundle.compareAtPrice.toLocaleString()} {dict.common.egp}
+          </span>
+        )}
+      </div>
+
+      {/* Trust Badges Bar */}
+      <div className={bcn("flex flex-wrap gap-4 py-4 border-y border-slate-100", isRtl ? "flex-row-reverse" : "flex-row")}>
+        {bundle.stock > 0 && (
+          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-emerald-50 text-emerald-600 border border-emerald-100">
+            <Truck className="size-3.5" />
+            <span className="text-[9px] font-black uppercase tracking-widest">
+              {isRtl ? 'توصيل سريع مجاني' : 'Free Express Delivery'}
+            </span>
+          </div>
+        )}
+        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-indigo-50 text-indigo-600 border border-indigo-100">
+          <ShieldCheck className="size-3.5" />
+          <span className="text-[9px] font-black uppercase tracking-widest">
+            {isRtl ? 'توفير مضمون 100%' : '100% Guaranteed Savings'}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-slate-50 text-slate-500 border border-slate-100">
+          <ShoppingBag className="size-3.5" />
+          <span className="text-[9px] font-black uppercase tracking-widest">
+            {isRtl ? 'أدوات سريرية معتمدة' : 'Clinical Grade Instruments'}
+          </span>
+        </div>
+      </div>
+
+      {/* What's Included */}
+      {items && items.length > 0 && (
+        <div className="space-y-4">
+          <h3 className={bcn("text-xs font-black uppercase tracking-[0.2em] text-slate-400", isRtl ? "text-end" : "text-start")}>
+            {isRtl ? 'ماذا يوجد في هذا الطقم؟' : "What's included in this kit?"}
+          </h3>
+          <div className="grid grid-cols-1 gap-3">
+            {items.map((item: string, i: number) => (
+              <div key={i} className={bcn("flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-sm shadow-sm hover:border-(--primary)/30 transition-colors", isRtl ? "flex-row-reverse" : "flex-row")}>
+                <div className="bg-(--primary)/10 p-1.5 rounded-full shrink-0">
+                  <CheckCircle2 className="size-4 text-(--primary) stroke-[2.5px]" />
+                </div>
+                <span className={bcn("text-sm font-bold text-slate-700", isRtl ? "text-end" : "text-start")}>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Rating Breakdown (Hidden by default, used for search context or modal) */}
+      <RatingBreakdown 
+        reviews={reviews}
+        totalReviews={numReviews}
+        className="mt-2 opacity-0 h-0 overflow-hidden" 
+      />
+    </div>
+  );
+}
+
+function bcn(...classes: (string | boolean | undefined)[]) {
+  return classes.filter(Boolean).join(' ');
+}

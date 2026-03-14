@@ -181,9 +181,9 @@ export default function BadgesPage() {
   );
 
   return (
-    <div className={`p-6 space-y-6 ${language === 'ar' ? 'text-right' : 'text-left'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="p-6 space-y-6 text-start" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className={language === 'ar' ? 'text-right' : 'text-left'}>
+        <div className="text-start">
           <h1 className="text-2xl font-black uppercase tracking-tighter text-[var(--navy)]">{dict.dashboard.badgesPage.title}</h1>
           <p className="text-sm text-slate-500 font-medium">{dict.dashboard.badgesPage.subtitle}</p>
         </div>
@@ -191,18 +191,18 @@ export default function BadgesPage() {
           onClick={() => openModal()}
           className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-[var(--primary)]/20 rounded-sm"
         >
-          <Plus className={`size-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+          <Plus className="size-4 me-2" />
           {dict.dashboard.badgesPage.addBadge}
         </Button>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-sm shadow-sm overflow-hidden">
-        <div className={`p-4 border-b border-slate-100 flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+        <div className="p-4 border-b border-slate-100 flex items-center gap-4">
           <div className="relative flex-1 max-w-sm">
-            <Search className={`absolute ${language === 'ar' ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 size-4 text-slate-400`} />
+            <Search className="absolute inset-s-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
             <Input 
               placeholder={dict.dashboard.badgesPage.searchPlaceholder} 
-              className={`${language === 'ar' ? 'pr-10 text-right' : 'pl-10'} h-10 border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 rounded-sm text-sm`}
+              className="h-10 border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 rounded-sm text-sm ps-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -212,10 +212,10 @@ export default function BadgesPage() {
         <Table dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <TableHeader className="bg-slate-50">
             <TableRow className="hover:bg-transparent border-slate-100">
-              <TableHead className={`w-[120px] text-xs font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.badgesPage.table.preview}</TableHead>
-              <TableHead className={`text-xs font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.badgesPage.table.name}</TableHead>
-              <TableHead className={`text-xs font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.badgesPage.table.colors}</TableHead>
-              <TableHead className={`${language === 'ar' ? 'text-left pl-4' : 'text-right pr-4'} text-xs font-bold uppercase tracking-widest text-slate-500`}>{dict.dashboard.badgesPage.table.actions}</TableHead>
+              <TableHead className="w-[120px] text-xs font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.badgesPage.table.preview}</TableHead>
+              <TableHead className="text-xs font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.badgesPage.table.name}</TableHead>
+              <TableHead className="text-xs font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.badgesPage.table.colors}</TableHead>
+              <TableHead className="text-end ps-4 text-xs font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.badgesPage.table.actions}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -237,7 +237,7 @@ export default function BadgesPage() {
             ) : (
               filteredBadges.map((badge) => (
                 <TableRow key={badge._id} className="hover:bg-slate-50 transition-colors border-slate-50">
-                  <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
+                  <TableCell className="text-start">
                     <span 
                       className={`px-2.5 py-1 rounded-sm text-[10px] font-black uppercase tracking-widest shadow-sm inline-block ${language === 'ar' ? 'font-cairo' : ''}`}
                       style={{ backgroundColor: badge.color, color: badge.textColor }}
@@ -245,10 +245,10 @@ export default function BadgesPage() {
                       {language === 'ar' && badge.nameAr ? badge.nameAr : badge.name}
                     </span>
                   </TableCell>
-                  <TableCell className={`font-bold text-[var(--navy)] ${language === 'ar' ? 'text-right font-cairo' : 'text-left'}`}>
+                  <TableCell className={`font-bold text-[var(--navy)] text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
                     {language === 'ar' && badge.nameAr ? badge.nameAr : badge.name}
                   </TableCell>
-                  <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
+                  <TableCell className="text-start">
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
                         <div className="size-4 rounded-sm border border-slate-200" style={{ backgroundColor: badge.color }} />
@@ -260,28 +260,28 @@ export default function BadgesPage() {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className={`${language === 'ar' ? 'text-left pl-4' : 'text-right pr-4'} py-4`}>
+                  <TableCell className="text-end ps-4 py-4">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="size-8 p-0">
                           <MoreHorizontal className="size-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align={language === 'ar' ? 'start' : 'end'} className="w-40 rounded-sm overflow-hidden">
-                        <DropdownMenuLabel className={`text-[10px] uppercase tracking-widest text-slate-400 ${language === 'ar' ? 'text-right' : ''}`}>{dict.dashboard.badgesPage.table.actions}</DropdownMenuLabel>
+                      <DropdownMenuContent align="end" className="w-40 rounded-sm overflow-hidden">
+                        <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-slate-400 text-start">{dict.dashboard.badgesPage.table.actions}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem 
                           onClick={() => openModal(badge)}
-                          className={`text-xs font-medium focus:bg-slate-50 cursor-pointer ${language === 'ar' ? 'flex-row-reverse' : ''}`}
+                          className="text-xs font-medium focus:bg-slate-50 cursor-pointer"
                         >
-                          <Pencil className={`size-3 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                          <Pencil className="size-3 me-2" />
                           {dict.common.edit}
                         </DropdownMenuItem>
                         <DropdownMenuItem 
-                          className={`text-xs font-medium text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer ${language === 'ar' ? 'flex-row-reverse' : ''}`}
+                          className="text-xs font-medium text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer"
                           onClick={() => setDeleteId(badge._id)}
                         >
-                          <Trash2 className={`size-3 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                          <Trash2 className="size-3 me-2" />
                           {dict.common.delete}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -298,7 +298,7 @@ export default function BadgesPage() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-md rounded-sm" dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <form onSubmit={handleSave}>
-            <DialogHeader className={language === 'ar' ? 'text-right' : ''}>
+            <DialogHeader className="text-start">
               <DialogTitle className="font-black uppercase tracking-tighter text-xl">
                 {editingBadge ? dict.dashboard.badgesPage.modal.editTitle : dict.dashboard.badgesPage.modal.newTitle}
               </DialogTitle>
@@ -309,8 +309,8 @@ export default function BadgesPage() {
 
             <div className={`py-6 space-y-6 ${language === 'ar' ? 'font-cairo' : ''}`}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
-                  <div className={`flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <div className="space-y-2 text-start">
+                  <div className="flex items-center justify-between">
                     <Label htmlFor="name" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.badgesPage.modal.name} (EN)</Label>
                   </div>
                   <Input 
@@ -318,18 +318,18 @@ export default function BadgesPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g. Discount"
-                    className={`rounded-sm border-slate-200 focus:border-(--primary) text-sm`}
+                    className="rounded-sm border-slate-200 focus:border-(--primary) text-sm"
                     required
                   />
                 </div>
-                <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                <div className="space-y-2 text-start">
                   <Label htmlFor="nameAr" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.badgesPage.modal.name} (AR)</Label>
                   <Input 
                     id="nameAr"
                     value={formData.nameAr}
                     onChange={(e) => setFormData({ ...formData, nameAr: e.target.value })}
                     placeholder="مثال: خصم"
-                    className={`rounded-sm border-slate-200 focus:border-(--primary) text-sm text-right font-cairo`}
+                    className="rounded-sm border-slate-200 focus:border-(--primary) text-sm font-cairo"
                   />
                 </div>
               </div>
@@ -348,7 +348,7 @@ export default function BadgesPage() {
               </div>
 
               <div className="pt-2">
-                <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2 ${language === 'ar' ? 'text-right' : ''}`}>{dict.dashboard.badgesPage.modal.preview}</Label>
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2 text-start">{dict.dashboard.badgesPage.modal.preview}</Label>
                 <div className="p-8 bg-slate-50 border border-dashed border-slate-200 rounded-sm flex items-center justify-center">
                   <span 
                     className={`px-4 py-1.5 rounded-sm text-xs font-black uppercase tracking-widest shadow-lg transition-all ${language === 'ar' ? 'font-cairo' : ''}`}
@@ -360,7 +360,7 @@ export default function BadgesPage() {
               </div>
             </div>
 
-            <DialogFooter className={`gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <DialogFooter className="gap-2">
               <Button 
                 type="button" 
                 variant="outline" 
@@ -374,7 +374,7 @@ export default function BadgesPage() {
                 disabled={isSaving}
                 className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-[var(--primary)]/20 rounded-sm"
               >
-                {isSaving ? <Loader2 className={`size-4 animate-spin ${language === 'ar' ? 'ml-2' : 'mr-2'}`} /> : <Check className={`size-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />}
+                {isSaving ? <Loader2 className="size-4 animate-spin me-2" /> : <Check className="size-4 me-2" />}
                 {editingBadge ? dict.dashboard.badgesPage.modal.update : dict.dashboard.badgesPage.modal.create}
               </Button>
             </DialogFooter>
@@ -384,13 +384,13 @@ export default function BadgesPage() {
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent className="rounded-sm" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-          <AlertDialogHeader className={language === 'ar' ? 'text-right' : ''}>
+          <AlertDialogHeader className="text-start">
             <AlertDialogTitle className="font-black uppercase tracking-tighter">{dict.dashboard.badgesPage.deleteDialog.title}</AlertDialogTitle>
             <AlertDialogDescription className="text-sm font-medium">
               {dict.dashboard.badgesPage.deleteDialog.description}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className={`gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <AlertDialogFooter className="gap-2">
             <AlertDialogCancel className="rounded-sm font-bold uppercase tracking-widest text-[10px]">{dict.dashboard.badgesPage.deleteDialog.cancel}</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleDelete}

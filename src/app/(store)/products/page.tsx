@@ -18,51 +18,99 @@ import { cookies } from 'next/headers';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 
-export const dynamic = 'force-dynamic';
+import { unstable_cache } from 'next/cache';
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type SearchParams = Promise<{ [key: string]: string | undefined }>;
+
+async function getAllCategories() {
+  return unstable_cache(
+    async () => {
+      await connectDB();
+      const categories = await Category.find().lean();
+      return JSON.parse(JSON.stringify(categories));
+    },
+    ['categories-list'],
+    { revalidate: 3600, tags: ['categories-list'] }
+  )();
+}
 
 async function getProducts(searchParams: { [key: string]: string | string[] | undefined }) {
-  await connectDB();
-  Category;
-  Badge;
-
   const categoryId = searchParams.categoryId as string | undefined;
   const search = searchParams.search as string | undefined;
   const sort = searchParams.sort as string | undefined;
   const page = parseInt((searchParams.page as string) || '1');
   const limit = parseInt((searchParams.limit as string) || '12');
-  const skip = (page - 1) * limit;
+  
+  // Create a cache key based on search params
+  const cacheKey = JSON.stringify({ categoryId, search, sort, page, limit });
 
-  const query: Record<string, any> = {};
-  if (categoryId) query.categoryId = categoryId;
-  if (search) query.name = { $regex: search, $options: 'i' };
+  return unstable_cache(
+    async () => {
+      await connectDB();
+      void Category.modelName;
+      void Badge.modelName;
 
-  let sortOption: any = { createdAt: -1 };
-  if (sort === 'price_asc') sortOption = { price: 1 };
-  if (sort === 'price_desc') sortOption = { price: -1 };
-  if (sort === 'newest') sortOption = { createdAt: -1 };
+      const skip = (page - 1) * limit;
+      const query: Record<string, any> = {};
+      if (categoryId) query.categoryId = categoryId;
+      if (search) query.name = { $regex: search, $options: 'i' };
 
-  const [products, total] = await Promise.all([
-    Product.find(query)
-      .populate({ path: 'categoryId', strictPopulate: false })
-      .populate({ path: 'badgeId', strictPopulate: false })
-      .sort(sortOption)
-      .skip(skip)
-      .limit(limit)
-      .lean(),
-    Product.countDocuments(query),
-  ]);
+      let sortOption: any = { createdAt: -1 };
+      if (sort === 'price_asc') sortOption = { price: 1 };
+      if (sort === 'price_desc') sortOption = { price: -1 };
+      if (sort === 'newest') sortOption = { createdAt: -1 };
 
-  return {
-    products: JSON.parse(JSON.stringify(products)),
-    pagination: {
-      totalItems: total,
-      totalPages: Math.ceil(total / limit),
-      currentPage: page,
-      limit
-    }
-  };
+      const [products, total] = await Promise.all([
+        Product.find(query)
+          .populate({ path: 'categoryId', strictPopulate: false })
+          .populate({ path: 'badgeId', strictPopulate: false })
+          .sort(sortOption)
+          .skip(skip)
+          .limit(limit)
+          .lean(),
+        Product.countDocuments(query),
+      ]);
+
+      // Strict DTO Mapping to prevent internal data leaks
+      const sanitizedProducts = products.map((p: any) => ({
+        _id: p._id.toString(),
+        name: p.name,
+        nameAr: p.nameAr,
+        slug: p.slug,
+        price: p.price,
+        compareAtPrice: p.compareAtPrice,
+        images: (p.images || []).map((img: any) => ({
+          url: img.url,
+          isPrimary: img.isPrimary
+        })),
+        category: p.categoryId ? {
+          _id: p.categoryId._id.toString(),
+          name: p.categoryId.name,
+          nameAr: p.categoryId.nameAr
+        } : { name: 'Uncategorized' },
+        badge: p.badgeId ? {
+          name: p.badgeId.name,
+          nameAr: p.badgeId.nameAr,
+          color: p.badgeId.color
+        } : null,
+        stock: p.stock,
+        averageRating: p.averageRating || 0,
+        numReviews: p.numReviews || 0
+      }));
+
+      return {
+        products: sanitizedProducts,
+        pagination: {
+          totalItems: total,
+          totalPages: Math.ceil(total / limit),
+          currentPage: page,
+          limit
+        }
+      };
+    },
+    [`products-list-${cacheKey}`],
+    { revalidate: 60, tags: ['products-list'] }
+  )();
 }
 
 export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {
@@ -72,6 +120,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
 
   const resolvedParams = await searchParams;
   const { products, pagination } = await getProducts(resolvedParams);
+  const categories = await getAllCategories();
 
   const currentPage = pagination?.currentPage || 1;
   const totalPages = pagination?.totalPages || 0;
@@ -102,6 +151,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
           <ProductFilters 
             currentCategory={resolvedParams.categoryId as string} 
             currentSort={resolvedParams.sort as string}
+            initialCategories={categories}
+            locale={locale}
           />
           
           <section className="flex-1 space-y-12">
@@ -109,7 +160,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
               <>
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-8">
                   {products.map((product: any) => (
-                    <ProductCard key={product._id} product={product} />
+                    <ProductCard key={product._id} product={product} locale={locale} />
                   ))}
                 </div>
 

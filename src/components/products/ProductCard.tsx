@@ -1,51 +1,52 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { ShoppingCart } from 'lucide-react';
-import { useCartUIStore } from '@/store/useCartUIStore';
-import { useCartStore } from '@/store/useCartStore';
-import { useToastStore } from '@/store/useToastStore';
-import { useLanguageStore } from '@/store/useLanguageStore';
+import { AddToCartButton } from './AddToCartButton';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 
-export function ProductCard({ product }: { product: any }) {
-  const router = useRouter();
-  const { openCart } = useCartUIStore();
-  const { addItem } = useCartStore();
-  const { addToast } = useToastStore();
-  const { language } = useLanguageStore();
-  const dict = language === 'en' ? en : ar;
+interface ProductCardProps {
+  product: {
+    _id: string;
+    name: string;
+    nameAr?: string;
+    slug: string;
+    price: number;
+    originalPrice?: number;
+    images?: { url: string; isPrimary: boolean }[];
+    image?: string;
+    categoryId?: { name: string; nameAr?: string };
+    category?: string;
+    categoryAr?: string;
+    badgeId?: { name: string; nameAr?: string; color: string; textColor: string };
+    badge?: string;
+    stock?: number;
+  };
+  locale?: string;
+}
 
-  const primaryImage = product.images?.find((img: any) => img.isPrimary)?.url || product.images?.[0]?.url || product.image;
-  const inStock = product.stock > 0;
-  const badge = product.badgeId || (product.badge ? { name: product.badge, color: product.badge.includes('Hot') ? '#E11D48' : '#0073E6', textColor: '#FFFFFF' } : null);
+export function ProductCard({ product, locale }: ProductCardProps) {
+  const dict = locale === 'ar' ? ar : en;
+  const language = locale || 'en';
+
+  const primaryImage = product.images?.find((img) => img.isPrimary)?.url || product.images?.[0]?.url || product.image || '';
+  const inStock = (product.stock !== undefined) ? product.stock > 0 : true;
+  
+  const badge = product.badgeId || (product.badge ? { 
+    name: product.badge, 
+    color: product.badge.includes('Hot') ? '#E11D48' : '#0073E6', 
+    textColor: '#FFFFFF' 
+  } : null);
+
   const categoryName = (language === 'ar' && (product.categoryId?.nameAr || product.categoryAr)) 
     ? (product.categoryId?.nameAr || product.categoryAr) 
     : (product.categoryId?.name || product.category);
+    
   const productName = (language === 'ar' && product.nameAr) ? product.nameAr : product.name;
 
-  const handleAddToCart = (e: React.MouseEvent, productToAdd: any) => {
-    e.stopPropagation();
-    if (productToAdd.stock <= 0) return;
-
-    addItem({
-      id: String(productToAdd._id),
-      slug: productToAdd.slug,
-      name: productToAdd.name,
-      nameAr: productToAdd.nameAr,
-      price: productToAdd.price,
-      image: primaryImage,
-    });
-    openCart();
-  };
-
   return (
-    <div 
-      className="group bg-background border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 rounded-(--radius) cursor-pointer flex flex-col h-full" 
-      onClick={() => router.push(`/product/${product.slug}`)}
+    <Link 
+      href={`/product/${product.slug}`}
+      className="group bg-background border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 rounded-(--radius) cursor-pointer flex flex-col h-full"
     >
       <div className="aspect-square relative overflow-hidden bg-muted">
         <Image 
@@ -55,7 +56,7 @@ export function ProductCard({ product }: { product: any }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-110 transition-transform duration-700" 
         />
-        {product.stock <= 0 && (
+        {!inStock && (
           <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-20 flex items-center justify-center">
             <span className="bg-foreground text-background text-[10px] font-black px-4 py-2 rounded-(--radius) uppercase tracking-[0.2em] shadow-2xl">
               {language === 'ar' ? 'نفذت الكمية' : 'Sold Out'}
@@ -67,7 +68,7 @@ export function ProductCard({ product }: { product: any }) {
             className="absolute top-4 start-4 text-[10px] font-black px-3 py-1.5 rounded-(--radius) uppercase tracking-widest z-10 shadow-lg"
             style={{ backgroundColor: badge.color || '#0073E6', color: badge.textColor || '#FFFFFF' }}
           >
-            {language === 'ar' && badge.nameAr ? badge.nameAr : badge.name}
+            {language === 'ar' && badge.nameAr ? badge.nameAr : (badge.name || badge.nameAr)}
           </span>
         )}
       </div>
@@ -81,20 +82,22 @@ export function ProductCard({ product }: { product: any }) {
               <span className="text-sm text-muted-foreground line-through opacity-50 font-light">{product.originalPrice.toLocaleString()} {dict.common.egp}</span>
             )}
           </div>
-          <button 
-            disabled={product.stock <= 0}
-            onClick={(e) => handleAddToCart(e, product)}
-            className={`w-full py-3 text-xs font-bold uppercase tracking-widest transition-colors rounded-sm outline-none border-none flex items-center justify-center gap-2 ${
-              product.stock <= 0 
-                ? 'bg-muted text-muted-foreground cursor-not-allowed' 
-                : 'bg-(--primary) hover:bg-navy text-white cursor-pointer'
-            }`}
-          >
-            <ShoppingCart className="size-4 stroke-[2px]" />
-            {dict.common.addToCart}
-          </button>
+          
+          <AddToCartButton 
+            product={{
+              _id: String(product._id),
+              slug: product.slug,
+              name: product.name,
+              nameAr: product.nameAr,
+              price: product.price,
+              image: primaryImage || '',
+              stock: product.stock ?? 0
+            }}
+            dict={dict}
+            variant="card"
+          />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

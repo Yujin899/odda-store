@@ -10,9 +10,9 @@ import { BestSellers } from '@/components/home/BestSellers';
 import HomeBundles from '@/components/home/HomeBundles';
 import { connectDB } from '@/lib/mongodb';
 import { Product } from '@/models/Product';
-import { Bundle } from '@/models/Bundle';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
+import { StoreSettings } from '@/models/StoreSettings';
 import { cookies } from 'next/headers';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
@@ -43,6 +43,12 @@ async function getCategories() {
   return JSON.parse(JSON.stringify(categories));
 }
 
+async function getSettings() {
+  await connectDB();
+  const settings = await StoreSettings.findOne().lean();
+  return JSON.parse(JSON.stringify(settings));
+}
+
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
   'Clinical Bundles': 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop',
   'Diagnostics': 'https://images.unsplash.com/photo-1576091160550-217359f4ecf8?q=80&w=2070&auto=format&fit=crop',
@@ -56,14 +62,15 @@ export default async function Home() {
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
   const dict = locale === 'en' ? en : ar;
 
-  const [featuredProducts, categories] = await Promise.all([
+  const [featuredProducts, categories, settings] = await Promise.all([
     getFeaturedProducts(),
-    getCategories()
+    getCategories(),
+    getSettings()
   ]);
 
   return (
     <>
-      <Hero />
+      <Hero hero={settings?.hero} locale={locale} />
 
       {/* Trust/Authority Banner */}
       <section className="border-b border-navy/10 py-6 bg-[var(--background)]">

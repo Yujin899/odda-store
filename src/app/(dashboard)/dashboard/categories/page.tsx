@@ -295,9 +295,9 @@ export default function CategoriesPage() {
   );
 
   return (
-    <div className={`p-6 space-y-6 ${language === 'ar' ? 'text-right' : 'text-left'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="p-6 space-y-6 text-start" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className={language === 'ar' ? 'text-right' : 'text-left'}>
+        <div className="text-start">
           <h1 className="text-2xl font-black uppercase tracking-tighter text-(--navy)">{dict.dashboard.categoriesPage.title}</h1>
           <p className="text-sm text-slate-500 font-medium">{dict.dashboard.categoriesPage.subtitle}</p>
         </div>
@@ -305,18 +305,18 @@ export default function CategoriesPage() {
           onClick={() => openModal()}
           className="bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-(--primary)/20 rounded-sm"
         >
-          <Plus className={`size-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+          <Plus className="size-4 me-2" />
           {dict.dashboard.categoriesPage.addCategory}
         </Button>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-sm shadow-sm overflow-hidden">
-        <div className={`p-4 border-b border-slate-100 flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+        <div className="p-4 border-b border-slate-100 flex items-center gap-4">
           <div className="relative flex-1 max-w-sm">
-            <Search className={`absolute ${language === 'ar' ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 size-4 text-slate-400`} />
+            <Search className="absolute inset-s-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
             <Input 
               placeholder={dict.dashboard.categoriesPage.searchPlaceholder}
-              className={`${language === 'ar' ? 'pr-10 text-right' : 'pl-10'} h-10 border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 rounded-sm text-sm`}
+              className="h-10 border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 rounded-sm text-sm ps-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -326,11 +326,13 @@ export default function CategoriesPage() {
         <Table dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <TableHeader className="bg-slate-50">
             <TableRow className="hover:bg-transparent border-slate-100">
-              <TableHead className={`w-[80px] text-xs font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.categoriesPage.table.image}</TableHead>
-              <TableHead className={`text-xs font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.categoriesPage.table.name}</TableHead>
-              <TableHead className={`text-xs font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.categoriesPage.table.slug}</TableHead>
-              <TableHead className={`hidden md:table-cell text-xs font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.categoriesPage.table.description}</TableHead>
-              <TableHead className={`${language === 'ar' ? 'text-left pl-4' : 'text-right pr-4'} text-xs font-bold uppercase tracking-widest text-slate-500`}>{dict.dashboard.categoriesPage.table.actions}</TableHead>
+            <TableRow className="hover:bg-transparent border-slate-100">
+              <TableHead className="w-[80px] text-xs font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.categoriesPage.table.image}</TableHead>
+              <TableHead className="text-xs font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.categoriesPage.table.name}</TableHead>
+              <TableHead className="text-xs font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.categoriesPage.table.slug}</TableHead>
+              <TableHead className="hidden md:table-cell text-xs font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.categoriesPage.table.description}</TableHead>
+              <TableHead className="text-end ps-4 text-xs font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.categoriesPage.table.actions}</TableHead>
+            </TableRow>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -352,8 +354,8 @@ export default function CategoriesPage() {
             ) : (
               filteredCategories.map((category) => (
                 <TableRow key={category._id} className="hover:bg-slate-50 transition-colors border-slate-50">
-                  <TableCell className={language === 'ar' ? 'text-right font-cairo' : 'text-left'}>
-                    <div className={`size-10 rounded-sm overflow-hidden bg-slate-100 relative border border-slate-200 shadow-inner ${language === 'ar' ? 'mr-0 ml-auto' : ''}`}>
+                  <TableCell className="text-start font-cairo">
+                    <div className="size-10 rounded-sm overflow-hidden bg-slate-100 relative border border-slate-200 shadow-inner ms-auto me-0">
                       {category.image ? (
                         <Image 
                           src={category.image} 
@@ -368,39 +370,39 @@ export default function CategoriesPage() {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className={`font-bold text-(--navy) ${language === 'ar' ? 'text-right font-cairo' : 'text-left'}`}>
+                  <TableCell className={`font-bold text-(--navy) text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
                     {language === 'ar' && category.nameAr ? category.nameAr : category.name}
                   </TableCell>
-                  <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
+                  <TableCell className="text-start">
                     <code className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-600 font-mono uppercase tracking-tighter">
                       {category.slug}
                     </code>
                   </TableCell>
-                  <TableCell className={`hidden md:table-cell max-w-[200px] truncate text-sm text-slate-500 ${language === 'ar' ? 'text-right font-cairo' : 'text-left'}`}>
+                  <TableCell className={`hidden md:table-cell max-w-[200px] truncate text-sm text-slate-500 text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
                     {language === 'ar' && category.descriptionAr ? category.descriptionAr : (category.description || '-')}
                   </TableCell>
-                  <TableCell className={`${language === 'ar' ? 'text-left pl-4' : 'text-right pr-4'} py-4`}>
+                  <TableCell className="text-end ps-4 py-4">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="size-8 p-0">
                           <MoreHorizontal className="size-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align={language === 'ar' ? 'start' : 'end'} className="w-40 rounded-sm overflow-hidden">
-                        <DropdownMenuLabel className={`text-[10px] uppercase tracking-widest text-slate-400 ${language === 'ar' ? 'text-right' : ''}`}>{dict.dashboard.categoriesPage.table.actions}</DropdownMenuLabel>
+                      <DropdownMenuContent align="end" className="w-40 rounded-sm overflow-hidden">
+                        <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-slate-400 text-start">{dict.dashboard.categoriesPage.table.actions}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem 
                           onClick={() => openModal(category)}
-                          className={`text-xs font-medium focus:bg-slate-50 cursor-pointer ${language === 'ar' ? 'flex-row-reverse' : ''}`}
+                          className="text-xs font-medium focus:bg-slate-50 cursor-pointer"
                         >
-                          <Pencil className={`size-3 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                          <Pencil className="size-3 me-2" />
                           {dict.common.edit}
                         </DropdownMenuItem>
                         <DropdownMenuItem 
-                          className={`text-xs font-medium text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer ${language === 'ar' ? 'flex-row-reverse' : ''}`}
+                          className="text-xs font-medium text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer"
                           onClick={() => setDeleteId(category._id)}
                         >
-                          <Trash2 className={`size-3 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                          <Trash2 className="size-3 me-2" />
                           {dict.common.delete}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -498,7 +500,7 @@ export default function CategoriesPage() {
                           disabled={isMagicFilling || !formData.name}
                           className="h-6 px-2 text-[9px] uppercase tracking-widest font-black text-(--primary) hover:text-(--primary) hover:bg-(--primary)/10"
                         >
-                          {isMagicFilling ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ml-1' : 'mr-1'}`} /> : <Sparkles className={`size-3 ${language === 'ar' ? 'ml-1' : 'mr-1'}`} />}
+                          {isMagicFilling ? <Loader2 className="size-3 animate-spin me-1" /> : <Sparkles className="size-3 me-1" />}
                           ✨ AI Complete
                         </Button>
                       </div>
@@ -558,7 +560,7 @@ export default function CategoriesPage() {
                         <button 
                           type="button"
                           onClick={() => setFormData({ ...formData, image: '' })}
-                          className={`absolute top-2 ${language === 'ar' ? 'left-2' : 'right-2'} size-6 bg-red-600 text-white rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity`}
+                          className="absolute top-2 inset-e-2 size-6 bg-red-600 text-white rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <X className="size-3" />
                         </button>
@@ -648,7 +650,7 @@ export default function CategoriesPage() {
                 disabled={isSaving || isUploading}
                 className="bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-(--primary)/20 rounded-sm"
               >
-                {isSaving ? <Loader2 className={`size-4 animate-spin ${language === 'ar' ? 'ml-2' : 'mr-2'}`} /> : <Check className={`size-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />}
+                {isSaving ? <Loader2 className="size-4 animate-spin me-2" /> : <Check className="size-4 me-2" />}
                 {editingCategory ? dict.dashboard.categoriesPage.modal.update : dict.dashboard.categoriesPage.modal.create}
               </Button>
             </DialogFooter>
@@ -658,13 +660,13 @@ export default function CategoriesPage() {
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent className="rounded-sm" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-          <AlertDialogHeader className={language === 'ar' ? 'text-right' : ''}>
+          <AlertDialogHeader className="text-start">
             <AlertDialogTitle className="font-black uppercase tracking-tighter">{dict.dashboard.categoriesPage.deleteDialog.title}</AlertDialogTitle>
             <AlertDialogDescription className="text-sm font-medium">
               {dict.dashboard.categoriesPage.deleteDialog.description}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className={`gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <AlertDialogFooter className="gap-2">
             <AlertDialogCancel className="rounded-sm font-bold uppercase tracking-widest text-[10px]">{dict.dashboard.categoriesPage.deleteDialog.cancel}</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleDelete}

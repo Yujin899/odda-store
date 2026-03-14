@@ -60,7 +60,7 @@ export function MobileBottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden items-center justify-around bg-white/90 backdrop-blur-md border-t border-slate-200 px-1 pb-[env(safe-area-inset-bottom)] pt-2 h-[calc(72px+env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
+    <nav className="fixed bottom-0 inset-x-0 z-50 flex md:hidden items-center justify-around bg-white/90 backdrop-blur-md border-t border-slate-200 px-1 pb-[env(safe-area-inset-bottom)] pt-2 h-[calc(72px+env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
       {navItems.map((item, index) => {
         const isActive = item.type === 'link' && pathname === item.href;
         const Icon = item.icon;
@@ -83,7 +83,7 @@ export function MobileBottomNav() {
                 }`} 
               />
               {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -top-1 -right-1 bg-(--primary) text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white">
+                <span className="absolute -top-1 -end-1 bg-(--primary) text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white">
                   {item.badge}
                 </span>
               )}

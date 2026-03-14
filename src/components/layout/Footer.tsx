@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { 
@@ -11,32 +9,37 @@ import {
   CreditCard,
   Truck
 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
-import { useLanguageStore } from '@/store/useLanguageStore';
+import React from 'react';
+import { cookies } from 'next/headers';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { connectDB } from '@/lib/mongodb';
+import Category from '@/models/Category';
+import { StoreSettings } from '@/models/StoreSettings';
 
-export function Footer() {
-  const [settings, setSettings] = useState<any>(null);
-  const [categories, setCategories] = useState<any[]>([]);
-  const { language } = useLanguageStore();
+async function getFooterData() {
+  await connectDB();
+  const [categories, settings] = await Promise.all([
+    Category.find().limit(5).lean(),
+    StoreSettings.findOne().lean()
+  ]);
+  return {
+    categories: JSON.parse(JSON.stringify(categories)),
+    settings: JSON.parse(JSON.stringify(settings))
+  };
+}
+
+export async function Footer() {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+  const language = locale as 'en' | 'ar';
   const dict = language === 'en' ? en : ar;
 
-  useEffect(() => {
-    // Fetch categories and settings
-    Promise.all([
-      fetch('/api/categories').then(res => res.json()),
-      fetch('/api/settings').then(res => res.json())
-    ]).then(([catData, settingsData]) => {
-      setCategories(catData.categories || []);
-      setSettings(settingsData);
-    }).catch(err => console.error('Footer fetch error:', err));
-  }, []);
+  const { categories, settings } = await getFooterData();
 
   const fbLink = settings?.socialLinks?.facebook || "#";
   const igLink = settings?.socialLinks?.instagram || "#";
   const waNumber = settings?.whatsappNumber || "";
-  const email = settings?.contactEmail || "contact@oddastore.com";
   const description = (language === 'ar' && settings?.storeDescriptionAr) 
     ? settings.storeDescriptionAr 
     : (settings?.storeDescription || "Precision Clinical Instruments for the next generation of dental professionals. Engineering accuracy for modern healthcare.");
@@ -105,7 +108,7 @@ export function Footer() {
           <div className="space-y-8">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">{dict.common.categories}</h4>
             <ul className="space-y-4">
-              {categories.length > 0 ? categories.slice(0, 5).map((cat) => (
+              {categories.length > 0 ? categories.map((cat: any) => (
                 <li key={cat._id}>
                   <Link 
                     href={`/products?categoryId=${cat._id}`} 

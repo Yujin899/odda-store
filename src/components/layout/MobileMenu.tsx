@@ -71,7 +71,7 @@ export function MobileMenu() {
             animate={{ x: 0 }}
             exit={{ x: language === 'ar' ? '100%' : '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200, duration: 0.25 }}
-            className="fixed top-0 start-0 bottom-0 w-[80%] max-w-sm bg-background z-[101] md:hidden shadow-2xl flex flex-col"
+            className="fixed top-0 inset-s-0 bottom-0 w-[80%] max-w-sm bg-background z-[101] md:hidden shadow-2xl flex flex-col"
           >
             {/* Header */}
             <div className="p-6 flex items-center justify-between border-b border-navy/10">

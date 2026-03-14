@@ -1,3 +1,5 @@
+'use client';
+
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';

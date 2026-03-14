@@ -5,21 +5,27 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
-import { RatingBreakdown } from './RatingBreakdown';
+interface Review {
+  _id: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
 
 interface ReviewSectionProps {
   targetId: string;
   targetSlug: string;
   targetType: 'Product' | 'Bundle';
   apiEndpoint: string;
-  reviews: any[];
+  reviews: Review[];
   isLoading?: boolean;
   onReviewAdded: () => void;
 }
 
 export function ReviewSection({ 
-  targetId, 
-  targetSlug, 
+  targetId: _targetId,
+  targetSlug: _targetSlug,
   targetType, 
   apiEndpoint,
   reviews,
@@ -32,8 +38,6 @@ export function ReviewSection({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
-  
-  const numReviews = reviews.length;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +70,7 @@ export function ReviewSection({
   };
 
   return (
-    <div className="pt-2 pb-6 space-y-6">
+    <div className="pt-2 pb-6 space-y-6" data-target-id={_targetId} data-target-slug={_targetSlug}>
       {/* Review Form */}
       {session ? (
         <form onSubmit={handleSubmit} className="p-4 bg-slate-50 rounded-(--radius) border border-slate-100 space-y-4">
@@ -123,7 +127,7 @@ export function ReviewSection({
              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-(--primary)"></div>
            </div>
         ) : reviews.length > 0 ? (
-          reviews.map((rev: any, i: number) => (
+          reviews.map((rev, i: number) => (
             <div key={`${rev._id}-${i}`} className="pb-4 border-b border-slate-100 last:border-0 animate-in fade-in slide-in-from-top-2 duration-500">
               <div className="flex justify-between items-center mb-1">
                 <span className="font-bold text-sm tracking-tight">{rev.userName}</span>

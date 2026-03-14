@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
+import { FormInput } from '@/components/ui/FormInput';
 
 import { Suspense } from 'react';
 
@@ -73,7 +74,7 @@ function LoginContent() {
         className="max-w-md w-full"
       >
         <div className="bg-white border border-slate-100 p-10 rounded-(--radius) shadow-2xl space-y-8 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-(--primary)"></div>
+          <div className="absolute top-0 inset-s-0 w-full h-1 bg-(--primary)"></div>
 
           <div className="flex flex-col items-center space-y-4">
             <Link href="/">
@@ -102,37 +103,29 @@ function LoginContent() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground stroke-[2px]" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="name@example.com"
-                  className="w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) pl-12 pr-4 text-sm font-medium outline-none focus:border-(--primary) focus:bg-white transition-all"
-                />
-              </div>
-            </div>
+            <FormInput
+              label="Email Address"
+              icon={Mail}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="name@example.com"
+            />
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between ml-1">
+              <div className="flex items-center justify-between ps-1">
                 <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Password</label>
                 <button type="button" className="text-[10px] font-black uppercase tracking-widest text-(--primary) border-none bg-transparent cursor-pointer">Forgot?</button>
               </div>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground stroke-[2px]" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="••••••••"
-                  className="w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) pl-12 pr-4 text-sm font-medium outline-none focus:border-(--primary) focus:bg-white transition-all"
-                />
-              </div>
+              <FormInput
+                icon={Lock}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+              />
             </div>
 
             <button

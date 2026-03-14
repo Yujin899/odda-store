@@ -1,41 +1,14 @@
-'use client';
-
-import { Loader2, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
-import { useLanguageStore } from '@/store/useLanguageStore';
+import React from 'react';
 
-export function Hero() {
-  const [hero, setHero] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { language } = useLanguageStore();
-
-  useEffect(() => {
-    fetch('/api/settings')
-      .then(res => res.json())
-      .then(data => {
-        if (data.hero) {
-          setHero(data.hero);
-        }
-      })
-      .catch(err => console.error('Hero fetch error:', err))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  if (isLoading) {
-    return (
-      <section className="relative h-[80vh] w-full bg-slate-50 animate-pulse flex items-center justify-center">
-        <Loader2 className="size-10 text-(--primary) animate-spin" />
-      </section>
-    );
-  }
-
+export function Hero({ hero, locale }: { hero?: any, locale: string }) {
   // Fallback defaults if no data exists
   const heroData = {
     image: hero?.image || "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
-    heading: (language === 'ar' && hero?.headingAr) ? hero.headingAr : (hero?.heading || "Precision Clinical Instruments"),
-    buttonText: (language === 'ar' && hero?.buttonTextAr) ? hero.buttonTextAr : (hero?.buttonText || "Shop Collection"),
+    heading: (locale === 'ar' && hero?.headingAr) ? hero.headingAr : (hero?.heading || "Precision Clinical Instruments"),
+    buttonText: (locale === 'ar' && hero?.buttonTextAr) ? hero.buttonTextAr : (hero?.buttonText || "Shop Collection"),
     buttonLink: hero?.buttonLink || "/products"
   };
 
@@ -55,7 +28,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/30 backdrop-brightness-[0.85]"></div>
       </div>
 
-      {/* Content */}
+      {/* Content strictly server-side rendered */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
         <h1 className="text-4xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-8 max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100">
           {heroData.heading}

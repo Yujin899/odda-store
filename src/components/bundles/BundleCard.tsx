@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, CheckCircle2, ShoppingBag } from 'lucide-react';
@@ -8,7 +6,11 @@ import { IBundle } from '@/models/Bundle';
 interface BundleCardProps {
   bundle: IBundle;
   locale: string;
-  dict: any;
+  dict: {
+    common: Record<string, string>;
+    home: Record<string, string>;
+    [key: string]: unknown;
+  };
 }
 
 export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
@@ -34,7 +36,7 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent opacity-60 pointer-events-none" />
 
         {/* Premium Bundle Badge - Glassmorphism */}
-        <div className="absolute top-5 right-5 z-10">
+        <div className="absolute top-5 inset-e-5 z-10">
           <div className="backdrop-blur-md bg-white/20 border border-white/30 text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full shadow-2xl flex items-center gap-2.5">
             <div className="relative">
               <ShoppingBag className="size-3 relative z-10" />

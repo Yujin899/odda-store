@@ -7,20 +7,40 @@ import { BundleCard } from '@/components/bundles/BundleCard';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+import { unstable_cache } from 'next/cache';
 
 async function getAllBundles() {
-  await connectDB();
-  const bundles = await Bundle.find({ 
-    $or: [
-      { stock: { $gt: 0 } },
-      { stock: { $exists: false } }
-    ] 
-  })
-    .sort({ createdAt: -1 })
-    .lean();
-    
-  return JSON.parse(JSON.stringify(bundles));
+  return unstable_cache(
+    async () => {
+      await connectDB();
+      const bundles = await Bundle.find({ 
+        $or: [
+          { stock: { $gt: 0 } },
+          { stock: { $exists: false } }
+        ] 
+      })
+        .sort({ createdAt: -1 })
+        .lean();
+        
+      // Strict DTO Mapping
+      return bundles.map((b: any) => ({
+        _id: b._id.toString(), // Keep _id for component keys
+        name: b.name,
+        nameAr: b.nameAr,
+        slug: b.slug,
+        price: b.price,
+        compareAtPrice: b.compareAtPrice,
+        images: (b.images || []).map((url: string) => url),
+        stock: b.stock,
+        bundleItems: b.bundleItems || [],
+        bundleItemsAr: b.bundleItemsAr || [],
+        averageRating: b.averageRating || 0,
+        numReviews: b.numReviews || 0
+      }));
+    },
+    ['bundles-list'],
+    { revalidate: 3600, tags: ['bundles-list'] }
+  )();
 }
 
 export default async function BundlesPage() {
@@ -34,8 +54,8 @@ export default async function BundlesPage() {
       {/* Premium Hero Header */}
       <section className="relative py-24 bg-(--navy) overflow-hidden">
         {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-(--primary)/10 to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-(--primary)/5 to-transparent pointer-events-none" />
+        <div className="absolute top-0 inset-e-0 w-1/2 h-full bg-linear-to-l from-(--primary)/10 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 inset-s-0 w-1/2 h-full bg-linear-to-r from-(--primary)/5 to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mb-6">

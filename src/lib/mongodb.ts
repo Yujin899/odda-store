@@ -32,12 +32,11 @@ export async function connectDB() {
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
+      family: 4, // Use IPv4 to avoid potential DNS issues in some serverless environments
     };
 
     cached!.promise = mongoose.connect(MONGODB_URI!, opts).then((m) => {
-      if (process.env.NODE_ENV === 'development') {
-        console.log('MongoDB successfully connected.');
-      }
+      console.log('New MongoDB connection established (Pool Size: 10)');
       return m;
     });
   }

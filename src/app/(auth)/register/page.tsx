@@ -10,6 +10,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
+import { FormInput } from '@/components/ui/FormInput';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -66,6 +67,7 @@ export default function RegisterPage() {
         throw new Error('Registration failed');
       }
     } catch (err) {
+      console.error('Registration error:', err);
       addToast({
         title: dict.toasts.error,
         description: dict.toasts.somethingWentWrong,
@@ -88,7 +90,7 @@ export default function RegisterPage() {
         className="max-w-md w-full"
       >
         <div className="bg-white border border-slate-100 p-10 rounded-(--radius) shadow-2xl space-y-8 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-(--primary)"></div>
+          <div className="absolute top-0 inset-s-0 w-full h-1 bg-(--primary)"></div>
           
           <div className="flex flex-col items-center space-y-4">
             <Link href="/">
@@ -117,69 +119,48 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Full Name</label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground stroke-[2px]" />
-                <input 
-                  type="text" 
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  placeholder="John Doe"
-                  className="w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) pl-12 pr-4 text-sm font-medium outline-none focus:border-(--primary) focus:bg-white transition-all" 
-                />
-              </div>
-            </div>
+            <FormInput
+              label="Full Name"
+              name="name"
+              icon={User}
+              value={formData.name}
+              onChange={handleChange}
+              required
+              placeholder="John Doe"
+            />
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground stroke-[2px]" />
-                <input 
-                  type="email" 
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="name@example.com"
-                  className="w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) pl-12 pr-4 text-sm font-medium outline-none focus:border-(--primary) focus:bg-white transition-all" 
-                />
-              </div>
-            </div>
+            <FormInput
+              label="Email Address"
+              name="email"
+              icon={Mail}
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              placeholder="name@example.com"
+            />
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground stroke-[2px]" />
-                <input 
-                  type="password" 
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  placeholder="••••••••"
-                  className="w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) pl-12 pr-4 text-sm font-medium outline-none focus:border-(--primary) focus:bg-white transition-all" 
-                />
-              </div>
-            </div>
+            <FormInput
+              label="Password"
+              name="password"
+              icon={Lock}
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="••••••••"
+            />
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Confirm Password</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground stroke-[2px]" />
-                <input 
-                  type="password" 
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                  placeholder="••••••••"
-                  className="w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) pl-12 pr-4 text-sm font-medium outline-none focus:border-(--primary) focus:bg-white transition-all" 
-                />
-              </div>
-            </div>
+            <FormInput
+              label="Confirm Password"
+              name="confirmPassword"
+              icon={Lock}
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              placeholder="••••••••"
+            />
 
             <button 
               type="submit"

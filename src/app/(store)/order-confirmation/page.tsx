@@ -101,7 +101,7 @@ function OrderConfirmationContent() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white border border-slate-100 p-8 rounded-(--radius) shadow-xl relative overflow-hidden text-center space-y-6"
         >
-          <div className="absolute top-0 left-0 w-full h-1.5 bg-(--primary)"></div>
+          <div className="absolute top-0 inset-s-0 w-full h-1.5 bg-(--primary)"></div>
           
           <div className="flex justify-center">
             <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shadow-md border border-emerald-100">

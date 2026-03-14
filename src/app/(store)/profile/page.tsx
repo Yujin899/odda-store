@@ -42,7 +42,7 @@ export default async function ProfilePage() {
               {session.user.name?.charAt(0) || session.user.email?.charAt(0) || "U"}
             </div>
           )}
-          <div className="absolute bottom-1 right-1 md:bottom-2 md:right-2 bg-green-500 size-5 rounded-full border-2 border-white" />
+          <div className="absolute inset-b-1 inset-e-1 md:inset-b-2 md:inset-e-2 bg-green-500 size-5 rounded-full border-2 border-white" />
         </div>
         <h1 className="text-2xl md:text-3xl font-bold text-navy mb-1 text-center">
           {session.user.name || dict.profile.userPlaceholder}

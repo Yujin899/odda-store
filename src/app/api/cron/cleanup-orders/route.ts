@@ -24,7 +24,6 @@ export async function GET(req: Request) {
       status: { $in: ['delivered', 'cancelled'] }
     });
 
-    console.log(`Starting full cleanup for ${ordersToCleanup.length} orders...`);
 
     let successCount = 0;
     let failCount = 0;

@@ -8,50 +8,69 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+import { orderSubmissionSchema } from '@/lib/schemas';
+
 export const POST = auth(async (req) => {
   try {
     const body = await req.json();
-    const { shippingAddress, items, totalAmount, paymentMethod, paymentProof } = body;
-
-    if (!shippingAddress || !items || !totalAmount || !paymentMethod || !shippingAddress.email) {
-      return NextResponse.json({ message: 'Missing required fields, including email' }, { status: 400 });
-    }
+    
+    // 1. ZOD VALIDATION: Strict validation of incoming payload
+    const validatedData = orderSubmissionSchema.parse(body);
+    const { shippingAddress, items, paymentMethod, paymentProof } = validatedData;
 
     // req.auth is optional to allow Guest Checkout
     const userId = req.auth?.user?.id || null;
 
     await connectDB();
 
-    // 1. INVENTORY CHECK: Verify stock for all items
-    const productItems = items.filter((item: any) => item.type === 'product' || !item.type);
-    const bundleItems = items.filter((item: any) => item.type === 'bundle');
+    // 2. PRICE & INVENTORY VERIFICATION: Fetch from DB, do NOT trust client total
+    const productItems = items.filter(item => item.type === 'product');
+    const bundleItems = items.filter(item => item.type === 'bundle');
 
     const [dbProducts, dbBundles] = await Promise.all([
-      Product.find({ _id: { $in: productItems.map((i: any) => i.productId) } }),
+      Product.find({ _id: { $in: productItems.map(i => i.productId) } }),
       bundleItems.length > 0 
-        ? (await import('@/models/Bundle')).Bundle.find({ _id: { $in: bundleItems.map((i: any) => i.productId) } })
+        ? (await import('@/models/Bundle')).Bundle.find({ _id: { $in: bundleItems.map(i => i.productId) } })
         : []
     ]);
 
+    let calculatedTotal = 0;
     const stockErrors: string[] = [];
+    const verifiedItems: any[] = [];
     
-    // Check Products
-    productItems.forEach((item: any) => {
+    // Process Products
+    productItems.forEach((item) => {
       const product = dbProducts.find(p => p._id.toString() === item.productId);
       if (!product) {
         stockErrors.push(`Product not found: ${item.name}`);
-      } else if (product.stock < item.quantity) {
-        stockErrors.push(`Insufficient stock for ${product.name}. Available: ${product.stock}, Requested: ${item.quantity}`);
+      } else {
+        if (product.stock < item.quantity) {
+          stockErrors.push(`Insufficient stock for ${product.name}`);
+        }
+        calculatedTotal += product.price * item.quantity;
+        verifiedItems.push({
+          ...item,
+          price: product.price, // Use DB price
+          type: 'Product' 
+        });
       }
     });
 
-    // Check Bundles
-    bundleItems.forEach((item: any) => {
+    // Process Bundles
+    bundleItems.forEach((item) => {
       const bundle = dbBundles.find(b => b._id.toString() === item.productId);
       if (!bundle) {
         stockErrors.push(`Bundle not found: ${item.name}`);
-      } else if (bundle.stock < item.quantity) {
-        stockErrors.push(`Insufficient stock for bundle ${bundle.name}. Available: ${bundle.stock}, Requested: ${item.quantity}`);
+      } else {
+        if (bundle.stock < item.quantity) {
+          stockErrors.push(`Insufficient stock for bundle ${bundle.name}`);
+        }
+        calculatedTotal += bundle.price * item.quantity;
+        verifiedItems.push({
+          ...item,
+          price: bundle.price, // Use DB price
+          type: 'Bundle'
+        });
       }
     });
 
@@ -59,6 +78,9 @@ export const POST = auth(async (req) => {
       return NextResponse.json({ message: stockErrors.join('. ') }, { status: 400 });
     }
 
+    // Safety: Verify calculated total is within reasonable margin of error (or just use calculated)
+    // We'll trust our server-side calculation as the single source of truth.
+    
     const orderNumber = `ODDA-${Date.now()}`;
     let status = paymentMethod === 'COD' ? 'processing' : 'pending_payment';
 
@@ -68,11 +90,8 @@ export const POST = auth(async (req) => {
 
     const orderData: any = {
       orderNumber,
-      items: items.map((item: any) => ({
-        ...item,
-        type: item.type === 'bundle' ? 'Bundle' : 'Product' // Match Mongoose discriminator
-      })),
-      totalAmount,
+      items: verifiedItems,
+      totalAmount: calculatedTotal,
       paymentMethod,
       paymentProof: paymentProof || '',
       status,

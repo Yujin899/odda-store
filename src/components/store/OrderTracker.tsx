@@ -69,13 +69,13 @@ export function OrderTracker({ status }: OrderTrackerProps) {
 
   return (
     <div className="w-full py-8 px-4">
-      <div className="relative flex flex-col sm:flex-row justify-between items-start max-w-3xl mx-auto pl-8 sm:pl-0 sm:pr-0">
+      <div className="relative flex flex-col sm:flex-row justify-between items-start max-w-3xl mx-auto ps-8 sm:ps-0 sm:pe-0">
         {/* Background Line */}
-        <div className="absolute top-0 bottom-0 left-[1.4rem] w-[2px] sm:w-full sm:h-[2px] sm:top-6 sm:left-0 sm:bottom-auto bg-slate-100 -z-10 rounded-full"></div>
+        <div className="absolute top-0 bottom-0 inset-s-[1.4rem] w-[2px] sm:w-full sm:h-[2px] sm:top-6 sm:inset-s-0 sm:bottom-auto bg-slate-100 -z-10 rounded-full"></div>
         
         {/* Active Progress Line */}
         <motion.div 
-          className="absolute top-0 left-[1.4rem] w-[2px] sm:w-[2px] sm:h-[2px] sm:top-6 sm:left-0 sm:bottom-auto bg-(--primary) -z-10 rounded-full shadow-[0_0_10px_rgba(0,115,230,0.3)]"
+          className="absolute top-0 inset-s-[1.4rem] w-[2px] sm:w-[2px] sm:h-[2px] sm:top-6 sm:inset-s-0 sm:bottom-auto bg-(--primary) -z-10 rounded-full shadow-[0_0_10px_rgba(0,115,230,0.3)]"
           initial={{ height: "0%", width: "0%" }}
           animate={{ 
             height: typeof window !== 'undefined' && window.innerWidth < 640 ? `${(activeIndex / (steps.length - 1)) * 100}%` : "100%",
@@ -114,7 +114,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
               </motion.div>
 
               {/* Label */}
-              <div className="text-left sm:text-center space-y-1 mt-0 sm:mt-1 flex-1">
+              <div className="text-start sm:text-center space-y-1 mt-0 sm:mt-1 flex-1">
                 <p className={`text-[10px] font-black uppercase tracking-widest transition-colors duration-300 ${
                   isCompleted || isActive ? 'text-foreground' : 'text-slate-400'
                 }`}>

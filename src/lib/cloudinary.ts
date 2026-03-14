@@ -35,8 +35,7 @@ export async function uploadImage(file: Buffer, folder: string): Promise<{ url: 
  */
 export async function deleteImage(publicId: string): Promise<void> {
   try {
-    const result = await cloudinary.uploader.destroy(publicId);
-    console.log(`Cloudinary deletion: ${publicId} - result:`, result);
+    await cloudinary.uploader.destroy(publicId);
   } catch (error) {
     console.error('Cloudinary deletion error:', error);
     // We don't throw here to avoid breaking the main process if cleanup fails

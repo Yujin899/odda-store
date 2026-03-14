@@ -129,7 +129,7 @@ export function OrdersList({ orders }: OrdersListProps) {
                       {dict.orders.qtyShort}: {item.quantity}
                     </p>
                   </div>
-                  <div className="text-right shrink-0">
+                  <div className="text-end shrink-0">
                     <p className="text-xs font-black">{(item.price * item.quantity).toLocaleString()} {dict.common.egp}</p>
                   </div>
                 </div>

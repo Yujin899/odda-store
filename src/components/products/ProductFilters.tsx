@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   Stethoscope, 
   Activity, 
@@ -12,7 +12,6 @@ import {
   TrendingDown, 
   RefreshCw 
 } from 'lucide-react';
-import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 
@@ -22,13 +21,28 @@ interface Category {
   nameAr?: string;
 }
 
-export function ProductFilters({ currentCategory: _currentCategory, currentSort }: { currentCategory?: string; currentSort?: string }) {
+interface ProductFiltersProps {
+  currentCategory?: string;
+  currentSort?: string;
+  initialCategories: Category[];
+  locale: string;
+}
+
+export function ProductFilters({ 
+  currentCategory: _currentCategory, 
+  currentSort,
+  initialCategories,
+  locale
+}: ProductFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { language } = useLanguageStore();
-  const dict = language === 'en' ? en : ar;
+  const dict = locale === 'ar' ? ar : en;
   
-  const [categories, setCategories] = useState<Category[]>([]);
+  // Initialize with All Products + initialCategories
+  const [categories] = useState<Category[]>([
+    { _id: null, name: dict.common.allProducts, nameAr: dict.common.allProducts }, 
+    ...initialCategories
+  ]);
   
   const SORT_OPTIONS = [
     { val: 'newest', label: dict.products.sortNewest, icon: Clock },
@@ -37,15 +51,6 @@ export function ProductFilters({ currentCategory: _currentCategory, currentSort 
   ];
   
   const currentCategoryId = searchParams.get('categoryId');
-
-  useEffect(() => {
-    fetch('/api/categories')
-      .then(res => res.json())
-      .then(data => {
-        setCategories([{ _id: null, name: dict.common.allProducts, nameAr: dict.common.allProducts }, ...(data.categories || [])]);
-      })
-      .catch(err => console.error('Failed to fetch categories:', err));
-  }, [dict.common.allProducts]);
 
   const updateParams = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -65,10 +70,11 @@ export function ProductFilters({ currentCategory: _currentCategory, currentSort 
   };
 
   const getIcon = (name: string) => {
-    if (name === dict.common.allProducts || name === 'All Products') return LayoutGrid;
-    if (name.toLowerCase().includes('diag')) return Stethoscope;
-    if (name.toLowerCase().includes('surger')) return Activity;
-    if (name.toLowerCase().includes('kit')) return Package;
+    const lowerName = name.toLowerCase();
+    if (lowerName === dict.common.allProducts.toLowerCase() || lowerName === 'all products') return LayoutGrid;
+    if (lowerName.includes('diag')) return Stethoscope;
+    if (lowerName.includes('surger')) return Activity;
+    if (lowerName.includes('kit')) return Package;
     return Package; // Default
   };
 
@@ -80,8 +86,8 @@ export function ProductFilters({ currentCategory: _currentCategory, currentSort 
           <div className="space-y-2">
             {categories.map((cat) => {
               const Icon = getIcon(cat.name);
-              const isActive = (!currentCategoryId && cat._id === null) || (currentCategoryId === cat._id);
-              const categoryName = language === 'ar' && cat.nameAr ? cat.nameAr : cat.name;
+              const isActive = (!currentCategoryId && cat._id === null) || (currentCategoryId === String(cat._id));
+              const categoryName = locale === 'ar' && cat.nameAr ? cat.nameAr : cat.name;
               
               return (
                 <button
