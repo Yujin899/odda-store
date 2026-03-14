@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { X, User as UserIcon, Package as PackageIcon, ShieldCheck, Search, Info, ChevronRight } from 'lucide-react';
+import { X, User as UserIcon, Package as PackageIcon, ShieldCheck, Search, Info, ChevronRight, Gift } from 'lucide-react';
 import { useMobileMenuStore } from '@/store/useMobileMenuStore';
 import { useSession } from 'next-auth/react';
 import { useLanguageStore } from '@/store/useLanguageStore';
@@ -44,6 +44,12 @@ export function MobileMenu() {
   }
 
   navLinks.push({ name: dict.common.trackOrder, href: '/order-tracking', icon: Search });
+  navLinks.push({ 
+    name: dict.common.offersAndBundles, 
+    href: '/bundles', 
+    icon: Gift,
+    highlight: true 
+  });
   navLinks.push({ name: dict.common.about, href: '/about', icon: Info });
 
   return (
@@ -92,7 +98,9 @@ export function MobileMenu() {
                       className={`flex items-center justify-between p-4 rounded-(--radius) text-lg font-black uppercase tracking-tight transition-all group ${
                         isActive 
                           ? 'bg-(--primary) text-white shadow-lg shadow-(--primary)/20' 
-                          : 'text-foreground hover:bg-slate-50 hover:text-(--primary)'
+                          : link.highlight 
+                            ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                            : 'text-foreground hover:bg-slate-50 hover:text-(--primary)'
                       }`}
                     >
                       <div className="flex items-center gap-4">
@@ -115,7 +123,7 @@ export function MobileMenu() {
 
             <div className="p-6 border-t border-navy/10">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground text-center">
-                {dict.common.premiumDentalTools}
+                {dict.common.premiumDentalTools || (language === 'ar' ? 'أدوات أسنان متميزة' : 'Premium Dental Tools')}
               </p>
             </div>
           </motion.div>

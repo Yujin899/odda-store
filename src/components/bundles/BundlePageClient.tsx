@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { 
@@ -11,7 +11,8 @@ import {
   Truck, 
   ShieldCheck, 
   ShoppingCart,
-  ShoppingBag
+  ShoppingBag,
+  Star,
 } from 'lucide-react';
 import { useCartUIStore } from '@/store/useCartUIStore';
 import { useCartStore } from '@/store/useCartStore';
@@ -19,6 +20,10 @@ import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import { IBundle } from '@/models/Bundle';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { ReviewSection } from '@/components/shared/ReviewSection';
+import { RatingSummary } from '@/components/shared/RatingSummary';
+import { RatingBreakdown } from '@/components/shared/RatingBreakdown';
 
 export function BundlePageClient({ bundle }: { bundle: IBundle }) {
   const { openCart } = useCartUIStore();
@@ -27,6 +32,35 @@ export function BundlePageClient({ bundle }: { bundle: IBundle }) {
   const dict = language === 'en' ? en : ar;
 
   const [quantity, setQuantity] = useState(1);
+  const [localBundle, setLocalBundle] = useState(bundle);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [isReviewsLoading, setIsReviewsLoading] = useState(true);
+
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch(`/api/bundles/${bundle.slug}/reviews`);
+      if (res.ok) {
+        const data = await res.json();
+        setReviews(data.reviews || []);
+        if (data.numReviews !== undefined) {
+          setLocalBundle((prev: any) => ({
+            ...prev,
+            averageRating: data.averageRating,
+            numReviews: data.numReviews
+          }));
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch reviews:', error);
+    } finally {
+      setIsReviewsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bundle.slug]);
   const [activeImage, setActiveImage] = useState(bundle.images?.[0]);
   
   const handleAddToCart = () => {
@@ -49,7 +83,7 @@ export function BundlePageClient({ bundle }: { bundle: IBundle }) {
     : bundle.bundleItems;
 
   return (
-    <div className="bg-background text-foreground font-sans min-h-screen" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="bg-background text-foreground min-h-screen">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto whitespace-nowrap scrollbar-hidden">
@@ -126,6 +160,16 @@ export function BundlePageClient({ bundle }: { bundle: IBundle }) {
                   <span className="text-xl text-slate-400 line-through font-bold">{bundle.compareAtPrice.toLocaleString()} {dict.common.egp}</span>
                 )}
               </div>
+              <RatingSummary 
+                rating={localBundle.averageRating} 
+                numReviews={localBundle.numReviews} 
+                className="mt-4"
+              />
+              <RatingBreakdown 
+                reviews={reviews}
+                totalReviews={localBundle.numReviews}
+                className="mt-4 mb-2"
+              />
               <div className="mt-4 flex items-center gap-2">
                 {bundle.stock <= 0 ? (
                   <span className="text-destructive font-bold text-sm bg-destructive/5 px-3 py-1.5 rounded-full flex items-center gap-2">
@@ -204,6 +248,28 @@ export function BundlePageClient({ bundle }: { bundle: IBundle }) {
                 </span>
               </div>
             </div>
+
+            {/* Accordion Section */}
+            <Accordion type="single" collapsible className="w-full space-y-0 divide-y divide-slate-200 border-t border-b border-slate-200 mb-8 mt-4">
+              <AccordionItem value="reviews" className="border-none">
+                <AccordionTrigger className="hover:no-underline py-4 flex items-center justify-between w-full">
+                  <span className="font-bold text-base uppercase tracking-tight flex-1 text-start">
+                    {language === 'ar' ? 'تقييمات العملاء' : 'Customer Reviews'}
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <ReviewSection 
+                    targetId={String(bundle._id)}
+                    targetSlug={bundle.slug}
+                    targetType="Bundle"
+                    apiEndpoint={`/api/bundles/${bundle.slug}/reviews`}
+                    reviews={reviews}
+                    isLoading={isReviewsLoading}
+                    onReviewAdded={fetchReviews}
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </main>

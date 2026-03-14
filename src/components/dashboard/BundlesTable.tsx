@@ -52,7 +52,7 @@ interface Bundle {
   price: number;
   compareAtPrice?: number;
   images: string[];
-  inStock: boolean;
+  stock: number;
 }
 
 interface BundlesTableProps {
@@ -209,8 +209,8 @@ export function BundlesTable({
                       </div>
                     </TableCell>
                     <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
-                      <span className={`text-xs font-black ${bundle.inStock ? 'text-emerald-600' : 'text-red-600'}`}>
-                        {bundle.inStock ? (language === 'ar' ? 'متوفر' : 'In Stock') : (language === 'ar' ? 'نفد' : 'Out of Stock')}
+                      <span className={`text-xs font-black ${bundle.stock > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                        {bundle.stock}
                       </span>
                     </TableCell>
                     <TableCell className={language === 'ar' ? 'text-left' : 'text-right'}>

@@ -6,7 +6,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import { auth } from '@/auth';
 import { Product } from '@/models/Product';
+import { Review } from '@/models/Review';
 import { connectDB } from '@/lib/mongodb';
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    await connectDB();
+    const { slug } = await params;
+
+    const product = await Product.findOne({ slug });
+    if (!product) {
+      return NextResponse.json({ message: 'Product not found' }, { status: 404 });
+    }
+
+    const reviews = await Review.find({ 
+      targetId: product._id, 
+      targetType: 'Product' 
+    }).sort({ createdAt: -1 });
+
+    return NextResponse.json({ reviews });
+  } catch (error: any) {
+    console.error('Fetch reviews error:', error);
+    return NextResponse.json({ message: 'Failed to fetch reviews', error: error.message }, { status: 500 });
+  }
+}
 
 export async function POST(
   req: NextRequest,
@@ -48,27 +74,40 @@ export async function POST(
       return NextResponse.json({ message: 'Product not found' }, { status: 404 });
     }
 
-    // Add new review (Allowing multiple reviews as requested)
-    const review = {
-      userId: new mongoose.Types.ObjectId(session.user.id),
+    // 3. (Optional) Check for existing review - Disabled as multiple reviews are now allowed
+
+    // 4. Create new review
+    await Review.create({
+      user: new mongoose.Types.ObjectId(session.user.id),
       userName: (session.user as any).name || 'Anonymous',
-      rating: Number(rating),
-      comment,
-      createdAt: new Date()
-    };
-    
-    product.reviews.push(review);
+      targetId: product._id,
+      targetType: 'Product',
+      rating: ratingNum,
+      comment
+    });
 
-    product.numReviews = product.reviews.length;
-    product.averageRating = 
-      product.reviews.reduce((acc: number, item: { rating: number }) => item.rating + acc, 0) / 
-      product.reviews.length;
+    // 5. Atomic Aggregation for Parent Document
+    const stats = await Review.aggregate([
+      { $match: { targetId: product._id, targetType: 'Product' } },
+      {
+        $group: {
+          _id: '$targetId',
+          numReviews: { $sum: 1 },
+          averageRating: { $avg: '$rating' }
+        }
+      }
+    ]);
 
-    const savedProduct = await product.save();
+    if (stats.length > 0) {
+      product.numReviews = stats[0].numReviews;
+      product.averageRating = stats[0].averageRating;
+      await product.save();
+    }
 
     return NextResponse.json({ 
-      message: 'Review added successfully', 
-      product: savedProduct.toObject() 
+      message: 'Review added successfully',
+      numReviews: product.numReviews,
+      averageRating: product.averageRating
     }, { status: 201 });
   } catch (error: any) {
     console.error('Review submission error:', error);

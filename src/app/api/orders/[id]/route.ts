@@ -96,48 +96,54 @@ export const PATCH = auth(async (req, { params }) => {
         const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
         const locale = updatedOrder.locale || 'en';
         
+        const { getPremiumEmailHtml } = await import('@/lib/email-templates');
+        
         let subject = '';
         let htmlContent = '';
 
-        const fallbackHtmlEn = `
-          <div style="font-family: sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #0f172a; font-size: 24px; font-weight: 800; text-transform: uppercase;">Order Shipped!</h1>
-            <p>Hi ${updatedOrder.shippingAddress.fullName},</p>
-            <p>Great news! Your order <strong>${updatedOrder.orderNumber}</strong> has been shipped and is on its way to you.</p>
-            <a href="${baseUrl}/order-tracking?order=${updatedOrder.orderNumber}" 
-               style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 20px;">
-               Track Your Order
-            </a>
-            <p style="font-size: 12px; color: #64748b; margin-top: 40px;">Odda Store - Premium Dental Tools</p>
-          </div>
-        `;
-
-        const fallbackHtmlAr = `
-          <div style="font-family: 'Cairo', sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto; direction: rtl; text-align: right;">
-            <h1 style="color: #0f172a; font-size: 24px; font-weight: 800;">تم شحن طلبك!</h1>
-            <p>مرحباً ${updatedOrder.shippingAddress.fullName}،</p>
-            <p>أخبار رائعة! تم شحن طلبك رقم <strong>${updatedOrder.orderNumber}</strong> وهو الآن في طريقه إليك.</p>
-            <a href="${baseUrl}/order-tracking?order=${updatedOrder.orderNumber}" 
-               style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 20px;">
-               تتبع طلبك
-            </a>
-            <p style="font-size: 12px; color: #64748b; margin-top: 40px;">متجر عدة - أدوات طب الأسنان المتميزة</p>
-          </div>
-        `;
-
         if (locale === 'ar' && settings?.shippedSubjectAr && settings?.shippedBodyAr) {
           subject = settings.shippedSubjectAr.replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
-          htmlContent = settings.shippedBodyAr
+          const bodyContent = settings.shippedBodyAr
             .replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
             .replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
+          htmlContent = getPremiumEmailHtml({
+            bodyText: bodyContent,
+            customerName: updatedOrder.shippingAddress.fullName,
+            orderNumber: updatedOrder.orderNumber,
+            items: updatedOrder.items,
+            totalAmount: updatedOrder.totalAmount,
+            isAr: true,
+            baseUrl
+          });
         } else if (locale === 'en' && settings?.shippedSubjectEn && settings?.shippedBodyEn) {
           subject = settings.shippedSubjectEn.replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
-          htmlContent = settings.shippedBodyEn
+          const bodyContent = settings.shippedBodyEn
             .replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
             .replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
+          htmlContent = getPremiumEmailHtml({
+            bodyText: bodyContent,
+            customerName: updatedOrder.shippingAddress.fullName,
+            orderNumber: updatedOrder.orderNumber,
+            items: updatedOrder.items,
+            totalAmount: updatedOrder.totalAmount,
+            isAr: false,
+            baseUrl
+          });
         } else {
-          subject = locale === 'ar' ? `أودا - تم شحن طلبك رقم ${updatedOrder.orderNumber}` : `Odda - Your Order #${updatedOrder.orderNumber} has Shipped!`;
-          htmlContent = locale === 'ar' ? fallbackHtmlAr : fallbackHtmlEn;
+          const isAr = locale === 'ar';
+          subject = isAr ? `عدة - تم شحن طلبك رقم ${updatedOrder.orderNumber}` : `Odda - Your Order #${updatedOrder.orderNumber} has Shipped!`;
+          const fallbackBody = isAr 
+            ? `أخبار رائعة! تم شحن طلبك رقم ${updatedOrder.orderNumber} وهو الآن في طريقه إليك.`
+            : `Great news! Your order ${updatedOrder.orderNumber} has been shipped and is on its way to you.`;
+          htmlContent = getPremiumEmailHtml({
+            bodyText: fallbackBody,
+            customerName: updatedOrder.shippingAddress.fullName,
+            orderNumber: updatedOrder.orderNumber,
+            items: updatedOrder.items,
+            totalAmount: updatedOrder.totalAmount,
+            isAr,
+            baseUrl
+          });
         }
 
         await resend.emails.send({

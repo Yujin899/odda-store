@@ -130,69 +130,57 @@ export const POST = auth(async (req) => {
     try {
       const { StoreSettings } = await import('@/models/StoreSettings');
       const settings = await StoreSettings.findOne();
-      const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-      const totalItems = items.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
       const locale = body.locale || 'en';
+      const baseUrl = process.env.NEXTAUTH_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://odda-web.vercel.app');
+      const { getPremiumEmailHtml } = await import('@/lib/email-templates');
 
-      let subject = locale === 'ar' ? 'Order Received - Odda Store' : 'Order Received - Odda Store';
+      let subject = '';
       let htmlContent = '';
-
-      const fallbackHtmlEn = `
-          <div style="font-family: sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #0f172a; font-size: 24px; font-weight: 800; text-transform: uppercase;">Order Received!</h1>
-            <p>Hi ${shippingAddress.fullName},</p>
-            <p>Thank you for choosing Odda. We've received your order <strong>${order.orderNumber}</strong>.</p>
-            <div style="background-color: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <p style="margin: 0; font-weight: 700;">Order Summary:</p>
-              <ul style="list-style: none; padding: 0;">
-                <li>Items: ${totalItems}</li>
-                <li>Total: ${totalAmount} EGP</li>
-                <li>Payment: ${paymentMethod}</li>
-              </ul>
-            </div>
-            <a href="${baseUrl}/order-tracking?order=${order.orderNumber}" 
-               style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block;">
-               Track Your Order
-            </a>
-            <p style="font-size: 12px; color: #64748b; margin-top: 40px;">Odda Store - Premium Streetwear</p>
-          </div>
-      `;
-
-      const fallbackHtmlAr = `
-          <div style="font-family: 'Cairo', sans-serif; color: #1e293b; max-width: 600px; margin: 0 auto; direction: rtl; text-align: right;">
-            <h1 style="color: #0f172a; font-size: 24px; font-weight: 800;">تم استلام طلبك!</h1>
-            <p>مرحباً ${shippingAddress.fullName}،</p>
-            <p>شكراً لاختيارك عدة. لقد استلمنا طلبك رقم <strong>${order.orderNumber}</strong>.</p>
-            <div style="background-color: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <p style="margin: 0; font-weight: 700;">ملخص الطلب:</p>
-              <ul style="list-style: none; padding: 0;">
-                <li>عدد الأصناف: ${totalItems}</li>
-                <li>الإجمالي: ${totalAmount} جنيه</li>
-                <li>طريقة الدفع: ${paymentMethod === 'COD' ? 'الدفع عند الاستلام' : 'انستا باي'}</li>
-              </ul>
-            </div>
-            <a href="${baseUrl}/order-tracking?order=${order.orderNumber}" 
-               style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block;">
-               تتبع طلبك
-            </a>
-            <p style="font-size: 12px; color: #64748b; margin-top: 40px;">متجر عدة - أدوات طب الأسنان المتميزة</p>
-          </div>
-      `;
 
       if (locale === 'ar' && settings?.confirmationSubjectAr && settings?.confirmationBodyAr) {
         subject = settings.confirmationSubjectAr.replace(/{{orderNumber}}/g, order.orderNumber);
-        htmlContent = settings.confirmationBodyAr
+        const bodyContent = settings.confirmationBodyAr
           .replace(/{{customerName}}/g, shippingAddress.fullName)
           .replace(/{{orderNumber}}/g, order.orderNumber);
+        htmlContent = getPremiumEmailHtml({
+          bodyText: bodyContent,
+          customerName: shippingAddress.fullName,
+          orderNumber: order.orderNumber,
+          items,
+          totalAmount,
+          isAr: true,
+          baseUrl
+        });
       } else if (locale === 'en' && settings?.confirmationSubjectEn && settings?.confirmationBodyEn) {
         subject = settings.confirmationSubjectEn.replace(/{{orderNumber}}/g, order.orderNumber);
-        htmlContent = settings.confirmationBodyEn
+        const bodyContent = settings.confirmationBodyEn
           .replace(/{{customerName}}/g, shippingAddress.fullName)
           .replace(/{{orderNumber}}/g, order.orderNumber);
+        htmlContent = getPremiumEmailHtml({
+          bodyText: bodyContent,
+          customerName: shippingAddress.fullName,
+          orderNumber: order.orderNumber,
+          items,
+          totalAmount,
+          isAr: false,
+          baseUrl
+        });
       } else {
-        // Fallbacks
-        subject = locale === 'ar' ? `أودا - تأكيد الطلب رقم ${order.orderNumber}` : `Odda - Order Confirmation #${order.orderNumber}`;
-        htmlContent = locale === 'ar' ? fallbackHtmlAr : fallbackHtmlEn;
+        // Fallbacks with Premium HTML
+        const isAr = locale === 'ar';
+        subject = isAr ? `عدة - تأكيد الطلب رقم ${order.orderNumber}` : `Odda - Order Confirmation #${order.orderNumber}`;
+        const fallbackBody = isAr 
+          ? `شكراً لثقتك في عدة. لقد استلمنا طلبك رقم ${order.orderNumber} وجاري تجهيزه حالياً.`
+          : `Thank you for choosing Odda. We've received your order ${order.orderNumber} and it's being processed.`;
+        htmlContent = getPremiumEmailHtml({
+          bodyText: fallbackBody,
+          customerName: shippingAddress.fullName,
+          orderNumber: order.orderNumber,
+          items,
+          totalAmount,
+          isAr,
+          baseUrl
+        });
       }
       
       await resend.emails.send({

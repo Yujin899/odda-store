@@ -83,15 +83,18 @@ odda-web/
           products/
           settings/      # Multi-tab Admin Settings Hub
       (store)/
-        bundle/          # Dedicated Bundle Storefront
+        bundle/          # Single Bundle storefront
           [slug]/
             page.tsx
+        bundles/         # Dedicated listing for all active packages
+          page.tsx
     components/
       home/
         Hero.tsx         # Premium Minimalist Hero
         HomeBundles.tsx  # Premium grid for Starter Kits
       bundles/           # Bundle-specific UI
         BundlePageClient.tsx
+        BundleCard.tsx # Reusable premium card for bundles
       dashboard/
         Sidebar.tsx
         AddProductButton.tsx
@@ -112,6 +115,8 @@ odda-web/
         MobileBottomNav.tsx
         OrderTracker.tsx
         OrdersList.tsx
+      shared/
+        ReviewSection.tsx # Polymorphic review handler (Products/Bundles)
     models/
       Badge.ts
       Bundle.ts          # Dedicated Mongoose Schema for Kits
@@ -119,6 +124,7 @@ odda-web/
       Notification.ts # Alert tracking
       Order.ts
       Product.ts
+      Review.ts          # Polymorphic Reviews (Scalable Collection)
       StoreSettings.ts   # Global Config (Hero, InstaPay, etc.)
       User.ts
     auth.ts # RBAC logic & session security
@@ -148,7 +154,6 @@ odda-web/
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -159,6 +164,10 @@ odda-web/
   --color-navy: #0A192F;
 }
 ```
+
+### Typography Architecture
+- **Dynamic Font Switching**: We use `--font-primary` as the main typography token. It defaults to `Inter` (LTR) and is automatically overridden to `Cairo` when `[dir="rtl"]` is detected on the `<html>` or `<body>` tags.
+- **Tailwind Integration**: Tailwind is configured to use `var(--font-primary)` for its `font-sans` family, ensuring all components switch fonts automatically based on the document direction.
 
 ```css
 :root {
@@ -214,6 +223,15 @@ odda-web/
 - **Input Design Rule**: Never use absolute positioning for buttons inside inputs on mobile. Stack components vertically (`flex-col sm:flex-row`) or use relative sizing to prevent overlap.
 - **Overflow Prevention**: Always use `flex-wrap` for badge rows, feature lists, or any dynamic metadata container to ensure content wraps naturally on mobile.
 
+### RTL Layout Rules
+- **Logical Properties**: All components MUST use Tailwind Logical Properties instead of physical ones to support bilingual layouts automatically:
+  - Use `ms-` / `me-` (margin-inline-start/end) instead of `ml-` / `mr-`.
+  - Use `ps-` / `pe-` (padding-inline-start/end) instead of `pl-` / `pr-`.
+  - Use `start-` / `end-` (inset-inline-start/end) instead of `left-` / `right-`.
+  - Use `border-s-` / `border-e-` instead of `border-l-` / `border-r-`.
+  - Use `text-start` / `text-end` instead of `text-left` / `text-right`.
+- **Directional UI**: For icons (e.g., arrows) or transforms that must mirror in RTL, use the `rtl:` modifier (e.g., `rtl:rotate-180`, `rtl:-translate-x-4`).
+
 ## 6. State Management
 ### Zustand Stores
 - `src/store/useCartUIStore.ts` (UI Only: isOpen, openCart, closeCart)
@@ -238,6 +256,7 @@ odda-web/
 ## 7. Routing
 - `/` -> Home
 - `/products` -> Product listing with filters.
+- `/bundles` -> Dedicated storefront catalog page listing all active Bundles and Starter Kits (kept strictly separate from `/products`).
 - `/bundle/[slug]` -> Dedicated storefront page for Bundles/Starter Kits.
 - `/dashboard` -> Admin-only overview with stats and charts.
 - `/dashboard/orders` -> Admin-only orders management.
@@ -280,6 +299,7 @@ odda-web/
   - `PATCH /api/orders/[id]`: Admin order status update (Restores stock automatically on 'cancelled' status).
   - `GET /api/orders/track/[id]`: Public order tracking status.
   - `POST /api/products/[slug]/reviews`: Authenticated product review submission.
+  - `POST /api/bundles/[slug]/reviews`: Authenticated bundle review submission.
   - `GET /api/notifications`: Admin alerts list.
   - `POST /api/cron/cleanup-orders`: Daily recycling of data/assets.
   - `POST /api/upload`: Generic image upload (supports `folder` param and 10MB limit).
@@ -364,6 +384,8 @@ odda-web/
 - **AI Backend**: Do not install or use `@google/generative-ai` or OpenAI SDKs in the backend API. All AI content must be generated via the BYOAI workflow.
 - **Clean Architecture Separation**: Bundles and Products MUST remain separated in the database (dedicated collections) and UI. Re-adding `isBundle` flags inside the `Product` model is STRICTLY FORBIDDEN.
 - **AI Summary Removal**: Do not add `aiSummary` to the `Bundle` model or its storefront pages; bundles use a focused item-list rationale.
+- **Physical Property Ban**: Do not use physical CSS properties for horizontal layout (`ml-`, `mr-`, `pl-`, `pr-`, `left-`, `right-`). Always use logical properties to ensure automatic RTL support.
+- **Server-Side Direction**: Do not rely exclusively on Zustand (`useLanguageStore`) for initial language detection in Server Components (like `layout.tsx`). You must read the `NEXT_LOCALE` cookie to set the HTML `dir` and `lang` attributes to prevent hydration mismatches.
 
 ## 12. Checklist for adding a new feature
 1. Put the file in the correct folder.
@@ -417,7 +439,7 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
   - **Navbar**: Real category data fetching for dropdowns.
   - **Uploads**: Grayscale + Progress bar feedback ported to Category uploads.
 - **Storage Management**: Automated Cloudinary asset destruction via centralized `deleteCloudinaryImage` utility.
-- **Reviews Data**: Reviews are embedded in the `Product` model. Rating averages and counts are updated atomically upon submission. Moderation is currently implicit (direct submission by auth users).
+- **Scalable Reviews Data**: Reviews are NO LONGER embedded. They use a dedicated `Review` collection with a Polymorphic Association (`targetId` and `targetType` for 'Product' or 'Bundle'). Average ratings and review counts are updated automatically on the parent document via MongoDB Aggregation Pipelines during review submission.
 - **Google OAuth Production Mismatch**: When deploying to Vercel, `NEXTAUTH_URL` and `AUTH_URL` must exactly match the production domain (no trailing slashes). In Google Cloud Console, the "Authorized redirect URIs" MUST be exactly `https://[your-domain]/api/auth/callback/google` to prevent `Error 400: redirect_uri_mismatch`.
 
 ## 14. SEO & Routing
@@ -430,6 +452,9 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 - **Data Integrity**: All `*Ar` fields MUST be optional in Mongoose models (`required: false`) to avoid breaking existing data that only has English fields.
 - **Graceful Fallback**: APIs and Frontend components must handle missing Arabic data gracefully, falling back to the English equivalent or an empty state without error.
 - **Dashboard Forms**: Admin forms must accommodate both locales, stacking inputs on mobile and using logical side-by-side layouts on desktop.
+- **Language Switching Workflow**: When a user changes the language on the client:
+  1. The application MUST set the `NEXT_LOCALE` cookie (`document.cookie = "NEXT_LOCALE=ar; path=/; ..."`) to persist the choice.
+  2. The application MUST immediately call `router.refresh()` to trigger a server-side re-render of the layout, ensuring the `<html>` tag's `dir` and `lang` attributes are updated correctly for all components.
 
 - **AI Content Generation (BYOAI)**: 
   - Admin clicks "Copy AI Prompt" (which includes the entity name).

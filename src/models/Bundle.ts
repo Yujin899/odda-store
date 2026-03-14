@@ -12,6 +12,8 @@ export interface IBundle extends Document {
   bundleItems: string[];
   bundleItemsAr?: string[];
   stock: number;
+  averageRating: number;
+  numReviews: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,6 +31,8 @@ const BundleSchema = new Schema<IBundle>(
     bundleItems: [{ type: String }],
     bundleItemsAr: [{ type: String }],
     stock: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 0 },
+    numReviews: { type: Number, default: 0 },
   },
   { 
     timestamps: true,

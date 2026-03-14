@@ -19,6 +19,7 @@ import ar from '@/dictionaries/ar.json';
 interface Category {
   _id: string | null;
   name: string;
+  nameAr?: string;
 }
 
 export function ProductFilters({ currentCategory: _currentCategory, currentSort }: { currentCategory?: string; currentSort?: string }) {
@@ -41,7 +42,7 @@ export function ProductFilters({ currentCategory: _currentCategory, currentSort 
     fetch('/api/categories')
       .then(res => res.json())
       .then(data => {
-        setCategories([{ _id: null, name: dict.common.allProducts }, ...(data.categories || [])]);
+        setCategories([{ _id: null, name: dict.common.allProducts, nameAr: dict.common.allProducts }, ...(data.categories || [])]);
       })
       .catch(err => console.error('Failed to fetch categories:', err));
   }, [dict.common.allProducts]);
@@ -80,6 +81,8 @@ export function ProductFilters({ currentCategory: _currentCategory, currentSort 
             {categories.map((cat) => {
               const Icon = getIcon(cat.name);
               const isActive = (!currentCategoryId && cat._id === null) || (currentCategoryId === cat._id);
+              const categoryName = language === 'ar' && cat.nameAr ? cat.nameAr : cat.name;
+              
               return (
                 <button
                   key={String(cat._id)}
@@ -91,7 +94,7 @@ export function ProductFilters({ currentCategory: _currentCategory, currentSort 
                   }`}
                 >
                   <Icon className="size-4 stroke-[2px]" />
-                  <span className="flex-1">{cat.name}</span>
+                  <span className="flex-1">{categoryName}</span>
                 </button>
               );
             })}

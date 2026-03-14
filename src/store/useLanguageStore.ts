@@ -18,8 +18,6 @@ export const useLanguageStore = create<LanguageState>()(
         set({ language: lang });
         // Set cookie for server-side access
         document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; SameSite=Lax`;
-        // Refresh page to apply directional changes at the root level
-        window.location.reload();
       },
     }),
     {

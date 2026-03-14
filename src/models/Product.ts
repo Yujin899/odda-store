@@ -8,13 +8,6 @@ export interface IProduct extends Document {
   descriptionAr?: string;
   features?: string[];
   featuresAr?: string[];
-  reviews: {
-    userId: mongoose.Types.ObjectId;
-    userName: string;
-    rating: number;
-    comment: string;
-    createdAt: Date;
-  }[];
   averageRating: number;
   numReviews: number;
   price: number;
@@ -50,16 +43,7 @@ const ProductSchema = new Schema<IProduct>(
     price: { type: Number, required: true },
     compareAtPrice: { type: Number },
     originalPrice: { type: Number },
-    // REVIEWS
-    reviews: [
-      {
-        userId: { type: Schema.Types.ObjectId, ref: 'User' },
-        userName: { type: String, required: true },
-        rating: { type: Number, required: true, min: 1, max: 5 },
-        comment: { type: String, required: true },
-        createdAt: { type: Date, default: Date.now },
-      },
-    ],
+    // AGGREGATED REVIEWS
     averageRating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
     // NEW STRUCTURE

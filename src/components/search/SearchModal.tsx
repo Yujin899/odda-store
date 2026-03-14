@@ -255,7 +255,7 @@ export function SearchModal() {
                     {language === 'ar' ? 'ابدأ الكتابة للبحث' : 'Start typing to search'}
                   </p>
                   <p className="text-xs text-muted-foreground/50 mt-3 font-medium uppercase tracking-[0.2em]">
-                    {language === 'ar' ? 'كتالوج أودا للأدوات الطبية المتميزة' : 'Odda Premium Clinical Catalog'}
+                    {language === 'ar' ? 'كتالوج عدة للأدوات الطبية المتميزة' : 'Odda Premium Clinical Catalog'}
                   </p>
                 </div>
               )}

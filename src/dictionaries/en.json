@@ -1,7 +1,8 @@
 {
   "common": {
+    "premiumDentalTools": "Premium Dental Tools",
     "home": "Home",
-    "search": "Search...",
+    "search": "Search Products...",
     "cart": "Cart",
     "login": "Login",
     "register": "Register",
@@ -40,9 +41,9 @@
     "edit": "Edit",
     "error": "Error",
     "success": "Success",
-    "premiumDentalTools": "Odda | Premium Dental Tools",
     "cancel": "Cancel",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "offersAndBundles": "Offers & Bundles"
   },
   "products": {
     "sortNewest": "Newest First",
@@ -468,8 +469,12 @@
     "bestSellers": "Best Sellers",
     "starterKits": "Odda Starter Kits & Bundles",
     "bundleAndSave": "Bundle & Save",
-    "viewBundle": "View Bundle",
-    "whatStudentsSay": "Testimonials"
+    "viewBundle": "View Bundle"
+  },
+  "bundlesPage": {
+    "title": "Exclusive Bundles & Starter Kits",
+    "subtitle": "Precision-packed diagnostic and clinical sets with professional-grade value.",
+    "noBundles": "No bundles currently available."
   },
   "productsPage": {
     "instruments": "Instruments",

@@ -166,6 +166,7 @@ export default function CheckoutPage() {
           price: item.price,
           quantity: item.quantity,
           image: item.image,
+          type: item.type,
         })),
         totalAmount: grandTotal, // Use grand total with shipping fee
         paymentMethod: paymentMethod === 'cod' ? 'COD' : 'InstaPay',

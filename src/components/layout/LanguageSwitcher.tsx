@@ -1,8 +1,7 @@
-'use client';
-
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +10,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export function LanguageSwitcher() {
+  const router = useRouter();
   const { language, setLanguage } = useLanguageStore();
+
+  const handleLanguageChange = (lang: 'en' | 'ar') => {
+    setLanguage(lang);
+    router.refresh();
+  };
 
   return (
     <DropdownMenu>
@@ -27,13 +32,13 @@ export function LanguageSwitcher() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-32 rounded-sm overflow-hidden border-slate-200">
         <DropdownMenuItem 
-          onClick={() => setLanguage('en')}
+          onClick={() => handleLanguageChange('en')}
           className={`text-xs font-bold uppercase tracking-widest cursor-pointer ${language === 'en' ? 'text-(--primary) bg-slate-50' : ''}`}
         >
           English
         </DropdownMenuItem>
         <DropdownMenuItem 
-          onClick={() => setLanguage('ar')}
+          onClick={() => handleLanguageChange('ar')}
           className={`text-xs font-bold uppercase tracking-widest cursor-pointer ${language === 'ar' ? 'text-(--primary) bg-slate-50' : ''}`}
         >
           العربية

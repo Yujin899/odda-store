@@ -1,5 +1,6 @@
 {
   "common": {
+    "premiumDentalTools": "أدوات أسنان متميزة",
     "home": "الرئيسية",
     "search": "بحث...",
     "cart": "السلة",
@@ -40,9 +41,9 @@
     "edit": "تعديل",
     "error": "خطأ",
     "success": "نجاح",
-    "premiumDentalTools": "أودا | أدوات طبية متميزة",
     "cancel": "إلغاء",
-    "dashboard": "لوحة التحكم"
+    "dashboard": "لوحة التحكم",
+    "offersAndBundles": "عروض وباقات"
   },
   "products": {
     "sortNewest": "الأحدث أولاً",
@@ -467,10 +468,14 @@
     "shopByCategory": "تسوق حسب القسم",
     "noCategories": "لم يتم العثور على أقسام",
     "bestSellers": "الأكثر مبيعاً",
-    "starterKits": "حقيبة أودا وعروض التوفير",
+    "starterKits": "حقيبة عدة وعروض التوفير",
     "bundleAndSave": "وفّر مع المجموعات",
-    "viewBundle": "عرض المجموعة",
-    "whatStudentsSay": "آراء العملاء"
+    "viewBundle": "عرض المجموعة"
+  },
+  "bundlesPage": {
+    "title": "مجموعات وباقات حصرية",
+    "subtitle": "مجموعات سريرية وتشخيصية متكاملة مصممة للتميز مع توفير احترافي.",
+    "noBundles": "لا توجد مجموعات متاحة حالياً."
   },
   "productsPage": {
     "instruments": "الأدوات",

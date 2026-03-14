@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { 
   ChevronRight, 
   AlertCircle, 
-  Star, 
   Check, 
   Minus, 
   Plus, 
@@ -29,6 +28,9 @@ import { useRouter } from 'next/navigation';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { ReviewSection } from '@/components/shared/ReviewSection';
+import { RatingSummary } from '@/components/shared/RatingSummary';
+import { RatingBreakdown } from '@/components/shared/RatingBreakdown';
 
 export function ProductPageClient({ product, relatedProducts }: { product: any, relatedProducts: any[] }) {
   const router = useRouter();
@@ -40,10 +42,35 @@ export function ProductPageClient({ product, relatedProducts }: { product: any, 
 
   const { data: session } = useSession();
   const [quantity, setQuantity] = useState(1);
-  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
-  const [reviewRating, setReviewRating] = useState(5);
-  const [reviewComment, setReviewComment] = useState('');
   const [localProduct, setLocalProduct] = useState(product);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [isReviewsLoading, setIsReviewsLoading] = useState(true);
+
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch(`/api/products/${product.slug}/reviews`);
+      if (res.ok) {
+        const data = await res.json();
+        setReviews(data.reviews || []);
+        if (data.numReviews !== undefined) {
+          setLocalProduct((prev: any) => ({
+            ...prev,
+            averageRating: data.averageRating,
+            numReviews: data.numReviews
+          }));
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch reviews:', error);
+    } finally {
+      setIsReviewsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, [product.slug]);
+
   const primaryImage = product.images?.find((img: any) => img.isPrimary)?.url || product.images?.[0]?.url || product.images?.[0];
   const [activeImage, setActiveImage] = useState(primaryImage);
   
@@ -75,34 +102,6 @@ export function ProductPageClient({ product, relatedProducts }: { product: any, 
     openCart();
   };
 
-  const handleSubmitReview = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!session) return;
-    
-    setIsSubmittingReview(true);
-    try {
-      const res = await fetch(`/api/products/${product.slug}/reviews`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rating: reviewRating, comment: reviewComment })
-      });
-      
-      const data = await res.json();
-      if (res.ok) {
-        setLocalProduct(data.product);
-        setReviewComment('');
-        setReviewRating(5);
-      } else {
-        // Show server-side error message
-        alert(data.message || (language === 'ar' ? 'فشل إرسال التقييم' : 'Failed to post review'));
-      }
-    } catch (error) {
-      console.error('Failed to submit review:', error);
-      alert(language === 'ar' ? 'حدث خطأ في الاتصال' : 'Connection error occurred');
-    } finally {
-      setIsSubmittingReview(false);
-    }
-  };
 
   const productName = (language === 'ar' && product.nameAr) ? product.nameAr : product.name;
   const productDescription = (language === 'ar' && product.descriptionAr) ? product.descriptionAr : product.description;
@@ -110,7 +109,7 @@ export function ProductPageClient({ product, relatedProducts }: { product: any, 
   const productFeatures = (language === 'ar' && product.featuresAr) ? product.featuresAr : (product.features || []);
 
   return (
-    <div className="bg-background text-foreground font-sans min-h-screen" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="bg-background text-foreground min-h-screen">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto whitespace-nowrap scrollbar-hidden">
@@ -177,65 +176,6 @@ export function ProductPageClient({ product, relatedProducts }: { product: any, 
             
             <h1 className="text-4xl font-extrabold text-foreground mb-2 uppercase">{productName}</h1>
             
-            <div className="flex flex-col gap-4 mb-6">
-              <div className="flex items-center gap-3">
-                <div className="flex text-yellow-400">
-                  {[1, 2, 3, 4, 5].map((s) => {
-                    const rating = localProduct.averageRating || 0;
-                    const isFull = s <= Math.floor(rating);
-                    const isHalf = !isFull && s <= Math.ceil(rating) && (rating % 1 >= 0.25 && rating % 1 <= 0.75);
-                    const isAlmostFull = !isFull && !isHalf && s <= Math.ceil(rating) && rating % 1 > 0.75;
-                    
-                    return (
-                      <div key={s} className="relative">
-                        <Star className="size-[18px] text-slate-200 fill-current stroke-none" />
-                        <div 
-                          className="absolute inset-0 overflow-hidden text-yellow-400"
-                          style={{ 
-                            width: isFull || isAlmostFull ? '100%' : isHalf ? '50%' : '0%' 
-                          }}
-                        >
-                          <Star className="size-[18px] fill-current stroke-none" />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <span className="text-sm font-bold text-foreground">
-                  {localProduct.averageRating?.toFixed(1) || '0.0'}
-                </span>
-                <span className="text-sm font-medium text-slate-500">
-                  ({localProduct.numReviews || 0} {language === 'ar' ? 'تقييم' : 'reviews'})
-                </span>
-              </div>
-
-              {/* Rating Breakdown */}
-              {localProduct.numReviews > 0 && (
-                <div className="space-y-1.5 max-w-xs">
-                  {[5, 4, 3, 2, 1].map((star) => {
-                    const count = localProduct.reviews?.filter((r: { rating: number }) => Math.round(r.rating) === star).length || 0;
-                    const percentage = (count / localProduct.numReviews) * 100;
-                    return (
-                      <div key={star} className="flex items-center gap-3 group">
-                        <div className="flex items-center gap-1 min-w-8">
-                          <span className="text-[10px] font-bold text-slate-500">{star}</span>
-                          <Star className="size-2.5 fill-yellow-400 stroke-none" />
-                        </div>
-                        <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-yellow-400 transition-all duration-500" 
-                            style={{ width: `${percentage}%` }}
-                          />
-                        </div>
-                        <span className="text-[10px] font-bold text-slate-400 min-w-8 text-end">
-                          {Math.round(percentage)}%
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
 
             <div className="mb-8">
               <div className="flex items-baseline gap-2">
@@ -244,6 +184,16 @@ export function ProductPageClient({ product, relatedProducts }: { product: any, 
                   <span className="text-lg text-slate-400 line-through">{product.originalPrice.toLocaleString()} {dict.common.egp}</span>
                 )}
               </div>
+              <RatingSummary 
+                rating={localProduct.averageRating} 
+                numReviews={localProduct.numReviews} 
+                className="mt-2"
+              />
+              <RatingBreakdown 
+                reviews={reviews}
+                totalReviews={localProduct.numReviews}
+                className="mt-4 mb-2"
+              />
               <div className="mt-2 flex items-center gap-2 font-medium">
                 {product.stock <= 0 ? (
                   <span className="text-destructive flex items-center gap-2"><AlertCircle className="size-5" /> {language === 'ar' ? 'نفذت الكمية' : 'Sold Out'}</span>
@@ -322,87 +272,15 @@ export function ProductPageClient({ product, relatedProducts }: { product: any, 
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="pt-2 pb-6 space-y-6">
-                    {/* Review Form */}
-                    {session ? (
-                      <form onSubmit={handleSubmitReview} className="p-4 bg-slate-50 rounded-(--radius) border border-slate-100 space-y-4">
-                        <h4 className={`text-sm font-bold uppercase tracking-widest text-slate-500 text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
-                          {language === 'ar' ? 'قولنا رأيك في المنتج' : 'Write a Review'}
-                        </h4>
-                        <div className="flex items-center gap-1 mb-2">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <button
-                              key={s}
-                              type="button"
-                              onClick={() => setReviewRating(s)}
-                              className="focus:outline-none transition-transform active:scale-90 bg-transparent border-none cursor-pointer p-0"
-                            >
-                              <Star 
-                                className={`size-5 ${s <= reviewRating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-300'}`} 
-                              />
-                            </button>
-                          ))}
-                        </div>
-                        <textarea
-                          value={reviewComment}
-                          onChange={(e) => setReviewComment(e.target.value)}
-                          placeholder={language === 'ar' ? 'اكتب رأيك هنا بكل صراحة...' : 'Share your thoughts about this product...'}
-                          className={`w-full p-3 text-sm border border-slate-200 rounded-(--radius) bg-white focus:outline-none focus:border-(--primary) min-h-[80px] text-start ${language === 'ar' ? 'font-cairo' : ''}`}
-                          required
-                        />
-                        <button
-                          type="submit"
-                          disabled={isSubmittingReview}
-                          className="w-full bg-(--primary) text-white py-2 rounded-(--radius) font-bold text-xs uppercase tracking-widest hover:bg-(--primary)/90 disabled:opacity-50 border-none cursor-pointer"
-                        >
-                          {isSubmittingReview ? (language === 'ar' ? 'جاري الإرسال...' : 'Submitting...') : (language === 'ar' ? 'إرسال التقييم' : 'Post Review')}
-                        </button>
-                      </form>
-                    ) : (
-                      <div className="p-4 bg-slate-50 rounded-(--radius) border border-slate-100 text-center">
-                        <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-2 font-cairo">
-                          {language === 'ar' ? 'لازم تسجل دخول عشان تسيب تقييم' : 'Sign in to write a review'}
-                        </p>
-                        <Link 
-                          href="/login" 
-                          className="text-(--primary) text-xs font-black uppercase tracking-widest hover:underline font-cairo"
-                        >
-                          {language === 'ar' ? 'تسجيل الدخول' : 'Sign In'}
-                        </Link>
-                      </div>
-                    )}
-
-                    {/* Review List */}
-                    <div className="space-y-4">
-                      {localProduct.reviews && localProduct.reviews.length > 0 ? (
-                        [...localProduct.reviews]
-                          .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                          .map((rev: any, i: number) => (
-                            <div key={`${rev._id}-${i}`} className="pb-4 border-b border-slate-100 last:border-0 animate-in fade-in slide-in-from-top-2 duration-500">
-                              <div className="flex justify-between items-center mb-1">
-                                <span className="font-bold text-sm tracking-tight">{rev.userName}</span>
-                                <span className="text-[10px] text-slate-400 font-bold tracking-widest">
-                                  {new Date(rev.createdAt).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-0.5 mb-2">
-                                {[1, 2, 3, 4, 5].map((s) => (
-                                  <Star 
-                                    key={s} 
-                                    className={`size-3 ${s <= rev.rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200'}`} 
-                                  />
-                                ))}
-                              </div>
-                              <p className="text-sm text-slate-600 leading-relaxed italic text-start">&quot;{rev.comment}&quot;</p>
-                            </div>
-                          ))
-                      ) : (
-                        <p className={`text-xs text-slate-400 text-center uppercase font-bold tracking-widest py-8 ${language === 'ar' ? 'font-cairo' : ''}`}>
-                          {language === 'ar' ? 'محدش لسة ساب تقييم' : 'No reviews yet'}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                  <ReviewSection 
+                    targetId={String(product._id)}
+                    targetSlug={product.slug}
+                    targetType="Product"
+                    apiEndpoint={`/api/products/${product.slug}/reviews`}
+                    reviews={reviews}
+                    isLoading={isReviewsLoading}
+                    onReviewAdded={fetchReviews}
+                  />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

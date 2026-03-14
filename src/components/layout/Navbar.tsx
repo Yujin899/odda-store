@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingBag, User as UserIcon, LogOut, Package, ChevronDown } from 'lucide-react';
+import { Search, ShoppingBag, User as UserIcon, LogOut, Package, ChevronDown, Gift } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartUIStore } from '@/store/useCartUIStore';
@@ -121,6 +121,10 @@ export function Navbar() {
                 <Link href="/dashboard" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.dashboard}</Link>
               )}
               <Link href="/order-tracking" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.trackOrder}</Link>
+              <Link href="/bundles" className="text-sm font-bold text-emerald-600 hover:text-emerald-500 transition-colors flex items-center gap-1.5">
+                <Gift className="size-3.5" />
+                {dict.common.offersAndBundles}
+              </Link>
               <Link href="/about" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.about}</Link>
 
             </nav>

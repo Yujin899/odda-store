@@ -64,15 +64,15 @@ const StoreSettingsSchema: Schema = new Schema(
     },
     confirmationBodyEn: { 
       type: String, 
-      default: "Hello {{customerName}},\n\nThank you for choosing Odda. Your order #{{orderNumber}} is confirmed and being processed." 
+      default: "Hello {{customerName}},\n\nThank you for choosing Odda. Your order #{{orderNumber}} is confirmed and being processed. We will notify you once your premium instruments are on their way." 
     },
     confirmationSubjectAr: { 
       type: String, 
-      default: "أودا - تأكيد الطلب رقم {{orderNumber}}" 
+      default: "عدة - تأكيد الطلب رقم {{orderNumber}}" 
     },
     confirmationBodyAr: { 
       type: String, 
-      default: "مرحباً {{customerName}}،\n\nشكراً لثقتك في أودا. تم تأكيد طلبك رقم {{orderNumber}} وجاري تجهيزه." 
+      default: "مرحباً {{customerName}}،\n\nشكراً لثقتك في عدة. تم تأكيد طلبك رقم {{orderNumber}} وجاري تجهيزه. سنقوم بإخطارك فور شحن أدواتك المتميزة." 
     },
     shippedSubjectEn: { 
       type: String, 
@@ -80,15 +80,15 @@ const StoreSettingsSchema: Schema = new Schema(
     },
     shippedBodyEn: { 
       type: String, 
-      default: "Great news {{customerName}}!\n\nYour order #{{orderNumber}} has been shipped and is on its way to you." 
+      default: "Great news {{customerName}}!\n\nYour order #{{orderNumber}} has been shipped and is on its way to you. Your clinical journey continues with Odda." 
     },
     shippedSubjectAr: { 
       type: String, 
-      default: "أودا - تم شحن طلبك رقم {{orderNumber}}!" 
+      default: "عدة - تم شحن طلبك رقم {{orderNumber}}!" 
     },
     shippedBodyAr: { 
       type: String, 
-      default: "أخبار رائعة {{customerName}}!\n\nتم شحن طلبك رقم {{orderNumber}} وهو الآن في طريقه إليك." 
+      default: "أخبار رائعة {{customerName}}!\n\nتم شحن طلبك رقم {{orderNumber}} وهو الآن في طريقه إليك. رحلتك السريرية مستمرة مع عدة." 
     },
     defaultLanguage: { 
       type: String, 
