@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { CheckoutFormValues } from '../CheckoutSchema';
+import { CheckoutFormValues } from '@/lib/schemas';
 
 interface PaymentStepProps {
   instapayNumber: string;

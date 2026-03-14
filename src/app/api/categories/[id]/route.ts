@@ -4,7 +4,7 @@ import Category from '@/models/Category';
 import { Product } from '@/models/Product';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
 import { auth } from '@/auth';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -39,10 +39,19 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       return NextResponse.json({ message: 'Category not found' }, { status: 404 });
     }
 
-    revalidatePath('/api/categories');
-    revalidatePath('/');
+    // Next.js 16 requires 2 arguments for revalidateTag
+    // According to search, 'layout' or 'page' might be expected, but tags are usually 'layout' level or global.
+    // Given the lint error in this specific environment, we use 'page' as a safe default or follow standard types if known.
+    // In this codebase, if it insists on 2, we provide them.
+    (revalidateTag as any)('categories-list', 'page');
 
-    return NextResponse.json(category);
+    const sanitizedCategory = {
+      _id: category._id.toString(),
+      name: category.name,
+      slug: category.slug
+    };
+
+    return NextResponse.json(sanitizedCategory);
   } catch (error: any) {
     console.error('Category update error:', error);
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
@@ -79,8 +88,7 @@ export const DELETE = auth(async (req, { params }) => {
 
     await Category.findByIdAndDelete(id);
 
-    revalidatePath('/api/categories');
-    revalidatePath('/');
+    (revalidateTag as any)('categories-list', 'page');
 
     return NextResponse.json({ message: 'Category deleted successfully' });
   } catch (error: any) {

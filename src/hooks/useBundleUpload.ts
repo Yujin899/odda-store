@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useToastStore } from '@/store/useToastStore';
-import { BundleFormValues } from '../components/dashboard/BundleFormParts/BundleSchema';
+import { BundleFormValues } from '@/lib/schemas';
 
 export function useBundleUpload(dict: any) {
   const { setValue, watch } = useFormContext<BundleFormValues>();

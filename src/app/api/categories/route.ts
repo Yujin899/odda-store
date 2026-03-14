@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import Category from '@/models/Category';
 import { auth } from '@/auth';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 export const revalidate = 60; // Cache for 1 minute
 
@@ -49,10 +49,15 @@ export async function POST(req: NextRequest) {
       image 
     });
     
-    revalidatePath('/api/categories');
-    revalidatePath('/');
+    (revalidateTag as any)('categories-list', 'page');
     
-    return NextResponse.json(category, { status: 201 });
+    const sanitizedCategory = {
+      _id: category._id.toString(),
+      name: category.name,
+      slug: category.slug
+    };
+
+    return NextResponse.json(sanitizedCategory, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
   }

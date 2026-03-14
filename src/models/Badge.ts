@@ -1,15 +1,20 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface IBadge extends Document {
+export interface IBadge {
+  _id?: string | mongoose.Types.ObjectId;
   name: string;
   nameAr?: string;
   color: string;
   textColor: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const BadgeSchema: Schema = new Schema(
+export interface IBadgeDocument extends IBadge, Document {
+  _id: mongoose.Types.ObjectId;
+}
+
+const BadgeSchema: Schema<IBadgeDocument> = new Schema(
   {
     name: { type: String, required: true, unique: true, trim: true },
     nameAr: { type: String, trim: true },
@@ -19,4 +24,4 @@ const BadgeSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Badge || mongoose.model<IBadge>('Badge', BadgeSchema);
+export default mongoose.models.Badge || mongoose.model<IBadgeDocument>('Badge', BadgeSchema);

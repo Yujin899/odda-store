@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { ProductFormValues } from '../ProductForm';
+import { ProductFormValues } from '@/lib/schemas';
 
 export function FeaturesSection() {
   const { language } = useLanguageStore();

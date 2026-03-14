@@ -6,7 +6,7 @@ import { Loader2, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { ProductFormValues } from '../ProductForm';
+import { ProductFormValues } from '@/lib/schemas';
 
 interface FormHeaderProps {
     initialData?: any;

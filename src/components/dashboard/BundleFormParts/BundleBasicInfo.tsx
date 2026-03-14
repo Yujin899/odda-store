@@ -3,7 +3,7 @@
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { BundleFormValues } from './BundleSchema';
+import { BundleFormValues } from '@/lib/schemas';
 
 interface BundleBasicInfoProps {
   dict: any;

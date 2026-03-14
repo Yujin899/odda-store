@@ -8,7 +8,7 @@ import { useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
-import { BundleFormValues } from './BundleSchema';
+import { BundleFormValues } from '@/lib/schemas';
 
 interface BundleMediaSectionProps {
   language: string;

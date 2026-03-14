@@ -1,6 +1,7 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
-export interface IProduct extends Document {
+export interface IProduct {
+  _id?: string | mongoose.Types.ObjectId;
   name: string;
   nameAr?: string;
   slug: string;
@@ -13,7 +14,6 @@ export interface IProduct extends Document {
   price: number;
   compareAtPrice?: number;
   originalPrice?: number;
-  // NEW FIELDS
   images: {
     url: string;
     isPrimary: boolean;
@@ -22,16 +22,19 @@ export interface IProduct extends Document {
   categoryId: mongoose.Types.ObjectId;
   badgeId?: mongoose.Types.ObjectId;
   stock: number;
-  // OLD FIELDS (Keep for migration)
   category?: string;
   badge?: string;
   inStock?: boolean;
   featured: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const ProductSchema = new Schema<IProduct>(
+export interface IProductDocument extends IProduct, Document {
+  _id: mongoose.Types.ObjectId;
+}
+
+const ProductSchema = new Schema<IProductDocument>(
   {
     name: { type: String, required: true },
     nameAr: { type: String },
@@ -43,10 +46,8 @@ const ProductSchema = new Schema<IProduct>(
     price: { type: Number, required: true },
     compareAtPrice: { type: Number },
     originalPrice: { type: Number },
-    // AGGREGATED REVIEWS
     averageRating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
-    // NEW STRUCTURE
     images: [
       {
         url: { type: String, required: true },
@@ -57,7 +58,6 @@ const ProductSchema = new Schema<IProduct>(
     categoryId: { type: Schema.Types.ObjectId, ref: 'Category' },
     badgeId: { type: Schema.Types.ObjectId, ref: 'Badge' },
     stock: { type: Number, default: 0 },
-    // OLD FIELDS (Deprecated)
     category: { type: String },
     badge: { type: String },
     inStock: { type: Boolean },
@@ -70,9 +70,8 @@ const ProductSchema = new Schema<IProduct>(
   }
 );
 
-// Virtual for inStock based on stock count
 ProductSchema.virtual('inStockVirtual').get(function () {
   return this.stock > 0;
 });
 
-export const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);
+export const Product: Model<IProductDocument> = mongoose.models.Product || mongoose.model<IProductDocument>('Product', ProductSchema);

@@ -19,10 +19,11 @@ import {
   DropResult 
 } from '@hello-pangea/dnd';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 import { useToastStore } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { ProductFormValues } from '../ProductForm';
+import { ProductFormValues } from '@/lib/schemas';
 
 interface UploadTask {
   id: string;

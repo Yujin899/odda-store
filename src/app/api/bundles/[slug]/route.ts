@@ -3,7 +3,7 @@ import { connectDB } from '@/lib/mongodb';
 import { Bundle } from '@/models/Bundle';
 import { auth } from '@/auth';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -53,11 +53,16 @@ export const PUT = auth(async (req, { params }) => {
 
     const updatedBundle = await Bundle.findByIdAndUpdate(bundle._id, updates, { new: true });
 
-    revalidatePath('/api/bundles');
-    revalidatePath(`/api/bundles/${updatedBundle?.slug}`);
-    revalidatePath('/');
+    (revalidateTag as any)('bundles-list', 'page');
+    (revalidateTag as any)('products-list', 'page');
 
-    return NextResponse.json(updatedBundle);
+    const sanitizedBundle = {
+      _id: updatedBundle?._id.toString(),
+      name: updatedBundle?.name,
+      slug: updatedBundle?.slug
+    };
+
+    return NextResponse.json(sanitizedBundle);
   } catch (error: any) {
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
   }
@@ -84,8 +89,7 @@ export const DELETE = auth(async (req, { params }) => {
 
     await Bundle.findByIdAndDelete(bundle._id);
     
-    revalidatePath('/api/bundles');
-    revalidatePath('/');
+    (revalidateTag as any)('bundles-list', 'page');
 
     return NextResponse.json({ message: 'Deleted' });
   } catch (error: any) {

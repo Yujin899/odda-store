@@ -1,17 +1,22 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface ICategory extends Document {
+export interface ICategory {
+  _id?: string | mongoose.Types.ObjectId;
   name: string;
   nameAr?: string;
   slug: string;
   description?: string;
   descriptionAr?: string;
   image?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const CategorySchema: Schema = new Schema(
+export interface ICategoryDocument extends ICategory, Document {
+  _id: mongoose.Types.ObjectId;
+}
+
+const CategorySchema: Schema<ICategoryDocument> = new Schema(
   {
     name: { type: String, required: true, trim: true },
     nameAr: { type: String, trim: true },
@@ -23,4 +28,4 @@ const CategorySchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);
+export default mongoose.models.Category || mongoose.model<ICategoryDocument>('Category', CategorySchema);

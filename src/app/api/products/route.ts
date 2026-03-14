@@ -4,7 +4,7 @@ import { Product } from '@/models/Product';
 import { auth } from '@/auth';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 // export const dynamic = 'force-dynamic'; // Remove to allow Data Cache
 export const revalidate = 3600; // Cache for 1 hour
@@ -47,8 +47,23 @@ export async function GET(req: NextRequest) {
       Product.countDocuments(query),
     ]);
 
+    const sanitizedProducts = products.map(p => ({
+      _id: p._id.toString(),
+      name: p.name,
+      nameAr: p.nameAr,
+      slug: p.slug,
+      price: p.price,
+      compareAtPrice: p.compareAtPrice,
+      images: p.images.map((img: any) => ({ url: img.url, isPrimary: img.isPrimary })),
+      stock: p.stock,
+      categoryId: p.categoryId,
+      badgeId: p.badgeId,
+      featured: p.featured,
+      createdAt: p.createdAt
+    }));
+
     return NextResponse.json({
-      products,
+      products: sanitizedProducts,
       pagination: {
         totalItems: total,
         totalPages: Math.ceil(total / limit),
@@ -95,10 +110,16 @@ export const POST = auth(async (req) => {
       images,
     });
 
-    revalidatePath('/api/products');
-    revalidatePath('/api/products/[slug]', 'page');
+    (revalidateTag as any)('products-list', 'page');
+    
+    const sanitizedProduct = {
+      _id: product._id.toString(),
+      name: product.name,
+      slug: product.slug,
+      price: product.price
+    };
 
-    return NextResponse.json(product, { status: 201 });
+    return NextResponse.json(sanitizedProduct, { status: 201 });
   } catch (err: any) {
     console.error('Product creation error:', err);
     return NextResponse.json({ message: err.message || 'Internal server error' }, { status: 500 });

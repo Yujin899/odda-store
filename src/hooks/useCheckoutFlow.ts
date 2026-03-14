@@ -96,7 +96,7 @@ export function useCheckoutFlow(
       });
 
       clearCart();
-      router.push(`/order-confirmation?id=${data.orderNumber}`);
+      router.push(`/order-confirmation/${data.id}`);
       router.refresh();
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);

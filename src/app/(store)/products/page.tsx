@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'أدوات أسنان للطلاب | عُدّة (عدة)',
+  description: 'متجر عُدّة (عدة) - حلول متكاملة لطلاب طب الأسنان. Dental Student Store - Comprehensive solutions for dental students.',
+};
 import { ChevronRight, Box } from 'lucide-react';
 import { ProductFilters } from '@/components/products/ProductFilters';
 import { ProductCard } from '@/components/products/ProductCard';
@@ -134,8 +140,34 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
     return `/products?${params.toString()}`;
   };
 
+  // JSON-LD Structured Data for Products Listing
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: locale === 'ar' ? 'كتالوج المنتجات | عُدّة' : 'Product Catalog | Odda',
+    itemListElement: products.map((p: any, index: number) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Product',
+        name: locale === 'ar' ? p.nameAr || p.name : p.name,
+        url: `https://www.odda-store.com/product/${p.slug}`,
+        image: p.images?.[0]?.url,
+        offers: {
+          '@type': 'Offer',
+          priceCurrency: 'EGP',
+          price: p.price,
+        }
+      }
+    }))
+  };
+
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[var(--background)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main className="max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-24 py-12">
         <div className="mb-10">
           <nav className="flex items-center gap-2 text-sm text-[var(--muted-foreground)] mb-4 uppercase tracking-widest font-bold">

@@ -68,8 +68,33 @@ export default async function Home() {
     getSettings()
   ]);
 
+  // JSON-LD Structured Data for Storefront Authority
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Store',
+    name: locale === 'ar' ? 'عُدّة (عدة) - متجر طلاب طب الأسنان' : 'Odda - Dental Student Store',
+    description: locale === 'ar' 
+      ? 'متجر عُدّة (عدة) هو الخيار الأول لطلاب طب الأسنان في مصر لتوفير جميع الأدوات والمستلزمات.' 
+      : 'Odda Store is the premier destination for dental students in Egypt for all clinical and preclinical supplies.',
+    url: 'https://www.odda-store.com',
+    logo: 'https://www.odda-store.com/logo.png',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'EG',
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://www.odda-store.com/products?search={search_term_string}',
+      'query-input': 'required name=search_term_string'
+    }
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Hero hero={settings?.hero} locale={locale} />
 
       {/* Trust/Authority Banner */}

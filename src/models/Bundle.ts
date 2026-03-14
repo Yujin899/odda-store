@@ -1,6 +1,7 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
-export interface IBundle extends Document {
+export interface IBundle {
+  _id?: string | mongoose.Types.ObjectId;
   name: string;
   nameAr?: string;
   slug: string;
@@ -14,11 +15,15 @@ export interface IBundle extends Document {
   stock: number;
   averageRating: number;
   numReviews: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const BundleSchema = new Schema<IBundle>(
+export interface IBundleDocument extends IBundle, Document {
+  _id: mongoose.Types.ObjectId;
+}
+
+const BundleSchema = new Schema<IBundleDocument>(
   {
     name: { type: String, required: true },
     nameAr: { type: String },
@@ -42,4 +47,4 @@ const BundleSchema = new Schema<IBundle>(
   }
 );
 
-export const Bundle: Model<IBundle> = mongoose.models.Bundle || mongoose.model<IBundle>('Bundle', BundleSchema);
+export const Bundle: Model<IBundleDocument> = mongoose.models.Bundle || mongoose.model<IBundleDocument>('Bundle', BundleSchema);

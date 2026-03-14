@@ -1,4 +1,10 @@
 import { connectDB } from '@/lib/mongodb';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'عروض المجموعات الطلابية | عُدّة (عدة)',
+  description: 'وفر أكثر مع مجموعات عُدّة المتكاملة. Save more with Odda bundled kits for dental students.',
+};
 import { Bundle, IBundle } from '@/models/Bundle';
 import { cookies } from 'next/headers';
 import en from '@/dictionaries/en.json';
@@ -92,7 +98,7 @@ export default async function BundlesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {bundles.map((bundle: IBundle) => (
                 <BundleCard 
-                  key={bundle._id.toString()}
+                  key={bundle._id!.toString()}
                   bundle={bundle} 
                   locale={locale} 
                   dict={dict} 

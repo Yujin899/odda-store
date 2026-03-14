@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Loader2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFormContext } from 'react-hook-form';
-import { BundleFormValues } from './BundleSchema';
+import { BundleFormValues } from '@/lib/schemas';
 
 interface BundleFormHeaderProps {
   initialData?: any;

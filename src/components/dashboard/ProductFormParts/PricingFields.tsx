@@ -5,7 +5,7 @@ import { DollarSign, Package, TrendingDown, ShieldCheck } from 'lucide-react';
 import { FormInput } from '@/components/ui/FormInput';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { ProductFormValues } from '../ProductForm';
+import { ProductFormValues } from '@/lib/schemas';
 
 export function PricingFields() {
   const { language } = useLanguageStore();

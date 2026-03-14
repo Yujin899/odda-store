@@ -4,10 +4,11 @@ import { Sparkles, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useFormContext } from 'react-hook-form';
 import { useToastStore } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { ProductFormValues } from '../ProductForm';
+import { ProductFormValues } from '@/lib/schemas';
 
 export function AIAssistant() {
   const { language } = useLanguageStore();

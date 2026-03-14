@@ -28,7 +28,7 @@ export function CheckoutGate({ session, onNext }: CheckoutGateProps) {
             {isRtl ? `مرحباً بك مجدداً، ${session.user?.name}` : `Welcome back, ${session.user?.name}`}
           </h2>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-8">
-            {dict.checkoutPage.authDesc || 'You are signed in and ready to proceed.'}
+            {dict?.checkoutPage?.authDesc || 'You are signed in and ready to proceed.'}
           </p>
           <Button 
             onClick={onNext}

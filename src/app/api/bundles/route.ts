@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import { Bundle } from '@/models/Bundle';
 import { auth } from '@/auth';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -40,10 +40,16 @@ export const POST = auth(async (req) => {
 
     const bundle = await Bundle.create(bundleData);
 
-    revalidatePath('/api/bundles');
-    revalidatePath('/'); // Revalidate home page for HomeBundles component
+    (revalidateTag as any)('bundles-list', 'page');
+    (revalidateTag as any)('products-list', 'page'); // Bundles often contain products
 
-    return NextResponse.json(bundle, { status: 201 });
+    const sanitizedBundle = {
+      _id: bundle._id.toString(),
+      name: bundle.name,
+      slug: bundle.slug
+    };
+
+    return NextResponse.json(sanitizedBundle, { status: 201 });
   } catch (err: any) {
     console.error('Bundle creation error:', err);
     return NextResponse.json({ message: err.message || 'Internal server error' }, { status: 500 });

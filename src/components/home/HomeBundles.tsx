@@ -52,9 +52,9 @@ export default async function HomeBundles() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {bundles.map((bundle: IBundle) => (
+          {bundles.map((bundle: IBundle, index: number) => (
             <BundleCard 
-              key={bundle._id.toString()}
+              key={bundle._id?.toString() || index}
               bundle={bundle} 
               locale={locale} 
               dict={dict} 

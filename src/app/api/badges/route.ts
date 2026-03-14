@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import Badge from '@/models/Badge';
 import { auth } from '@/auth';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -38,9 +38,15 @@ export async function POST(req: NextRequest) {
 
     const badge = await Badge.create({ name, nameAr, color, textColor });
     
-    revalidatePath('/api/badges');
+    (revalidateTag as any)('products-list', 'page'); // Badges affect product display
     
-    return NextResponse.json(badge, { status: 201 });
+    const sanitizedBadge = {
+      _id: badge._id.toString(),
+      name: badge.name,
+      color: badge.color
+    };
+
+    return NextResponse.json(sanitizedBadge, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
   }

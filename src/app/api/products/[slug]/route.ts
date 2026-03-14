@@ -5,7 +5,7 @@ import { auth } from '@/auth';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 // export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Cache for 1 hour
@@ -85,11 +85,16 @@ export const PUT = auth(async (req, { params }) => {
       .populate({ path: 'categoryId', strictPopulate: false })
       .populate({ path: 'badgeId', strictPopulate: false }) as any;
 
-    revalidatePath('/api/products');
-    revalidatePath(`/api/products/${updatedProduct.slug}`);
-    revalidatePath(`/product/${updatedProduct.slug}`);
+    (revalidateTag as any)('products-list', 'page');
+    
+    const sanitizedProduct = {
+      _id: updatedProduct._id.toString(),
+      name: updatedProduct.name,
+      slug: updatedProduct.slug,
+      price: updatedProduct.price
+    };
 
-    return NextResponse.json(updatedProduct);
+    return NextResponse.json(sanitizedProduct);
   } catch (error: any) {
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
   }
@@ -116,9 +121,7 @@ export const DELETE = auth(async (req, { params }) => {
 
     await Product.findByIdAndDelete(product._id);
     
-    revalidatePath('/api/products');
-    revalidatePath(`/api/products/${product.slug}`);
-    revalidatePath(`/product/${product.slug}`);
+    (revalidateTag as any)('products-list', 'page');
 
     return NextResponse.json({ message: 'Deleted' });
   } catch (error: any) {

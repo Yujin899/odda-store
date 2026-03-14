@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { FormInput } from '@/components/ui/FormInput';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { CheckoutFormValues } from '../CheckoutSchema';
+import { CheckoutFormValues } from '@/lib/schemas';
 
 const EGYPT_CITIES = [
   "Cairo", "Alexandria", "Giza", "Suez", "Port Said", "Mansoura", 

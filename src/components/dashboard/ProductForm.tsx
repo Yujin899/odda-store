@@ -1,4 +1,21 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useToastStore } from '@/store/useToastStore';
+import { useLanguageStore } from '@/store/useLanguageStore';
+import { getDictionary } from '@/dictionaries';
 import { productSchema, ProductFormValues } from '@/lib/schemas';
+
+// Form Parts
+import { FormHeader } from './ProductFormParts/FormHeader';
+import { AIAssistant } from './ProductFormParts/AIAssistant';
+import { BasicInfoFields } from './ProductFormParts/BasicInfoFields';
+import { ImageUploader } from './ProductFormParts/ImageUploader';
+import { FeaturesSection } from './ProductFormParts/FeaturesSection';
+import { PricingFields } from './ProductFormParts/PricingFields';
+import { OrganizationFields } from './ProductFormParts/OrganizationFields';
 
 interface ProductFormProps {
   initialData?: any;
@@ -14,27 +31,25 @@ export function ProductForm({ initialData }: ProductFormProps) {
    * Initialize React Hook Form with Zod Resolver
    */
   const methods = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema) as any,
     defaultValues: {
       name: initialData?.name || '',
       nameAr: initialData?.nameAr || '',
       slug: initialData?.slug || '',
       description: initialData?.description || '',
       descriptionAr: initialData?.descriptionAr || '',
-      price: initialData?.price || 0,
+      price: Number(initialData?.price) || 0,
       compareAtPrice: initialData?.compareAtPrice || '',
       originalPrice: initialData?.originalPrice || '',
-      categoryId: initialData?.categoryId?._id || initialData?.categoryId || '',
-      badgeId: initialData?.badgeId?._id || initialData?.badgeId || null,
-      stock: initialData?.stock || 0,
-      featured: initialData?.featured || false,
+      categoryId: initialData?.categoryId?._id?.toString() || initialData?.categoryId?.toString() || '',
+      badgeId: initialData?.badgeId?._id?.toString() || initialData?.badgeId?.toString() || '',
+      stock: Number(initialData?.stock) || 0,
+      featured: !!initialData?.featured,
       features: initialData?.features || [],
       featuresAr: initialData?.featuresAr || [],
       images: initialData?.images || [],
-    },
+    } as any,
   });
-
-  const { handleSubmit } = methods;
 
   /**
    * Final Form Submission Logic
@@ -78,7 +93,10 @@ export function ProductForm({ initialData }: ProductFormProps) {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 sm:space-y-10 max-w-6xl mx-auto pb-24">
+      <form 
+        onSubmit={methods.handleSubmit(onSubmit as any)} 
+        className="space-y-6 sm:space-y-10 max-w-6xl mx-auto pb-24"
+      >
         {/* Sticky Header */}
         <FormHeader initialData={initialData} />
 

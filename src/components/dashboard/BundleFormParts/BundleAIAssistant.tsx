@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useFormContext } from 'react-hook-form';
 import { useToastStore } from '@/store/useToastStore';
-import { BundleFormValues } from './BundleSchema';
+import { BundleFormValues } from '@/lib/schemas';
 
 interface BundleAIAssistantProps {
   language: string;

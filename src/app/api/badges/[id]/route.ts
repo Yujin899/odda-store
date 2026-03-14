@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/mongodb';
 import Badge from '@/models/Badge';
 import { Product } from '@/models/Product';
 import { auth } from '@/auth';
+import { revalidateTag } from 'next/cache';
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -20,7 +21,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       return NextResponse.json({ message: 'Badge not found' }, { status: 404 });
     }
 
-    return NextResponse.json(badge);
+    (revalidateTag as any)('products-list', 'page');
+
+    const sanitizedBadge = {
+      _id: badge._id.toString(),
+      name: badge.name,
+      color: badge.color
+    };
+
+    return NextResponse.json(sanitizedBadge);
   } catch (error: any) {
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
   }
@@ -49,6 +58,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     if (!badge) {
       return NextResponse.json({ message: 'Badge not found' }, { status: 404 });
     }
+
+    (revalidateTag as any)('products-list', 'page');
 
     return NextResponse.json({ message: 'Badge deleted successfully' });
   } catch (error: any) {

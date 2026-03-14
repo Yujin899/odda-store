@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { BundleFormValues } from './BundleSchema';
+import { BundleFormValues } from '@/lib/schemas';
 
 interface BundlePricingStockProps {
   language: string;

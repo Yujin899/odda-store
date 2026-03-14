@@ -137,7 +137,7 @@ export const POST = auth(async (req) => {
     try {
       await Notification.create({
         title: 'New Order Received',
-        message: `Order ${order.orderNumber} placed via ${paymentMethod} for ${totalAmount} EGP`,
+        message: `Order ${order.orderNumber} placed via ${paymentMethod} for ${calculatedTotal} EGP`,
         type: 'new_order',
         link: '/dashboard/orders',
       });
@@ -166,7 +166,7 @@ export const POST = auth(async (req) => {
           customerName: shippingAddress.fullName,
           orderNumber: order.orderNumber,
           items,
-          totalAmount,
+          totalAmount: calculatedTotal,
           isAr: true,
           baseUrl
         });
@@ -180,7 +180,7 @@ export const POST = auth(async (req) => {
           customerName: shippingAddress.fullName,
           orderNumber: order.orderNumber,
           items,
-          totalAmount,
+          totalAmount: calculatedTotal,
           isAr: false,
           baseUrl
         });
@@ -196,7 +196,7 @@ export const POST = auth(async (req) => {
           customerName: shippingAddress.fullName,
           orderNumber: order.orderNumber,
           items,
-          totalAmount,
+          totalAmount: calculatedTotal,
           isAr,
           baseUrl
         });
@@ -224,10 +224,12 @@ export const POST = auth(async (req) => {
 }) as any;
 
 export const GET = auth(async (req) => {
-    // req.auth check removed to allow guest checkout. 
-    // Validation for authenticated users happens via conditionally assigning userId below.
-
   try {
+    const session = req.auth;
+    if (!session || (session.user as any)?.role !== 'admin') {
+      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+    }
+
     await connectDB();
 
     const { searchParams } = new URL(req.url);
@@ -248,8 +250,23 @@ export const GET = auth(async (req) => {
       Order.countDocuments(query),
     ]);
 
+    // Strict DTO Mapping to prevent PII leakage and metadata exposure
+    const sanitizedOrders = orders.map(order => ({
+      _id: order._id.toString(),
+      orderNumber: order.orderNumber,
+      customerName: order.shippingAddress?.fullName || 'N/A',
+      totalAmount: order.totalAmount,
+      status: order.status,
+      createdAt: order.createdAt,
+      paymentMethod: order.paymentMethod,
+      userId: order.userId ? {
+        name: (order.userId as any).name,
+        email: (order.userId as any).email
+      } : null
+    }));
+
     return NextResponse.json({
-      orders,
+      orders: sanitizedOrders,
       total,
       page,
       totalPages: Math.ceil(total / limit),
