@@ -3,11 +3,16 @@ import { connectDB } from '@/lib/mongodb';
 import { Order, IOrder } from '@/models/Order';
 import { User } from '@/models/User';
 import { Product } from '@/models/Product';
+import { Bundle } from '@/models/Bundle';
 
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardOverviewPage() {
   await connectDB();
+  
+  // Register models for population
+  void Product.modelName;
+  void Bundle.modelName;
 
   // 1. Total Orders & Revenue
   const rawOrders = await Order.find().populate('items.productId').lean();

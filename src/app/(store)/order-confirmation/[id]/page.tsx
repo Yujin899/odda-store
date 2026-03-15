@@ -15,9 +15,18 @@ async function getOrder(id: string) {
   const session = await auth();
   await connectDB();
   
+  // Register models for population
+  const { Product } = await import('@/models/Product');
+  const { Bundle } = await import('@/models/Bundle');
+  void Product.modelName;
+  void Bundle.modelName;
+  
   // Fetch by ID or internal orderNumber
   const order = await Order.findOne({ 
-    $or: [{ _id: id }, { orderNumber: id }] 
+    $or: [
+      { _id: id.match(/^[0-9a-fA-F]{24}$/) ? id : undefined }, 
+      { orderNumber: id }
+    ].filter(Boolean)
   }).populate('items.productId');
 
   if (!order) return null;
@@ -32,8 +41,8 @@ async function getOrder(id: string) {
   return JSON.parse(JSON.stringify(order));
 }
 
-export default async function OrderPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function OrderPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const order = await getOrder(id);
 
   if (!order) {

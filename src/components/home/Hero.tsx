@@ -30,7 +30,7 @@ export function Hero({ hero, locale }: { hero?: any, locale: string }) {
 
       {/* Content strictly server-side rendered */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
-        <h1 className="text-4xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-8 max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100">
+        <h1 className="text-4xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[1.1] mb-8 max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100">
           {heroData.heading}
         </h1>
 

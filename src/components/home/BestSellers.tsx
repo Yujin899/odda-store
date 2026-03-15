@@ -69,7 +69,7 @@ export function BestSellers({ products }: { products: any[] }) {
         >
           {products.map((product) => {
             const primaryImage = product.images?.find((img: any) => img.isPrimary)?.url || product.images?.[0]?.url || product.image;
-            const badge = product.badgeId || (product.badge ? { name: product.badge, color: product.badge.includes('Hot') ? '#E11D48' : '#0073E6', textColor: '#FFFFFF' } : null);
+            const badge = product.badgeId || (typeof product.badge === 'object' ? product.badge : (product.badge ? { name: product.badge, color: String(product.badge).includes('Hot') ? '#E11D48' : '#0073E6', textColor: '#FFFFFF' } : null));
             const productName = (language === 'ar' && product.nameAr) ? product.nameAr : product.name;
             return (
               <SwiperSlide key={product._id || product.id}>
@@ -88,7 +88,7 @@ export function BestSellers({ products }: { products: any[] }) {
                         className="absolute top-3 start-3 text-background text-[10px] font-black px-2.5 py-1 rounded-(--radius) uppercase tracking-widest z-10 shadow-lg flex items-center gap-1"
                         style={{ backgroundColor: badge.color || '#E11D48', color: badge.textColor || '#FFFFFF' }}
                       >
-                        {language === 'ar' && badge.nameAr ? badge.nameAr : badge.name}
+                        {language === 'ar' ? (badge.nameAr || badge.name) : (badge.name || badge.nameAr)}
                       </div>
                     )}
                   </div>

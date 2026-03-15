@@ -31,15 +31,20 @@ export function ProductCard({ product, locale }: ProductCardProps) {
   const primaryImage = product.images?.find((img) => img.isPrimary)?.url || product.images?.[0]?.url || product.image || '';
   const inStock = (product.stock !== undefined) ? product.stock > 0 : true;
   
-  const badge = product.badgeId || (product.badge ? { 
+  const badge = product.badgeId || (typeof product.badge === 'object' ? product.badge : (product.badge ? { 
     name: product.badge, 
-    color: product.badge.includes('Hot') ? '#E11D48' : '#0073E6', 
+    color: String(product.badge).includes('Hot') ? '#E11D48' : '#0073E6', 
     textColor: '#FFFFFF' 
-  } : null);
+  } : null));
 
-  const categoryName = (language === 'ar' && (product.categoryId?.nameAr || product.categoryAr)) 
-    ? (product.categoryId?.nameAr || product.categoryAr) 
-    : (product.categoryId?.name || product.category);
+  const getCategoryDisplay = () => {
+    const cat = product.categoryId || product.category;
+    if (!cat) return '';
+    if (typeof cat === 'string') return language === 'ar' ? (product.categoryAr || cat) : cat;
+    return language === 'ar' ? (cat.nameAr || cat.name) : cat.name;
+  };
+
+  const categoryName = getCategoryDisplay();
     
   const productName = (language === 'ar' && product.nameAr) ? product.nameAr : product.name;
 
