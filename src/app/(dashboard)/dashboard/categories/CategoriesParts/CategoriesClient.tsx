@@ -418,7 +418,7 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-xl rounded-sm pt-12" dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <form onSubmit={handleSave}>
-            <DialogHeader className={language === 'ar' ? 'text-right' : ''}>
+            <DialogHeader className={language === 'ar' ? 'text-end' : ''}>
               <DialogTitle className="font-black uppercase tracking-tighter text-xl">
                 {editingCategory ? dict.dashboard.categoriesPage.modal.editTitle : dict.dashboard.categoriesPage.modal.newTitle}
               </DialogTitle>
@@ -488,7 +488,7 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
                       <div className={`flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
                         <Label htmlFor="cat-name" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.categoriesPage.modal.nameEn}</Label>
                         <Button 
@@ -520,20 +520,20 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
                         dir="ltr"
                       />
                     </div>
-                    <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
-                      <Label htmlFor="cat-nameAr" className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block ${language === 'ar' ? 'text-right' : ''}`}>{dict.dashboard.categoriesPage.modal.nameAr}</Label>
+                    <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
+                      <Label htmlFor="cat-nameAr" className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block ${language === 'ar' ? 'text-end' : ''}`}>{dict.dashboard.categoriesPage.modal.nameAr}</Label>
                       <Input 
                         id="cat-nameAr"
                         dir="rtl"
                         value={formData.nameAr}
                         onChange={(e) => setFormData({ ...formData, nameAr: e.target.value })}
                         placeholder={dict.dashboard.categoriesPage.modal.nameAr.includes('Name') ? 'مثال: أدوات طب الأسنان' : dict.dashboard.categoriesPage.modal.nameAr}
-                        className="rounded-sm border-slate-200 focus:border-(--primary) text-sm text-right font-cairo"
+                        className="rounded-sm border-slate-200 focus:border-(--primary) text-sm text-end font-cairo"
                       />
                     </div>
                   </div>
 
-                  <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
                     <Label htmlFor="cat-slug" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.categoriesPage.modal.slug}</Label>
                     <Input 
                       id="cat-slug"
@@ -550,8 +550,8 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
                   </div>
                 </div>
 
-                <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
-                  <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2 ${language === 'ar' ? 'text-right' : ''}`}>{dict.dashboard.categoriesPage.modal.image}</Label>
+                <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
+                  <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2 ${language === 'ar' ? 'text-end' : ''}`}>{dict.dashboard.categoriesPage.modal.image}</Label>
                   <div className={`relative group aspect-video rounded-sm overflow-hidden border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center ${isUploading ? 'grayscale opacity-80' : ''}`}>
                     {formData.image && !isUploading ? (
                       <>
@@ -597,7 +597,7 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
                                 className="rounded-sm text-[9px] uppercase tracking-widest h-8"
                                 disabled={isUploading}
                               >
-                                <Upload className={`size-3 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                                <Upload className={`size-3 ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
                                 {dict.dashboard.categoriesPage.modal.uploadImage}
                               </Button>
                             </div>
@@ -610,7 +610,7 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
                   <Label htmlFor="cat-desc" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.categoriesPage.modal.descEn}</Label>
                   <Textarea 
                     id="cat-desc"
@@ -621,15 +621,15 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
                     dir="ltr"
                   />
                 </div>
-                <div className={`space-y-2 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
-                  <Label htmlFor="cat-descAr" className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block ${language === 'ar' ? 'text-right' : ''}`}>{dict.dashboard.categoriesPage.modal.descAr}</Label>
+                <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
+                  <Label htmlFor="cat-descAr" className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block ${language === 'ar' ? 'text-end' : ''}`}>{dict.dashboard.categoriesPage.modal.descAr}</Label>
                   <Textarea 
                     id="cat-descAr"
                     dir="rtl"
                     value={formData.descriptionAr}
                     onChange={(e) => setFormData({ ...formData, descriptionAr: e.target.value })}
                     placeholder={dict.dashboard.categoriesPage.modal.descPlaceholderAr}
-                    className="rounded-sm min-h-[100px] border-slate-200 focus:border-(--primary) text-sm text-right font-cairo"
+                    className="rounded-sm min-h-[100px] border-slate-200 focus:border-(--primary) text-sm text-end font-cairo"
                   />
                 </div>
               </div>

@@ -105,11 +105,11 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
       <Table dir={language === 'ar' ? 'rtl' : 'ltr'}>
         <TableHeader>
           <TableRow className="bg-muted/30 border-b">
-            <TableHead className={`w-[120px] font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.ordersPage.table.orderId}</TableHead>
-            <TableHead className={`font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.ordersPage.table.customer}</TableHead>
+            <TableHead className={`w-[120px] font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4 ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.ordersPage.table.orderId}</TableHead>
+            <TableHead className={`font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4 ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.ordersPage.table.customer}</TableHead>
             <TableHead className="font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4 text-center">{dict.dashboard.ordersPage.table.amount}</TableHead>
-            <TableHead className={`font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4 ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.ordersPage.table.status}</TableHead>
-            <TableHead className={`${language === 'ar' ? 'text-left pl-4' : 'text-right pr-4'} font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4`}>{dict.dashboard.ordersPage.table.actions}</TableHead>
+            <TableHead className={`font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4 ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.ordersPage.table.status}</TableHead>
+            <TableHead className={`${language === 'ar' ? 'text-start ps-4' : 'text-end pe-4'} font-black uppercase text-[9px] tracking-[0.2em] text-slate-500 py-4`}>{dict.dashboard.ordersPage.table.actions}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -125,23 +125,23 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
           ) : (
             orders.map((order) => (
               <TableRow key={order._id} className="group hover:bg-slate-50/80 transition-all border-b last:border-0">
-                <TableCell className={`font-mono text-[11px] font-bold text-slate-400 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                <TableCell className={`font-mono text-[11px] font-bold text-slate-400 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
                   <span className="text-foreground">#{order.orderNumber.slice(-8)}</span>
                 </TableCell>
-                <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
-                  <div className={`flex flex-col py-1 ${language === 'ar' ? 'text-right' : ''}`}>
+                <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
+                  <div className={`flex flex-col py-1 ${language === 'ar' ? 'text-end' : ''}`}>
                     <span className="font-black text-[11px] uppercase tracking-tight text-(--navy)">{order.userId?.name || (language === 'ar' ? 'زائر' : 'Guest')}</span>
                     <span className="text-[9px] font-bold text-muted-foreground tracking-tighter">{order.userId?.email}</span>
                   </div>
                 </TableCell>
                 <TableCell className="text-center">
                   <span className="font-black text-xs text-(--primary)">{order.totalAmount.toLocaleString()}</span>
-                  <span className={`text-[8px] font-black uppercase text-slate-400 ${language === 'ar' ? 'mr-1' : 'ml-1'}`}>{language === 'ar' ? 'ج.م' : 'EGP'}</span>
+                  <span className={`text-[8px] font-black uppercase text-slate-400 ${language === 'ar' ? 'me-1' : 'ms-1'}`}>{language === 'ar' ? 'ج.م' : 'EGP'}</span>
                 </TableCell>
-                <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
+                <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                   {getStatusBadge(order.status)}
                 </TableCell>
-                <TableCell className={`${language === 'ar' ? 'text-left pl-4' : 'text-right pr-4'} py-4`}>
+                <TableCell className={`${language === 'ar' ? 'text-start ps-4' : 'text-end pe-4'} py-4`}>
                   <div className="flex items-center justify-end gap-2">
                     {/* Quick Action Logic */}
                     {order.status === 'pending_verification' && (
@@ -154,7 +154,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                           setFocusPayment(true);
                         }}
                       >
-                        <ShieldCheck className={`size-3 ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} />
+                        <ShieldCheck className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />
                         {dict.dashboard.ordersPage.table.verify}
                       </Button>
                     )}
@@ -166,7 +166,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                         disabled={updatingId === order._id}
                         onClick={() => handleUpdateStatus(order._id, 'processing')}
                       >
-                        {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} /> : <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} />}
+                        {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} /> : <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />}
                         {dict.dashboard.ordersPage.table.process}
                       </Button>
                     )}
@@ -178,7 +178,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                         disabled={updatingId === order._id}
                         onClick={() => handleUpdateStatus(order._id, 'shipped')}
                       >
-                        {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} /> : <Truck className={`size-3 ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} />}
+                        {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} /> : <Truck className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />}
                         {dict.dashboard.ordersPage.table.ship}
                       </Button>
                     )}
@@ -190,7 +190,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                         disabled={updatingId === order._id}
                         onClick={() => handleUpdateStatus(order._id, 'delivered')}
                       >
-                        {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} /> : <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} />}
+                        {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} /> : <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />}
                         {dict.dashboard.ordersPage.table.deliver}
                       </Button>
                     )}
@@ -204,7 +204,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                       }}
                       className="h-8 text-[9px] font-black uppercase tracking-widest hover:bg-slate-100 px-3"
                     >
-                      <Eye className={`size-3 ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} />
+                      <Eye className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />
                       {dict.dashboard.ordersPage.table.details}
                     </Button>
                   </div>
@@ -220,20 +220,20 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
   if (!mounted) return <div className="min-h-[400px] flex items-center justify-center"><Loader2 className="size-8 animate-spin text-muted-foreground" /></div>;
 
   return (
-    <div className={`space-y-6 ${language === 'ar' ? 'text-right' : 'text-left'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className={`space-y-6 ${language === 'ar' ? 'text-end' : 'text-start'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between gap-4 bg-white p-4 rounded-(--radius) border shadow-sm">
         <div className="relative flex-1 max-w-sm">
-          <Search className={`absolute ${language === 'ar' ? 'right-3' : 'left-3'} top-1/2 -translate-y-1/2 size-4 text-muted-foreground drop-shadow-sm`} />
+          <Search className={`absolute ${language === 'ar' ? 'end-3' : 'start-3'} top-1/2 -translate-y-1/2 size-4 text-muted-foreground drop-shadow-sm`} />
           <Input 
             placeholder={dict.dashboard.ordersPage.searchPlaceholder} 
-            className={`${language === 'ar' ? 'pr-9' : 'pl-9'} h-11 text-xs border-slate-200 focus:ring-(--primary)/20 rounded-md font-bold uppercase tracking-widest`}
+            className={`${language === 'ar' ? 'pe-9' : 'ps-9'} h-11 text-xs border-slate-200 focus:ring-(--primary)/20 rounded-md font-bold uppercase tracking-widest`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="hidden md:flex items-center gap-2">
           <Badge variant="outline" className="h-8 px-3 border-emerald-100 bg-emerald-50 text-emerald-700 font-bold uppercase text-[9px] tracking-widest">
-            <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ml-1.5' : 'mr-1.5'}`} />
+            <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />
             {dict.dashboard.ordersPage.workflow}
           </Badge>
         </div>
@@ -275,8 +275,8 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
         <TabsContent value="delivered">
           <div className="space-y-4">
             <div className="bg-blue-50 border border-blue-100 rounded-md p-4 flex items-start gap-3">
-              <AlertCircle className={`size-4 text-blue-500 mt-0.5 shrink-0 ${language === 'ar' ? 'ml-0.5' : ''}`} />
-              <div className={`space-y-1 ${language === 'ar' ? 'text-right' : ''}`}>
+              <AlertCircle className={`size-4 text-blue-500 mt-0.5 shrink-0 ${language === 'ar' ? 'ms-0.5' : ''}`} />
+              <div className={`space-y-1 ${language === 'ar' ? 'text-end' : ''}`}>
                 <p className="text-[10px] font-black uppercase tracking-widest text-blue-900">{dict.dashboard.ordersPage.systemNotice.title}</p>
                 <p className="text-[9px] font-bold text-blue-700/80 uppercase tracking-tight leading-relaxed">
                   {dict.dashboard.ordersPage.systemNotice.description}

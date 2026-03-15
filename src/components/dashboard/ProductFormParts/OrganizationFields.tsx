@@ -89,7 +89,7 @@ export function OrganizationFields() {
               </SelectTrigger>
               <SelectContent align={isRtl ? 'end' : 'start'}>
                 {categories.map(cat => (
-                  <SelectItem key={cat._id} value={cat._id} className={isRtl ? 'text-right flex-row-reverse' : ''}>
+                  <SelectItem key={cat._id} value={cat._id} className={isRtl ? 'text-end flex-row-reverse' : ''}>
                     {isRtl && cat.nameAr ? cat.nameAr : cat.name}
                   </SelectItem>
                 ))}
@@ -117,11 +117,11 @@ export function OrganizationFields() {
                 <SelectValue placeholder={dict.dashboard.productForm.placeholders.noBadge} />
               </SelectTrigger>
               <SelectContent align={isRtl ? 'end' : 'start'}>
-                <SelectItem value="none" className={isRtl ? 'text-right flex-row-reverse' : ''}>
+                <SelectItem value="none" className={isRtl ? 'text-end flex-row-reverse' : ''}>
                     {dict.dashboard.productForm.badges.none}
                 </SelectItem>
                 {badges.map(badge => (
-                  <SelectItem key={badge._id} value={badge._id} className={isRtl ? 'text-right flex-row-reverse' : ''}>
+                  <SelectItem key={badge._id} value={badge._id} className={isRtl ? 'text-end flex-row-reverse' : ''}>
                     <span className={bcn("flex items-center gap-2", isRtl ? "flex-row-reverse" : "flex-row")}>
                       <div className="size-2 rounded-full" style={{ backgroundColor: badge.color }} />
                       {isRtl && badge.nameAr ? badge.nameAr : badge.name}

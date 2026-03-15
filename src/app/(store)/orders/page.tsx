@@ -22,10 +22,21 @@ export default async function OrdersPage() {
     ]
   }).sort({ createdAt: -1 }).lean();
 
+  const ordersDTO = orders.map((o: any) => ({
+    id: o._id.toString(),
+    _id: o._id.toString(),
+    orderNumber: o.orderNumber,
+    customer: o.shippingAddress?.fullName || 'N/A',
+    items: o.items,
+    totalAmount: o.totalAmount,
+    status: o.status,
+    createdAt: o.createdAt,
+  }));
+
   return (
     <div className="bg-background min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-6">
-        <OrdersList orders={JSON.parse(JSON.stringify(orders))} />
+        <OrdersList orders={ordersDTO} />
       </div>
     </div>
   );

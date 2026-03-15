@@ -9,7 +9,7 @@ export function AdminBundlesHeaderClient() {
   const isAr = language === 'ar';
 
   return (
-    <div className={`flex flex-col gap-1 ${isAr ? 'text-right' : 'text-left'}`}>
+    <div className={`flex flex-col gap-1 ${isAr ? 'text-end' : 'text-start'}`}>
       <h1 className={`text-2xl font-black uppercase tracking-tighter text-(--navy) ${isAr ? 'font-cairo' : ''}`}>
         {isAr ? 'العروض والحقائب' : 'Bundles & Starter Kits'}
       </h1>

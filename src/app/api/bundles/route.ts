@@ -1,18 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import { Bundle } from '@/models/Bundle';
 import { auth } from '@/auth';
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 
-export const revalidate = 3600; // Cache for 1 hour
-
-export async function GET(req: NextRequest) {
-  try {
+const getCachedBundles = unstable_cache(
+  async () => {
     await connectDB();
-    
-    const bundles = await Bundle.find({}).sort({ createdAt: -1 });
+    return await Bundle.find({}).sort({ createdAt: -1 }).lean();
+  },
+  ['bundles-list'],
+  { tags: ['bundles-list'], revalidate: 60 }
+);
 
-    return NextResponse.json(bundles);
+export async function GET() {
+  try {
+    const bundles = await getCachedBundles();
+    const sanitizedBundles = bundles.map((b: any) => ({
+      id: b._id.toString(),
+      name: b.name,
+      nameAr: b.nameAr,
+      slug: b.slug,
+      description: b.description,
+      descriptionAr: b.descriptionAr,
+      price: b.price,
+      originalPrice: b.originalPrice ?? null,
+      images: b.images,
+      stock: b.stock,
+      featured: b.featured,
+      bundleItems: b.bundleItems,
+      bundleItemsAr: b.bundleItemsAr,
+      createdAt: b.createdAt,
+    }));
+    return NextResponse.json(sanitizedBundles);
   } catch (error) {
     console.error('Bundles fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });

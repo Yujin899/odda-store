@@ -16,9 +16,11 @@ import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 
 interface Category {
-  _id: string | null;
+  id: string | null;
   name: string;
   nameAr?: string;
+  slug: string;
+  image?: string | null;
 }
 
 interface ProductFiltersProps {
@@ -29,7 +31,6 @@ interface ProductFiltersProps {
 }
 
 export function ProductFilters({ 
-  currentCategory: _currentCategory, 
   currentSort,
   initialCategories,
   locale
@@ -40,7 +41,7 @@ export function ProductFilters({
   
   // Initialize with All Products + initialCategories
   const [categories] = useState<Category[]>([
-    { _id: null, name: dict.common.allProducts, nameAr: dict.common.allProducts }, 
+    { id: null, name: dict.common.allProducts, nameAr: dict.common.allProducts, slug: '' }, 
     ...initialCategories
   ]);
   
@@ -50,7 +51,7 @@ export function ProductFilters({
     { val: 'price_desc', label: dict.products.sortPriceDesc, icon: TrendingDown }
   ];
   
-  const currentCategoryId = searchParams.get('categoryId');
+  const currentCategorySlug = searchParams.get('category');
 
   const updateParams = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -86,14 +87,14 @@ export function ProductFilters({
           <div className="space-y-2">
             {categories.map((cat) => {
               const Icon = getIcon(cat.name);
-              const isActive = (!currentCategoryId && cat._id === null) || (currentCategoryId === String(cat._id));
+              const isActive = (!currentCategorySlug && !cat.slug) || (currentCategorySlug === cat.slug);
               const categoryName = locale === 'ar' && cat.nameAr ? cat.nameAr : cat.name;
               
               return (
                 <button
-                  key={String(cat._id)}
-                  onClick={() => updateParams('categoryId', cat._id)}
-                  className={`w-full flex items-center gap-3 p-4 border transition-all rounded-(--radius) uppercase tracking-widest text-[10px] font-bold text-left cursor-pointer outline-none ${
+                  key={cat.slug || 'all'}
+                  onClick={() => updateParams('category', cat.slug || null)}
+                  className={`w-full flex items-center gap-3 p-4 border transition-all rounded-(--radius) uppercase tracking-widest text-[10px] font-bold text-start cursor-pointer outline-none ${
                     isActive 
                       ? 'bg-(--primary) border-(--primary) text-white shadow-lg' 
                       : 'bg-background border-slate-100 text-muted-foreground hover:border-(--primary)/30 hover:bg-slate-50'
@@ -117,7 +118,7 @@ export function ProductFilters({
                 <button
                   key={s.val}
                   onClick={() => updateParams('sort', s.val)}
-                  className={`w-full flex items-center gap-3 p-4 border transition-all rounded-(--radius) uppercase tracking-widest text-[10px] font-bold text-left cursor-pointer outline-none ${
+                  className={`w-full flex items-center gap-3 p-4 border transition-all rounded-(--radius) uppercase tracking-widest text-[10px] font-bold text-start cursor-pointer outline-none ${
                     isActive 
                       ? 'bg-(--primary) border-(--primary) text-white shadow-lg' 
                       : 'bg-background border-slate-100 text-muted-foreground hover:border-(--primary)/30 hover:bg-slate-50'

@@ -69,7 +69,13 @@ async function getReviews(productId: string) {
   const reviews = await Review.find({ targetId: productId, targetType: 'Product' })
     .sort({ createdAt: -1 })
     .lean();
-  return JSON.parse(JSON.stringify(reviews));
+  return reviews.map((r: any) => ({
+    _id: r._id.toString(),
+    userName: r.userName || 'Verified Customer',
+    rating: r.rating,
+    comment: r.comment,
+    createdAt: r.createdAt.toISOString()
+  }));
 }
 
 async function getProduct(slug: string) {
@@ -86,7 +92,18 @@ async function getProduct(slug: string) {
   .lean();
 
   if (!product) return null;
-  return JSON.parse(JSON.stringify(product));
+  return {
+    ...product,
+    _id: product._id.toString(),
+    categoryId: product.categoryId ? {
+      ...product.categoryId,
+      _id: product.categoryId._id.toString()
+    } : null,
+    badgeId: product.badgeId ? {
+      ...product.badgeId,
+      _id: product.badgeId._id.toString()
+    } : null
+  };
 }
 
 async function getRelatedProducts(categoryId: string, currentProductId: string) {
@@ -101,7 +118,14 @@ async function getRelatedProducts(categoryId: string, currentProductId: string) 
   .limit(4)
   .lean();
 
-  return JSON.parse(JSON.stringify(products));
+  return products.map((p: any) => ({
+    ...p,
+    _id: p._id.toString(),
+    badgeId: p.badgeId ? {
+      ...p.badgeId,
+      _id: p.badgeId._id.toString()
+    } : null
+  }));
 }
 
 export default async function ProductDetailsPage({ params }: { params: Params }) {
@@ -119,9 +143,11 @@ export default async function ProductDetailsPage({ params }: { params: Params })
   const reviews = await getReviews(product._id);
 
   // Normalize for Client Component which expects .category instead of .categoryId
+  const categoryData = (product.categoryId as any) || { _id: '', name: 'Uncategorized', nameAr: 'غير مصنف' };
+  
   const productWithCategory = {
     ...product,
-    category: product.categoryId || { name: 'Uncategorized' }
+    category: categoryData
   };
 
   // JSON-LD Structured Data
@@ -160,14 +186,14 @@ export default async function ProductDetailsPage({ params }: { params: Params })
       isPrimary: img.isPrimary
     })),
     category: {
-      _id: productWithCategory.category._id?.toString() || '',
-      name: productWithCategory.category.name,
-      nameAr: productWithCategory.category.nameAr
+      _id: (productWithCategory.category as any)._id?.toString() || '',
+      name: (productWithCategory.category as any).name,
+      nameAr: (productWithCategory.category as any).nameAr
     },
-    badge: productWithCategory.badgeId ? {
-      name: productWithCategory.badgeId.name,
-      nameAr: productWithCategory.badgeId.nameAr,
-      color: productWithCategory.badgeId.color
+    badge: (productWithCategory.badgeId as any) ? {
+      name: (productWithCategory.badgeId as any).name,
+      nameAr: (productWithCategory.badgeId as any).nameAr,
+      color: (productWithCategory.badgeId as any).color
     } : null,
     stock: productWithCategory.stock,
     averageRating: productWithCategory.averageRating || 0,

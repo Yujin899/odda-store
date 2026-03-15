@@ -24,8 +24,19 @@ async function getFooterData() {
     StoreSettings.findOne().lean()
   ]);
   return {
-    categories: JSON.parse(JSON.stringify(categories)),
-    settings: JSON.parse(JSON.stringify(settings))
+    categories: categories.map((cat: any) => ({
+      id: cat._id.toString(),
+      name: cat.name,
+      nameAr: cat.nameAr,
+      slug: cat.slug,
+    })),
+    settings: settings ? {
+      id: settings._id.toString(),
+      socialLinks: settings.socialLinks,
+      whatsappNumber: settings.whatsappNumber,
+      storeDescription: settings.storeDescription,
+      storeDescriptionAr: settings.storeDescriptionAr,
+    } : null
   };
 }
 
@@ -109,9 +120,9 @@ export async function Footer() {
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">{dict.common.categories}</h4>
             <ul className="space-y-4">
               {categories.length > 0 ? categories.map((cat: any) => (
-                <li key={cat._id}>
+                <li key={cat.id}>
                   <Link 
-                    href={`/products?categoryId=${cat._id}`} 
+                    href={`/products?categoryId=${cat.id}`} 
                     className="group text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2"
                   >
                     <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary) ${language === 'ar' ? 'rotate-180' : ''}`} />

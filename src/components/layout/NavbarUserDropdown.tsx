@@ -62,7 +62,7 @@ export function NavbarUserDropdown({ dict }: { dict: any }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 top-full mt-2 w-56 bg-card border border-border rounded-(--radius) shadow-lg overflow-hidden py-1 z-50"
+            className="absolute end-0 top-full mt-2 w-56 bg-card border border-border rounded-(--radius) shadow-lg overflow-hidden py-1 z-50"
           >
             <div className="px-4 py-3 border-b border-border">
               <p className="text-sm font-semibold text-foreground truncate">
@@ -98,7 +98,7 @@ export function NavbarUserDropdown({ dict }: { dict: any }) {
                   setIsOpen(false);
                   signOut({ callbackUrl: '/' });
                 }}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 w-full text-left transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 w-full text-start transition-colors"
                 style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
               >
                 <LogOut className="size-4" />

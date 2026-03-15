@@ -18,7 +18,15 @@ import { NavbarMobileMenuTrigger } from './NavbarMobileMenuTrigger';
 async function getCategories() {
   await connectDB();
   const categories = await Category.find().lean();
-  return JSON.parse(JSON.stringify(categories));
+  return categories.map((cat: any) => ({
+    id: cat._id.toString(),
+    name: cat.name,
+    nameAr: cat.nameAr,
+    slug: cat.slug,
+    description: cat.description ?? null,
+    descriptionAr: cat.descriptionAr ?? null,
+    image: cat.image ?? null,
+  }));
 }
 
 export async function Navbar() {
@@ -35,7 +43,7 @@ export async function Navbar() {
         {/* Main Content Area: Logo + Desktop Nav */}
         <div className="flex-1 flex items-center justify-between">
           <div className="flex items-center gap-4 sm:gap-12">
-            {/* Mobile Menu Trigger - Moved to Bottom Nav */}
+            {/* Mobile Menu Trigger - Hidden on mobile, only on desktop if needed, but usually redundant if bottom nav is present */}
             <div className="hidden md:block">
               <NavbarMobileMenuTrigger />
             </div>
@@ -80,8 +88,8 @@ export async function Navbar() {
           {/* User Area */}
           <NavbarUserDropdown dict={dict} />
 
-          {/* Cart Area - Moved to Bottom Nav */}
-          <div className="hidden md:block">
+          {/* Cart Area - Hidden on mobile, handled by Bottom Nav */}
+          <div className="hidden md:flex">
             <NavbarCartTrigger />
           </div>
         </div>

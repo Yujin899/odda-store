@@ -19,7 +19,25 @@ async function getBundles() {
     .sort({ createdAt: -1 })
     .lean();
     
-  return JSON.parse(JSON.stringify(bundles));
+  return bundles.map((b: any) => ({
+    id: b._id.toString(),
+    _id: b._id.toString(), // Support components still using _id
+    name: b.name,
+    nameAr: b.nameAr,
+    slug: b.slug,
+    description: b.description,
+    descriptionAr: b.descriptionAr,
+    price: b.price,
+    originalPrice: b.originalPrice ?? null,
+    images: b.images,
+    stock: b.stock,
+    featured: b.featured,
+    bundleItems: b.bundleItems,
+    bundleItemsAr: b.bundleItemsAr,
+    averageRating: b.averageRating || 0,
+    numReviews: b.numReviews || 0,
+    createdAt: b.createdAt,
+  }));
 }
 
 export default async function HomeBundles() {

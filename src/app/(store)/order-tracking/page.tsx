@@ -19,7 +19,7 @@ const getCachedOrder = unstable_cache(
     if (!idOrNumber) return null;
     await connectDB();
     
-    let order = await Order.findOne({
+    const order = await Order.findOne({
       $or: [
         { _id: idOrNumber.match(/^[0-9a-fA-F]{24}$/) ? idOrNumber : undefined },
         { orderNumber: idOrNumber }
@@ -29,7 +29,27 @@ const getCachedOrder = unstable_cache(
     .lean();
 
     if (!order) return null;
-    return JSON.parse(JSON.stringify(order));
+    return {
+      id: order._id.toString(),
+      orderNumber: order.orderNumber,
+      status: order.status,
+      items: order.items.map((item: any) => ({
+        productId: item.productId ? {
+          name: item.productId.name,
+          slug: item.productId.slug,
+          image: item.productId.images?.[0]?.url || item.productId.image || ''
+        } : null,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
+      })),
+      totalAmount: order.totalAmount,
+      createdAt: order.createdAt,
+      shippingAddress: {
+        fullName: order.shippingAddress.fullName,
+        city: order.shippingAddress.city
+      }
+    };
   },
   ['order-tracking-details'],
   { revalidate: 60, tags: ['orders'] }

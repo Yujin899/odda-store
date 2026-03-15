@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import { Product, IProduct } from '@/models/Product';
+import { Product } from '@/models/Product';
 import { auth } from '@/auth';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
 import { revalidateTag } from 'next/cache';
+import { IProductDocument } from '@/models/Product';
 
 // export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Cache for 1 hour
@@ -15,8 +16,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
     await connectDB();
     
     // Register models for population
-    Category;
-    Badge;
+    void Category;
+    void Badge;
 
     const { slug } = await params;
     
@@ -25,13 +26,41 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       $or: [{ slug: slug }, { _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }].filter(Boolean),
     })
     .populate({ path: 'categoryId', strictPopulate: false })
-    .populate({ path: 'badgeId', strictPopulate: false });
+    .populate({ path: 'badgeId', strictPopulate: false })
+    .lean();
 
     if (!product) {
       return NextResponse.json({ message: 'Product not found' }, { status: 404 });
     }
 
-    return NextResponse.json(product);
+    const badge = product.badgeId as unknown as { name?: string; nameAr?: string; color?: string; textColor?: string } | null;
+    const category = product.categoryId as unknown as { _id: { toString(): string } } | null;
+
+    const sanitizedProduct = {
+      id: product._id.toString(),
+      name: product.name,
+      nameAr: product.nameAr,
+      slug: product.slug,
+      description: product.description,
+      descriptionAr: product.descriptionAr,
+      price: product.price,
+      originalPrice: product.compareAtPrice ?? null,
+      images: product.images,
+      categoryId: category?._id?.toString() ?? product.categoryId?.toString() ?? null,
+      badge: badge ? {
+        name: badge.name || badge.nameAr,
+        nameAr: badge.nameAr,
+        color: badge.color,
+        textColor: badge.textColor
+      } : null,
+      stock: product.stock,
+      featured: product.featured,
+      aiSummary: product.aiSummary ?? null,
+      aiSummaryAr: product.aiSummaryAr ?? null,
+      createdAt: product.createdAt,
+    };
+
+    return NextResponse.json(sanitizedProduct);
   } catch (error) {
     console.error('Product fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -48,12 +77,12 @@ export const PUT = auth(async (req, { params }) => {
     await connectDB();
 
     // Register models for population
-    Category;
-    Badge;
+    void Category;
+    void Badge;
     
     const product = await Product.findOne({
       $or: [{ _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }, { slug: slug }].filter(Boolean),
-    }) as any;
+    }) as IProductDocument | null;
     if (!product) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
     const updates = await req.json();
@@ -63,7 +92,7 @@ export const PUT = auth(async (req, { params }) => {
       if (updates.images.length === 0) {
         return NextResponse.json({ message: 'At least one image is required' }, { status: 400 });
       }
-      const primaryCount = updates.images.filter((img: any) => img.isPrimary).length;
+      const primaryCount = updates.images.filter((img: { isPrimary: boolean }) => img.isPrimary).length;
       if (primaryCount !== 1) {
         return NextResponse.json({ message: 'Exactly one image must be primary' }, { status: 400 });
       }
@@ -71,8 +100,8 @@ export const PUT = auth(async (req, { params }) => {
 
     // IMAGE CLEANUP LOGIC: Delete images that were removed in this update
     if (updates.images) {
-      const oldImageUrls = product.images.map((img: any) => img.url);
-      const newImageUrls = updates.images.map((img: any) => img.url);
+      const oldImageUrls = product.images.map((img) => img.url);
+      const newImageUrls = (updates.images as { url: string }[]).map((img) => img.url);
       
       const removedImages = oldImageUrls.filter((url: string) => !newImageUrls.includes(url));
       
@@ -83,22 +112,44 @@ export const PUT = auth(async (req, { params }) => {
 
     const updatedProduct = await Product.findByIdAndUpdate(product._id, updates, { new: true })
       .populate({ path: 'categoryId', strictPopulate: false })
-      .populate({ path: 'badgeId', strictPopulate: false }) as any;
+      .populate({ path: 'badgeId', strictPopulate: false }) as IProductDocument | null;
 
-    (revalidateTag as any)('products-list', 'page');
+    if (!updatedProduct) throw new Error('Failed to update product');
+
+    revalidateTag('products-list', 'page');
     
+    const badge = updatedProduct.badgeId as unknown as { name?: string; nameAr?: string; color?: string; textColor?: string } | null;
+
     const sanitizedProduct = {
-      _id: updatedProduct._id.toString(),
+      id: updatedProduct._id.toString(),
       name: updatedProduct.name,
+      nameAr: updatedProduct.nameAr,
       slug: updatedProduct.slug,
-      price: updatedProduct.price
+      description: updatedProduct.description,
+      descriptionAr: updatedProduct.descriptionAr,
+      price: updatedProduct.price,
+      originalPrice: updatedProduct.compareAtPrice ?? null,
+      images: updatedProduct.images,
+      categoryId: updatedProduct.categoryId?.toString() ?? null,
+      badge: badge ? {
+        name: badge.name,
+        nameAr: badge.nameAr,
+        color: badge.color,
+        textColor: badge.textColor
+      } : null,
+      stock: updatedProduct.stock,
+      featured: updatedProduct.featured,
+      aiSummary: updatedProduct.aiSummary ?? null,
+      aiSummaryAr: updatedProduct.aiSummaryAr ?? null,
+      createdAt: updatedProduct.createdAt,
     };
 
     return NextResponse.json(sanitizedProduct);
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});
 
 export const DELETE = auth(async (req, { params }) => {
   if (req.auth?.user?.role !== 'admin') {
@@ -111,7 +162,7 @@ export const DELETE = auth(async (req, { params }) => {
     
     const product = await Product.findOne({
       $or: [{ _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }, { slug: slug }].filter(Boolean),
-    }) as any;
+    }) as IProductDocument | null;
     if (!product) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
     // Cleanup Cloudinary
@@ -121,10 +172,11 @@ export const DELETE = auth(async (req, { params }) => {
 
     await Product.findByIdAndDelete(product._id);
     
-    (revalidateTag as any)('products-list', 'page');
+    revalidateTag('products-list', 'page');
 
     return NextResponse.json({ message: 'Deleted' });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});

@@ -61,7 +61,7 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
         {/* Bundle Items List */}
         <div className="space-y-4 mb-10 grow">
           {items?.slice(0, 4).map((item: string, idx: number) => (
-            <div key={idx} className={`flex items-start gap-3.5 ${locale === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+            <div key={idx} className={`flex items-start gap-3.5 ${locale === 'ar' ? 'flex-row-reverse text-end' : 'text-start'}`}>
               <div className="mt-1 flex items-center justify-center bg-white shadow-sm border border-slate-100 p-1 rounded-full group-hover:bg-(--primary) group-hover:border-(--primary) transition-all duration-300">
                 <CheckCircle2 className="size-2.5 text-(--primary) group-hover:text-white transition-colors" />
               </div>

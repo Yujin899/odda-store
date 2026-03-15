@@ -26,6 +26,8 @@ export interface IProduct {
   badge?: string;
   inStock?: boolean;
   featured: boolean;
+  aiSummary?: string;
+  aiSummaryAr?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

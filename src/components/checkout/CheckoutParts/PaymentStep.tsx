@@ -101,7 +101,7 @@ export function PaymentStep({ instapayNumber }: PaymentStepProps) {
           <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
             {dict.checkoutPage.codDesc}
           </p>
-          {paymentMethod === 'cod' && <CheckCircle2 className="absolute top-2 right-2 size-4 text-(--primary)" />}
+          {paymentMethod === 'cod' && <CheckCircle2 className="absolute top-2 end-2 size-4 text-(--primary)" />}
         </label>
 
         {/* InstaPay Option */}
@@ -122,7 +122,7 @@ export function PaymentStep({ instapayNumber }: PaymentStepProps) {
           <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
             {dict.checkoutPage.instapayDesc}
           </p>
-          {paymentMethod === 'instapay' && <CheckCircle2 className="absolute top-2 right-2 size-4 text-(--primary)" />}
+          {paymentMethod === 'instapay' && <CheckCircle2 className="absolute top-2 end-2 size-4 text-(--primary)" />}
         </label>
       </div>
 

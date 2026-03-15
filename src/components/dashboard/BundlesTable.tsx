@@ -124,10 +124,10 @@ export function BundlesTable({
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <div className="relative w-full sm:w-80">
-          <Search className={`absolute ${language === 'ar' ? 'right-2.5' : 'left-2.5'} top-2.5 h-4 w-4 text-muted-foreground`} />
+          <Search className={`absolute ${language === 'ar' ? 'end-2.5' : 'start-2.5'} top-2.5 h-4 w-4 text-muted-foreground`} />
           <Input
             placeholder={language === 'ar' ? 'بحث عن العروض...' : 'Search bundles...'}
-            className={language === 'ar' ? 'pr-8 font-medium' : 'pl-8 font-medium'}
+            className={language === 'ar' ? 'pe-8 font-medium' : 'ps-8 font-medium'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => {
@@ -142,7 +142,7 @@ export function BundlesTable({
           onClick={() => router.push('/dashboard/bundles/new')}
           className="bg-(--primary) text-white font-black uppercase tracking-widest text-[10px] h-9 px-4 rounded-sm"
         >
-          <PackagePlus className="size-3.5 mr-2" />
+          <PackagePlus className="size-3.5 me-2" />
           {language === 'ar' ? 'إضافة عرض جديد' : 'Add New Bundle'}
         </Button>
       </div>
@@ -151,11 +151,11 @@ export function BundlesTable({
         <Table dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <TableHeader>
             <TableRow className="bg-muted/30">
-              <TableHead className={`w-[80px] font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.productsPage.table.image}</TableHead>
-              <TableHead className={`font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.productsPage.table.name}</TableHead>
-              <TableHead className={`font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.productsPage.table.price}</TableHead>
-              <TableHead className={`font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-right' : 'text-left'}`}>{dict.dashboard.productsPage.table.stock}</TableHead>
-              <TableHead className={`${language === 'ar' ? 'text-left' : 'text-right'} font-black uppercase text-[10px] tracking-widest`}>{dict.dashboard.productsPage.table.actions}</TableHead>
+              <TableHead className={`w-[80px] font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.productsPage.table.image}</TableHead>
+              <TableHead className={`font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.productsPage.table.name}</TableHead>
+              <TableHead className={`font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.productsPage.table.price}</TableHead>
+              <TableHead className={`font-black uppercase text-[10px] tracking-widest ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.productsPage.table.stock}</TableHead>
+              <TableHead className={`${language === 'ar' ? 'text-start' : 'text-end'} font-black uppercase text-[10px] tracking-widest`}>{dict.dashboard.productsPage.table.actions}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -170,8 +170,8 @@ export function BundlesTable({
                 const primaryImage = bundle.images[0];
                 return (
                   <TableRow key={bundle._id}>
-                    <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
-                      <div className={`relative h-10 w-10 rounded-md overflow-hidden bg-muted border border-border/50 ${language === 'ar' ? 'mr-0 ml-auto' : ''}`}>
+                    <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
+                      <div className={`relative h-10 w-10 rounded-md overflow-hidden bg-muted border border-border/50 ${language === 'ar' ? 'me-0 ms-auto' : ''}`}>
                         {primaryImage ? (
                           <Image
                             src={primaryImage}
@@ -186,7 +186,7 @@ export function BundlesTable({
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className={`font-medium ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <TableCell className={`font-medium ${language === 'ar' ? 'text-end' : 'text-start'}`}>
                       <div className="flex flex-col">
                         <span className={`font-bold ${language === 'ar' ? 'font-cairo text-sm' : ''}`}>
                           {language === 'ar' && bundle.nameAr ? bundle.nameAr : bundle.name}
@@ -196,7 +196,7 @@ export function BundlesTable({
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
+                    <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                       <div className="flex flex-col">
                         <span className="font-black text-xs text-(--navy)">
                           {language === 'ar' ? '' : 'EGP'} {bundle.price.toLocaleString()} {language === 'ar' ? 'ج.م' : ''}
@@ -208,12 +208,12 @@ export function BundlesTable({
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className={language === 'ar' ? 'text-right' : 'text-left'}>
+                    <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                       <span className={`text-xs font-black ${bundle.stock > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
                         {bundle.stock}
                       </span>
                     </TableCell>
-                    <TableCell className={language === 'ar' ? 'text-left' : 'text-right'}>
+                    <TableCell className={language === 'ar' ? 'text-start' : 'text-end'}>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -224,7 +224,7 @@ export function BundlesTable({
                           <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 py-3">{dict.dashboard.productsPage.table.actions}</DropdownMenuLabel>
                           <DropdownMenuSeparator className="bg-slate-100" />
                           <DropdownMenuItem onClick={() => router.push(`/dashboard/bundles/${bundle.slug}/edit`)} className="text-[10px] font-black uppercase tracking-widest focus:bg-slate-50 cursor-pointer p-3 group">
-                            <Pencil className="mr-2 h-3.5 w-3.5 text-slate-400 group-hover:text-(--navy) transition-colors" />
+                            <Pencil className="me-2 h-3.5 w-3.5 text-slate-400 group-hover:text-(--navy) transition-colors" />
                             {dict.common.edit}
                           </DropdownMenuItem>
                           <DropdownMenuItem 
@@ -234,7 +234,7 @@ export function BundlesTable({
                               setDeleteSlug(bundle.slug);
                             }}
                           >
-                            <Trash2 className="mr-2 h-3.5 w-3.5 text-red-400 group-hover:text-red-600 transition-colors" />
+                            <Trash2 className="me-2 h-3.5 w-3.5 text-red-400 group-hover:text-red-600 transition-colors" />
                             {dict.common.delete}
                           </DropdownMenuItem>
                         </DropdownMenuContent>

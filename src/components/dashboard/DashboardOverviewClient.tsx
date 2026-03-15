@@ -33,8 +33,8 @@ export function DashboardOverviewClient({
   return (
     <div className="space-y-6" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div>
-        <h2 className={`text-2xl font-black uppercase tracking-tighter text-(--navy) ${language === 'ar' ? 'text-right' : ''}`}>{dict.dashboard.overview}</h2>
-        <p className={`text-sm font-medium text-muted-foreground uppercase tracking-widest mt-1 ${language === 'ar' ? 'text-right' : ''}`}>
+        <h2 className={`text-2xl font-black uppercase tracking-tighter text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>{dict.dashboard.overview}</h2>
+        <p className={`text-sm font-medium text-muted-foreground uppercase tracking-widest mt-1 ${language === 'ar' ? 'text-end' : ''}`}>
           {dict.dashboard.storeMetrics}
         </p>
       </div>
@@ -108,7 +108,7 @@ export function DashboardOverviewClient({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 min-w-0">
         <Card className="md:col-span-2 border-border shadow-sm overflow-hidden flex flex-col min-h-[400px]">
           <CardHeader className="shrink-0">
-            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-right' : ''}`}>
+            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>
               {dict.dashboard.revenueLast7Days}
             </CardTitle>
           </CardHeader>
@@ -127,7 +127,7 @@ export function DashboardOverviewClient({
 
         <Card className="md:col-span-1 border-border shadow-sm overflow-hidden flex flex-col min-h-[400px]">
           <CardHeader className="shrink-0">
-            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-right' : ''}`}>
+            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>
               {dict.dashboard.orderStatus}
             </CardTitle>
           </CardHeader>
@@ -145,7 +145,7 @@ export function DashboardOverviewClient({
       <div className="grid gap-4">
         <Card className="border-border shadow-sm flex flex-col min-h-[400px]">
           <CardHeader className="shrink-0">
-            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-right' : ''}`}>
+            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>
               {dict.dashboard.topProducts}
             </CardTitle>
           </CardHeader>

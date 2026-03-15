@@ -23,7 +23,21 @@ export const GET = auth(async (req, { params }) => {
 
     if (!order) return NextResponse.json({ message: 'Order not found' }, { status: 404 });
 
-    return NextResponse.json(order);
+    const sanitizedOrder = {
+      id: order._id.toString(),
+      orderNumber: order.orderNumber,
+      customer: order.shippingAddress?.fullName || 'N/A',
+      items: order.items,
+      totalAmount: order.totalAmount,
+      paymentMethod: order.paymentMethod,
+      paymentScreenshot: order.paymentProof || null,
+      status: order.status,
+      userId: (order as any).userId?._id?.toString() ?? (order as any).userId?.toString() ?? null,
+      shippingAddress: order.shippingAddress,
+      createdAt: order.createdAt,
+    };
+
+    return NextResponse.json(sanitizedOrder);
   } catch (error) {
     console.error('Order fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -157,7 +171,20 @@ export const PATCH = auth(async (req, { params }) => {
       }
     }
 
-    return NextResponse.json(order);
+    const sanitizedOrder = {
+      id: updatedOrder._id.toString(),
+      orderNumber: updatedOrder.orderNumber,
+      customer: updatedOrder.shippingAddress?.fullName || 'N/A',
+      items: updatedOrder.items,
+      totalAmount: updatedOrder.totalAmount,
+      paymentMethod: updatedOrder.paymentMethod,
+      paymentScreenshot: updatedOrder.paymentProof || null,
+      status: updatedOrder.status,
+      userId: updatedOrder.userId?._id?.toString() ?? updatedOrder.userId?.toString() ?? null,
+      createdAt: updatedOrder.createdAt,
+    };
+
+    return NextResponse.json(sanitizedOrder);
   } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }

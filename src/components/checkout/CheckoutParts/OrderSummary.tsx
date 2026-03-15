@@ -27,7 +27,7 @@ export function OrderSummary({ shippingFee }: OrderSummaryProps) {
       </h2>
 
       {/* Items List */}
-      <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent mb-8">
+      <div className="space-y-4 max-h-[300px] overflow-y-auto pe-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent mb-8">
         {items.map((item) => (
           <div key={item.id} className={bcn("flex items-center gap-4", isRtl ? "flex-row-reverse" : "flex-row")}>
             <div className="size-14 bg-white rounded-sm border border-slate-100 shrink-0 relative overflow-hidden">

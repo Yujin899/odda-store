@@ -41,7 +41,29 @@ export async function GET(
       return NextResponse.json({ message: 'Order not found' }, { status: 404 });
     }
 
-    return NextResponse.json(order);
+    const sanitizedOrder = {
+      id: order._id.toString(),
+      orderNumber: order.orderNumber,
+      status: order.status,
+      items: order.items.map((item: any) => ({
+        productId: item.productId ? {
+          name: item.productId.name,
+          slug: item.productId.slug,
+          image: item.productId.images?.[0]?.url || item.productId.image || ''
+        } : null,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
+      })),
+      totalAmount: order.totalAmount,
+      createdAt: order.createdAt,
+      shippingAddress: {
+        fullName: order.shippingAddress.fullName,
+        city: order.shippingAddress.city
+      }
+    };
+
+    return NextResponse.json(sanitizedOrder);
   } catch (error: any) {
     console.error('Order tracking fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });

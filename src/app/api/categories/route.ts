@@ -2,17 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import Category from '@/models/Category';
 import { auth } from '@/auth';
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 
-export const revalidate = 60; // Cache for 1 minute
+const getCachedCategories = unstable_cache(
+  async () => {
+    await connectDB();
+    return await Category.find({})
+      .select('_id name nameAr slug description descriptionAr image')
+      .sort({ name: 1 })
+      .lean();
+  },
+  ['categories-list'],
+  { tags: ['categories-list'], revalidate: 3600 }
+);
 
 export async function GET() {
   try {
-    await connectDB();
-    const categories = await Category.find({})
-      .select('_id name nameAr slug description descriptionAr image')
-      .sort({ name: 1 });
-    return NextResponse.json({ categories });
+    const categories = await getCachedCategories();
+    const sanitizedCategories = categories.map((c: any) => ({
+      id: c._id.toString(),
+      name: c.name,
+      nameAr: c.nameAr,
+      slug: c.slug,
+      description: c.description ?? null,
+      descriptionAr: c.descriptionAr ?? null,
+      image: c.image ?? null,
+    }));
+    return NextResponse.json({ categories: sanitizedCategories });
   } catch (error: any) {
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
   }

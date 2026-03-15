@@ -148,7 +148,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
                     />
                     <button 
                       onClick={() => handleScreenshotChange(null)}
-                      className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600 transition-all z-20 outline-none border-none cursor-pointer flex items-center justify-center"
+                      className="absolute top-2 end-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600 transition-all z-20 outline-none border-none cursor-pointer flex items-center justify-center"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>

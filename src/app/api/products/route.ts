@@ -4,22 +4,37 @@ import { Product } from '@/models/Product';
 import { auth } from '@/auth';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 
-// export const dynamic = 'force-dynamic'; // Remove to allow Data Cache
-export const revalidate = 3600; // Cache for 1 hour
+// Cached fetcher for products
+const getCachedProducts = unstable_cache(
+  async (query: Record<string, unknown>, sortOption: any, skip: number, limit: number) => {
+    await connectDB();
+    // Register models
+    void Category;
+    void Badge;
+    
+    const [products, total] = await Promise.all([
+      Product.find(query)
+        .populate({ path: 'categoryId', strictPopulate: false })
+        .populate({ path: 'badgeId', strictPopulate: false })
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Product.countDocuments(query),
+    ]);
+    return { products, total };
+  },
+  ['products-list'],
+  { tags: ['products-list'], revalidate: 60 }
+);
 
 export async function GET(req: NextRequest) {
   try {
-    await connectDB();
-    
-    // Register models for population and registration
-    const _c = Category;
-    const _b = Badge;
-
     const { searchParams } = new URL(req.url);
     
-    const categoryId = searchParams.get('categoryId');
+    const category = searchParams.get('category');
     const search = searchParams.get('search');
     const featured = searchParams.get('featured');
     const sort = searchParams.get('sort');
@@ -28,7 +43,13 @@ export async function GET(req: NextRequest) {
     const skip = (page - 1) * limit;
     
     const query: Record<string, any> = {};
-    if (categoryId) query.categoryId = categoryId;
+    
+    if (category) {
+      await connectDB();
+      const cat = await Category.findOne({ slug: category }).lean();
+      if (cat) query.categoryId = cat._id;
+    }
+    
     if (search) query.name = { $regex: search, $options: 'i' };
     if (featured === 'true') query.featured = true;
 
@@ -37,29 +58,31 @@ export async function GET(req: NextRequest) {
     if (sort === 'price_desc') sortOption = { price: -1 };
     if (sort === 'newest') sortOption = { createdAt: -1 };
 
-    const [products, total] = await Promise.all([
-      Product.find(query)
-        .populate({ path: 'categoryId', strictPopulate: false })
-        .populate({ path: 'badgeId', strictPopulate: false })
-        .sort(sortOption)
-        .skip(skip)
-        .limit(limit),
-      Product.countDocuments(query),
-    ]);
+    // Use cached fetcher
+    const { products, total } = await getCachedProducts(query, sortOption, skip, limit);
 
-    const sanitizedProducts = products.map(p => ({
-      _id: p._id.toString(),
+    const sanitizedProducts = (products as any[]).map((p) => ({
+      id: p._id.toString(),
       name: p.name,
       nameAr: p.nameAr,
       slug: p.slug,
+      description: p.description,
+      descriptionAr: p.descriptionAr,
       price: p.price,
-      compareAtPrice: p.compareAtPrice,
+      originalPrice: p.compareAtPrice ?? null,
       images: p.images.map((img: any) => ({ url: img.url, isPrimary: img.isPrimary })),
+      categoryId: p.categoryId?.toString() ?? null,
+      badge: p.badgeId ? {
+        name: p.badgeId.name,
+        nameAr: p.badgeId.nameAr,
+        color: p.badgeId.color,
+        textColor: p.badgeId.textColor
+      } : null,
       stock: p.stock,
-      categoryId: p.categoryId,
-      badgeId: p.badgeId,
       featured: p.featured,
-      createdAt: p.createdAt
+      aiSummary: p.aiSummary ?? null,
+      aiSummaryAr: p.aiSummaryAr ?? null,
+      createdAt: p.createdAt,
     }));
 
     return NextResponse.json({

@@ -24,7 +24,24 @@ async function getSearchResults(query: string) {
     .lean();
 
   return { 
-    products: JSON.parse(JSON.stringify(products)), 
+    products: products.map((p: any) => ({
+      _id: p._id.toString(),
+      name: p.name,
+      nameAr: p.nameAr,
+      slug: p.slug,
+      price: p.price,
+      compareAtPrice: p.compareAtPrice ?? null,
+      images: p.images,
+      category: p.categoryId ? {
+        _id: p.categoryId._id.toString(),
+        name: p.categoryId.name
+      } : null,
+      badge: p.badgeId ? {
+        name: p.badgeId.name,
+        color: p.badgeId.color
+      } : null,
+      stock: p.stock
+    })), 
     total: products.length 
   };
 }

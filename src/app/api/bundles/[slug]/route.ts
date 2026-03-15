@@ -20,7 +20,24 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       return NextResponse.json({ message: 'Bundle not found' }, { status: 404 });
     }
 
-    return NextResponse.json(bundle);
+    const sanitizedBundle = {
+      id: bundle._id.toString(),
+      name: bundle.name,
+      nameAr: bundle.nameAr,
+      slug: bundle.slug,
+      description: bundle.description,
+      descriptionAr: bundle.descriptionAr,
+      price: bundle.price,
+      originalPrice: (bundle as any).compareAtPrice ?? null,
+      images: bundle.images,
+      stock: bundle.stock,
+      featured: (bundle as any).featured,
+      bundleItems: bundle.bundleItems,
+      bundleItemsAr: bundle.bundleItemsAr,
+      createdAt: bundle.createdAt,
+    };
+
+    return NextResponse.json(sanitizedBundle);
   } catch (error) {
     console.error('Bundle fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -52,14 +69,28 @@ export const PUT = auth(async (req, { params }) => {
     }
 
     const updatedBundle = await Bundle.findByIdAndUpdate(bundle._id, updates, { new: true });
+    if (!updatedBundle) {
+      return NextResponse.json({ message: 'Failed to update bundle' }, { status: 500 });
+    }
 
     (revalidateTag as any)('bundles-list', 'page');
     (revalidateTag as any)('products-list', 'page');
 
     const sanitizedBundle = {
-      _id: updatedBundle?._id.toString(),
-      name: updatedBundle?.name,
-      slug: updatedBundle?.slug
+      id: updatedBundle._id.toString(),
+      name: updatedBundle.name,
+      nameAr: updatedBundle.nameAr,
+      slug: updatedBundle.slug,
+      description: updatedBundle.description,
+      descriptionAr: updatedBundle.descriptionAr,
+      price: updatedBundle.price,
+      originalPrice: (updatedBundle as any).compareAtPrice ?? null,
+      images: updatedBundle.images,
+      stock: updatedBundle.stock,
+      featured: (updatedBundle as any).featured,
+      bundleItems: updatedBundle.bundleItems,
+      bundleItemsAr: updatedBundle.bundleItemsAr,
+      createdAt: updatedBundle.createdAt,
     };
 
     return NextResponse.json(sanitizedBundle);

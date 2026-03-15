@@ -143,7 +143,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
               </Select>
             )}
           </div>
-          <DialogDescription className={language === 'ar' ? 'text-right' : 'text-left'}>
+          <DialogDescription className={language === 'ar' ? 'text-end' : 'text-start'}>
             {order ? `${dict.dashboard.ordersPage.modal.createdOn} ${new Date(order.createdAt).toLocaleString(language === 'ar' ? 'ar-EG' : 'en-US')}` : dict.dashboard.ordersPage.modal.loading}
           </DialogDescription>
         </DialogHeader>

@@ -34,19 +34,66 @@ async function getFeaturedProducts() {
     .limit(8)
     .lean();
     
-  return JSON.parse(JSON.stringify(products));
+  return products.map((p: any) => ({
+    id: p._id.toString(),
+    name: p.name,
+    nameAr: p.nameAr,
+    slug: p.slug,
+    description: p.description,
+    descriptionAr: p.descriptionAr,
+    price: p.price,
+    originalPrice: p.compareAtPrice ?? null,
+    images: p.images,
+    categoryId: p.categoryId?._id?.toString() ?? p.categoryId?.toString() ?? null,
+    badge: p.badgeId ? {
+      name: p.badgeId.name,
+      nameAr: p.badgeId.nameAr,
+      color: p.badgeId.color,
+      textColor: p.badgeId.textColor
+    } : null,
+    stock: p.stock,
+    featured: p.featured,
+    aiSummary: p.aiSummary ?? null,
+    aiSummaryAr: p.aiSummaryAr ?? null,
+    createdAt: p.createdAt,
+  }));
 }
 
 async function getCategories() {
   await connectDB();
   const categories = await Category.find().limit(4).lean();
-  return JSON.parse(JSON.stringify(categories));
+  return categories.map((c: any) => ({
+    id: c._id.toString(),
+    name: c.name,
+    nameAr: c.nameAr,
+    slug: c.slug,
+    description: c.description ?? null,
+    descriptionAr: c.descriptionAr ?? null,
+    image: c.image ?? null,
+  }));
 }
 
 async function getSettings() {
   await connectDB();
   const settings = await StoreSettings.findOne().lean();
-  return JSON.parse(JSON.stringify(settings));
+  if (!settings) return null;
+  return {
+    id: settings._id.toString(),
+    hero: settings.hero,
+    contact: settings.contact,
+    social: settings.social,
+    announcement: settings.announcement,
+    footer: settings.footer,
+    checkout: settings.checkout,
+    confirmationSubjectAr: settings.confirmationSubjectAr,
+    confirmationBodyAr: settings.confirmationBodyAr,
+    confirmationSubjectEn: settings.confirmationSubjectEn,
+    confirmationBodyEn: settings.confirmationBodyEn,
+    shippedSubjectAr: settings.shippedSubjectAr,
+    shippedBodyAr: settings.shippedBodyAr,
+    shippedSubjectEn: settings.shippedSubjectEn,
+    shippedBodyEn: settings.shippedBodyEn,
+  };
 }
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
@@ -123,12 +170,12 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-6 py-20">
         <h2 className="text-3xl font-black mb-12 uppercase tracking-tight text-[var(--navy)]">{dict.home.shopByCategory}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
-          {categories.slice(0, 4).map((cat: { _id: string; name: string; nameAr?: string; image?: string }) => {
+          {categories.slice(0, 4).map((cat: { id: string; name: string; nameAr?: string; image?: string }) => {
             const catName = (locale === 'ar' && cat.nameAr) ? cat.nameAr : cat.name;
             return (
             <Link 
-              key={cat._id}
-              href={`/products?categoryId=${cat._id}`} 
+              key={cat.id}
+              href={`/products?categoryId=${cat.id}`} 
               className="group relative aspect-square w-full h-full overflow-hidden cursor-pointer rounded-sm"
             >
               <div 

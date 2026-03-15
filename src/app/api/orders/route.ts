@@ -82,7 +82,7 @@ export const POST = auth(async (req) => {
     // We'll trust our server-side calculation as the single source of truth.
     
     const orderNumber = `ODDA-${Date.now()}`;
-    let status = paymentMethod === 'COD' ? 'processing' : 'pending_payment';
+    let status = paymentMethod === 'COD' ? 'confirmed' : 'pending_payment';
 
     if (paymentMethod === 'InstaPay' && paymentProof) {
       status = 'pending_verification';
@@ -251,18 +251,17 @@ export const GET = auth(async (req) => {
     ]);
 
     // Strict DTO Mapping to prevent PII leakage and metadata exposure
-    const sanitizedOrders = orders.map(order => ({
-      _id: order._id.toString(),
-      orderNumber: order.orderNumber,
-      customerName: order.shippingAddress?.fullName || 'N/A',
-      totalAmount: order.totalAmount,
-      status: order.status,
-      createdAt: order.createdAt,
-      paymentMethod: order.paymentMethod,
-      userId: order.userId ? {
-        name: (order.userId as any).name,
-        email: (order.userId as any).email
-      } : null
+    const sanitizedOrders = orders.map((o: any) => ({
+      id: o._id.toString(),
+      orderNumber: o.orderNumber,
+      customer: o.shippingAddress?.fullName || 'N/A',
+      items: o.items,
+      totalAmount: o.totalAmount,
+      paymentMethod: o.paymentMethod,
+      paymentScreenshot: o.paymentProof || null,
+      status: o.status,
+      userId: o.userId?._id?.toString() ?? o.userId?.toString() ?? null,
+      createdAt: o.createdAt,
     }));
 
     return NextResponse.json({

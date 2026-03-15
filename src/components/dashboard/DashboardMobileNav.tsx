@@ -40,7 +40,7 @@ export function DashboardMobileNav({ onMoreClick }: DashboardMobileNavProps) {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-200 flex md:hidden justify-around items-center h-16 pb-[env(safe-area-inset-bottom)] px-2">
+    <nav className="fixed bottom-0 start-0 end-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-200 flex md:hidden justify-around items-center h-16 pb-[env(safe-area-inset-bottom)] px-2">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
         const Icon = item.icon;

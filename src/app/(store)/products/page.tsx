@@ -33,7 +33,13 @@ async function getAllCategories() {
     async () => {
       await connectDB();
       const categories = await Category.find().lean();
-      return JSON.parse(JSON.stringify(categories));
+      return categories.map((c: any) => ({
+        id: c._id.toString(),
+        name: c.name,
+        nameAr: c.nameAr,
+        slug: c.slug,
+        image: c.image ?? null,
+      }));
     },
     ['categories-list'],
     { revalidate: 3600, tags: ['categories-list'] }
@@ -41,14 +47,14 @@ async function getAllCategories() {
 }
 
 async function getProducts(searchParams: { [key: string]: string | string[] | undefined }) {
-  const categoryId = searchParams.categoryId as string | undefined;
+  const category = searchParams.category as string | undefined;
   const search = searchParams.search as string | undefined;
   const sort = searchParams.sort as string | undefined;
   const page = parseInt((searchParams.page as string) || '1');
   const limit = parseInt((searchParams.limit as string) || '12');
   
   // Create a cache key based on search params
-  const cacheKey = JSON.stringify({ categoryId, search, sort, page, limit });
+  const cacheKey = JSON.stringify({ category, search, sort, page, limit });
 
   return unstable_cache(
     async () => {
@@ -58,7 +64,12 @@ async function getProducts(searchParams: { [key: string]: string | string[] | un
 
       const skip = (page - 1) * limit;
       const query: Record<string, any> = {};
-      if (categoryId) query.categoryId = categoryId;
+      
+      if (category) {
+        const cat = await Category.findOne({ slug: category }).lean();
+        if (cat) query.categoryId = cat._id;
+      }
+      
       if (search) query.name = { $regex: search, $options: 'i' };
 
       let sortOption: any = { createdAt: -1 };
@@ -133,7 +144,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
 
   const createPageUrl = (pageNumber: number) => {
     const params = new URLSearchParams();
-    if (resolvedParams.categoryId) params.set('categoryId', resolvedParams.categoryId as string);
+    if (resolvedParams.category) params.set('category', resolvedParams.category as string);
     if (resolvedParams.sort) params.set('sort', resolvedParams.sort as string);
     if (resolvedParams.search) params.set('search', resolvedParams.search as string);
     params.set('page', pageNumber.toString());
@@ -181,7 +192,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
         
         <div className="flex flex-col lg:flex-row gap-12">
           <ProductFilters 
-            currentCategory={resolvedParams.categoryId as string} 
+            currentCategory={resolvedParams.category as string} 
             currentSort={resolvedParams.sort as string}
             initialCategories={categories}
             locale={locale}

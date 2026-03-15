@@ -58,7 +58,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
           </Link>
           <button 
             onClick={onClose}
-            className={`${language === 'ar' ? '-ml-2' : '-mr-2'} md:hidden p-2 text-white/60 hover:text-white transition-colors outline-none cursor-pointer bg-transparent border-none`}
+            className={`${language === 'ar' ? '-ms-2' : '-me-2'} md:hidden p-2 text-white/60 hover:text-white transition-colors outline-none cursor-pointer bg-transparent border-none`}
           >
             <X className="size-5" />
           </button>
@@ -109,7 +109,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
   return (
     <>
       {/* Desktop Sidebar - Shows All Links */}
-      <aside className={`fixed inset-y-0 ${language === 'ar' ? 'right-0' : 'left-0'} z-20 w-60 hidden md:flex flex-col`}>
+      <aside className={`fixed inset-y-0 ${language === 'ar' ? 'end-0' : 'start-0'} z-20 w-60 hidden md:flex flex-col`}>
         {getSidebarContent([])}
       </aside>
 
@@ -129,7 +129,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
               animate={{ x: 0 }}
               exit={{ x: language === 'ar' ? '100%' : '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className={`fixed inset-y-0 ${language === 'ar' ? 'right-0' : 'left-0'} z-70 w-72 md:hidden`}
+              className={`fixed inset-y-0 ${language === 'ar' ? 'end-0' : 'start-0'} z-70 w-72 md:hidden`}
             >
               {getSidebarContent(excludeHrefs)}
             </motion.aside>
