@@ -43,7 +43,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
     ].filter(item => !customExcludes.includes(item.href));
 
     return (
-      <div className={`h-full flex flex-col bg-(--navy) text-background ${language === 'ar' ? 'border-l' : 'border-r'} border-white/10 shadow-2xl`}>
+      <div className="h-full flex flex-col bg-(--navy) text-background border-e border-white/10 shadow-2xl">
         {/* Logo Area */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-white/10 shrink-0">
           <Link href="/" className="flex items-center gap-2 outline-none group" onClick={onClose}>
@@ -58,7 +58,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
           </Link>
           <button 
             onClick={onClose}
-            className={`${language === 'ar' ? '-ms-2' : '-me-2'} md:hidden p-2 text-white/60 hover:text-white transition-colors outline-none cursor-pointer bg-transparent border-none`}
+            className="-ms-2 md:hidden p-2 text-white/60 hover:text-white transition-colors outline-none cursor-pointer bg-transparent border-none"
           >
             <X className="size-5" />
           </button>
@@ -98,7 +98,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
             className="flex items-center gap-3 px-3 py-3 rounded-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors outline-none"
             title="Back to Store"
           >
-            <ArrowLeft className={`size-5 shrink-0 transition-transform ${language === 'ar' ? 'rotate-180' : ''}`} />
+            <ArrowLeft className="size-5 shrink-0 transition-transform rtl:rotate-180" />
             <span className="text-[10px] font-bold uppercase tracking-widest">{dict.dashboard.sidebar.storefront}</span>
           </Link>
         </div>
@@ -109,7 +109,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
   return (
     <>
       {/* Desktop Sidebar - Shows All Links */}
-      <aside className={`fixed inset-y-0 ${language === 'ar' ? 'end-0' : 'start-0'} z-20 w-60 hidden md:flex flex-col`}>
+      <aside className="fixed inset-y-0 start-0 z-20 w-60 hidden md:flex flex-col">
         {getSidebarContent([])}
       </aside>
 
@@ -129,7 +129,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
               animate={{ x: 0 }}
               exit={{ x: language === 'ar' ? '100%' : '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className={`fixed inset-y-0 ${language === 'ar' ? 'end-0' : 'start-0'} z-70 w-72 md:hidden`}
+              className="fixed inset-y-0 start-0 z-70 w-72 md:hidden"
             >
               {getSidebarContent(excludeHrefs)}
             </motion.aside>
