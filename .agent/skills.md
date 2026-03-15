@@ -707,7 +707,7 @@ Use these standardized tags for `unstable_cache` and `revalidateTag` to maintain
 - Components should be Server Components where possible to leverage server-side fetching with revalidation.
 
 - Cloudinary uploads must always go through `src/lib/cloudinary.ts`. Never call Cloudinary SDK directly from a route handler.
-- **Image Optimization**: Use `optimizeCloudinaryUrl()` from `src/lib/cloudinary.ts` for all storefront image URLs. Pass `width` based on context (600 for cards, 1200 for detail pages, 1920 for hero). Never optimize admin dashboard images.
+- **Image Optimization**: Use `optimizeCloudinaryUrl()` from `src/lib/cloudinary-utils.ts` for all storefront image URLs. Pass `width` based on context (600 for cards, 1200 for detail pages, 1920 for hero). Never optimize admin dashboard images.
 - **Self-Cleaning Storage**: Use `deleteCloudinaryImage(url)` in mutation handlers when an entity with an image is deleted or its image is replaced.
 
 ## 10. Animation Rules (Framer Motion)

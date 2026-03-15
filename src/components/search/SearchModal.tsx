@@ -10,7 +10,7 @@ import { useRecentlyViewedStore } from '@/store/useRecentlyViewedStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchUIStore();

@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 
 export function Hero({ hero, locale }: { hero?: any, locale: string }) {
   // Fallback defaults if no data exists

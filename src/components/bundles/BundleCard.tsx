@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { IBundle } from '@/models/Bundle';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 
 interface BundleCardProps {
   bundle: IBundle;

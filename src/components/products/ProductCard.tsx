@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { AddToCartButton } from './AddToCartButton';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 
 interface ProductCardProps {
   product: {
