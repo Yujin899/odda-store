@@ -29,7 +29,7 @@ export function ProductBreadcrumbs({
       <ChevronRight className="size-4 rtl:-scale-x-100 text-slate-300" />
       
       <Link 
-        href={`/products?category=${categorySlug || categoryName}`} 
+        href={`/products?category=${categorySlug}`} 
         className="hover:text-(--primary) transition-colors"
       >
         {categoryName}

@@ -54,8 +54,8 @@ export function BundleGallery({ images, bundleName, stock }: BundleGalleryProps)
           )}
 
           {/* Bundle Badge */}
-          <div className="absolute top-6 inset-e-6 z-10 flex justify-end">
-            <div className="bg-(--primary) text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-xl shadow-(--primary)/30 flex items-center gap-2">
+          <div className="absolute top-6 start-6 z-10">
+            <div className="bg-(--primary) text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-xl shadow-(--primary)/30 flex items-center gap-2 whitespace-nowrap">
               <ShoppingBag className="size-4" />
               {dict.home.bundleAndSave}
             </div>

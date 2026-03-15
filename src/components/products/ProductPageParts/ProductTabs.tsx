@@ -26,7 +26,7 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
           <TabsList className="bg-transparent h-auto p-0 gap-8 border-none">
             <TabsTrigger 
               value="description" 
-              className="bg-transparent border-none p-0 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
+              className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
             >
               {isRtl ? 'الوصف' : 'Description'}
             </TabsTrigger>
@@ -34,7 +34,7 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
             {productFeatures.length > 0 && (
               <TabsTrigger 
                 value="specifications" 
-                className="bg-transparent border-none p-0 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
+                className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
               >
                 {isRtl ? 'المواصفات' : 'Specifications'}
               </TabsTrigger>
@@ -42,7 +42,7 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
             
             <TabsTrigger 
               value="reviews" 
-              className="bg-transparent border-none p-0 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
+              className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
             >
               {isRtl ? 'التقييمات' : 'Reviews'} ({reviews.length})
             </TabsTrigger>

@@ -37,7 +37,7 @@ export function BundleDetails({
         </span>
       </div>
 
-      <div className={bcn("flex flex-col", isRtl ? "text-end" : "text-start")}>
+      <div className="flex flex-col text-start">
         <h1 className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tight leading-tight mb-2">
           {name}
         </h1>

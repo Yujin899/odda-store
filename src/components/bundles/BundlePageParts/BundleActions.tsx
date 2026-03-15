@@ -53,7 +53,7 @@ export function BundleActions({ bundle, stock }: BundleActionsProps) {
       <div className="flex flex-col sm:flex-row items-center gap-4">
         {/* Quantity Picker */}
         <div dir="ltr" className={bcn(
-            "bg-white h-16 border border-slate-200 rounded-sm flex items-center shadow-sm overflow-hidden w-full sm:w-auto",
+            "bg-white h-16 border border-slate-200 rounded-sm flex items-center shadow-sm overflow-hidden w-full",
             isOutOfStock ? "opacity-30 cursor-not-allowed" : ""
           )}>
           <button 
