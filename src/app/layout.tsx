@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ToastContainer } from '@/components/ui/ToastContainer';
 import { Providers } from '@/components/Providers';
+import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { cookies } from 'next/headers';
 import type { Metadata } from "next";
 
@@ -49,6 +50,7 @@ export default async function RootLayout({
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body className={`${inter.variable} ${cairo.variable} antialiased font-primary`}>
         <Providers>
+          <ScrollToTop />
           {children}
           <ToastContainer />
         </Providers>

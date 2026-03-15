@@ -131,10 +131,10 @@ export const PATCH = auth(async (req, { params }) => {
           });
         } else {
           const isAr = locale === 'ar';
-          subject = isAr ? `عدة - تم شحن طلبك رقم ${updatedOrder.orderNumber}` : `Odda - Your Order #${updatedOrder.orderNumber} has Shipped!`;
+          subject = isAr ? `عُدّة - تم شحن طلبك رقم ${updatedOrder.orderNumber}` : `Clinical Dispatch: Your Order #${updatedOrder.orderNumber} is on the Way`;
           const fallbackBody = isAr 
-            ? `أخبار رائعة! تم شحن طلبك رقم ${updatedOrder.orderNumber} وهو الآن في طريقه إليك.`
-            : `Great news! Your order ${updatedOrder.orderNumber} has been shipped and is on its way to you.`;
+            ? `أخبار رائعة يا دكتور ${updatedOrder.shippingAddress.fullName}!\n\nتم الانتهاء من فحص وتجهيز أدواتك السريرية الخاصة بالطلب رقم ${updatedOrder.orderNumber}، وهي الآن في طريقها إليك. نحن ندرك تماماً مدى أهمية توفر الأدوات الصحيحة لممارستك المهنية، لذا وضعنا شحنتك على قائمة أولويات التوصيل.\n\nاستعد لتجربة سريرية فائقة.`
+            : `Great news, ${updatedOrder.shippingAddress.fullName}!\n\nYour precision instruments from order #${updatedOrder.orderNumber} have passed final inspection and are now in transit. We understand the importance of having the right tools for your clinical practice, so we’ve prioritized your delivery.\n\nPrepare for excellence.`;
           htmlContent = getPremiumEmailHtml({
             bodyText: fallbackBody,
             customerName: updatedOrder.shippingAddress.fullName,

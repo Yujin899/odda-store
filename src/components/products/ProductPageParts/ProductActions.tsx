@@ -49,10 +49,10 @@ export function ProductActions({ product, stock }: ProductActionsProps) {
 
   return (
     <div className="flex flex-col gap-6 pt-6 border-t border-slate-100">
-      <div className={bcn("flex items-center gap-6", isRtl ? "flex-row-reverse" : "flex-row")}>
+      <div className="flex items-center gap-6">
         {/* Quantity Picker */}
         <div className="flex flex-col gap-2">
-          <span className={bcn("text-[9px] font-black uppercase tracking-widest text-slate-400 px-1", isRtl ? "text-end" : "text-start")}>
+          <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 px-1 text-start">
             {isRtl ? 'الكمية' : 'Quantity'}
           </span>
           <div dir="ltr" className={bcn(
@@ -83,7 +83,7 @@ export function ProductActions({ product, stock }: ProductActionsProps) {
 
         {/* Info Label (Stock status or other) */}
         {!isOutOfStock && stock < 10 && (
-          <div className={bcn("flex-1", isRtl ? "text-end" : "text-start")}>
+          <div className="flex-1 text-start">
             <p className="text-[10px] font-black uppercase tracking-widest text-red-500">
               {isRtl ? `بقي فقط ${stock} قطع!` : `Only ${stock} left!`}
             </p>

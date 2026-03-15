@@ -42,7 +42,7 @@ export async function Footer() {
   const waNumber = settings?.whatsappNumber || "";
   const description = (language === 'ar' && settings?.storeDescriptionAr) 
     ? settings.storeDescriptionAr 
-    : (settings?.storeDescription || "Precision Clinical Instruments for the next generation of dental professionals. Engineering accuracy for modern healthcare.");
+    : (settings?.storeDescription || dict.footer.defaultDescription);
 
   return (
     <footer className="w-full bg-navy pt-20 pb-10 text-white overflow-hidden">

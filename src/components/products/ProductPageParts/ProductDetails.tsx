@@ -1,6 +1,6 @@
 'use client';
 
-import { Star, Truck, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Truck, ShieldCheck, AlertCircle } from 'lucide-react';
 import { RatingSummary } from '@/components/shared/RatingSummary';
 import { RatingBreakdown } from '@/components/shared/RatingBreakdown';
 import { getDictionary } from '@/dictionaries';
@@ -29,7 +29,7 @@ export function ProductDetails({
   return (
     <div className="flex flex-col space-y-6">
       {/* Badges */}
-      <div className={bcn("flex flex-wrap gap-2", isRtl ? "justify-end" : "justify-start")}>
+      <div className="flex flex-wrap gap-2">
         {product.badgeId && (
           <span 
             className="inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white rounded-sm shadow-sm"
@@ -44,7 +44,7 @@ export function ProductDetails({
       </div>
 
       {/* Header Info */}
-      <div className={isRtl ? "text-end" : "text-start"}>
+      <div className="text-start">
         <h1 className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tight leading-tight mb-2">
           {productName}
         </h1>
@@ -57,7 +57,7 @@ export function ProductDetails({
       </div>
 
       {/* Pricing */}
-      <div className={bcn("flex items-baseline gap-3 pt-2", isRtl ? "flex-row-reverse" : "flex-row")}>
+      <div className="flex items-baseline gap-3 pt-2">
         <span className="text-3xl font-black text-(--primary)">
           {product.price.toLocaleString()} {dict.common.egp}
         </span>
@@ -69,7 +69,7 @@ export function ProductDetails({
       </div>
 
       {/* Trust Badges Bar */}
-      <div className={bcn("flex flex-wrap gap-4 py-4 border-y border-slate-100", isRtl ? "flex-row-reverse" : "flex-row")}>
+      <div className="flex flex-wrap gap-4 py-4 border-y border-slate-100">
         {product.stock > 0 ? (
           <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-emerald-50 text-emerald-600 border border-emerald-100">
             <Truck className="size-3.5" />
@@ -94,7 +94,7 @@ export function ProductDetails({
       </div>
 
       {/* Description Preview */}
-      <p className={bcn("text-slate-600 leading-relaxed text-sm", isRtl ? "text-end" : "text-start")}>
+      <p className="text-slate-600 leading-relaxed text-sm text-start">
         {productDescription}
       </p>
 
@@ -108,6 +108,3 @@ export function ProductDetails({
   );
 }
 
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
-}

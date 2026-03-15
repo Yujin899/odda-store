@@ -69,7 +69,7 @@ export function CartDrawer() {
               <div className="px-4 sm:px-6 py-3 flex items-center gap-3 border-b border-(--primary)/10 shrink-0">
                 <Truck className="size-4 text-(--primary) stroke-[2.5px]" />
                 <p className="text-[10px] sm:text-xs font-bold text-(--primary) uppercase tracking-widest text-center w-full">
-                  {language === 'ar' ? 'تم تطبيق شحن مجاني' : 'Free delivery applied'}
+                  {dict.cart.freeDeliveryApplied}
                 </p>
               </div>
 
@@ -93,7 +93,7 @@ export function CartDrawer() {
                     >
                       <div className="size-20 sm:size-24 bg-muted shrink-0 overflow-hidden border border-slate-100 rounded-(--radius) relative">
                         <Image 
-                          alt={item.name} 
+                          alt={(language === 'ar' && item.nameAr) ? item.nameAr : item.name} 
                           fill 
                           sizes="100px"
                           className="object-cover" 
@@ -113,7 +113,7 @@ export function CartDrawer() {
                               <Trash2 className="size-4 stroke-[2.5px]" />
                             </button>
                           </div>
-                          <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-widest font-bold truncate">Professional Grade Tools</p>
+                          <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-widest font-bold truncate">{dict.cart.premiumMaterials}</p>
                         </div>
                         <div className="flex justify-between items-end gap-2 mt-2">
                           <div className="flex items-center border border-slate-200 h-7 sm:h-8 px-1 rounded-(--radius)">
@@ -167,22 +167,22 @@ export function CartDrawer() {
                     <span>{dict.common.proceedToCheckout}</span>
                     <ArrowRight className="size-4 stroke-[2.5px] rtl:-scale-x-100" />
                   </button>
-                  <p className="text-center text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest mt-4 sm:mt-6 font-bold">Secure Clinical Checkout System</p>
+                  <p className="text-center text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest mt-4 sm:mt-6 font-bold">{dict.cart.secureCheckout}</p>
                 </div>
               </div>
             </>
           ) : (
             <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
               <ShoppingCart className="size-16 text-muted-foreground/20 stroke-[1.5px] mb-4" />
-              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">{language === 'ar' ? 'سلتك فارغة' : 'Your cart is empty'}</h3>
+              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">{dict.cart.emptyTitle}</h3>
               <p className="text-xs text-muted-foreground mt-2 max-w-[200px] font-medium uppercase tracking-widest leading-loose">
-                {language === 'ar' ? 'المنتجات التي تضيفها للسلة ستظهر هنا.' : 'Items you add to your cart will appear here.'}
+                {dict.cart.emptyMessage}
               </p>
               <button 
                 onClick={handleContinueShopping}
                 className="mt-8 px-8 py-4 bg-muted hover:bg-foreground hover:text-white transition-all rounded-(--radius) border-none outline-none cursor-pointer text-[10px] font-bold uppercase tracking-widest"
               >
-                {language === 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
+                {dict.cart.continueShopping}
               </button>
             </div>
           )}

@@ -21,16 +21,25 @@ export function AIAssistant() {
   const handleCopyPrompt = () => {
     if (!name) return;
 
-    const prompt = `Act as a premium dental e-commerce expert. I am adding a product named '${name}' to my store. Return ONLY a valid JSON object without markdown formatting, code blocks, or explanations. 
-Rules:
-1. 'nameAr': Provide a clinical transliteration into Arabic (e.g., 'Contra Coxo High Speed' -> 'كونترا كوسكو هاي سبيد').
-2. 'description': Professional English description (3 sentences). Highlight the value proposition.
-3. 'descriptionAr': Professional Egyptian Arabic description (3 sentences). Use a helpful, premium tone.
-4. 'features': Array of 4-6 English strings.
-5. 'featuresAr': Array of 4-6 Arabic strings (Egyptian tone). These will be displayed in an Amazon-style accordion.
-6. 'slug': SEO optimized English slug.
+    const prompt = `You are the Lead Dental Equipment Copywriter & SEO Specialist for Odda (عُدّة), a premium clinical storefront catering to dental students and professionals in Egypt. Your goal is to transform basic product names into high-converting, medically accurate, and premium e-commerce data.
+Objective: Generate professional clinical data for a product named '${name}'.
 
-The JSON must contain exact keys: 'nameAr', 'description', 'descriptionAr', 'features', 'featuresAr', 'slug'.`;
+Rules:
+1. Medical Precision: Ensure descriptions and features reflect the high standards of clinical dentistry.
+2. Tone: 
+   - English: Professional, technical, authoritative, and concise.
+   - Arabic: Natural, trustworthy, and Egyptian e-commerce friendly. Use "دكتور" as an implied audience. Use clinical transliteration for technical names.
+3. Strict Output Constraint: Output ONLY raw, minified JSON. Do NOT include markdown blocks (e.g., no \`\`\`json), explanations, or pre/post-text.
+
+JSON Schema:
+{
+  "nameAr": "Clinical transliteration/translation",
+  "description": "3-4 sentence professional English description (durability, precision, value).",
+  "descriptionAr": "3-4 sentence professional Arabic description (Egyptian tone, quality, ease of use).",
+  "features": ["Feature 1 (EN)", "Feature 2 (EN)", "Feature 3 (EN)", "Feature 4 (EN)", "Feature 5 (EN)"],
+  "featuresAr": ["Feature 1 (AR)", "Feature 2 (AR)", "Feature 3 (AR)", "Feature 4 (AR)", "Feature 5 (AR)"],
+  "slug": "seo-optimized-url-slug-in-english"
+}`;
 
     navigator.clipboard.writeText(prompt);
     addToast({ 

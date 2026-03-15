@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { ReviewSection } from '@/components/shared/ReviewSection';
 import { Check } from 'lucide-react';
 import { getDictionary } from '@/dictionaries';
@@ -15,7 +14,6 @@ interface ProductTabsProps {
 }
 
 export function ProductTabs({ product, reviews, language, onReviewAdded }: ProductTabsProps) {
-  const dict = getDictionary(language);
   const isRtl = language === 'ar';
 
   const productDescription = isRtl && product.descriptionAr ? product.descriptionAr : product.description;
@@ -52,7 +50,7 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
         </div>
 
         <TabsContent value="description" className="mt-4 focus-visible:outline-none">
-          <div className={bcn("prose prose-slate max-w-none prose-sm leading-relaxed text-slate-600", isRtl ? "text-end" : "text-start")}>
+          <div className="prose prose-slate max-w-none prose-sm leading-relaxed text-slate-600 text-start">
             <p className="whitespace-pre-line">{productDescription}</p>
           </div>
         </TabsContent>
@@ -61,11 +59,11 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
           <div className="max-w-2xl px-1">
             <div className="grid grid-cols-1 gap-4">
               {productFeatures.map((feature: string, i: number) => (
-                <div key={i} className={bcn("flex items-center gap-4 p-4 bg-slate-50 border border-slate-100 rounded-sm", isRtl ? "flex-row-reverse" : "")}>
+                <div key={i} className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-100 rounded-sm">
                   <div className="size-8 rounded-full bg-white border border-slate-100 flex items-center justify-center shrink-0">
                     <Check className="size-4 text-(--primary)" />
                   </div>
-                  <span className={bcn("text-sm font-bold text-slate-700", isRtl ? "text-end" : "text-start")}>
+                  <span className="text-sm font-bold text-slate-700 text-start">
                     {feature}
                   </span>
                 </div>
@@ -91,6 +89,3 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
   );
 }
 
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
-}

@@ -23,16 +23,25 @@ export function BundleAIAssistant({ language, dict }: BundleAIAssistantProps) {
 
   const handleCopyPrompt = () => {
     const bundleItemsCtx = bundleItems.filter(Boolean).join(', ');
-    const prompt = `Act as a premium dental e-commerce expert. I am adding a Bundle (Starter Kit) named '${name}'. 
-    The bundle specifically includes these items: ${bundleItemsCtx}.
-    
-    Return ONLY a valid JSON object with these keys: 
-    'nameAr' (Clinical Arabic transliteration),
-    'description' (3 sentences English),
-    'descriptionAr' (3 sentences Arabic),
-    'bundleItems' (Refined names of items in EN),
-    'bundleItemsAr' (Names of items in AR),
-    'slug' (SEO optimized)`;
+    const prompt = `You are the Lead Dental Equipment Copywriter & SEO Specialist for Odda (عُدّة), a premium clinical storefront catering to dental students and professionals in Egypt. Your goal is to transform bundle kits into high-converting, medically accurate data.
+Objective: Generate professional clinical data for a Bundle named '${name}' which includes: ${bundleItemsCtx}.
+
+Rules:
+1. Medical Precision: Ensure descriptions and features reflect the high standards of clinical dentistry.
+2. Tone: 
+   - English: Professional, technical, authoritative, and concise.
+   - Arabic: Natural, trustworthy, and Egyptian e-commerce friendly. Use "دكتور" as an implied audience.
+3. Strict Output Constraint: Output ONLY raw, minified JSON. Do NOT include markdown blocks (e.g., no \`\`\`json), explanations, or pre/post-text.
+
+JSON Schema:
+{
+  "nameAr": "Clinical transliteration/translation",
+  "description": "3-4 sentence professional English description.",
+  "descriptionAr": "3-4 sentence professional Arabic description (Egyptian tone).",
+  "bundleItems": ["Item 1 (EN)", "Item 2 (EN)", ...],
+  "bundleItemsAr": ["Item 1 (AR)", "Item 2 (AR)", ...],
+  "slug": "seo-optimized-url-slug-in-english"
+}`;
     
     navigator.clipboard.writeText(prompt);
     addToast({ title: dict.toasts.promptCopied, description: dict.toasts.promptCopiedDesc, type: "success" });

@@ -187,10 +187,10 @@ export const POST = auth(async (req) => {
       } else {
         // Fallbacks with Premium HTML
         const isAr = locale === 'ar';
-        subject = isAr ? `عدة - تأكيد الطلب رقم ${order.orderNumber}` : `Odda - Order Confirmation #${order.orderNumber}`;
+        subject = isAr ? `عُدّة - تم تأكيد طلبك رقم ${order.orderNumber}` : `Precision Awaits: Order #${order.orderNumber} Confirmed`;
         const fallbackBody = isAr 
-          ? `شكراً لثقتك في عدة. لقد استلمنا طلبك رقم ${order.orderNumber} وجاري تجهيزه حالياً.`
-          : `Thank you for choosing Odda. We've received your order ${order.orderNumber} and it's being processed.`;
+          ? `مرحباً بك يا دكتور ${shippingAddress.fullName} في عُدّة.\n\nيسعدنا تأكيد استلام طلبك رقم ${order.orderNumber} بنجاح. فريقنا يعمل الآن على تجهيز أدواتك السريرية بكل عناية ودقة، لضمان وصولها إليك بأعلى معايير الجودة الاحترافية التي تستحقها.\n\nشكراً لاختيارك "عُدّة" شريكاً في تميزك السريري.`
+          : `Welcome to the Odda Clinical Suite, ${shippingAddress.fullName}.\n\nWe are pleased to confirm that your order #${order.orderNumber} has been successfully received. Our team is currently preparing your precision instruments with the utmost care to ensure they meet the highest clinical standards.\n\nThank you for choosing Odda for your clinical excellence.`;
         htmlContent = getPremiumEmailHtml({
           bodyText: fallbackBody,
           customerName: shippingAddress.fullName,
