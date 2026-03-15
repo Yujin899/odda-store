@@ -5,6 +5,8 @@ import { Bundle } from '@/models/Bundle';
 import { Review } from '@/models/Review';
 import { connectDB } from '@/lib/mongodb';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }

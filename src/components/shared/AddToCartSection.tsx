@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 interface AddToCartSectionProps {
   productId: string;
   productName: string;
+  productNameAr?: string;
   price: number;
   image: string;
   slug: string;
@@ -23,6 +24,7 @@ interface AddToCartSectionProps {
 export function AddToCartSection({
   productId,
   productName,
+  productNameAr,
   price,
   image,
   slug,
@@ -50,6 +52,7 @@ export function AddToCartSection({
         id: productId,
         slug: slug,
         name: productName,
+        nameAr: productNameAr,
         price: price,
         image: image,
         type: type,

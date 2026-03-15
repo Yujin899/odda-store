@@ -3,8 +3,17 @@ import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
 import { AddToCartSection } from '@/components/shared/AddToCartSection';
 
+interface BundleActionsData {
+  _id: string;
+  name: string;
+  nameAr?: string;
+  slug: string;
+  price: number;
+  images: string[];
+}
+
 interface BundleActionsProps {
-  bundle: any;
+  bundle: BundleActionsData;
   stock: number;
 }
 
@@ -14,8 +23,9 @@ export function BundleActions({ bundle, stock }: BundleActionsProps) {
 
   return (
     <AddToCartSection
-      productId={String(bundle._id)}
+      productId={bundle._id}
       productName={bundle.name}
+      productNameAr={bundle.nameAr}
       price={bundle.price}
       image={bundle.images?.[0] || ''}
       slug={bundle.slug}
@@ -26,8 +36,4 @@ export function BundleActions({ bundle, stock }: BundleActionsProps) {
       }}
     />
   );
-}
-
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
 }

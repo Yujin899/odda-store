@@ -84,7 +84,7 @@ export const POST = auth(async (req) => {
     // We'll trust our server-side calculation as the single source of truth.
     
     const orderNumber = `ODDA-${Date.now()}`;
-    let status = paymentMethod === 'COD' ? 'confirmed' : 'pending_payment';
+    let status = paymentMethod === 'COD' ? 'processing' : 'pending_payment';
 
     if (paymentMethod === 'InstaPay' && paymentProof) {
       status = 'pending_verification';

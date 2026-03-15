@@ -72,7 +72,7 @@ export function PaymentStep({ instapayNumber }: PaymentStepProps) {
 
   return (
     <div className="bg-white p-6 sm:p-10 rounded-sm border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className={isRtl ? 'text-end' : 'text-start'}>
+      <div className="text-start">
         <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">
           {dict.checkoutPage.choosePayment}
         </h2>
