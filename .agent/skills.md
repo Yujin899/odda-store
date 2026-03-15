@@ -52,9 +52,8 @@
 
 - Cloudinary (`cloudinary`)
 
-- Resend (`resend`)  Optimized for transactional  — Optimized for transactional notifications.
-
-- Vercel Cron  For automated maintenance  — For automated maintenance tasks.
+- Resend (`resend`) — Optimized for transactional notifications.
+- Vercel Cron — For automated maintenance tasks.
 
 ## 3. Project Structure (actual file tree)
 
@@ -500,25 +499,6 @@ Administrative and sensitive data access must be protected at the route level us
 
 - **Zero-Exceptions**: There are no "public-by-convenience" admin routes. If it touches the management layer, it requires an 'admin' session check.
 
-### 9. Edge Caching & Revalidation Orchestration
-Storefront APIs (Products, Categories, Bundles) MUST use `unstable_cache` for listing endpoints.
-- Revalidation tags: `products-list`, `categories-list`, `bundles-list`.
-- Use `.lean()` for all read-only cached queries.
-
-### 12. Admin API Security
-Every admin route MUST verify the session and role.
-- `/api/upload`: PROTECTED. Only admins can POST.
-- `/api/products`: PROTECTED (POST/PUT/DELETE).
-- `/api/orders`: PROTECTED (GET/PUT).
-
-### 14. Gotchas & Logic Standards
-- **COD Orders**: Default status is `confirmed`.
-- **InstaPay Orders**: Default status is `pending_verification` if proof is provided.
-- **RTL**: Always use logical Tailwind properties (`ms-`, `ps-`, `start-`, `end-`). Physical CSS replacement completed codebase-wide.
-- **Category Filter**: Always use `slug` in URL params, never `_id`. Frontend passes slug, API resolves to ObjectId internally.
-- **Email Templates**: All email subject and body text comes from `StoreSettings`. Hardcoded text in route files is banned. `getPremiumEmailHtml()` in `src/lib/email-templates.ts` handles all HTML rendering including RTL, order table, and Track Order button.
-- **RTL Flex Gotcha**: Never use `flex-row-reverse` to simulate RTL. It causes double-reversal when `dir="rtl"` is active. Use `text-start`/`text-end` and let the HTML direction handle flex order naturally.
-- **Breadcrumb URLs**: Always use English `slug` in href parameters. Never use translated/Arabic names. Display text can be translated, but the URL parameter must remain the stable English slug.
 
 ## 7. State Management
 
@@ -727,21 +707,12 @@ Use these standardized tags for `unstable_cache` and `revalidateTag` to maintain
 - Components should be Server Components where possible to leverage server-side fetching with revalidation.
 
 - Cloudinary uploads must always go through `src/lib/cloudinary.ts`. Never call Cloudinary SDK directly from a route handler.
-
+- **Image Optimization**: Use `optimizeCloudinaryUrl()` from `src/lib/cloudinary.ts` for all storefront image URLs. Pass `width` based on context (600 for cards, 1200 for detail pages, 1920 for hero). Never optimize admin dashboard images.
 - **Self-Cleaning Storage**: Use `deleteCloudinaryImage(url)` in mutation handlers when an entity with an image is deleted or its image is replaced.
 
 ## 10. Animation Rules (Framer Motion)
 
 - Use Framer Motion for enter/exit animations in any client component. Prefer CSS transitions for hover and simple state styling.
-- Don't use `next/font/google` in sub-components; use standard CSS classes if possible or keep font declarations in the root layout.
-- **Mongoose Serialization**: Never pass raw Mongoose documents (from direct DB calls or `unstable_cache`) to Client Components. Even with `.lean()`, sub-documents in arrays (like `images`) can contain `_id` buffers that break serialization. ALWAYS map to strictly plain objects first. Example:
-  ```ts
-  const plainProducts = featuredProducts.map((p: any) => ({
-    id: p._id?.toString() ?? p.id,
-    images: (p.images ?? []).map((img: any) => ({ url: img.url ?? img, isPrimary: img.isPrimary ?? false })),
-    // ... map all other fields explicitly
-  }));
-  ```
 
 - Use `AnimatePresence mode="wait"` for mount/unmount overlays.
 
@@ -796,6 +767,8 @@ Use these standardized tags for `unstable_cache` and `revalidateTag` to maintain
 - **ABSOLUTE BAN on Raw Document Returns**: Do not return raw Mongoose documents (objects with `_id` as an object, `__v`, or internal methods) to the client. This is a primary source of hydration errors and security leaks. Every response MUST be sanitized via DTO or `.map()`.
 
 - **DTO Rule**: NEVER return raw Mongoose documents from an API. You MUST use the mandatory `.map()` or DTO pattern to flatten ObjectIds into strings and strip raw metadata (`__v`) or internal admin notes. This prevents PII (Personally Identifiable Information) leakage.
+
+- **Mongoose Serialization**: Never pass raw Mongoose documents to Client Components. Even with `.lean()`, sub-documents in arrays (like `images`) can contain `_id` buffers. Always map to strictly plain objects first.
 
 - **Security Rule**: NEVER bypass `auth()` checks on sensitive APIs like `GET /api/orders`. All administrative data access must strictly verify the 'admin' role.
 
@@ -930,7 +903,7 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 - **Dashboard**: Admin-only route group at `(dashboard)/`. Protected at both middleware and layout level. Includes comprehensive Products, Categories, Badges, and Global Settings management.
 
 - **Inventory Management**: Absolute stock management (deduction on order, restoration on cancellation). Stock sufficiency check occurs during `POST /api/orders`.
-
+- **Arabic Search**: `GET /api/products` searches both `name` and `nameAr` fields using `$or`. Arabic text uses `.includes()` not `.toLowerCase().includes()`.
 - **Global Settings Hub**: Single-document pattern for managing announcements, fees, and hero content. Includes multi-tab (Storefront, Clinical, Contact) configuration UI.
 
 - **UI/UX Polished Elements**:

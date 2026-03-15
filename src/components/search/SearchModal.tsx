@@ -10,6 +10,7 @@ import { useRecentlyViewedStore } from '@/store/useRecentlyViewedStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchUIStore();
@@ -88,13 +89,14 @@ export function SearchModal() {
   }, []);
 
   const handleProductClick = (product: any) => {
+    const displayImage = getDisplayImage(product);
     addViewedItem({
       id: String(product._id || product.id),
       slug: product.slug || '',
       name: product.name,
       nameAr: product.nameAr,
       price: product.price,
-      image: getDisplayImage(product),
+      image: optimizeCloudinaryUrl(displayImage, { width: 200 }),
     });
     router.push(`/product/${product.slug || product._id || product.id}`);
     closeSearch();

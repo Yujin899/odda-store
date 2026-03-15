@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { AddToCartButton } from './AddToCartButton';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface ProductCardProps {
   product: {
@@ -55,7 +56,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
     >
       <div className="aspect-square relative overflow-hidden bg-muted">
         <Image 
-          src={primaryImage}
+          src={optimizeCloudinaryUrl(primaryImage, { width: 600 })}
           alt={product.name} 
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

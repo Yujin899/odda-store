@@ -5,17 +5,28 @@ import { auth } from '@/auth';
 import { revalidateTag, unstable_cache } from 'next/cache';
 
 const getCachedBundles = unstable_cache(
-  async () => {
+  async (query: Record<string, any> = {}) => {
     await connectDB();
-    return await Bundle.find({}).sort({ createdAt: -1 }).lean();
+    return await Bundle.find(query).sort({ createdAt: -1 }).lean();
   },
   ['bundles-list'],
   { tags: ['bundles-list'], revalidate: 60 }
 );
 
-export async function GET() {
+export async function GET(req: any) {
   try {
-    const bundles = await getCachedBundles();
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get('search');
+    
+    const query: Record<string, any> = {};
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { nameAr: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const bundles = await getCachedBundles(query);
     const sanitizedBundles = bundles.map((b: any) => ({
       id: b._id.toString(),
       name: b.name,

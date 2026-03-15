@@ -2,6 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 export function Hero({ hero, locale }: { hero?: any, locale: string }) {
   // Fallback defaults if no data exists
@@ -17,10 +18,11 @@ export function Hero({ hero, locale }: { hero?: any, locale: string }) {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image 
-          src={heroData.image} 
+          src={optimizeCloudinaryUrl(heroData.image, { width: 1920 })} 
           alt="Odda Hero" 
           fill 
           priority
+          loading="eager"
           sizes="100vw"
           className="object-cover"
         />

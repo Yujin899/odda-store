@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { IBundle } from '@/models/Bundle';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface BundleCardProps {
   bundle: IBundle;
@@ -26,7 +27,7 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
       {/* Image Section with bottom vignette */}
       <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
         <Image 
-          src={bundle.images[0] || 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop'} 
+          src={optimizeCloudinaryUrl(bundle.images[0] || 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop', { width: 600 })} 
           alt={name}
           fill
           className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"

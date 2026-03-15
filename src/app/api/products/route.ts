@@ -50,7 +50,14 @@ export async function GET(req: NextRequest) {
       if (cat) query.categoryId = cat._id;
     }
     
-    if (search) query.name = { $regex: search, $options: 'i' };
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { nameAr: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { descriptionAr: { $regex: search, $options: 'i' } },
+      ];
+    }
     if (featured === 'true') query.featured = true;
 
     let sortOption: any = { createdAt: -1 };
