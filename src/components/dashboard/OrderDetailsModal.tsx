@@ -67,7 +67,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
     } finally {
       setLoading(false);
     }
-  }, [orderId]);
+  }, [orderId, dict.toasts.failedToLoadOrder]);
 
   useEffect(() => {
     if (isOpen) {
@@ -117,6 +117,13 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
         className="max-w-[95vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto pt-10" 
         dir={language === 'ar' ? 'rtl' : 'ltr'}
       >
+        <DialogHeader className="sr-only">
+          <DialogTitle>{dict.dashboard.ordersPage.modal.title} - {orderId}</DialogTitle>
+          <DialogDescription>
+            Detailed view of order items, customer info, and payment details.
+          </DialogDescription>
+        </DialogHeader>
+
         <DialogHeader>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <DialogTitle className="text-xl flex items-center gap-2">

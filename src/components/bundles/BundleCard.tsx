@@ -30,6 +30,7 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
           src={optimizeCloudinaryUrl(bundle.images[0] || 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop', { width: 600 })} 
           alt={name}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
         />
         

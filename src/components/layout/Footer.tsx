@@ -69,6 +69,7 @@ export async function Footer() {
                   src="/logo.png" 
                   alt="Odda Logo" 
                   fill 
+                  unoptimized
                   sizes="(max-width: 768px) 100vw, 128px"
                   className="object-contain"
                 />

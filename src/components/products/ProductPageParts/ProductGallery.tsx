@@ -38,6 +38,7 @@ export function ProductGallery({ images, productName, stock }: ProductGalleryPro
                 alt={productName}
                 fill
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                 className="object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </motion.div>
@@ -71,6 +72,7 @@ export function ProductGallery({ images, productName, stock }: ProductGalleryPro
             <Image 
               src={img.url} 
               fill 
+              sizes="100px"
               className="object-cover rounded-sm px-1 py-1" 
               alt={`${productName} thumbnail ${i + 1}`} 
             />

@@ -35,6 +35,7 @@ export function OrderSummary({ shippingFee }: OrderSummaryProps) {
                  src={item.image} 
                  alt={isRtl && item.nameAr ? item.nameAr : item.name} 
                  fill 
+                 sizes="60px"
                  className="object-cover"
                />
             </div>

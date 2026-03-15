@@ -56,6 +56,7 @@ export async function Navbar() {
                 width={100} 
                 height={36} 
                 priority
+                unoptimized
                 className="object-contain w-[80px] sm:w-[100px]" 
               />
             </Link>

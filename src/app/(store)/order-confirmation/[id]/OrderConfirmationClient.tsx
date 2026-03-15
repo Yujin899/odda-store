@@ -46,6 +46,7 @@ export function OrderConfirmationClient({ order }: { order: any }) {
                                     <Image 
                                         src={item.productId?.images?.[0]?.url || '/placeholder.png'} 
                                         fill 
+                                        sizes="48px"
                                         className="object-cover" 
                                         alt={item.productId?.name || 'Product'} 
                                     />

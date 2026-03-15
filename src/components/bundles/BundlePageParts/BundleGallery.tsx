@@ -39,6 +39,7 @@ export function BundleGallery({ images, bundleName, stock }: BundleGalleryProps)
                 alt={bundleName}
                 fill
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                 className="object-cover transition-transform duration-1000 group-hover:scale-105"
               />
             </motion.div>
@@ -81,6 +82,7 @@ export function BundleGallery({ images, bundleName, stock }: BundleGalleryProps)
               <Image 
                 src={img} 
                 fill 
+                sizes="100px"
                 className="object-cover rounded-sm px-2 py-2" 
                 alt={`${bundleName} thumbnail ${i + 1}`} 
               />

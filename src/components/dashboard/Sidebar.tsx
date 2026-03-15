@@ -54,6 +54,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
               height={36}
               className="object-contain filter brightness-0 invert"
               priority
+              unoptimized
             />
           </Link>
           <button 

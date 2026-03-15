@@ -4,12 +4,20 @@ import { auth } from '@/auth';
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session || (session.user as any).role !== 'admin') {
-    return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
-  }
-
+  
   try {
     const formData = await req.formData();
+    const folder = formData.get('folder') as string || 'odda/general';
+
+    // Guard: Only admins can upload to general folders. 
+    // Users can only upload to 'payment_proofs'.
+    const isAdmin = session?.user && (session.user as { role?: string }).role === 'admin';
+    const isPaymentProof = folder === 'payment_proofs';
+
+    if (!isAdmin && !isPaymentProof) {
+      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+    }
+
     const file = formData.get('file') as File;
 
     if (!file) {
@@ -27,16 +35,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'File too large. Max 10MB allowed.' }, { status: 400 });
     }
 
-    const folder = formData.get('folder') as string || 'odda/general';
-
     const buffer = Buffer.from(await file.arrayBuffer());
     const { url, publicId } = await uploadImage(buffer, folder);
 
     return NextResponse.json({ url, publicId });
-  } catch (err: any) {
-    console.error('Upload Error:', err);
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error('Upload Error:', error);
     return NextResponse.json(
-      { message: err.message || 'Internal server error', error: err },
+      { message: error.message || 'Internal server error', error: error },
       { status: 500 }
     );
   }
