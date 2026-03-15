@@ -35,8 +35,10 @@ export async function Navbar() {
         {/* Main Content Area: Logo + Desktop Nav */}
         <div className="flex-1 flex items-center justify-between">
           <div className="flex items-center gap-4 sm:gap-12">
-            {/* Mobile Menu Trigger */}
-            <NavbarMobileMenuTrigger />
+            {/* Mobile Menu Trigger - Moved to Bottom Nav */}
+            <div className="hidden md:block">
+              <NavbarMobileMenuTrigger />
+            </div>
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
@@ -78,8 +80,10 @@ export async function Navbar() {
           {/* User Area */}
           <NavbarUserDropdown dict={dict} />
 
-          {/* Cart Area */}
-          <NavbarCartTrigger />
+          {/* Cart Area - Moved to Bottom Nav */}
+          <div className="hidden md:block">
+            <NavbarCartTrigger />
+          </div>
         </div>
       </div>
     </header>
