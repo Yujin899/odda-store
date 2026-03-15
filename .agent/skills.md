@@ -288,6 +288,8 @@ odda-web/
 
         ReviewSection.tsx # Polymorphic review handler (Products/Bundles)
 
+        AddToCartSection.tsx # Reusable quantity counter + add to cart
+
     lib/
 
       catalog.ts       # Legacy  seed script only
@@ -731,6 +733,15 @@ Use these standardized tags for `unstable_cache` and `revalidateTag` to maintain
 ## 10. Animation Rules (Framer Motion)
 
 - Use Framer Motion for enter/exit animations in any client component. Prefer CSS transitions for hover and simple state styling.
+- Don't use `next/font/google` in sub-components; use standard CSS classes if possible or keep font declarations in the root layout.
+- **Mongoose Serialization**: Never pass raw Mongoose documents (from direct DB calls or `unstable_cache`) to Client Components. Even with `.lean()`, sub-documents in arrays (like `images`) can contain `_id` buffers that break serialization. ALWAYS map to strictly plain objects first. Example:
+  ```ts
+  const plainProducts = featuredProducts.map((p: any) => ({
+    id: p._id?.toString() ?? p.id,
+    images: (p.images ?? []).map((img: any) => ({ url: img.url ?? img, isPrimary: img.isPrimary ?? false })),
+    // ... map all other fields explicitly
+  }));
+  ```
 
 - Use `AnimatePresence mode="wait"` for mount/unmount overlays.
 
@@ -943,6 +954,9 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 - **Scalable Reviews Data**: Reviews are NO LONGER embedded. They use a dedicated `Review` collection with a Polymorphic Association (`targetId` and `targetType` for 'Product' or 'Bundle'). Average ratings and review counts are updated automatically on the parent document via MongoDB Aggregation Pipelines during review submission.
 
 - **Google OAuth Production Mismatch**: When deploying to Vercel, `NEXTAUTH_URL` and `AUTH_URL` must exactly match the production domain (no trailing slashes). In Google Cloud Console, the "Authorized redirect URIs" MUST be exactly `https://[your-domain]/api/auth/callback/google` to prevent `Error 400: redirect_uri_mismatch`.
+
+- **AddToCartSection.tsx**: Reusable quantity counter and add-to-cart button for product/bundle pages. Fixes mobile layout issues and centralizes cart logic.
+- **Category URLs**: ALWAYS use `?category=slug`. Never `?categoryId=`. This applies to breadcrumbs, home page, and any other category link. The API resolves slug to `_id` server-side.
 
 ## 15. SEO & Routing
 

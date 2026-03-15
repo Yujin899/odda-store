@@ -37,25 +37,30 @@ async function getFeaturedProducts() {
   return products.map((p: any) => ({
     id: p._id.toString(),
     name: p.name,
-    nameAr: p.nameAr,
+    nameAr: p.nameAr ?? null,
     slug: p.slug,
-    description: p.description,
-    descriptionAr: p.descriptionAr,
+    description: p.description ?? null,
+    descriptionAr: p.descriptionAr ?? null,
     price: p.price,
     originalPrice: p.compareAtPrice ?? null,
-    images: p.images,
+    images: (p.images ?? []).map((img: any) => ({
+      url: img.url ?? img,
+      isPrimary: img.isPrimary ?? false,
+      order: img.order ?? 0,
+    })),
     categoryId: p.categoryId?._id?.toString() ?? p.categoryId?.toString() ?? null,
+    categorySlug: p.categorySlug ?? null,
     badge: p.badgeId ? {
       name: p.badgeId.name,
       nameAr: p.badgeId.nameAr,
       color: p.badgeId.color,
       textColor: p.badgeId.textColor
     } : null,
-    stock: p.stock,
-    featured: p.featured,
+    stock: p.stock ?? 0,
+    featured: p.featured ?? false,
     aiSummary: p.aiSummary ?? null,
     aiSummaryAr: p.aiSummaryAr ?? null,
-    createdAt: p.createdAt,
+    createdAt: p.createdAt?.toISOString() ?? null,
   }));
 }
 
@@ -170,12 +175,12 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-6 py-20">
         <h2 className="text-3xl font-black mb-12 uppercase tracking-tight text-[var(--navy)]">{dict.home.shopByCategory}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
-          {categories.slice(0, 4).map((cat: { id: string; name: string; nameAr?: string; image?: string }) => {
+          {categories.slice(0, 4).map((cat: { id: string; name: string; nameAr?: string; image?: string; slug: string }) => {
             const catName = (locale === 'ar' && cat.nameAr) ? cat.nameAr : cat.name;
             return (
             <Link 
               key={cat.id}
-              href={`/products?categoryId=${cat.id}`} 
+              href={`/products?category=${cat.slug}`} 
               className="group relative aspect-square w-full h-full overflow-hidden cursor-pointer rounded-sm"
             >
               <div 

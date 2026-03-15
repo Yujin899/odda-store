@@ -27,20 +27,25 @@ async function getSearchResults(query: string) {
     products: products.map((p: any) => ({
       _id: p._id.toString(),
       name: p.name,
-      nameAr: p.nameAr,
+      nameAr: p.nameAr ?? null,
       slug: p.slug,
       price: p.price,
       compareAtPrice: p.compareAtPrice ?? null,
-      images: p.images,
+      images: (p.images ?? []).map((img: any) => ({
+        url: img.url ?? img,
+        isPrimary: img.isPrimary ?? false
+      })),
       category: p.categoryId ? {
         _id: p.categoryId._id.toString(),
-        name: p.categoryId.name
+        name: p.categoryId.name,
+        nameAr: p.categoryId.nameAr ?? null
       } : null,
       badge: p.badgeId ? {
         name: p.badgeId.name,
+        nameAr: p.badgeId.nameAr ?? null,
         color: p.badgeId.color
       } : null,
-      stock: p.stock
+      stock: p.stock ?? 0
     })), 
     total: products.length 
   };

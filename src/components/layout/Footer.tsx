@@ -122,7 +122,7 @@ export async function Footer() {
               {categories.length > 0 ? categories.map((cat: any) => (
                 <li key={cat.id}>
                   <Link 
-                    href={`/products?categoryId=${cat.id}`} 
+                    href={`/products?category=${cat.slug}`} 
                     className="group text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2"
                   >
                     <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary) ${language === 'ar' ? 'rotate-180' : ''}`} />

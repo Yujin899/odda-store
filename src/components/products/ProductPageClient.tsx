@@ -19,7 +19,7 @@ interface ProductData {
   price: number;
   compareAtPrice?: number;
   originalPrice?: number;
-  category: { name: string; nameAr?: string };
+  category: { name: string; nameAr?: string; slug?: string };
   images: { url: string; isPrimary?: boolean }[];
   stock: number;
   description: string;
@@ -91,7 +91,9 @@ export function ProductPageClient({
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         <ProductBreadcrumbs 
           productName={language === 'ar' ? product.nameAr || product.name : product.name} 
-          categoryName={language === 'ar' ? product.category?.nameAr || product.category?.name || 'تصنيف' : product.category?.name || 'Category'} 
+          categoryName={product.category?.name || 'Category'} 
+          categoryNameAr={product.category?.nameAr}
+          categorySlug={product.category?.slug}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">

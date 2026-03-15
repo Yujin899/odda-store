@@ -45,7 +45,7 @@ export function NavbarCategoryDropdown({ categories, dict, language }: { categor
             {categories.map((cat) => (
               <Link 
                 key={cat._id}
-                href={`/products?categoryId=${cat._id}`}
+                href={`/products?category=${cat.slug}`}
                 onClick={() => setIsOpen(false)}
                 className="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy hover:bg-slate-50 rounded-sm"
               >

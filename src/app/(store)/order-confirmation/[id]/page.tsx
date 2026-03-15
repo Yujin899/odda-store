@@ -37,8 +37,37 @@ async function getOrder(id: string) {
     return null;
   }
 
-  // Sanitize to DTO
-  return JSON.parse(JSON.stringify(order));
+  // Sanitize to strictly plain DTO
+  return {
+    _id: order._id.toString(),
+    orderNumber: order.orderNumber,
+    userId: order.userId?.toString() ?? null,
+    totalAmount: order.totalAmount,
+    status: order.status,
+    createdAt: order.createdAt?.toISOString() ?? null,
+    shippingAddress: {
+      fullName: order.shippingAddress.fullName,
+      email: order.shippingAddress.email,
+      phone: order.shippingAddress.phone,
+      address: order.shippingAddress.address,
+      city: order.shippingAddress.city,
+    },
+    items: (order.items || []).map((item: any) => ({
+      productId: item.productId ? {
+        _id: item.productId._id.toString(),
+        name: item.productId.name,
+        nameAr: item.productId.nameAr ?? null,
+        slug: item.productId.slug,
+        images: (item.productId.images || []).map((img: any) => ({ url: img.url ?? img, isPrimary: img.isPrimary ?? false }))
+      } : null,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      image: item.image ?? null
+    })),
+    paymentMethod: order.paymentMethod,
+    paymentProof: order.paymentProof ?? null
+  };
 }
 
 export default async function OrderPage({ params }: { params: Promise<{ id: string }> }) {

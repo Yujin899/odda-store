@@ -8,12 +8,14 @@ import { getDictionary } from '@/dictionaries';
 interface ProductBreadcrumbsProps {
   productName: string;
   categoryName: string;
+  categoryNameAr?: string;
   categorySlug?: string;
 }
 
 export function ProductBreadcrumbs({ 
   productName, 
   categoryName, 
+  categoryNameAr,
   categorySlug 
 }: ProductBreadcrumbsProps) {
   const { language } = useLanguageStore();
@@ -32,7 +34,7 @@ export function ProductBreadcrumbs({
         href={`/products?category=${categorySlug}`} 
         className="hover:text-(--primary) transition-colors"
       >
-        {categoryName}
+        {isRtl && categoryNameAr ? categoryNameAr : categoryName}
       </Link>
       
       <ChevronRight className="size-4 rtl:-scale-x-100 text-slate-300" />
