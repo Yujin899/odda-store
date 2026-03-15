@@ -50,7 +50,7 @@ export function BundleActions({ bundle, stock }: BundleActionsProps) {
 
   return (
     <div className="flex flex-col gap-6 pt-6 border-t border-slate-100">
-      <div className={bcn("flex flex-col sm:flex-row items-center gap-4", isRtl ? "flex-row-reverse" : "flex-row")}>
+      <div className="flex flex-col sm:flex-row items-center gap-4">
         {/* Quantity Picker */}
         <div dir="ltr" className={bcn(
             "bg-white h-16 border border-slate-200 rounded-sm flex items-center shadow-sm overflow-hidden w-full sm:w-auto",

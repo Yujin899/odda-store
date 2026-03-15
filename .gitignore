@@ -45,3 +45,6 @@ agency-agents/
 
 # Local audit reports
 reports/
+
+# Temp
+tmp/

@@ -21,8 +21,8 @@ export function BundleBreadcrumbs({ bundleName }: BundleBreadcrumbsProps) {
       
       <ChevronRight className="size-4 rtl:-scale-x-100 text-slate-300" />
       
-      <Link href="/" className="hover:text-(--primary) transition-colors">
-        {language === 'ar' ? 'العروض' : 'Bundles'}
+      <Link href="/bundles" className="hover:text-(--primary) transition-colors">
+        {dict.common.offersAndBundles}
       </Link>
       
       <ChevronRight className="size-4 rtl:-scale-x-100 text-slate-300" />

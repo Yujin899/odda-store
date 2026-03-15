@@ -514,6 +514,8 @@ Every admin route MUST verify the session and role.
 - **InstaPay Orders**: Default status is `pending_verification` if proof is provided.
 - **RTL**: Always use logical Tailwind properties (`ms-`, `ps-`, `start-`, `end-`). Physical CSS replacement completed codebase-wide.
 - **Category Filter**: Always use `slug` in URL params, never `_id`. Frontend passes slug, API resolves to ObjectId internally.
+- **Email Templates**: All email subject and body text comes from `StoreSettings`. Hardcoded text in route files is banned. `getPremiumEmailHtml()` in `src/lib/email-templates.ts` handles all HTML rendering including RTL, order table, and Track Order button.
+- **RTL Flex Gotcha**: Never use `flex-row-reverse` to simulate RTL. It causes double-reversal when `dir="rtl"` is active. Use `text-start`/`text-end` and let the HTML direction handle flex order naturally.
 
 ## 7. State Management
 

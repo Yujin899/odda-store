@@ -37,13 +37,15 @@ interface ReviewData {
 interface BundlePageClientProps {
   bundle: BundleData;
   initialReviews?: ReviewData[];
+  locale: string;
 }
 
 export function BundlePageClient({ 
   bundle,
-  initialReviews = []
+  initialReviews = [],
+  locale
 }: BundlePageClientProps) {
-  const { language } = useLanguageStore();
+  const language = locale as 'en' | 'ar';
   const { addViewedItem: addRecentlyViewed } = useRecentlyViewedStore();
 
   // 1. State Hub
@@ -130,7 +132,7 @@ export function BundlePageClient({
         <BundleTabs 
           bundle={bundle}
           reviews={reviews}
-          language={language as 'en' | 'ar'}
+          language={language}
           onReviewAdded={fetchReviews}
         />
       </main>

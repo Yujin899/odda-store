@@ -108,57 +108,41 @@ export const PATCH = auth(async (req, { params }) => {
         const { StoreSettings } = await import('@/models/StoreSettings');
         const settings = await StoreSettings.findOne();
         const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-        const locale = updatedOrder.locale || 'en';
-        
+        // Determine locale
+        const localeString = updatedOrder.locale || settings?.defaultLanguage || 'en';
+        const isAr = localeString === 'ar';
         const { getPremiumEmailHtml } = await import('@/lib/email-templates');
-        
-        let subject = '';
-        let htmlContent = '';
 
-        if (locale === 'ar' && settings?.shippedSubjectAr && settings?.shippedBodyAr) {
-          subject = settings.shippedSubjectAr.replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
-          const bodyContent = settings.shippedBodyAr
-            .replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
-            .replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
-          htmlContent = getPremiumEmailHtml({
-            bodyText: bodyContent,
-            customerName: updatedOrder.shippingAddress.fullName,
-            orderNumber: updatedOrder.orderNumber,
-            items: updatedOrder.items,
-            totalAmount: updatedOrder.totalAmount,
-            isAr: true,
-            baseUrl
-          });
-        } else if (locale === 'en' && settings?.shippedSubjectEn && settings?.shippedBodyEn) {
-          subject = settings.shippedSubjectEn.replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
-          const bodyContent = settings.shippedBodyEn
-            .replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
-            .replace(/{{orderNumber}}/g, updatedOrder.orderNumber);
-          htmlContent = getPremiumEmailHtml({
-            bodyText: bodyContent,
-            customerName: updatedOrder.shippingAddress.fullName,
-            orderNumber: updatedOrder.orderNumber,
-            items: updatedOrder.items,
-            totalAmount: updatedOrder.totalAmount,
-            isAr: false,
-            baseUrl
-          });
-        } else {
-          const isAr = locale === 'ar';
-          subject = isAr ? `عُدّة - تم شحن طلبك رقم ${updatedOrder.orderNumber}` : `Clinical Dispatch: Your Order #${updatedOrder.orderNumber} is on the Way`;
-          const fallbackBody = isAr 
-            ? `أخبار رائعة يا دكتور ${updatedOrder.shippingAddress.fullName}!\n\nتم الانتهاء من فحص وتجهيز أدواتك السريرية الخاصة بالطلب رقم ${updatedOrder.orderNumber}، وهي الآن في طريقها إليك. نحن ندرك تماماً مدى أهمية توفر الأدوات الصحيحة لممارستك المهنية، لذا وضعنا شحنتك على قائمة أولويات التوصيل.\n\nاستعد لتجربة سريرية فائقة.`
-            : `Great news, ${updatedOrder.shippingAddress.fullName}!\n\nYour precision instruments from order #${updatedOrder.orderNumber} have passed final inspection and are now in transit. We understand the importance of having the right tools for your clinical practice, so we’ve prioritized your delivery.\n\nPrepare for excellence.`;
-          htmlContent = getPremiumEmailHtml({
-            bodyText: fallbackBody,
-            customerName: updatedOrder.shippingAddress.fullName,
-            orderNumber: updatedOrder.orderNumber,
-            items: updatedOrder.items,
-            totalAmount: updatedOrder.totalAmount,
-            isAr,
-            baseUrl
-          });
-        }
+        // Get subject and body from settings with placeholders and minimal fallbacks
+        const subject = isAr
+          ? (settings?.shippedSubjectAr?.replace(/{{orderNumber}}/g, updatedOrder.orderNumber) || `عُدّة - تم شحن طلبك #${updatedOrder.orderNumber}`)
+          : (settings?.shippedSubjectEn?.replace(/{{orderNumber}}/g, updatedOrder.orderNumber) || `Odda - Order #${updatedOrder.orderNumber} Shipped`);
+
+        const bodyText = isAr
+          ? (settings?.shippedBodyAr
+              ?.replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
+              ?.replace(/{{orderNumber}}/g, updatedOrder.orderNumber)
+            || `عظيم! تم شحن طلبك رقم ${updatedOrder.orderNumber} وهو في طريقه إليك.`)
+          : (settings?.shippedBodyEn
+              ?.replace(/{{customerName}}/g, updatedOrder.shippingAddress.fullName)
+              ?.replace(/{{orderNumber}}/g, updatedOrder.orderNumber)
+            || `Good news! Your order #${updatedOrder.orderNumber} has been shipped.`);
+
+        const htmlContent = getPremiumEmailHtml({
+          subject,
+          bodyText,
+          customerName: updatedOrder.shippingAddress.fullName,
+          orderNumber: updatedOrder.orderNumber,
+          items: updatedOrder.items.map((item: any) => ({
+            name: item.name,
+            nameAr: item.nameAr,
+            quantity: item.quantity,
+            price: item.price
+          })),
+          totalAmount: updatedOrder.totalAmount,
+          isAr,
+          baseUrl,
+        });
 
         await resend.emails.send({
           from: 'Odda Store <onboarding@resend.dev>',

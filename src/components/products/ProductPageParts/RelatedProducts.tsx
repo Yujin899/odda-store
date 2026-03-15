@@ -24,8 +24,8 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
 
   return (
     <section className="mt-32 pt-16 border-t border-slate-100">
-      <div className={bcn("flex items-end justify-between mb-16", isRtl ? "flex-row-reverse" : "flex-row")}>
-        <div className={isRtl ? "text-end" : "text-start"}>
+      <div className="flex items-end justify-between mb-16">
+        <div className="text-start">
           <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground">
             {isRtl ? 'أكمل مجموعتك' : 'Complete Your Kit'}
           </h2>
@@ -35,7 +35,7 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
         </div>
         
         {/* Customized Navigation Buttons */}
-        <div className={bcn("hidden sm:flex gap-3", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className="hidden sm:flex gap-3">
           <button className="related-prev w-12 h-12 border border-slate-200 flex items-center justify-center hover:bg-(--navy) hover:text-white hover:border-(--navy) transition-all rounded-full text-(--navy) bg-white shadow-sm outline-none cursor-pointer">
             <ChevronLeft className="size-5 stroke-[2.5px] rtl:rotate-180" />
           </button>

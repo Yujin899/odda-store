@@ -47,6 +47,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       originalPrice: product.compareAtPrice ?? null,
       images: product.images,
       categoryId: category?._id?.toString() ?? product.categoryId?.toString() ?? null,
+      categorySlug: (product.categoryId as any)?.slug ?? null,
       badge: badge ? {
         name: badge.name || badge.nameAr,
         nameAr: badge.nameAr,
@@ -131,6 +132,7 @@ export const PUT = auth(async (req, { params }) => {
       originalPrice: updatedProduct.compareAtPrice ?? null,
       images: updatedProduct.images,
       categoryId: updatedProduct.categoryId?.toString() ?? null,
+      categorySlug: (updatedProduct.categoryId as any)?.slug ?? null,
       badge: badge ? {
         name: badge.name,
         nameAr: badge.nameAr,

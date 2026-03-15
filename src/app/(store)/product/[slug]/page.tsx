@@ -188,7 +188,8 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     category: {
       _id: (productWithCategory.category as any)._id?.toString() || '',
       name: (productWithCategory.category as any).name,
-      nameAr: (productWithCategory.category as any).nameAr
+      nameAr: (productWithCategory.category as any).nameAr,
+      slug: (productWithCategory.category as any).slug
     },
     badge: (productWithCategory.badgeId as any) ? {
       name: (productWithCategory.badgeId as any).name,

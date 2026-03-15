@@ -7,16 +7,25 @@ import { Metadata } from 'next';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 
-export const metadata: Metadata = {
-  title: 'عُدّة (عدة) | من نحن | About Us | Odda',
-  description: 'تعرف على عُدّة (عدة) - المتجر المتخصص في توفير أدوات الأسنان لطلاب Preclinical و Clinical في مصر. جودة، دقة، وسرعة.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+  const isAr = locale === 'ar';
+
+  return {
+    title: isAr ? 'عُدّة | من نحن | Odda' : 'About Us | Odda',
+    description: isAr 
+      ? 'تعرف على عُدّة - المتجر المتخصص في توفير أدوات الأسنان لطلاب الأسنان في مصر. جودة، دقة، وسرعة.'
+      : 'Learn about Odda - Egypt\'s trusted source for dental and surgical instruments for students and professionals.',
+  };
+}
 
 export default async function AboutPage() {
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
   const language = locale as 'en' | 'ar';
   const dict = language === 'en' ? en : ar;
+  const isAr = language === 'ar';
 
   const features = [
     {
@@ -45,7 +54,7 @@ export default async function AboutPage() {
             <div className="relative w-64 h-16 grayscale brightness-0 opacity-90">
               <Image 
                 src="/logo.png" 
-                alt="Odda Logo" 
+                alt={isAr ? 'شعار عُدّة' : 'Odda Logo'} 
                 fill
                 className="object-contain"
                 priority
@@ -65,7 +74,7 @@ export default async function AboutPage() {
 
           {/* Features Grid */}
           <div className="w-full pt-16">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-(--primary) mb-12">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-(--primary) mb-12">
               {dict.aboutPage.whyOdda}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

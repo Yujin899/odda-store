@@ -50,6 +50,7 @@ export const POST = auth(async (req) => {
         calculatedTotal += product.price * item.quantity;
         verifiedItems.push({
           ...item,
+          nameAr: product.nameAr, // Capture Arabic name from DB
           price: product.price, // Use DB price
           type: 'Product' 
         });
@@ -68,6 +69,7 @@ export const POST = auth(async (req) => {
         calculatedTotal += bundle.price * item.quantity;
         verifiedItems.push({
           ...item,
+          nameAr: bundle.nameAr, // Capture Arabic name from DB
           price: bundle.price, // Use DB price
           type: 'Bundle'
         });
@@ -149,59 +151,44 @@ export const POST = auth(async (req) => {
     try {
       const { StoreSettings } = await import('@/models/StoreSettings');
       const settings = await StoreSettings.findOne();
-      const locale = body.locale || 'en';
       const baseUrl = process.env.NEXTAUTH_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://odda-web.vercel.app');
       const { getPremiumEmailHtml } = await import('@/lib/email-templates');
 
-      let subject = '';
-      let htmlContent = '';
+      // Determine locale - No redeclaration
+      const locale = body.locale || settings?.defaultLanguage || 'en';
+      const isAr = locale === 'ar';
 
-      if (locale === 'ar' && settings?.confirmationSubjectAr && settings?.confirmationBodyAr) {
-        subject = settings.confirmationSubjectAr.replace(/{{orderNumber}}/g, order.orderNumber);
-        const bodyContent = settings.confirmationBodyAr
-          .replace(/{{customerName}}/g, shippingAddress.fullName)
-          .replace(/{{orderNumber}}/g, order.orderNumber);
-        htmlContent = getPremiumEmailHtml({
-          bodyText: bodyContent,
-          customerName: shippingAddress.fullName,
-          orderNumber: order.orderNumber,
-          items,
-          totalAmount: calculatedTotal,
-          isAr: true,
-          baseUrl
-        });
-      } else if (locale === 'en' && settings?.confirmationSubjectEn && settings?.confirmationBodyEn) {
-        subject = settings.confirmationSubjectEn.replace(/{{orderNumber}}/g, order.orderNumber);
-        const bodyContent = settings.confirmationBodyEn
-          .replace(/{{customerName}}/g, shippingAddress.fullName)
-          .replace(/{{orderNumber}}/g, order.orderNumber);
-        htmlContent = getPremiumEmailHtml({
-          bodyText: bodyContent,
-          customerName: shippingAddress.fullName,
-          orderNumber: order.orderNumber,
-          items,
-          totalAmount: calculatedTotal,
-          isAr: false,
-          baseUrl
-        });
-      } else {
-        // Fallbacks with Premium HTML
-        const isAr = locale === 'ar';
-        subject = isAr ? `عُدّة - تم تأكيد طلبك رقم ${order.orderNumber}` : `Precision Awaits: Order #${order.orderNumber} Confirmed`;
-        const fallbackBody = isAr 
-          ? `مرحباً بك يا دكتور ${shippingAddress.fullName} في عُدّة.\n\nيسعدنا تأكيد استلام طلبك رقم ${order.orderNumber} بنجاح. فريقنا يعمل الآن على تجهيز أدواتك السريرية بكل عناية ودقة، لضمان وصولها إليك بأعلى معايير الجودة الاحترافية التي تستحقها.\n\nشكراً لاختيارك "عُدّة" شريكاً في تميزك السريري.`
-          : `Welcome to the Odda Clinical Suite, ${shippingAddress.fullName}.\n\nWe are pleased to confirm that your order #${order.orderNumber} has been successfully received. Our team is currently preparing your precision instruments with the utmost care to ensure they meet the highest clinical standards.\n\nThank you for choosing Odda for your clinical excellence.`;
-        htmlContent = getPremiumEmailHtml({
-          bodyText: fallbackBody,
-          customerName: shippingAddress.fullName,
-          orderNumber: order.orderNumber,
-          items,
-          totalAmount: calculatedTotal,
-          isAr,
-          baseUrl
-        });
-      }
-      
+      // Get subject and body from settings with placeholders and minimal fallbacks
+      const subject = isAr
+        ? (settings?.confirmationSubjectAr?.replace(/{{orderNumber}}/g, order.orderNumber) || `عُدّة - طلب #${order.orderNumber}`)
+        : (settings?.confirmationSubjectEn?.replace(/{{orderNumber}}/g, order.orderNumber) || `Odda - Order #${order.orderNumber}`);
+
+      const bodyText = isAr
+        ? (settings?.confirmationBodyAr
+            ?.replace(/{{customerName}}/g, shippingAddress.fullName)
+            ?.replace(/{{orderNumber}}/g, order.orderNumber)
+          || `تم استلام طلبك رقم ${order.orderNumber} بنجاح.`)
+        : (settings?.confirmationBodyEn
+            ?.replace(/{{customerName}}/g, shippingAddress.fullName)
+            ?.replace(/{{orderNumber}}/g, order.orderNumber)
+          || `Your order #${order.orderNumber} has been received.`);
+
+      const htmlContent = getPremiumEmailHtml({
+        subject,
+        bodyText,
+        customerName: shippingAddress.fullName,
+        orderNumber: order.orderNumber,
+        items: verifiedItems.map(item => ({
+          name: item.name,
+          nameAr: item.nameAr,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        totalAmount: calculatedTotal,
+        isAr,
+        baseUrl,
+      });
+
       await resend.emails.send({
         from: 'Odda Store <onboarding@resend.dev>',
         to: shippingAddress.email,
@@ -213,7 +200,7 @@ export const POST = auth(async (req) => {
     }
 
     return NextResponse.json({ 
-      id: order._id,
+      id: order._id.toString(),
       orderNumber: order.orderNumber, 
       status: order.status 
     }, { status: 201 });

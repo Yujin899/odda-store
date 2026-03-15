@@ -129,7 +129,11 @@ export default async function BundleDetailsPage({ params }: { params: Params }) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BundlePageClient bundle={sanitizedBundle as any} initialReviews={reviews} />
+      <BundlePageClient 
+        bundle={sanitizedBundle as any} 
+        initialReviews={reviews} 
+        locale={locale} 
+      />
     </>
   );
 }
