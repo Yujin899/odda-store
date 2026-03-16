@@ -27,15 +27,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
-import { getDictionary } from '@/dictionaries';
+import { StatusBadge } from '@/components/shared/StatusBadge';
+import { formatPrice } from '@/lib/utils';
+import enDict from '@/dictionaries/en.json';
+import arDict from '@/dictionaries/ar.json';
+import { Order } from '@/types/store';
 
 interface OrdersManagerProps {
-  orders: any[];
+  orders: Order[];
 }
+
+const getDictionary = (locale: string) => locale === 'ar' ? arDict : enDict;
 
 export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [focusPayment, setFocusPayment] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -47,11 +53,14 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
     setMounted(true);
   }, []);
 
-  const filteredOrders = initialOrders.filter(order => 
-    order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.userId?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.userId?.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredOrders = initialOrders.filter(order => {
+    const user = order.userId && typeof order.userId === 'object' ? order.userId : null;
+    return (
+      order.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user?.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   const stats = {
     verify: filteredOrders.filter(o => ['pending_payment', 'pending_verification'].includes(o.status)).length,
@@ -75,28 +84,11 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
       } else {
         toast.error(dict.toasts.failedToUpdateStatus);
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Failed to update order status:', err);
       toast.error(dict.toasts.somethingWentWrong);
     } finally {
       setUpdatingId(null);
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'pending_payment':
-      case 'pending_verification':
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 uppercase text-[9px] font-black tracking-widest px-2 py-0.5">{language === 'ar' ? 'معلق' : 'Pending'}</Badge>;
-      case 'processing':
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 uppercase text-[9px] font-black tracking-widest px-2 py-0.5">{language === 'ar' ? 'جاري التنفيذ' : 'Processing'}</Badge>;
-      case 'shipped':
-        return <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200 uppercase text-[9px] font-black tracking-widest px-2 py-0.5">{language === 'ar' ? 'تم الشحن' : 'Shipped'}</Badge>;
-      case 'delivered':
-        return <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 uppercase text-[9px] font-black tracking-widest px-2 py-0.5">{language === 'ar' ? 'تم التوصيل' : 'Delivered'}</Badge>;
-      case 'cancelled':
-        return <Badge variant="destructive" className="uppercase text-[9px] font-black tracking-widest px-2 py-0.5">{language === 'ar' ? 'ملغي' : 'Cancelled'}</Badge>;
-      default:
-        return <Badge variant="secondary" className="uppercase text-[9px] font-black tracking-widest px-2 py-0.5">{status}</Badge>;
     }
   };
 
@@ -126,20 +118,28 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
             orders.map((order) => (
               <TableRow key={order._id} className="group hover:bg-slate-50/80 transition-all border-b last:border-0">
                 <TableCell className={`font-mono text-[11px] font-bold text-slate-400 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
-                  <span className="text-foreground">#{order.orderNumber.slice(-8)}</span>
+                  <span className="text-foreground">#{order.orderNumber?.slice(-8)}</span>
                 </TableCell>
                 <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                   <div className={`flex flex-col py-1 ${language === 'ar' ? 'text-end' : ''}`}>
-                    <span className="font-black text-[11px] uppercase tracking-tight text-(--navy)">{order.userId?.name || (language === 'ar' ? 'زائر' : 'Guest')}</span>
-                    <span className="text-[9px] font-bold text-muted-foreground tracking-tighter">{order.userId?.email}</span>
+                    <span className="font-black text-[11px] uppercase tracking-tight text-(--navy)">
+                      {(order.userId && typeof order.userId === 'object' ? order.userId.name : null) || (language === 'ar' ? 'زائر' : 'Guest')}
+                    </span>
+                    <span className="text-[9px] font-bold text-muted-foreground tracking-tighter">
+                      {order.userId && typeof order.userId === 'object' ? order.userId.email : ''}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell className="text-center">
-                  <span className="font-black text-xs text-(--primary)">{order.totalAmount.toLocaleString()}</span>
-                  <span className={`text-[8px] font-black uppercase text-slate-400 ${language === 'ar' ? 'me-1' : 'ms-1'}`}>{language === 'ar' ? 'ج.م' : 'EGP'}</span>
+                  <span className="font-black text-xs text-(--primary)">{formatPrice(order.totalAmount, language as 'en' | 'ar')}</span>
                 </TableCell>
                 <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
-                  {getStatusBadge(order.status)}
+                  <StatusBadge 
+                    status={order.status} 
+                    labelEn={enDict.dashboard.statuses[order.status as keyof typeof enDict.dashboard.statuses] || order.status}
+                    labelAr={arDict.dashboard.statuses[order.status as keyof typeof arDict.dashboard.statuses] || order.status}
+                    isAr={language === 'ar'}
+                  />
                 </TableCell>
                 <TableCell className={`${language === 'ar' ? 'text-start ps-4' : 'text-end pe-4'} py-4`}>
                   <div className="flex items-center justify-end gap-2">
@@ -164,7 +164,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                         variant="outline" 
                         className="h-8 bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100 hover:text-emerald-800 text-[9px] font-black uppercase tracking-widest px-3"
                         disabled={updatingId === order._id}
-                        onClick={() => handleUpdateStatus(order._id, 'processing')}
+                        onClick={() => handleUpdateStatus(order._id as string, 'processing')}
                       >
                         {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} /> : <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />}
                         {dict.dashboard.ordersPage.table.process}
@@ -176,7 +176,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                         variant="outline" 
                         className="h-8 bg-purple-50 text-purple-700 border-purple-100 hover:bg-purple-100 hover:text-purple-800 text-[9px] font-black uppercase tracking-widest px-3"
                         disabled={updatingId === order._id}
-                        onClick={() => handleUpdateStatus(order._id, 'shipped')}
+                        onClick={() => handleUpdateStatus(order._id as string, 'shipped')}
                       >
                         {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} /> : <Truck className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />}
                         {dict.dashboard.ordersPage.table.ship}
@@ -188,7 +188,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                         variant="outline" 
                         className="h-8 bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100 hover:text-emerald-800 text-[9px] font-black uppercase tracking-widest px-3"
                         disabled={updatingId === order._id}
-                        onClick={() => handleUpdateStatus(order._id, 'delivered')}
+                        onClick={() => handleUpdateStatus(order._id as string, 'delivered')}
                       >
                         {updatingId === order._id ? <Loader2 className={`size-3 animate-spin ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} /> : <CheckCircle2 className={`size-3 ${language === 'ar' ? 'ms-1.5' : 'me-1.5'}`} />}
                         {dict.dashboard.ordersPage.table.deliver}
@@ -223,7 +223,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
     <div className={`space-y-6 ${language === 'ar' ? 'text-end' : 'text-start'}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between gap-4 bg-white p-4 rounded-(--radius) border shadow-sm">
         <div className="relative flex-1 max-w-sm">
-          <Search className={`absolute ${language === 'ar' ? 'end-3' : 'start-3'} top-1/2 -translate-y-1/2 size-4 text-muted-foreground drop-shadow-sm`} />
+          <Search className={`absolute ${language === 'ar' ? 'inset-e-3' : 'inset-s-3'} top-1/2 -translate-y-1/2 size-4 text-muted-foreground drop-shadow-sm`} />
           <Input 
             placeholder={dict.dashboard.ordersPage.searchPlaceholder} 
             className={`${language === 'ar' ? 'pe-9' : 'ps-9'} h-11 text-xs border-slate-200 focus:ring-(--primary)/20 rounded-md font-bold uppercase tracking-widest`}
@@ -290,7 +290,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
 
       {selectedOrder && (
         <OrderDetailsModal 
-          orderId={selectedOrder._id}
+          orderId={selectedOrder._id as string}
           isOpen={!!selectedOrder}
           onClose={() => {
             setSelectedOrder(null);

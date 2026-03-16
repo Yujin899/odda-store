@@ -21,7 +21,7 @@ const getCachedOrder = unstable_cache(
     await connectDB();
     
     // Try both ID and order number
-    let order = await Order.findOne({
+    const order = await Order.findOne({
       $or: [
         { _id: idOrNumber.match(/^[0-9a-fA-F]{24}$/) ? idOrNumber : undefined },
         { orderNumber: idOrNumber }
@@ -67,7 +67,7 @@ async function OrderConfirmationContent({ searchParams }: PageProps) {
               {dict.confirmationPage.notFoundDesc}
             </p>
           </div>
-          <Link href="/products" className="block w-full h-16 bg-foreground text-background flex items-center justify-center font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all">
+          <Link href="/products" className="flex w-full h-16 bg-foreground text-background items-center justify-center font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all">
             {dict.confirmationPage.browseCatalog}
           </Link>
         </div>

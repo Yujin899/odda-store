@@ -46,7 +46,7 @@ export function BundleForm({ initialData }: BundleFormProps) {
     }
   });
 
-  const { isUploading, uploadingFiles, handleImageUpload, removeImage, onDragEnd } = useBundleUpload(dict);
+  const { isUploading, uploadingFiles, handleImageUpload, removeImage, onDragEnd } = useBundleUpload();
 
   const onSubmit = async (values: BundleFormValues) => {
     setIsLoading(true);

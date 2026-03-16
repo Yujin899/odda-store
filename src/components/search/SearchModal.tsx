@@ -6,11 +6,12 @@ import { useRouter } from 'next/navigation';
 import { Search, X, SearchX, FileSearch } from 'lucide-react';
 import Image from 'next/image';
 import { useSearchUIStore } from '@/store/useSearchUIStore';
-import { useRecentlyViewedStore } from '@/store/useRecentlyViewedStore';
+import { useRecentlyViewedStore, RecentItem } from '@/store/useRecentlyViewedStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
+import { Product, RelatedProduct } from '@/types/store';
 
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchUIStore();
@@ -19,15 +20,14 @@ export function SearchModal() {
   const { language } = useLanguageStore();
   const dict = language === 'en' ? en : ar;
   const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+   const [searchResults, setSearchResults] = useState<Product[]>([]);
+   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const getDisplayImage = (product: any) => {
-    if (product.images && product.images.length > 0) {
-      const primary = product.images.find((img: any) => img.isPrimary) || product.images[0];
-      return typeof primary === 'string' ? primary : primary.url;
+  const getDisplayImage = (product: Product | RelatedProduct | RecentItem) => {
+    if ('images' in product && product.images && Array.isArray(product.images) && product.images.length > 0) {
+      const primary = (product.images as any[]).find((img: any) => img.isPrimary) || product.images[0];
+      return typeof primary === 'string' ? primary : (primary?.url || '/placeholder.png');
     }
     return product.image || '/placeholder.png';
   };
@@ -88,17 +88,17 @@ export function SearchModal() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleProductClick = (product: any) => {
+  const handleProductClick = (product: Product | RelatedProduct | RecentItem) => {
     const displayImage = getDisplayImage(product);
     addViewedItem({
-      id: String(product._id || product.id),
-      slug: product.slug || '',
+      id: String((product as any)._id || (product as any).id),
+      slug: (product as any).slug || '',
       name: product.name,
       nameAr: product.nameAr,
       price: product.price,
       image: optimizeCloudinaryUrl(displayImage, { width: 200 }),
     });
-    router.push(`/product/${product.slug || product._id || product.id}`);
+    router.push(`/product/${(product as any).slug || (product as any)._id || (product as any).id}`);
     closeSearch();
   };
 
@@ -149,7 +149,7 @@ export function SearchModal() {
               />
               <button 
                 onClick={handleClose}
-                className="absolute end-3 sm:end-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors outline-none border-none cursor-pointer text-muted-foreground flex items-center justify-center h-9 w-9 bg-transparent"
+                className="absolute inset-e-3 sm:inset-e-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors outline-none border-none cursor-pointer text-muted-foreground flex items-center justify-center h-9 w-9 bg-transparent"
               >
                 <X className="size-5 stroke-[2.5px]" />
               </button>
@@ -229,9 +229,11 @@ export function SearchModal() {
                             {(language === 'ar' && product.nameAr) ? product.nameAr : product.name}
                           </h4>
                           <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold mt-1">
-                            {(language === 'ar' && (product.categoryId?.nameAr || product.categoryAr)) ? (product.categoryId?.nameAr || product.categoryAr) : (product.categoryId?.name || product.category)}
+                            {language === 'ar' ? 
+                              (product.categoryNameAr || (typeof product.categoryId === 'object' ? product.categoryId?.nameAr : null)) : 
+                              (product.categoryName || (typeof product.categoryId === 'object' ? product.categoryId?.name : null))}
                           </p>
-                          <span className="text-xs font-black text-foreground mt-1">{product.price.toLocaleString()} {dict.common.egp}</span>
+                          <span className="text-xs font-black text-foreground mt-1">{Number(product.price).toLocaleString()} {dict.common.egp}</span>
                         </div>
                       </div>
                     ))}

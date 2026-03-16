@@ -3,15 +3,15 @@
 import Image from 'next/image';
 import { useCartStore } from '@/store/useCartStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
-import { getDictionary } from '@/dictionaries';
+import { Dictionary } from '@/types/store';
 
 interface OrderSummaryProps {
+  dict: Dictionary;
   shippingFee: number;
 }
 
-export function OrderSummary({ shippingFee }: OrderSummaryProps) {
+export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
   const { language } = useLanguageStore();
-  const dict = getDictionary(language);
   const { items, totalAmount } = useCartStore();
   const isRtl = language === 'ar';
 

@@ -83,7 +83,7 @@ export function MobileBottomNav() {
                 }`} 
               />
               {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -top-1 -end-1 bg-(--primary) text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white">
+                <span className="absolute -top-1 -inset-e-1 bg-(--primary) text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white">
                   {item.badge}
                 </span>
               )}

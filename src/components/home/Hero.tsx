@@ -4,7 +4,14 @@ import Image from 'next/image';
 import React from 'react';
 import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 
-export function Hero({ hero, locale }: { hero?: any, locale: string }) {
+export function Hero({ hero, locale }: { hero?: {
+  image?: string;
+  heading?: string;
+  headingAr?: string;
+  buttonText?: string;
+  buttonTextAr?: string;
+  buttonLink?: string;
+}, locale: string }) {
   // Fallback defaults if no data exists
   const heroData = {
     image: hero?.image || "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",

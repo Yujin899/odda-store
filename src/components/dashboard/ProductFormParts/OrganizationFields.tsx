@@ -41,24 +41,27 @@ export function OrganizationFields() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [badges, setBadges] = useState<Badge[]>([]);
 
-  const fetchData = useCallback(async () => {
-    try {
-      const [catRes, badgeRes] = await Promise.all([
-        fetch('/api/categories'),
-        fetch('/api/badges')
-      ]);
-      const catData = await catRes.json();
-      const badgeData = await badgeRes.json();
-      if (catRes.ok) setCategories(catData.categories);
-      if (badgeRes.ok) setBadges(badgeData.badges);
-    } catch (error) {
-      console.error('Failed to fetch organization data:', error);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    let isMounted = true;
+    const fetchOrgData = async () => {
+      try {
+        const [catRes, badgeRes] = await Promise.all([
+          fetch('/api/categories'),
+          fetch('/api/badges')
+        ]);
+        const catData = await catRes.json();
+        const badgeData = await badgeRes.json();
+        if (isMounted) {
+          if (catRes.ok) setCategories(catData.categories);
+          if (badgeRes.ok) setBadges(badgeData.badges);
+        }
+      } catch (error) {
+        console.error('Failed to fetch organization data:', error);
+      }
+    };
+    fetchOrgData();
+    return () => { isMounted = false; };
+  }, []);
 
   const isRtl = language === 'ar';
 

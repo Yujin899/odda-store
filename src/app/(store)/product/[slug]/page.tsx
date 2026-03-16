@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation';
-import mongoose from 'mongoose';
 import { cookies } from 'next/headers';
 import { ProductPageClient } from '@/components/products/ProductPageClient';
 import { connectDB } from '@/lib/mongodb';
@@ -7,13 +6,14 @@ import { Product } from '@/models/Product';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
 import { Review } from '@/models/Review';
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
+import type { ProductDoc, CategoryDoc, BadgeDoc, ReviewDoc } from '@/types/models';
+import type { Product as ProductType, RelatedProduct } from '@/types/store';
 
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata(
-  { params }: { params: Params },
-  parent: ResolvingMetadata
+  { params }: { params: Params }
 ): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
@@ -68,12 +68,13 @@ async function getReviews(productId: string) {
   await connectDB();
   const reviews = await Review.find({ targetId: productId, targetType: 'Product' })
     .sort({ createdAt: -1 })
-    .lean();
-  return reviews.map((r: any) => ({
+    .lean<ReviewDoc[]>();
+  return reviews.map((r) => ({
+    id: r._id.toString(),
     _id: r._id.toString(),
     userName: r.userName || 'Verified Customer',
     rating: r.rating,
-    comment: r.comment,
+    comment: r.comment || '',
     createdAt: r.createdAt.toISOString()
   }));
 }
@@ -89,19 +90,19 @@ async function getProduct(slug: string) {
   })
   .populate({ path: 'categoryId', strictPopulate: false })
   .populate({ path: 'badgeId', strictPopulate: false })
-  .lean();
+  .lean<ProductDoc>();
 
   if (!product) return null;
   return {
     ...product,
     _id: product._id.toString(),
     categoryId: product.categoryId ? {
-      ...product.categoryId,
-      _id: product.categoryId._id.toString()
+      ...(product.categoryId as unknown as CategoryDoc),
+      _id: (product.categoryId as unknown as CategoryDoc)._id.toString()
     } : null,
     badgeId: product.badgeId ? {
-      ...product.badgeId,
-      _id: product.badgeId._id.toString()
+      ...(product.badgeId as unknown as BadgeDoc),
+      _id: (product.badgeId as unknown as BadgeDoc)._id.toString()
     } : null
   };
 }
@@ -109,21 +110,22 @@ async function getProduct(slug: string) {
 async function getRelatedProducts(categoryId: string, currentProductId: string) {
   await connectDB();
   // Register models for population
-  if (mongoose.models && mongoose.models.Badge) Badge.modelName;
+  // Ensure models are registered for population side-effects
+  void Badge?.modelName;
   const products = await Product.find({
     categoryId: categoryId,
     _id: { $ne: currentProductId }
   })
   .populate({ path: 'badgeId', strictPopulate: false })
   .limit(4)
-  .lean();
+  .lean<ProductDoc[]>();
 
-  return products.map((p: any) => ({
+  return products.map((p) => ({
     ...p,
     _id: p._id.toString(),
     badgeId: p.badgeId ? {
-      ...p.badgeId,
-      _id: p.badgeId._id.toString()
+      ...(p.badgeId as unknown as BadgeDoc),
+      _id: (p.badgeId as unknown as BadgeDoc)._id.toString()
     } : null
   }));
 }
@@ -143,7 +145,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
   const reviews = await getReviews(product._id);
 
   // Normalize for Client Component which expects .category instead of .categoryId
-  const categoryData = (product.categoryId as any) || { _id: '', name: 'Uncategorized', nameAr: 'غير مصنف' };
+  const categoryData = (product.categoryId as unknown as CategoryDoc) || { _id: '', name: 'Uncategorized', nameAr: 'غير مصنف', slug: 'uncategorized' };
   
   const productWithCategory = {
     ...product,
@@ -164,7 +166,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
       availability: productWithCategory.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.odda-store.com'}/product/${productWithCategory.slug}`,
     },
-    aggregateRating: productWithCategory.numReviews > 0 ? {
+    aggregateRating: (productWithCategory.numReviews || 0) > 0 ? {
       '@type': 'AggregateRating',
       ratingValue: productWithCategory.averageRating,
       reviewCount: productWithCategory.numReviews,
@@ -173,6 +175,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
 
   // Strict DTO Mapping
   const sanitizedProduct = {
+    id: productWithCategory._id.toString(),
     _id: productWithCategory._id.toString(),
     name: productWithCategory.name,
     nameAr: productWithCategory.nameAr,
@@ -181,20 +184,22 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     descriptionAr: productWithCategory.descriptionAr,
     price: productWithCategory.price,
     compareAtPrice: productWithCategory.compareAtPrice,
-    images: (productWithCategory.images || []).map((img: any) => ({
+    images: (productWithCategory.images || []).map((img: { url: string; isPrimary: boolean; order: number }) => ({
       url: img.url,
-      isPrimary: img.isPrimary
+      isPrimary: img.isPrimary,
+      order: img.order
     })),
     category: {
-      _id: (productWithCategory.category as any)._id?.toString() || '',
-      name: (productWithCategory.category as any).name,
-      nameAr: (productWithCategory.category as any).nameAr,
-      slug: (productWithCategory.category as any).slug
+      _id: (productWithCategory.category as CategoryDoc)._id?.toString() || '',
+      name: (productWithCategory.category as CategoryDoc).name,
+      nameAr: (productWithCategory.category as CategoryDoc).nameAr,
+      slug: (productWithCategory.category as CategoryDoc).slug
     },
-    badge: (productWithCategory.badgeId as any) ? {
-      name: (productWithCategory.badgeId as any).name,
-      nameAr: (productWithCategory.badgeId as any).nameAr,
-      color: (productWithCategory.badgeId as any).color
+    badge: (productWithCategory.badgeId as unknown as BadgeDoc) ? {
+      name: (productWithCategory.badgeId as unknown as BadgeDoc).name,
+      nameAr: (productWithCategory.badgeId as unknown as BadgeDoc).nameAr,
+      color: (productWithCategory.badgeId as unknown as BadgeDoc).color,
+      textColor: (productWithCategory.badgeId as unknown as BadgeDoc).textColor
     } : null,
     stock: productWithCategory.stock,
     averageRating: productWithCategory.averageRating || 0,
@@ -203,15 +208,17 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     featuresAr: productWithCategory.featuresAr || []
   };
 
-  const sanitizedRelated = relatedProducts.map((p: any) => ({
+  const sanitizedRelated: RelatedProduct[] = relatedProducts.map((p) => ({
+    id: p._id.toString(),
     _id: p._id.toString(),
     name: p.name,
     nameAr: p.nameAr,
     slug: p.slug,
     price: p.price,
-    images: (p.images || []).map((img: any) => ({
+    images: (p.images || []).map((img) => ({
       url: img.url,
-      isPrimary: img.isPrimary
+      isPrimary: img.isPrimary,
+      order: img.order
     })),
     averageRating: p.averageRating || 0,
     numReviews: p.numReviews || 0
@@ -224,8 +231,8 @@ export default async function ProductDetailsPage({ params }: { params: Params })
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ProductPageClient 
-        product={sanitizedProduct as any} 
-        relatedProducts={sanitizedRelated as any} 
+        product={sanitizedProduct as unknown as ProductType} 
+        relatedProducts={sanitizedRelated as unknown as RelatedProduct[]} 
         initialReviews={reviews} 
         locale={locale} 
       />

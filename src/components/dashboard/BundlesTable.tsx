@@ -108,7 +108,7 @@ export function BundlesTable({
       });
       
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.addToast({
         title: dict.toasts.error,
         description: language === 'ar' ? 'فشل حذف العرض' : 'Failed to delete bundle',
@@ -124,7 +124,7 @@ export function BundlesTable({
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <div className="relative w-full sm:w-80">
-          <Search className={`absolute ${language === 'ar' ? 'end-2.5' : 'start-2.5'} top-2.5 h-4 w-4 text-muted-foreground`} />
+          <Search className={`absolute ${language === 'ar' ? 'inset-e-2.5' : 'inset-s-2.5'} top-2.5 h-4 w-4 text-muted-foreground`} />
           <Input
             placeholder={language === 'ar' ? 'بحث عن العروض...' : 'Search bundles...'}
             className={language === 'ar' ? 'pe-8 font-medium' : 'ps-8 font-medium'}

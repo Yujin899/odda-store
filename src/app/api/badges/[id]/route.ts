@@ -9,7 +9,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   try {
     const { id } = await params;
     const session = await auth();
-    if (!session || (session.user as any).role !== 'admin') {
+    if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
@@ -21,7 +21,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       return NextResponse.json({ message: 'Badge not found' }, { status: 404 });
     }
 
-    (revalidateTag as any)('products-list', 'page');
+    revalidateTag('products-list', 'page');
 
     const sanitizedBadge = {
       _id: badge._id.toString(),
@@ -30,8 +30,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     };
 
     return NextResponse.json(sanitizedBadge);
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
 }
 
@@ -39,7 +40,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   try {
     const { id } = await params;
     const session = await auth();
-    if (!session || (session.user as any).role !== 'admin') {
+    if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
@@ -59,10 +60,11 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
       return NextResponse.json({ message: 'Badge not found' }, { status: 404 });
     }
 
-    (revalidateTag as any)('products-list', 'page');
+    revalidateTag('products-list', 'page');
 
     return NextResponse.json({ message: 'Badge deleted successfully' });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

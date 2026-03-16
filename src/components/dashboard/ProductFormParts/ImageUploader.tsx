@@ -32,6 +32,8 @@ interface UploadTask {
   preview: string;
 }
 
+import { uploadImage } from '@/lib/upload';
+
 export function ImageUploader() {
   const { language } = useLanguageStore();
   const dict = getDictionary(language);
@@ -57,10 +59,6 @@ export function ImageUploader() {
     setUploadingFiles(prev => [...prev, ...newTasks]);
 
     for (const task of newTasks) {
-      const formData = new FormData();
-      formData.append('file', task.file);
-      formData.append('folder', 'odda/products'); 
-
       // Simulate smooth progress
       const progressInterval = setInterval(() => {
         setUploadingFiles(prev => prev.map(f => 
@@ -69,43 +67,29 @@ export function ImageUploader() {
       }, 200);
 
       try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
+        const data = await uploadImage(task.file, 'odda/products');
         
         clearInterval(progressInterval);
-
-        if (res.ok) {
-          setUploadingFiles(prev => prev.map(f => f.id === task.id ? { ...f, progress: 100 } : f));
+        setUploadingFiles(prev => prev.map(f => f.id === task.id ? { ...f, progress: 100 } : f));
+        
+        // Small delay before replacing with final image for visual smoothness
+        setTimeout(() => {
+          const currentImages = watch('images') || [];
+          const newImage = {
+            url: data.url,
+            isPrimary: currentImages.length === 0,
+            order: currentImages.length
+          };
           
-          // Small delay before replacing with final image for visual smoothness
-          setTimeout(() => {
-            const currentImages = watch('images') || [];
-            const newImage = {
-              url: data.url,
-              isPrimary: currentImages.length === 0,
-              order: currentImages.length
-            };
-            
-            setValue('images', [...currentImages, newImage], { 
-              shouldValidate: true, 
-              shouldDirty: true 
-            });
-
-            setUploadingFiles(prev => prev.filter(f => f.id !== task.id));
-            URL.revokeObjectURL(task.preview);
-          }, 400);
-
-        } else {
-          setUploadingFiles(prev => prev.filter(f => f.id !== task.id));
-          addToast({ 
-            title: dict.toasts.uploadFailed, 
-            description: `${task.file.name}: ${data.message || 'Upload failed'}`, 
-            type: 'error' 
+          setValue('images', [...currentImages, newImage], { 
+            shouldValidate: true, 
+            shouldDirty: true 
           });
-        }
+
+          setUploadingFiles(prev => prev.filter(f => f.id !== task.id));
+          URL.revokeObjectURL(task.preview);
+        }, 400);
+
       } catch (error: any) {
         clearInterval(progressInterval);
         setUploadingFiles(prev => prev.filter(f => f.id !== task.id));

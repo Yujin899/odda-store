@@ -18,14 +18,14 @@ import { NavbarMobileMenuTrigger } from './NavbarMobileMenuTrigger';
 async function getCategories() {
   await connectDB();
   const categories = await Category.find().lean();
-  return categories.map((cat: any) => ({
+  return (categories as unknown as Array<{ _id: { toString(): string }, name: string, nameAr?: string, slug: string, description?: string, descriptionAr?: string, image?: string }>).map((cat) => ({
     id: cat._id.toString(),
     name: cat.name,
     nameAr: cat.nameAr,
     slug: cat.slug,
-    description: cat.description ?? null,
-    descriptionAr: cat.descriptionAr ?? null,
-    image: cat.image ?? null,
+    description: cat.description || undefined,
+    descriptionAr: cat.descriptionAr || undefined,
+    image: cat.image || undefined,
   }));
 }
 

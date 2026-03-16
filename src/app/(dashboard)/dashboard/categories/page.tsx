@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { getDictionary } from '@/dictionaries';
-import { CategoriesClient } from './CategoriesParts/CategoriesClient';
+import { CategoriesClient } from '@/components/dashboard/CategoriesClient';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function CategoriesPage() {
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
-  const dict = getDictionary(locale as any);
+  const dict = getDictionary(locale as 'en' | 'ar');
 
   return (
     <Suspense fallback={

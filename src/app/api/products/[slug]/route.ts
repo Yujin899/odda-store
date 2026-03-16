@@ -6,7 +6,7 @@ import { deleteCloudinaryImage } from '@/lib/cloudinary';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
 import { revalidateTag } from 'next/cache';
-import { IProductDocument } from '@/models/Product';
+import type { ProductDoc, CategoryDoc, BadgeDoc } from '@/types/models';
 
 // export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Cache for 1 hour
@@ -27,14 +27,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
     })
     .populate({ path: 'categoryId', strictPopulate: false })
     .populate({ path: 'badgeId', strictPopulate: false })
-    .lean();
+    .lean<ProductDoc>();
 
     if (!product) {
       return NextResponse.json({ message: 'Product not found' }, { status: 404 });
     }
 
-    const badge = product.badgeId as unknown as { name?: string; nameAr?: string; color?: string; textColor?: string } | null;
-    const category = product.categoryId as unknown as { _id: { toString(): string } } | null;
+    const badge = product.badgeId as unknown as BadgeDoc | null;
+    const category = product.categoryId as unknown as CategoryDoc | null;
 
     const sanitizedProduct = {
       id: product._id.toString(),
@@ -46,10 +46,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       price: product.price,
       originalPrice: product.compareAtPrice ?? null,
       images: product.images,
-      categoryId: category?._id?.toString() ?? product.categoryId?.toString() ?? null,
-      categoryName: (product.categoryId as any)?.name ?? null,
-      categoryNameAr: (product.categoryId as any)?.nameAr ?? null,
-      categorySlug: (product.categoryId as any)?.slug ?? null,
+      categoryId: category?._id?.toString() ?? null,
+      categoryName: category?.name ?? null,
+      categoryNameAr: category?.nameAr ?? null,
+      categorySlug: category?.slug ?? null,
       badge: badge ? {
         name: badge.name || badge.nameAr,
         nameAr: badge.nameAr,
@@ -85,7 +85,7 @@ export const PUT = auth(async (req, { params }) => {
     
     const product = await Product.findOne({
       $or: [{ _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }, { slug: slug }].filter(Boolean),
-    }) as IProductDocument | null;
+    }) as ProductDoc | null;
     if (!product) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
     const updates = await req.json();
@@ -113,16 +113,15 @@ export const PUT = auth(async (req, { params }) => {
       }
     }
 
-    const updatedProduct = await Product.findByIdAndUpdate(product._id, updates, { new: true })
+    const updatedProduct = await Product.findByIdAndUpdate(product?._id, updates, { new: true })
       .populate({ path: 'categoryId', strictPopulate: false })
-      .populate({ path: 'badgeId', strictPopulate: false }) as IProductDocument | null;
+      .populate({ path: 'badgeId', strictPopulate: false })
+      .lean<ProductDoc>();
 
     if (!updatedProduct) throw new Error('Failed to update product');
 
     revalidateTag('products-list', 'page');
     
-    const badge = updatedProduct.badgeId as unknown as { name?: string; nameAr?: string; color?: string; textColor?: string } | null;
-
     const sanitizedProduct = {
       id: updatedProduct._id.toString(),
       name: updatedProduct.name,
@@ -133,15 +132,15 @@ export const PUT = auth(async (req, { params }) => {
       price: updatedProduct.price,
       originalPrice: updatedProduct.compareAtPrice ?? null,
       images: updatedProduct.images,
-      categoryId: updatedProduct.categoryId?.toString() ?? null,
-      categoryName: (updatedProduct.categoryId as any)?.name ?? null,
-      categoryNameAr: (updatedProduct.categoryId as any)?.nameAr ?? null,
-      categorySlug: (updatedProduct.categoryId as any)?.slug ?? null,
-      badge: badge ? {
-        name: badge.name,
-        nameAr: badge.nameAr,
-        color: badge.color,
-        textColor: badge.textColor
+      categoryId: (updatedProduct.categoryId as unknown as CategoryDoc)?._id?.toString() ?? null,
+      categoryName: (updatedProduct.categoryId as unknown as CategoryDoc)?.name ?? null,
+      categoryNameAr: (updatedProduct.categoryId as unknown as CategoryDoc)?.nameAr ?? null,
+      categorySlug: (updatedProduct.categoryId as unknown as CategoryDoc)?.slug ?? null,
+      badge: (updatedProduct.badgeId as unknown as BadgeDoc) ? {
+        name: (updatedProduct.badgeId as unknown as BadgeDoc).name,
+        nameAr: (updatedProduct.badgeId as unknown as BadgeDoc).nameAr,
+        color: (updatedProduct.badgeId as unknown as BadgeDoc).color,
+        textColor: (updatedProduct.badgeId as unknown as BadgeDoc).textColor
       } : null,
       stock: updatedProduct.stock,
       featured: updatedProduct.featured,
@@ -168,7 +167,7 @@ export const DELETE = auth(async (req, { params }) => {
     
     const product = await Product.findOne({
       $or: [{ _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }, { slug: slug }].filter(Boolean),
-    }) as IProductDocument | null;
+    }) as ProductDoc | null;
     if (!product) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
     // Cleanup Cloudinary

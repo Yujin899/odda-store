@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function BadgesPage() {
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
-  const dict = getDictionary(locale as any);
+  const dict = getDictionary(locale as 'en' | 'ar');
 
   return (
     <Suspense fallback={

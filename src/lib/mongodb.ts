@@ -6,7 +6,10 @@ import mongoose from 'mongoose';
  * during API Route usage.
  */
 declare global {
-  var mongoose: { conn: any; promise: any } | undefined;
+  var mongoose: { 
+    conn: typeof import('mongoose') | null; 
+    promise: Promise<typeof import('mongoose')> | null; 
+  } | undefined;
 }
 
 const MONGODB_URI = process.env.MONGODB_URI;

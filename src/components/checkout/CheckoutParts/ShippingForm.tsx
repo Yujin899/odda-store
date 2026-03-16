@@ -1,11 +1,11 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
+import { Dictionary } from '@/types/store';
 import { User, Mail, Phone, MapPin, Building2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FormInput } from '@/components/ui/FormInput';
 import { useLanguageStore } from '@/store/useLanguageStore';
-import { getDictionary } from '@/dictionaries';
 import { CheckoutFormValues } from '@/lib/schemas';
 
 const EGYPT_CITIES = [
@@ -15,13 +15,13 @@ const EGYPT_CITIES = [
 ];
 
 interface ShippingFormProps {
+  dict: Dictionary;
   onNext: () => void;
   onBack: () => void;
 }
 
-export function ShippingForm({ onNext, onBack }: ShippingFormProps) {
+export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
   const { language } = useLanguageStore();
-  const dict = getDictionary(language);
   const isRtl = language === 'ar';
 
   const { 

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export interface Product {
+export interface RecentItem {
   id: string;
   slug: string;
   name: string;
@@ -10,8 +10,8 @@ export interface Product {
 }
 
 interface RecentlyViewedStore {
-  items: Product[];
-  addViewedItem: (item: Product) => void;
+  items: RecentItem[];
+  addViewedItem: (item: RecentItem) => void;
 }
 
 export const useRecentlyViewedStore = create<RecentlyViewedStore>((set) => ({

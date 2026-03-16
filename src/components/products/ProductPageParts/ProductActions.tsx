@@ -2,19 +2,10 @@ import React from 'react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
 import { AddToCartSection } from '@/components/shared/AddToCartSection';
-
-interface ProductActionsData {
-  _id: string;
-  name: string;
-  nameAr?: string;
-  slug: string;
-  price: number;
-  image?: string;
-  images?: { url: string; isPrimary?: boolean }[];
-}
+import type { Product } from '@/types/store';
 
 interface ProductActionsProps {
-  product: ProductActionsData;
+  product: Product;
   stock: number;
 }
 
@@ -24,7 +15,7 @@ export function ProductActions({ product, stock }: ProductActionsProps) {
 
   return (
     <AddToCartSection
-      productId={product._id}
+      productId={product.id}
       productName={product.name}
       productNameAr={product.nameAr}
       price={product.price}

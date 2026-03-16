@@ -44,34 +44,9 @@ import {
 import { toast } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
+import { Product } from '@/types/store';
 
-interface Product {
-  _id: string;
-  name: string;
-  nameAr?: string;
-  slug: string;
-  categoryId: {
-    _id: string;
-    name: string;
-    nameAr?: string;
-  };
-  badgeId?: {
-    _id: string;
-    name: string;
-    nameAr?: string;
-    color: string;
-    textColor: string;
-  };
-  price: number;
-  originalPrice?: number;
-  images: {
-    url: string;
-    isPrimary: boolean;
-    order: number;
-  }[];
-  stock: number;
-  featured: boolean;
-}
+// Product interface is already defined in store.ts
 
 interface ProductsTableProps {
   products: Product[];
@@ -128,7 +103,7 @@ export function ProductsTable({
       });
       
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.addToast({
         title: dict.toasts.error,
         description: dict.toasts.productDeleteFailed,
@@ -144,7 +119,7 @@ export function ProductsTable({
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <div className="relative w-full sm:w-80">
-          <Search className={`absolute ${language === 'ar' ? 'end-2.5' : 'start-2.5'} top-2.5 h-4 w-4 text-muted-foreground`} />
+          <Search className={`absolute ${language === 'ar' ? 'inset-e-2.5' : 'inset-s-2.5'} top-2.5 h-4 w-4 text-muted-foreground`} />
           <Input
             placeholder={dict.dashboard.productsPage.searchPlaceholder}
             className={language === 'ar' ? 'pe-8 font-medium' : 'ps-8 font-medium'}
@@ -239,7 +214,7 @@ export function ProductsTable({
                     </TableCell>
                     <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                       <code className={`text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-600 font-mono ${language === 'ar' ? 'font-cairo' : ''}`}>
-                        {language === 'ar' && product.categoryId?.nameAr ? product.categoryId.nameAr : (product.categoryId?.name || 'Uncategorized')}
+                        {language === 'ar' && typeof product.categoryId === 'object' ? product.categoryId?.nameAr : (typeof product.categoryId === 'object' ? product.categoryId?.name : (product.category?.name || 'Uncategorized'))}
                       </code>
                     </TableCell>
                     <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
@@ -281,9 +256,12 @@ export function ProductsTable({
                         {product.badgeId && (
                           <span 
                             className={`px-1.5 py-0.5 rounded-sm text-[9px] font-black uppercase tracking-widest shadow-sm border border-black/5 ${language === 'ar' ? 'font-cairo' : ''}`}
-                            style={{ backgroundColor: product.badgeId.color, color: product.badgeId.textColor }}
+                            style={{ 
+                              backgroundColor: typeof product.badgeId === 'object' ? product.badgeId?.color : '', 
+                              color: typeof product.badgeId === 'object' ? product.badgeId?.textColor : '' 
+                            }}
                           >
-                            {language === 'ar' && product.badgeId.nameAr ? product.badgeId.nameAr : product.badgeId.name}
+                            {language === 'ar' && typeof product.badgeId === 'object' ? product.badgeId?.nameAr : (typeof product.badgeId === 'object' ? product.badgeId?.name : (typeof product.badgeId === 'string' ? product.badgeId : ''))}
                           </span>
                         )}
                       </div>

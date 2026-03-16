@@ -36,7 +36,15 @@ export const POST = auth(async (req) => {
 
     let calculatedTotal = 0;
     const stockErrors: string[] = [];
-    const verifiedItems: any[] = [];
+    const verifiedItems: {
+      productId: string;
+      name: string;
+      nameAr?: string;
+      price: number;
+      quantity: number;
+      type: 'Product' | 'Bundle';
+      image?: string;
+    }[] = [];
     
     // Process Products
     productItems.forEach((item) => {
@@ -90,7 +98,7 @@ export const POST = auth(async (req) => {
       status = 'pending_verification';
     }
 
-    const orderData: any = {
+    const orderData = {
       orderNumber,
       items: verifiedItems,
       totalAmount: calculatedTotal,
@@ -98,11 +106,8 @@ export const POST = auth(async (req) => {
       paymentProof: paymentProof || '',
       status,
       shippingAddress,
+      userId: userId || undefined,
     };
-
-    if (userId) {
-      orderData.userId = userId;
-    }
 
     const order = await Order.create(orderData);
 
@@ -110,7 +115,7 @@ export const POST = auth(async (req) => {
     try {
       // Deduct Products
       if (productItems.length > 0) {
-        const productOps = productItems.map((item: any) => ({
+        const productOps = productItems.map((item) => ({
           updateOne: {
             filter: { _id: item.productId },
             update: { $inc: { stock: -item.quantity } }
@@ -121,7 +126,7 @@ export const POST = auth(async (req) => {
       
       // Deduct Bundles
       if (bundleItems.length > 0) {
-        const bundleOps = bundleItems.map((item: any) => ({
+        const bundleOps = bundleItems.map((item) => ({
           updateOne: {
             filter: { _id: item.productId },
             update: { $inc: { stock: -item.quantity } }
@@ -204,16 +209,17 @@ export const POST = auth(async (req) => {
       orderNumber: order.orderNumber, 
       status: order.status 
     }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Order creation error:', err);
-    return NextResponse.json({ message: err.message || 'Internal server error' }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});
 
 export const GET = auth(async (req) => {
   try {
     const session = req.auth;
-    if (!session || (session.user as any)?.role !== 'admin') {
+    if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
@@ -225,7 +231,7 @@ export const GET = auth(async (req) => {
     const status = searchParams.get('status');
     const skip = (page - 1) * limit;
 
-    const query: Record<string, any> = {};
+    const query: Record<string, string | number | boolean | object> = {};
     if (status) query.status = status;
 
     const [orders, total] = await Promise.all([
@@ -238,7 +244,7 @@ export const GET = auth(async (req) => {
     ]);
 
     // Strict DTO Mapping to prevent PII leakage and metadata exposure
-    const sanitizedOrders = orders.map((o: any) => ({
+    const sanitizedOrders = orders.map((o) => ({
       id: o._id.toString(),
       orderNumber: o.orderNumber,
       customer: o.shippingAddress?.fullName || 'N/A',
@@ -257,8 +263,8 @@ export const GET = auth(async (req) => {
       page,
       totalPages: Math.ceil(total / limit),
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Orders GET error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
-}) as any;
+});

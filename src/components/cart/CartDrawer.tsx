@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { formatPrice } from '@/lib/utils';
 
 export function CartDrawer() {
   const router = useRouter();
@@ -131,7 +132,7 @@ export function CartDrawer() {
                               <Plus className="size-3 sm:size-4 stroke-[3px]" />
                             </button>
                           </div>
-                          <p className="font-black text-foreground text-xs sm:text-sm whitespace-nowrap">{(item.price * item.quantity).toLocaleString()} {dict.common.egp}</p>
+                          <p className="font-black text-foreground text-xs sm:text-sm whitespace-nowrap">{formatPrice(item.price * item.quantity, language as 'en' | 'ar')}</p>
                         </div>
                       </div>
                     </motion.div>
@@ -144,19 +145,19 @@ export function CartDrawer() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     <span>{dict.common.subtotal}</span>
-                    <span>{totalAmount.toLocaleString()} {dict.common.egp}</span>
+                    <span>{formatPrice(totalAmount, language as 'en' | 'ar')}</span>
                   </div>
                   <div className="flex justify-between text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     <span>{dict.common.shipping}</span>
                     {currentShippingFee === 0 ? (
                       <span className="text-(--primary)">{dict.common.free}</span>
                     ) : (
-                      <span>{currentShippingFee.toLocaleString()} {dict.common.egp}</span>
+                      <span>{formatPrice(currentShippingFee, language as 'en' | 'ar')}</span>
                     )}
                   </div>
                   <div className="flex justify-between text-lg sm:text-xl font-black text-foreground pt-3 sm:pt-4 border-t border-slate-100">
                     <span>{dict.common.total}</span>
-                    <span>{grandTotal.toLocaleString()} {dict.common.egp}</span>
+                    <span>{formatPrice(grandTotal, language as 'en' | 'ar')}</span>
                   </div>
                 </div>
                 <div className="pt-2 flex flex-col">

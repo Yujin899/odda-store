@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useToastStore } from '@/store/useToastStore';
 import { BundleFormValues } from '@/lib/schemas';
+import { DropResult } from '@hello-pangea/dnd';
 
-export function useBundleUpload(dict: any) {
+export function useBundleUpload() {
   const { setValue, watch } = useFormContext<BundleFormValues>();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState<{ id: string; file: File; progress: number; preview: string }[]>([]);
@@ -22,7 +22,7 @@ export function useBundleUpload(dict: any) {
       progress: 0,
       preview: URL.createObjectURL(file)
     }));
-    setUploadingFiles(prev => [...prev, ...uploadTasks]);
+    setUploadingFiles((prev: Array<{ id: string; file: File; progress: number; preview: string }>) => [...prev, ...uploadTasks]);
 
     for (const task of uploadTasks) {
       const formData = new FormData();
@@ -38,24 +38,24 @@ export function useBundleUpload(dict: any) {
         
         if (res.ok) {
           setValue('images', [...images, data.url]);
-          setUploadingFiles(prev => prev.filter(f => f.id !== task.id));
+          setUploadingFiles((prev: Array<{ id: string; file: File; progress: number; preview: string }>) => prev.filter((f) => f.id !== task.id));
           URL.revokeObjectURL(task.preview);
         } else {
-           setUploadingFiles(prev => prev.filter(f => f.id !== task.id));
+           setUploadingFiles(prev => prev.filter((f: { id: string }) => f.id !== task.id));
            // No toast here to keep it lean, caller handles or pass dict
         }
-      } catch (err) {
-        setUploadingFiles(prev => prev.filter(f => f.id !== task.id));
+      } catch {
+        setUploadingFiles((prev: Array<{ id: string; file: File; progress: number; preview: string }>) => prev.filter((f) => f.id !== task.id));
       }
     }
     setIsUploading(false);
   };
 
   const removeImage = (index: number) => {
-    setValue('images', images.filter((_, i) => i !== index));
+    setValue('images', (images as string[]).filter((_, i: number) => i !== index));
   };
 
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const items = Array.from(images);
     const [reorderedItem] = items.splice(result.source.index, 1);

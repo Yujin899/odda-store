@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, Copy, Check } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
+import { formatDate } from '@/lib/utils';
 
 interface OrderHeaderProps {
   orderNumber: string;
@@ -87,7 +88,7 @@ export function OrderHeader({ orderNumber, createdAt }: OrderHeaderProps) {
           </div>
           
           <p className="text-[10px] font-black text-(--primary) uppercase tracking-[0.3em]">
-            {isAr ? 'بتاريخ' : 'PLACED ON'} {new Date(createdAt).toLocaleDateString(isAr ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {isAr ? 'بتاريخ' : 'PLACED ON'} {formatDate(createdAt, language as 'en' | 'ar')}
           </p>
         </div>
       </div>

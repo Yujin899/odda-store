@@ -22,7 +22,9 @@ import { toast } from '@/store/useToastStore';
 import { Loader2, Package, MapPin, CreditCard, ExternalLink } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
+import { formatDate, formatPrice } from '@/lib/utils';
 import Image from 'next/image';
+import { Order } from '@/types/store';
 
 interface OrderDetailsModalProps {
   orderId: string;
@@ -33,10 +35,10 @@ interface OrderDetailsModalProps {
 
 export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = false }: OrderDetailsModalProps) {
   const paymentSectionRef = useRef<HTMLDivElement>(null);
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
-  const [settings, setSettings] = useState<any>(null);
+  const [settings, setSettings] = useState<{ instapayNumber?: string } | null>(null);
   const { language } = useLanguageStore();
   const dict = getDictionary(language);
   const router = useRouter();
@@ -97,7 +99,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
 
       if (res.ok) {
         toast.success(dict.toasts.orderStatusUpdated);
-        setOrder({ ...order, status: newStatus });
+        if (order) setOrder({ ...order, status: newStatus });
         router.refresh();
       } else {
         toast.error(dict.toasts.failedToUpdateStatus);
@@ -151,7 +153,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
             )}
           </div>
           <DialogDescription className={language === 'ar' ? 'text-end' : 'text-start'}>
-            {order ? `${dict.dashboard.ordersPage.modal.createdOn} ${new Date(order.createdAt).toLocaleString(language === 'ar' ? 'ar-EG' : 'en-US')}` : dict.dashboard.ordersPage.modal.loading}
+            {order ? `${dict.dashboard.ordersPage.modal.createdOn} ${formatDate(order.createdAt, language as 'en' | 'ar')}` : dict.dashboard.ordersPage.modal.loading}
           </DialogDescription>
         </DialogHeader>
 
@@ -169,10 +171,10 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
                   {dict.dashboard.ordersPage.modal.shippingAddress}
                 </div>
                 <div className="text-sm border p-3 rounded-sm bg-slate-50/50">
-                  <p className="font-bold">{order.shippingAddress.fullName}</p>
-                  <p className="text-muted-foreground">{order.shippingAddress.phone}</p>
-                  <p className="text-muted-foreground">{order.shippingAddress.address}</p>
-                  <p className="text-muted-foreground">{order.shippingAddress.city}</p>
+                  <p className="font-bold">{order.shippingAddress?.fullName}</p>
+                  <p className="text-muted-foreground">{order.shippingAddress?.phone}</p>
+                  <p className="text-muted-foreground">{order.shippingAddress?.address}</p>
+                  <p className="text-muted-foreground">{order.shippingAddress?.city}</p>
                 </div>
               </div>
 
@@ -185,7 +187,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">{dict.dashboard.ordersPage.modal.method}</span>
                   <Badge variant="secondary" className="uppercase text-[10px] bg-slate-200 text-slate-700">
-                    {(dict.dashboard.statuses as any)[order.paymentMethod] || order.paymentMethod}
+                    {(dict.dashboard.statuses as Record<string, string>)[order.paymentMethod] || order.paymentMethod}
                   </Badge>
                 </div>
                 
@@ -211,7 +213,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
 
                 <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                   <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">{dict.dashboard.ordersPage.modal.grandTotal}</span>
-                  <span className="font-black text-lg text-(--primary)">{order.totalAmount.toLocaleString()} {dict.common.egp}</span>
+                  <span className="font-black text-lg text-(--primary)">{formatPrice(order.totalAmount, language as 'en' | 'ar')}</span>
                 </div>
               </div>
             </div>
@@ -219,15 +221,15 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
 
           {/* Items */}
           <div className="space-y-3">
-            <div className="text-xs font-bold uppercase tracking-widest text-[var(--navy)]/50">
+            <div className="text-xs font-bold uppercase tracking-widest text-(--navy)/50">
               {dict.dashboard.ordersPage.modal.orderItems}
             </div>
             <div className="border rounded-sm divide-y">
-              {order.items.map((item: any, idx: number) => (
+              {order.items.map((item: any, idx) => (
                 <div key={idx} className="p-3 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className={`text-sm font-medium ${language === 'ar' ? 'font-cairo' : ''}`}>{item.productId?.nameAr && language === 'ar' ? item.productId.nameAr : (item.productId?.name || 'Loading product...')}</span>
-                    <span className="text-[10px] text-muted-foreground">{dict.dashboard.ordersPage.modal.price}: {item.price.toLocaleString()} {dict.common.egp}</span>
+                    <span className={`text-sm font-medium ${language === 'ar' ? 'font-cairo' : ''}`}>{item.nameAr && language === 'ar' ? item.nameAr : (item.name || 'Loading product...')}</span>
+                    <span className="text-[10px] text-muted-foreground">{dict.dashboard.ordersPage.modal.price}: {formatPrice(item.price, language as 'en' | 'ar')}</span>
                   </div>
                   <div className="text-sm font-bold">
                     x{item.quantity}
@@ -241,7 +243,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
           {order.paymentMethod === 'InstaPay' && order.paymentScreenshot && (
             <div className="space-y-3" ref={paymentSectionRef}>
               <div className="flex items-center justify-between">
-                <div className="text-xs font-bold uppercase tracking-widest text-[var(--navy)]/50">
+                <div className="text-xs font-bold uppercase tracking-widest text-(--navy)/50">
                   {dict.dashboard.ordersPage.modal.paymentProof}
                 </div>
                 <a 

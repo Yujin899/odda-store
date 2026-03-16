@@ -2,6 +2,11 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useRecentlyViewedStore } from '@/store/useRecentlyViewedStore';
+import type { 
+  Product as ProductType, 
+  Review as ReviewType, 
+  RelatedProduct 
+} from '@/types/store';
 
 // Modular Page Parts
 import { ProductBreadcrumbs } from './ProductPageParts/ProductBreadcrumbs';
@@ -11,36 +16,12 @@ import { ProductActions } from './ProductPageParts/ProductActions';
 import { ProductTabs } from './ProductPageParts/ProductTabs';
 import { RelatedProducts } from './ProductPageParts/RelatedProducts';
 
-interface ProductData {
-  _id: string;
-  name: string;
-  nameAr?: string;
-  slug: string;
-  price: number;
-  compareAtPrice?: number;
-  originalPrice?: number;
-  category: { name: string; nameAr?: string; slug?: string };
-  images: { url: string; isPrimary?: boolean }[];
-  stock: number;
-  description: string;
-  descriptionAr?: string;
-  features?: string[];
-  featuresAr?: string[];
-  badgeId?: { name: string; nameAr?: string; color: string; textColor: string };
-}
 
-interface ReviewData {
-  _id: string;
-  userName: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-}
 
 interface ProductPageClientProps {
-  product: ProductData;
-  initialReviews?: ReviewData[];
-  relatedProducts?: any[];
+  product: ProductType;
+  initialReviews?: ReviewType[];
+  relatedProducts?: RelatedProduct[];
   locale: string;
 }
 
@@ -51,14 +32,14 @@ export function ProductPageClient({
   locale 
 }: ProductPageClientProps) {
   const { addViewedItem } = useRecentlyViewedStore();
-  const [reviews, setReviews] = useState<ReviewData[]>(initialReviews);
+  const [reviews, setReviews] = useState<ReviewType[]>(initialReviews);
 
   const language = locale as 'en' | 'ar';
 
   // 1. Analytics & Ratings Calculation
   useEffect(() => {
     addViewedItem({
-      id: product._id,
+      id: product.id,
       slug: product.slug,
       name: product.name,
       nameAr: product.nameAr || '',

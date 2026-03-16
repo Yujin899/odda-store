@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react';
 
 import { unstable_cache } from 'next/cache';
+import type { BundleDoc } from '@/types/models';
 
 async function getAllBundles() {
   return unstable_cache(
@@ -26,18 +27,19 @@ async function getAllBundles() {
         ] 
       })
         .sort({ createdAt: -1 })
-        .lean();
+        .lean<BundleDoc[]>();
         
       // Strict DTO Mapping
-      return bundles.map((b: any) => ({
+      return bundles.map((b) => ({
         _id: b._id.toString(), // Keep _id for component keys
         name: b.name,
         nameAr: b.nameAr,
         slug: b.slug,
         price: b.price,
         compareAtPrice: b.compareAtPrice,
-        images: (b.images || []).map((url: string) => url),
+        images: b.images,
         stock: b.stock,
+        featured: b.featured,
         bundleItems: b.bundleItems || [],
         bundleItemsAr: b.bundleItemsAr || [],
         averageRating: b.averageRating || 0,
@@ -96,10 +98,10 @@ export default async function BundlesPage() {
         <div className="max-w-7xl mx-auto px-6">
           {bundles.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {bundles.map((bundle: IBundle) => (
+              {bundles.map((bundle) => (
                 <BundleCard 
-                  key={bundle._id!.toString()}
-                  bundle={bundle} 
+                  key={bundle._id}
+                  bundle={bundle as unknown as IBundle} 
                   locale={locale} 
                   dict={dict} 
                 />

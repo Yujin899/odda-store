@@ -3,22 +3,24 @@ import { connectDB } from '@/lib/mongodb';
 import { Bundle } from '@/models/Bundle';
 import { auth } from '@/auth';
 import { revalidateTag, unstable_cache } from 'next/cache';
+import type { BundleDoc } from '@/types/models';
+import { NextRequest } from 'next/server';
 
 const getCachedBundles = unstable_cache(
-  async (query: Record<string, any> = {}) => {
+  async (query: Record<string, string | number | boolean | object> = {}) => {
     await connectDB();
-    return await Bundle.find(query).sort({ createdAt: -1 }).lean();
+    return await Bundle.find(query).sort({ createdAt: -1 }).lean<BundleDoc[]>();
   },
   ['bundles-list'],
   { tags: ['bundles-list'], revalidate: 60 }
 );
 
-export async function GET(req: any) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search');
     
-    const query: Record<string, any> = {};
+    const query: Record<string, string | number | boolean | object> = {};
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
@@ -27,7 +29,7 @@ export async function GET(req: any) {
     }
 
     const bundles = await getCachedBundles(query);
-    const sanitizedBundles = bundles.map((b: any) => ({
+    const sanitizedBundles = bundles.map((b) => ({
       id: b._id.toString(),
       name: b.name,
       nameAr: b.nameAr,
@@ -35,7 +37,7 @@ export async function GET(req: any) {
       description: b.description,
       descriptionAr: b.descriptionAr,
       price: b.price,
-      originalPrice: b.originalPrice ?? null,
+      originalPrice: b.compareAtPrice ?? null,
       images: b.images,
       stock: b.stock,
       featured: b.featured,
@@ -44,7 +46,7 @@ export async function GET(req: any) {
       createdAt: b.createdAt,
     }));
     return NextResponse.json(sanitizedBundles);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Bundles fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
@@ -71,8 +73,8 @@ export const POST = auth(async (req) => {
 
     const bundle = await Bundle.create(bundleData);
 
-    (revalidateTag as any)('bundles-list', 'page');
-    (revalidateTag as any)('products-list', 'page'); // Bundles often contain products
+    revalidateTag('bundles-list', 'page');
+    revalidateTag('products-list', 'page'); // Bundles often contain products
 
     const sanitizedBundle = {
       _id: bundle._id.toString(),
@@ -81,8 +83,9 @@ export const POST = auth(async (req) => {
     };
 
     return NextResponse.json(sanitizedBundle, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Bundle creation error:', err);
-    return NextResponse.json({ message: err.message || 'Internal server error' }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Dictionary } from '@/types/store';
 import { 
   WalletCards, 
   Truck, 
@@ -15,16 +16,15 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useLanguageStore } from '@/store/useLanguageStore';
-import { getDictionary } from '@/dictionaries';
 import { CheckoutFormValues } from '@/lib/schemas';
 
 interface PaymentStepProps {
+  dict: Dictionary;
   instapayNumber: string;
 }
 
-export function PaymentStep({ instapayNumber }: PaymentStepProps) {
+export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
   const { language } = useLanguageStore();
-  const dict = getDictionary(language);
   const isRtl = language === 'ar';
 
   const { 

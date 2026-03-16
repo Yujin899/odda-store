@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, FreeMode, Autoplay } from 'swiper/modules';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductCard } from '@/components/products/ProductCard';
+import type { RelatedProduct } from '@/types/store';
 
 // Swiper styles are usually imported in the main layout or parent component
 // but including them in a client component index is safe if using Turbopack
@@ -13,7 +14,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
 
 interface RelatedProductsProps {
-  products: any[];
+  products: RelatedProduct[];
   language: 'en' | 'ar';
 }
 
@@ -66,10 +67,10 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
             1024: { slidesPerView: 3, spaceBetween: 32 },
             1280: { slidesPerView: 4, spaceBetween: 32 },
           }}
-          className="w-full !overflow-visible"
+          className="w-full overflow-visible!"
         >
           {products.map((p) => (
-            <SwiperSlide key={p._id} className="h-auto">
+            <SwiperSlide key={p.id} className="h-auto">
               <ProductCard product={p} locale={language} />
             </SwiperSlide>
           ))}
@@ -79,6 +80,4 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
   );
 }
 
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
-}
+

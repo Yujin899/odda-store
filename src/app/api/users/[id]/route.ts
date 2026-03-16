@@ -54,11 +54,12 @@ export const PATCH = auth(async (req, { params }) => {
         isBlocked: user.isBlocked
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('User update error:', error);
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});
 
 export const DELETE = auth(async (req, { params }) => {
   if (req.auth?.user?.role !== 'admin') {
@@ -84,8 +85,9 @@ export const DELETE = auth(async (req, { params }) => {
     }
 
     return NextResponse.json({ message: 'User deleted successfully' });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('User deletion error:', error);
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});

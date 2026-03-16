@@ -16,8 +16,8 @@ export const GET = auth(async (req) => {
       .sort({ createdAt: -1 });
 
     return NextResponse.json({ users });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Users fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
-}) as any;
+});

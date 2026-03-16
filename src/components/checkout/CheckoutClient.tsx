@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { Dictionary } from '@/types/store';
 import { FormProvider } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Session } from 'next-auth';
@@ -18,7 +19,7 @@ import { PaymentStep } from './CheckoutParts/PaymentStep';
 import { Button } from '@/components/ui/button';
 
 interface CheckoutClientProps {
-  dict: any;
+  dict: Dictionary;
   language: string;
   session: Session | null;
   settings: CheckoutSettings;
@@ -54,7 +55,7 @@ export function CheckoutClient({ dict, language, session, settings }: CheckoutCl
               <AnimatePresence mode="wait">
                 {currentStep === 0 && (
                   <motion.div key="gate" initial={{ opacity: 0, x: isRtl ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: isRtl ? 20 : -20 }}>
-                     <CheckoutGate session={session} onNext={handleNext} />
+                     <CheckoutGate dict={dict} session={session} onNext={handleNext} />
                   </motion.div>
                 )}
 
@@ -65,7 +66,7 @@ export function CheckoutClient({ dict, language, session, settings }: CheckoutCl
                           {dict.common.orderSummary}
                         </h2>
                         <div className="lg:hidden mb-8">
-                           <OrderSummary shippingFee={settings?.shippingFee || 0} />
+                           <OrderSummary dict={dict} shippingFee={settings?.shippingFee || 0} />
                         </div>
                         <Button 
                           type="button"
@@ -80,20 +81,20 @@ export function CheckoutClient({ dict, language, session, settings }: CheckoutCl
 
                 {currentStep === 2 && (
                   <motion.div key="shipping" initial={{ opacity: 0, x: isRtl ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: isRtl ? 20 : -20 }}>
-                     <ShippingForm onNext={handleNext} onBack={handleBack} />
+                     <ShippingForm dict={dict} onNext={handleNext} onBack={handleBack} />
                   </motion.div>
                 )}
 
                 {currentStep === 3 && (
                   <motion.div key="payment" initial={{ opacity: 0, x: isRtl ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: isRtl ? 20 : -20 }}>
-                     <PaymentStep instapayNumber={settings?.instapayNumber || "01126131495"} />
+                     <PaymentStep dict={dict} instapayNumber={settings?.instapayNumber || "01126131495"} />
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
             <div className="hidden lg:block lg:col-span-4">
-              <OrderSummary shippingFee={settings?.shippingFee || 0} />
+              <OrderSummary dict={dict} shippingFee={settings?.shippingFee || 0} />
             </div>
           </div>
         </div>

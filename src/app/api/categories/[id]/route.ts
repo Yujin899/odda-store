@@ -9,7 +9,7 @@ import { revalidateTag } from 'next/cache';
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await auth();
-    if (!session || (session.user as any).role !== 'admin') {
+    if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
@@ -43,7 +43,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     // According to search, 'layout' or 'page' might be expected, but tags are usually 'layout' level or global.
     // Given the lint error in this specific environment, we use 'page' as a safe default or follow standard types if known.
     // In this codebase, if it insists on 2, we provide them.
-    (revalidateTag as any)('categories-list', 'page');
+    revalidateTag('categories-list', 'page');
 
     const sanitizedCategory = {
       _id: category._id.toString(),
@@ -52,9 +52,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     };
 
     return NextResponse.json(sanitizedCategory);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Category update error:', error);
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
 }
 
@@ -88,11 +89,12 @@ export const DELETE = auth(async (req, { params }) => {
 
     await Category.findByIdAndDelete(id);
 
-    (revalidateTag as any)('categories-list', 'page');
+    revalidateTag('categories-list', 'page');
 
     return NextResponse.json({ message: 'Category deleted successfully' });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Category deletion error:', error);
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});

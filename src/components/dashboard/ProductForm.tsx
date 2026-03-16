@@ -7,6 +7,7 @@ import { useToastStore } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
 import { productSchema, ProductFormValues } from '@/lib/schemas';
+import { Product } from '@/types/store';
 
 // Form Parts
 import { FormHeader } from './ProductFormParts/FormHeader';
@@ -18,7 +19,7 @@ import { PricingFields } from './ProductFormParts/PricingFields';
 import { OrganizationFields } from './ProductFormParts/OrganizationFields';
 
 interface ProductFormProps {
-  initialData?: any;
+  initialData?: Product;
 }
 
 export function ProductForm({ initialData }: ProductFormProps) {
@@ -41,14 +42,14 @@ export function ProductForm({ initialData }: ProductFormProps) {
       price: Number(initialData?.price) || 0,
       compareAtPrice: initialData?.compareAtPrice || '',
       originalPrice: initialData?.originalPrice || '',
-      categoryId: initialData?.categoryId?._id?.toString() || initialData?.categoryId?.toString() || '',
-      badgeId: initialData?.badgeId?._id?.toString() || initialData?.badgeId?.toString() || '',
+      categoryId: typeof initialData?.categoryId === 'object' ? initialData.categoryId?._id : (initialData?.categoryId || ''),
+      badgeId: typeof initialData?.badgeId === 'object' ? initialData.badgeId?._id : (initialData?.badgeId || null),
       stock: Number(initialData?.stock) || 0,
       featured: !!initialData?.featured,
       features: initialData?.features || [],
       featuresAr: initialData?.featuresAr || [],
       images: initialData?.images || [],
-    } as any,
+    },
   });
 
   /**
@@ -94,7 +95,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
   return (
     <FormProvider {...methods}>
       <form 
-        onSubmit={methods.handleSubmit(onSubmit as any)} 
+        onSubmit={methods.handleSubmit(onSubmit)} 
         className="space-y-6 sm:space-y-10 max-w-6xl mx-auto pb-24"
       >
         {/* Sticky Header */}

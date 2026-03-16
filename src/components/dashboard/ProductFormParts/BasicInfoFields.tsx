@@ -16,20 +16,13 @@ export function BasicInfoFields() {
     register, 
     watch, 
     setValue, 
-    formState: { errors } 
+    formState: { errors, defaultValues } 
   } = useFormContext<ProductFormValues>();
 
-  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(!!defaultValues?.slug);
   
   const nameValue = watch('name');
-  const slugValue = watch('slug');
 
-  // If initialData has a slug, mark it as manually edited to prevent auto-gen from overwriting existing slugs
-  useEffect(() => {
-    if (slugValue) {
-      setIsSlugManuallyEdited(true);
-    }
-  }, []); // Only on mount
 
   // Auto-Slug Logic
   useEffect(() => {

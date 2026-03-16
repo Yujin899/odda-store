@@ -33,16 +33,19 @@ const getCachedOrder = unstable_cache(
       id: order._id.toString(),
       orderNumber: order.orderNumber,
       status: order.status,
-      items: (order.items || []).map((item: any) => ({
-        productId: item.productId ? {
-          name: item.productId.name,
-          slug: item.productId.slug,
-          image: (item.productId.images?.[0]?.url || item.productId.image || '')
-        } : null,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity
-      })),
+      items: (order.items || []).map((item) => {
+        const product = item.productId as unknown as { name?: string; slug?: string; images?: Array<{ url: string }> } | null;
+        return {
+          productId: product ? {
+            name: product.name,
+            slug: product.slug,
+            image: (product.images?.[0]?.url || '')
+          } : null,
+          name: product?.name || 'Product',
+          price: item.price,
+          quantity: item.quantity
+        };
+      }),
       totalAmount: order.totalAmount,
       createdAt: order.createdAt?.toISOString() ?? null,
       shippingAddress: {

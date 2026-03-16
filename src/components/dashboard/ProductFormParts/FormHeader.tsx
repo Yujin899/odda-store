@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/button';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
 import { ProductFormValues } from '@/lib/schemas';
+import { Product } from '@/types/store';
 
 interface FormHeaderProps {
-    initialData?: any;
+    initialData?: Product;
     isUploading?: boolean;
 }
 

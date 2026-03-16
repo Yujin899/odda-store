@@ -7,45 +7,22 @@ import { Package, ChevronRight, AlertCircle, ShoppingBag } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { Order as StoreOrder, OrderItem as StoreOrderItem } from '@/types/store';
 
-interface IOrderItem {
-  name: string;
-  nameAr?: string;
-  variant?: string;
-  quantity: number;
-  price: number;
-  image?: string;
-}
-
-interface IOrder {
-  _id: string;
-  orderNumber: string;
-  createdAt: string;
-  totalAmount: number;
-  status: string;
-  items: IOrderItem[];
-}
+type IOrderItem = StoreOrderItem;
+type IOrder = StoreOrder;
 
 interface OrdersListProps {
   orders: IOrder[];
 }
 
+import { StatusBadge } from '@/components/shared/StatusBadge';
+import { formatDate, formatPrice } from '@/lib/utils';
+
 export function OrdersList({ orders }: OrdersListProps) {
   const { language } = useLanguageStore();
   const dict = language === 'en' ? en : ar;
   const isRtl = language === 'ar';
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'delivered': return 'bg-(--success)/10 text-(--success)';
-      case 'pending_payment':
-      case 'pending_verification': return 'bg-(--warning)/10 text-(--warning)';
-      case 'processing':
-      case 'shipped': return 'bg-(--primary)/10 text-(--primary)';
-      case 'cancelled': return 'bg-(--danger)/10 text-(--danger)';
-      default: return 'bg-slate-100 text-slate-500';
-    }
-  };
 
   const getLocalizedStatus = (status: string) => {
     return dict.dashboard.statuses[status as keyof typeof dict.dashboard.statuses] || status;
@@ -72,7 +49,7 @@ export function OrdersList({ orders }: OrdersListProps) {
   return (
     <div className="space-y-6">
       {orders.map((order) => (
-        <div key={order._id.toString()} className="bg-card border border-border rounded-(--radius) overflow-hidden shadow-sm hover:shadow-md transition-all">
+        <div key={order.id} className="bg-card border border-border rounded-(--radius) overflow-hidden shadow-sm hover:shadow-md transition-all">
           {/* Order Header */}
           <div className="bg-muted p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border">
             <div className="flex flex-wrap items-center gap-4 sm:gap-8 text-sm">
@@ -83,28 +60,27 @@ export function OrdersList({ orders }: OrdersListProps) {
               <div>
                 <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mb-1">{dict.orders.date}</p>
                 <p className="font-semibold">
-                  {new Date(order.createdAt).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US', { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric' 
-                  })}
+                  {formatDate(order.createdAt, language as 'en' | 'ar')}
                 </p>
               </div>
               <div>
                 <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mb-1">{dict.orders.total}</p>
-                <p className="font-semibold">{order.totalAmount.toLocaleString()} {dict.common.egp}</p>
+                <p className="font-semibold">{formatPrice(order.totalAmount, language as 'en' | 'ar')}</p>
               </div>
             </div>
             
-            <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center justify-center ${getStatusColor(order.status)} shrink-0`}>
-              {getLocalizedStatus(order.status)}
-            </div>
+            <StatusBadge 
+              status={order.status} 
+              labelEn={en.dashboard.statuses[order.status as keyof typeof en.dashboard.statuses] || order.status}
+              labelAr={ar.dashboard.statuses[order.status as keyof typeof ar.dashboard.statuses] || order.status}
+              isAr={isRtl}
+            />
           </div>
 
           {/* Order Items */}
           <div className="p-4 sm:px-6">
             <div className="space-y-4">
-              {order.items.map((item: any, idx: number) => (
+              {order.items.map((item: IOrderItem, idx: number) => (
                 <div key={idx} className="flex items-center gap-4 text-sm">
                   <div className="size-16 relative rounded overflow-hidden border border-border shrink-0 bg-slate-50">
                     {item.image ? (
@@ -130,7 +106,7 @@ export function OrdersList({ orders }: OrdersListProps) {
                     </p>
                   </div>
                   <div className="text-end shrink-0">
-                    <p className="text-xs font-black">{(item.price * item.quantity).toLocaleString()} {dict.common.egp}</p>
+                    <p className="text-xs font-black">{formatPrice(item.price * item.quantity, language as 'en' | 'ar')}</p>
                   </div>
                 </div>
               ))}

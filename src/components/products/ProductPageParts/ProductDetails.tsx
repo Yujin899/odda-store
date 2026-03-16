@@ -4,12 +4,14 @@ import { Truck, ShieldCheck, AlertCircle } from 'lucide-react';
 import { RatingSummary } from '@/components/shared/RatingSummary';
 import { RatingBreakdown } from '@/components/shared/RatingBreakdown';
 import { getDictionary } from '@/dictionaries';
+import type { Product, Review } from '@/types/store';
+import { formatPrice } from '@/lib/utils';
 
 interface ProductDetailsProps {
-  product: any;
+  product: Product;
   averageRating: number;
   numReviews: number;
-  reviews: any[];
+  reviews: Review[];
   language: 'en' | 'ar';
 }
 
@@ -30,15 +32,15 @@ export function ProductDetails({
     <div className="flex flex-col space-y-6">
       {/* Badges */}
       <div className="flex flex-wrap gap-2">
-        {product.badgeId && (
+        {product.badge && (
           <span 
             className="inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white rounded-sm shadow-sm"
             style={{ 
-              backgroundColor: product.badgeId.color || '#0073E6',
-              color: product.badgeId.textColor || '#FFFFFF'
+              backgroundColor: product.badge.color || '#0073E6',
+              color: product.badge.textColor || '#FFFFFF'
             }}
           >
-            {isRtl && product.badgeId.nameAr ? product.badgeId.nameAr : product.badgeId.name}
+            {isRtl && product.badge.nameAr ? product.badge.nameAr : product.badge.name}
           </span>
         )}
       </div>
@@ -59,11 +61,11 @@ export function ProductDetails({
       {/* Pricing */}
       <div className="flex items-baseline gap-3 pt-2">
         <span className="text-3xl font-black text-(--primary)">
-          {product.price.toLocaleString()} {dict.common.egp}
+          {formatPrice(product.price, language)}
         </span>
         {product.originalPrice && product.originalPrice > product.price && (
           <span className="text-lg text-slate-400 line-through font-bold">
-            {product.originalPrice.toLocaleString()} {dict.common.egp}
+            {formatPrice(product.originalPrice, language)}
           </span>
         )}
       </div>

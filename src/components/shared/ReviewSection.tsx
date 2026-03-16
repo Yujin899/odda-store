@@ -5,13 +5,8 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
-interface Review {
-  _id: string;
-  userName: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-}
+import type { Review } from '@/types/store';
+import { formatDate } from '@/lib/utils';
 
 interface ReviewSectionProps {
   targetId: string;
@@ -132,7 +127,7 @@ export function ReviewSection({
               <div className="flex justify-between items-center mb-1">
                 <span className="font-bold text-sm tracking-tight">{rev.userName}</span>
                 <span className="text-[10px] font-bold text-slate-400 tracking-widest">
-                  {new Date(rev.createdAt).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
+                  {formatDate(rev.createdAt, language as 'en' | 'ar')}
                 </span>
               </div>
               <div className="flex items-center gap-0.5 mb-2">

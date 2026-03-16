@@ -7,7 +7,13 @@ import { User as UserIcon, LogOut, Package } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function NavbarUserDropdown({ dict }: { dict: any }) {
+interface Dict {
+  common: Record<string, string>;
+  profile: Record<string, string>;
+  [key: string]: unknown;
+}
+
+export function NavbarUserDropdown({ dict }: { dict: Dict }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -62,7 +68,7 @@ export function NavbarUserDropdown({ dict }: { dict: any }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute end-0 top-full mt-2 w-56 bg-card border border-border rounded-(--radius) shadow-lg overflow-hidden py-1 z-50"
+            className="absolute inset-e-0 top-full mt-2 w-56 bg-card border border-border rounded-(--radius) shadow-lg overflow-hidden py-1 z-50"
           >
             <div className="px-4 py-3 border-b border-border">
               <p className="text-sm font-semibold text-foreground truncate">

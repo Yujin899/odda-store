@@ -1,20 +1,20 @@
 'use client';
 
 import { User, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Dictionary } from '@/types/store';
+import { useLanguageStore } from '@/store/useLanguageStore';
 import Link from 'next/link';
 import { Session } from 'next-auth';
 import { Button } from '@/components/ui/button';
-import { useLanguageStore } from '@/store/useLanguageStore';
-import { getDictionary } from '@/dictionaries';
 
 interface CheckoutGateProps {
+  dict: Dictionary;
   session: Session | null;
   onNext: () => void;
 }
 
-export function CheckoutGate({ session, onNext }: CheckoutGateProps) {
+export function CheckoutGate({ dict, session, onNext }: CheckoutGateProps) {
   const { language } = useLanguageStore();
-  const dict = getDictionary(language);
   const isRtl = language === 'ar';
 
   return (
@@ -75,7 +75,7 @@ export function CheckoutGate({ session, onNext }: CheckoutGateProps) {
             </p>
             <Link 
               href={`/login?callbackUrl=/checkout`}
-              className="mt-auto w-full h-12 bg-white text-(--navy) flex items-center justify-center font-black rounded-sm uppercase tracking-[0.15em] text-[9px] hover:bg-(--primary) hover:text-white transition-all shadow-lg"
+              className="mt-auto w-full h-12 bg-white text-(--navy) flex items-center justify-center font-black rounded-sm uppercase tracking-[0.15em] text-[10px] hover:bg-(--primary) hover:text-white transition-all shadow-lg"
             >
               {dict.checkoutPage.loginNow || 'Log In Now'}
             </Link>

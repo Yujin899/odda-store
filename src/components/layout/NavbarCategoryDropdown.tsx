@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function NavbarCategoryDropdown({ categories, dict, language }: { categories: any[], dict: any, language: 'en' | 'ar' }) {
+import { Category, Dictionary } from '@/types/store';
+
+export function NavbarCategoryDropdown({ categories, dict, language }: { categories: Category[], dict: Dictionary, language: 'en' | 'ar' }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +46,7 @@ export function NavbarCategoryDropdown({ categories, dict, language }: { categor
             </Link>
             {categories.map((cat, idx) => (
               <Link 
-                key={cat.id || cat._id || idx}
+                key={cat.id || idx}
                 href={`/products?category=${cat.slug}`}
                 onClick={() => setIsOpen(false)}
                 className="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy hover:bg-slate-50 rounded-sm"

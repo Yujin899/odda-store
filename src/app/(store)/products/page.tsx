@@ -23,6 +23,8 @@ import { Product } from '@/models/Product';
 import { cookies } from 'next/headers';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import type { CategoryDoc, ProductDoc, BadgeDoc } from '@/types/models';
+import type { Product as ProductType } from '@/types/store';
 
 import { unstable_cache } from 'next/cache';
 
@@ -32,8 +34,8 @@ async function getAllCategories() {
   return unstable_cache(
     async () => {
       await connectDB();
-      const categories = await Category.find().lean();
-      return categories.map((c: any) => ({
+      const categories = await Category.find().lean<CategoryDoc[]>();
+      return categories.map((c) => ({
         id: c._id.toString(),
         name: c.name,
         nameAr: c.nameAr,
@@ -63,16 +65,16 @@ async function getProducts(searchParams: { [key: string]: string | string[] | un
       void Badge.modelName;
 
       const skip = (page - 1) * limit;
-      const query: Record<string, any> = {};
+      const query: Record<string, string | number | boolean | object> = {};
       
       if (category) {
-        const cat = await Category.findOne({ slug: category }).lean();
+        const cat = await Category.findOne({ slug: category }).lean<CategoryDoc>();
         if (cat) query.categoryId = cat._id;
       }
       
       if (search) query.name = { $regex: search, $options: 'i' };
 
-      let sortOption: any = { createdAt: -1 };
+      let sortOption: Record<string, 1 | -1> = { createdAt: -1 };
       if (sort === 'price_asc') sortOption = { price: 1 };
       if (sort === 'price_desc') sortOption = { price: -1 };
       if (sort === 'newest') sortOption = { createdAt: -1 };
@@ -84,36 +86,48 @@ async function getProducts(searchParams: { [key: string]: string | string[] | un
           .sort(sortOption)
           .skip(skip)
           .limit(limit)
-          .lean(),
+          .lean<ProductDoc[]>(),
         Product.countDocuments(query),
       ]);
 
       // Strict DTO Mapping to prevent internal data leaks
-      const sanitizedProducts = products.map((p: any) => ({
-        _id: p._id.toString(),
-        name: p.name,
-        nameAr: p.nameAr,
-        slug: p.slug,
-        price: p.price,
-        compareAtPrice: p.compareAtPrice,
-        images: (p.images || []).map((img: any) => ({
-          url: img.url,
-          isPrimary: img.isPrimary
-        })),
-        category: p.categoryId ? {
-          _id: p.categoryId._id.toString(),
-          name: p.categoryId.name,
-          nameAr: p.categoryId.nameAr
-        } : { name: 'Uncategorized' },
-        badge: p.badgeId ? {
-          name: p.badgeId.name,
-          nameAr: p.badgeId.nameAr,
-          color: p.badgeId.color
-        } : null,
-        stock: p.stock,
-        averageRating: p.averageRating || 0,
-        numReviews: p.numReviews || 0
-      }));
+      const sanitizedProducts: ProductType[] = products.map((p) => {
+        const cat = p.categoryId as unknown as CategoryDoc | null;
+        const badge = p.badgeId as unknown as BadgeDoc | null;
+        
+        return {
+          id: p._id.toString(),
+          name: p.name,
+          nameAr: p.nameAr,
+          slug: p.slug,
+          price: p.price,
+          compareAtPrice: p.compareAtPrice,
+          images: (p.images || []).map((img, idx) => ({
+            url: img.url,
+            isPrimary: img.isPrimary,
+            order: (img as any).order ?? idx
+          })),
+          category: cat ? {
+            id: cat._id.toString(),
+            _id: cat._id.toString(),
+            name: cat.name,
+            nameAr: cat.nameAr || undefined
+          } : { name: 'Uncategorized' },
+          badge: badge ? {
+            name: badge.name || badge.nameAr || '',
+            nameAr: badge.nameAr,
+            color: badge.color,
+            textColor: badge.textColor
+          } : null,
+          _id: p._id.toString(),
+          stock: p.stock,
+          featured: p.featured,
+          description: p.description || '',
+          createdAt: p.createdAt.toISOString(),
+          averageRating: p.averageRating || 0,
+          numReviews: p.numReviews || 0
+        };
+      });
 
       return {
         products: sanitizedProducts,
@@ -156,7 +170,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: locale === 'ar' ? 'كتالوج المنتجات | عُدّة' : 'Product Catalog | Odda',
-    itemListElement: products.map((p: any, index: number) => ({
+    itemListElement: products.map((p, index: number) => ({
       '@type': 'ListItem',
       position: index + 1,
       item: {
@@ -174,20 +188,20 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[var(--background)]">
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-24 py-12">
         <div className="mb-10">
-          <nav className="flex items-center gap-2 text-sm text-[var(--muted-foreground)] mb-4 uppercase tracking-widest font-bold">
+          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-4 uppercase tracking-widest font-bold">
             <Link href="/" className="hover:text-(--primary) transition-colors">{dict.common.home}</Link>
             <ChevronRight className="size-3 text-muted-foreground stroke-[3px] rtl:-scale-x-100" />
-            <span className="text-[var(--foreground)]">{dict.productsPage.instruments}</span>
+            <span className="text-foreground">{dict.productsPage.instruments}</span>
           </nav>
-          <h1 className="text-4xl font-extrabold tracking-tight text-[var(--foreground)] uppercase">{dict.productsPage.ourCatalog}</h1>
-          <p className="mt-2 text-[var(--muted-foreground)] max-w-2xl font-light">{dict.productsPage.catalogDesc}</p>
+          <h1 className="text-4xl font-extrabold tracking-tight text-foreground uppercase">{dict.productsPage.ourCatalog}</h1>
+          <p className="mt-2 text-muted-foreground max-w-2xl font-light">{dict.productsPage.catalogDesc}</p>
         </div>
         
         <div className="flex flex-col lg:flex-row gap-12">
@@ -202,8 +216,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
             {products.length > 0 ? (
               <>
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-8">
-                  {products.map((product: any) => (
-                    <ProductCard key={product._id} product={product} locale={locale} />
+                  {products.map((product) => (
+                    <ProductCard key={product.id} product={product} locale={locale} />
                   ))}
                 </div>
 

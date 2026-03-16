@@ -4,11 +4,11 @@ import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ReviewSection } from '@/components/shared/ReviewSection';
 import { Check } from 'lucide-react';
-import { getDictionary } from '@/dictionaries';
+import type { Product, Review } from '@/types/store';
 
 interface ProductTabsProps {
-  product: any;
-  reviews: any[];
+  product: Product;
+  reviews: Review[];
   language: 'en' | 'ar';
   onReviewAdded: () => void;
 }
@@ -75,7 +75,7 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
         <TabsContent value="reviews" className="mt-4 focus-visible:outline-none">
           <div className="pt-4">
             <ReviewSection 
-              targetId={String(product._id)}
+              targetId={product.id}
               targetSlug={product.slug}
               targetType="Product"
               apiEndpoint={`/api/products/${product.slug}/reviews`}

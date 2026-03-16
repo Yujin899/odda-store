@@ -67,8 +67,8 @@ export const PATCH = auth(async (req) => {
     revalidatePath('/', 'layout');
     
     return NextResponse.json(settings);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Settings update error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
-}) as any;
+});

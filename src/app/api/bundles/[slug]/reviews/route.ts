@@ -26,9 +26,10 @@ export async function GET(
     }).sort({ createdAt: -1 });
 
     return NextResponse.json({ reviews });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Fetch reviews error:', error);
-    return NextResponse.json({ message: 'Failed to fetch reviews', error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Failed to fetch reviews';
+    return NextResponse.json({ message, error: message }, { status: 500 });
   }
 }
 
@@ -77,7 +78,7 @@ export async function POST(
     // 4. Create new review
     await Review.create({
       user: new mongoose.Types.ObjectId(session.user.id),
-      userName: (session.user as any).name || 'Anonymous',
+      userName: session.user.name || 'Anonymous',
       targetId: bundle._id,
       targetType: 'Bundle',
       rating: ratingNum,
@@ -107,8 +108,9 @@ export async function POST(
       numReviews: bundle.numReviews,
       averageRating: bundle.averageRating
     }, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Review submission error:', error);
-    return NextResponse.json({ message: 'Failed to add review', error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Failed to add review';
+    return NextResponse.json({ message, error: message }, { status: 500 });
   }
 }

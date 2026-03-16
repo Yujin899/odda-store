@@ -15,13 +15,13 @@ export default async function DashboardOverviewPage() {
   void Bundle.modelName;
 
   // 1. Total Orders & Revenue
-  const rawOrders = await Order.find().populate('items.productId').lean();
+  const rawOrders = await Order.find().populate('items.productId').lean<IOrder[]>();
   const orders = rawOrders.map(doc => ({
     ...doc,
     _id: doc._id.toString(),
-    createdAt: (doc as any).createdAt?.toISOString() || new Date().toISOString(),
-    updatedAt: (doc as any).updatedAt?.toISOString() || new Date().toISOString(),
-  })) as any[];
+    createdAt: doc.createdAt ? (doc.createdAt instanceof Date ? doc.createdAt.toISOString() : new Date(doc.createdAt).toISOString()) : new Date().toISOString(),
+    updatedAt: doc.updatedAt ? (doc.updatedAt instanceof Date ? doc.updatedAt.toISOString() : new Date(doc.updatedAt).toISOString()) : new Date().toISOString(),
+  }));
   
   // VALID SALES: Only processing, shipped, or delivered
   const validOrders = orders.filter(order => ['processing', 'shipped', 'delivered'].includes(order.status));
@@ -77,10 +77,10 @@ export default async function DashboardOverviewPage() {
   // We'll calculate product frequencies from ALL non-cancelled orders
   const productCounts = orders.filter(o => o.status !== 'cancelled').reduce<{ [key: string]: number }>((acc, order) => {
     if (order.items && Array.isArray(order.items)) {
-      order.items.forEach((item: any) => {
+      (order.items as Array<{ productId: unknown; name?: string; quantity: number }>).forEach((item) => {
         // Try to get name from populated productId, falling back to stored name if available
-        const product = item.productId;
-        const productName = product?.name || item.name || item.productName || 'Unknown Product';
+        const product = item.productId as { name?: string } | null;
+        const productName = (product && typeof product === 'object' && product.name) || item.name || 'Unknown Product';
         
         if (productName) {
           acc[productName] = (acc[productName] || 0) + (item.quantity || 0);

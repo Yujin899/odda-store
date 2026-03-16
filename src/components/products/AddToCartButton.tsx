@@ -5,6 +5,8 @@ import { ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useCartUIStore } from '@/store/useCartUIStore';
 
+import { Dictionary } from '@/types/store';
+
 interface AddToCartButtonProps {
   product: {
     _id: string;
@@ -15,7 +17,7 @@ interface AddToCartButtonProps {
     image: string;
     stock: number;
   };
-  dict: any;
+  dict: Dictionary;
   variant?: 'card' | 'pdp';
   className?: string;
   type?: 'product' | 'bundle';

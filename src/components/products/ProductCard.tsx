@@ -1,27 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { AddToCartButton } from './AddToCartButton';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
+import type { RelatedProduct } from '@/types/store';
+import { formatPrice } from '@/lib/utils';
 
 interface ProductCardProps {
-  product: {
-    _id: string;
-    name: string;
-    nameAr?: string;
-    slug: string;
-    price: number;
-    originalPrice?: number;
-    images?: { url: string; isPrimary: boolean }[];
-    image?: string;
-    categoryId?: { name: string; nameAr?: string };
-    category?: string;
-    categoryAr?: string;
-    badgeId?: { name: string; nameAr?: string; color: string; textColor: string };
-    badge?: string;
-    stock?: number;
-  };
+  product: RelatedProduct;
   locale?: string;
 }
 
@@ -29,23 +16,14 @@ export function ProductCard({ product, locale }: ProductCardProps) {
   const dict = locale === 'ar' ? ar : en;
   const language = locale || 'en';
 
-  const primaryImage = product.images?.find((img) => img.isPrimary)?.url || product.images?.[0]?.url || product.image || '';
+  const primaryImage = (product.images && product.images.length > 0) 
+    ? (product.images.find((img) => img.isPrimary)?.url || product.images[0].url) 
+    : (product.image || '');
   const inStock = (product.stock !== undefined) ? product.stock > 0 : true;
   
-  const badge = product.badgeId || (typeof product.badge === 'object' ? product.badge : (product.badge ? { 
-    name: product.badge, 
-    color: String(product.badge).includes('Hot') ? '#E11D48' : '#0073E6', 
-    textColor: '#FFFFFF' 
-  } : null));
+  const badge = (product.badgeId && typeof product.badgeId === 'object') ? product.badgeId : (product.badge || null);
 
-  const getCategoryDisplay = () => {
-    const cat = product.categoryId || product.category;
-    if (!cat) return '';
-    if (typeof cat === 'string') return language === 'ar' ? (product.categoryAr || cat) : cat;
-    return language === 'ar' ? (cat.nameAr || cat.name) : cat.name;
-  };
-
-  const categoryName = getCategoryDisplay();
+  const categoryName = language === 'ar' ? (product.categoryNameAr || product.categoryName || '') : (product.categoryName || '');
     
   const productName = (language === 'ar' && product.nameAr) ? product.nameAr : product.name;
 
@@ -71,7 +49,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
         )}
         {badge && (
           <span 
-            className="absolute top-4 start-4 text-[10px] font-black px-3 py-1.5 rounded-(--radius) uppercase tracking-widest z-10 shadow-lg"
+            className="absolute top-4 inset-s-4 text-[10px] font-black px-3 py-1.5 rounded-(--radius) uppercase tracking-widest z-10 shadow-lg"
             style={{ backgroundColor: badge.color || '#0073E6', color: badge.textColor || '#FFFFFF' }}
           >
             {language === 'ar' && badge.nameAr ? badge.nameAr : (badge.name || badge.nameAr)}
@@ -83,9 +61,9 @@ export function ProductCard({ product, locale }: ProductCardProps) {
         <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 font-bold">{categoryName}</p>
         <div className="mt-auto">
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-xl font-black text-foreground">{product.price.toLocaleString()} {dict.common.egp}</span>
+            <span className="text-xl font-black text-foreground">{formatPrice(product.price, language as 'en' | 'ar')}</span>
             {product.originalPrice && (
-              <span className="text-sm text-muted-foreground line-through opacity-50 font-light">{product.originalPrice.toLocaleString()} {dict.common.egp}</span>
+              <span className="text-sm text-muted-foreground line-through opacity-50 font-light">{formatPrice(product.originalPrice, language as 'en' | 'ar')}</span>
             )}
           </div>
           

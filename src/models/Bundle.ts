@@ -13,6 +13,7 @@ export interface IBundle {
   bundleItems: string[];
   bundleItemsAr?: string[];
   stock: number;
+  featured: boolean;
   averageRating: number;
   numReviews: number;
   createdAt?: Date;
@@ -36,6 +37,7 @@ const BundleSchema = new Schema<IBundleDocument>(
     bundleItems: [{ type: String }],
     bundleItemsAr: [{ type: String }],
     stock: { type: Number, default: 0 },
+    featured: { type: Boolean, default: false },
     averageRating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
   },

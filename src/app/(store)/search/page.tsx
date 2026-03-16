@@ -15,8 +15,9 @@ async function getSearchResults(query: string) {
   if (!query) return { products: [], total: 0 };
   
   await connectDB();
-  Category;
-  Badge;
+  // Ensure models are registered for populate
+  void Category;
+  void Badge;
 
   const products = await Product.find({ name: { $regex: query, $options: 'i' } })
     .populate({ path: 'categoryId', strictPopulate: false })
@@ -24,29 +25,35 @@ async function getSearchResults(query: string) {
     .lean();
 
   return { 
-    products: products.map((p: any) => ({
-      _id: p._id.toString(),
-      name: p.name,
-      nameAr: p.nameAr ?? null,
-      slug: p.slug,
-      price: p.price,
-      compareAtPrice: p.compareAtPrice ?? null,
-      images: (p.images ?? []).map((img: any) => ({
-        url: img.url ?? img,
-        isPrimary: img.isPrimary ?? false
-      })),
-      category: p.categoryId ? {
-        _id: p.categoryId._id.toString(),
-        name: p.categoryId.name,
-        nameAr: p.categoryId.nameAr ?? null
-      } : null,
-      badge: p.badgeId ? {
-        name: p.badgeId.name,
-        nameAr: p.badgeId.nameAr ?? null,
-        color: p.badgeId.color
-      } : null,
-      stock: p.stock ?? 0
-    })), 
+    products: (products as unknown as import('@/types/models').ProductDoc[]).map((p) => {
+      const category = p.categoryId as unknown as import('@/types/models').CategoryDoc | null;
+      const badge = p.badgeId as unknown as import('@/types/models').BadgeDoc | null;
+      return {
+        _id: p._id.toString(),
+        name: p.name,
+        nameAr: p.nameAr ?? null,
+        slug: p.slug,
+        price: p.price,
+        compareAtPrice: p.compareAtPrice ?? null,
+        images: (p.images ?? []).map((img) => ({
+          url: img.url,
+          isPrimary: img.isPrimary ?? false,
+          order: img.order || 0
+        })),
+        category: category && typeof category === 'object' ? {
+          _id: category._id?.toString() || '',
+          name: category.name || '',
+          nameAr: category.nameAr || null
+        } : null,
+        badge: badge && typeof badge === 'object' ? {
+          name: badge.name || '',
+          nameAr: badge.nameAr || null,
+          color: badge.color || '',
+          textColor: badge.textColor || ''
+        } : null,
+        stock: p.stock ?? 0
+      };
+    }), 
     total: products.length 
   };
 }
@@ -91,8 +98,8 @@ async function SearchResultsContent({ searchParams }: { searchParams: { [key: st
         {query ? (
           products.length > 0 ? (
             <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-8">
-              {products.map((product: any) => (
-                <ProductCard key={product._id} product={product} />
+              {products.map((product) => (
+                <ProductCard key={product._id} product={product as any} />
               ))}
             </div>
           ) : (

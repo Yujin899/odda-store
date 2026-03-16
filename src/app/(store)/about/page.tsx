@@ -94,7 +94,7 @@ export default async function AboutPage() {
 
           {/* CTA Section */}
           <div className="pt-20 w-full">
-            <Link href="/products" className="group block w-full md:w-max mx-auto px-12 py-6 bg-foreground text-background flex items-center justify-center gap-4 font-black text-[12px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95">
+            <Link href="/products" className="group w-full md:w-max mx-auto px-12 py-6 bg-foreground text-background flex items-center justify-center gap-4 font-black text-[12px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:-translate-y-1 transition-all active:scale-95">
               {dict.aboutPage.browseOddas}
               <ChevronRight className="size-5 transition-transform stroke-[3px] rtl:rotate-180 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1" />
             </Link>

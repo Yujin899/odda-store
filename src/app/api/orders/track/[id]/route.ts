@@ -51,7 +51,7 @@ export async function GET(
           slug: item.productId.slug,
           image: item.productId.images?.[0]?.url || item.productId.image || ''
         } : null,
-        name: item.name,
+        name: item.productId?.name || 'Product',
         price: item.price,
         quantity: item.quantity
       })),
@@ -64,7 +64,7 @@ export async function GET(
     };
 
     return NextResponse.json(sanitizedOrder);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Order tracking fetch error:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }

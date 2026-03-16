@@ -13,6 +13,8 @@ import { Product } from '@/models/Product';
 import Category from '@/models/Category';
 import Badge from '@/models/Badge';
 import { StoreSettings } from '@/models/StoreSettings';
+import type { ProductDoc, CategoryDoc, BadgeDoc } from '@/types/models';
+import type { Product as ProductType } from '@/types/store';
 import { cookies } from 'next/headers';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
@@ -32,49 +34,50 @@ async function getFeaturedProducts() {
     .populate({ path: 'categoryId', strictPopulate: false })
     .populate({ path: 'badgeId', strictPopulate: false })
     .limit(8)
-    .lean();
+    .lean<ProductDoc[]>();
     
-  return products.map((p: any) => ({
+  return products.map((p): ProductType => ({
     id: p._id.toString(),
+    _id: p._id.toString(),
     name: p.name,
-    nameAr: p.nameAr ?? null,
+    nameAr: p.nameAr || undefined,
     slug: p.slug,
-    description: p.description ?? null,
-    descriptionAr: p.descriptionAr ?? null,
+    description: p.description || '',
+    descriptionAr: p.descriptionAr || undefined,
     price: p.price,
-    originalPrice: p.compareAtPrice ?? null,
-    images: (p.images ?? []).map((img: any) => ({
-      url: img.url ?? img,
-      isPrimary: img.isPrimary ?? false,
-      order: img.order ?? 0,
+    originalPrice: p.compareAtPrice ?? undefined,
+    images: (p.images ?? []).map((img) => ({
+      url: typeof img === 'string' ? img : img.url,
+      isPrimary: typeof img === 'string' ? false : (img.isPrimary ?? false),
+      order: typeof img === 'string' ? 0 : (img.order ?? 0),
     })),
-    categoryId: p.categoryId?._id?.toString() ?? p.categoryId?.toString() ?? null,
-    categorySlug: p.categorySlug ?? null,
-    badge: p.badgeId ? {
-      name: p.badgeId.name,
-      nameAr: p.badgeId.nameAr,
-      color: p.badgeId.color,
-      textColor: p.badgeId.textColor
-    } : null,
+    categoryId: (p.categoryId as unknown as CategoryDoc)?._id?.toString() ?? p.categoryId?.toString() ?? undefined,
+    categorySlug: (p.categoryId as unknown as CategoryDoc)?.slug ?? undefined,
+    badge: (p.badgeId as unknown as BadgeDoc) ? {
+      name: (p.badgeId as unknown as BadgeDoc).name,
+      nameAr: (p.badgeId as unknown as BadgeDoc).nameAr,
+      color: (p.badgeId as unknown as BadgeDoc).color,
+      textColor: (p.badgeId as unknown as BadgeDoc).textColor
+    } : undefined,
     stock: p.stock ?? 0,
     featured: p.featured ?? false,
-    aiSummary: p.aiSummary ?? null,
-    aiSummaryAr: p.aiSummaryAr ?? null,
-    createdAt: p.createdAt?.toISOString() ?? null,
+    aiSummary: p.aiSummary ?? undefined,
+    aiSummaryAr: p.aiSummaryAr ?? undefined,
+    createdAt: p.createdAt?.toISOString() ?? '',
   }));
 }
 
 async function getCategories() {
   await connectDB();
-  const categories = await Category.find().limit(4).lean();
-  return categories.map((c: any) => ({
+  const categories = await Category.find().limit(4).lean<CategoryDoc[]>();
+  return categories.map((c) => ({
     id: c._id.toString(),
     name: c.name,
     nameAr: c.nameAr,
     slug: c.slug,
-    description: c.description ?? null,
-    descriptionAr: c.descriptionAr ?? null,
-    image: c.image ?? null,
+    description: c.description || undefined,
+    descriptionAr: c.descriptionAr || undefined,
+    image: c.image || undefined,
   }));
 }
 
@@ -150,30 +153,30 @@ export default async function Home() {
       <Hero hero={settings?.hero} locale={locale} />
 
       {/* Trust/Authority Banner */}
-      <section className="border-b border-navy/10 py-6 bg-[var(--background)]">
+      <section className="border-b border-navy/10 py-6 bg-background">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <ShieldCheck className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.trustedBy}</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.trustedBy}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Stethoscope className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.clinicalGrade}</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.clinicalGrade}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Truck className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.campusDelivery}</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.campusDelivery}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
             <Lock className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--navy)]/70">{dict.home.securePayments}</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.securePayments}</span>
           </div>
         </div>
       </section>
 
       {/* 4. Shop By Category */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-3xl font-black mb-12 uppercase tracking-tight text-[var(--navy)]">{dict.home.shopByCategory}</h2>
+        <h2 className="text-3xl font-black mb-12 uppercase tracking-tight text-(--navy)">{dict.home.shopByCategory}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
           {categories.slice(0, 4).map((cat: { id: string; name: string; nameAr?: string; image?: string; slug: string }) => {
             const catName = (locale === 'ar' && cat.nameAr) ? cat.nameAr : cat.name;

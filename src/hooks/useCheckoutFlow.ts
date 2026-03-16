@@ -11,7 +11,7 @@ import { CheckoutSettings } from '@/components/checkout/CheckoutTypes';
 export function useCheckoutFlow(
   session: Session | null,
   settings: CheckoutSettings,
-  dict: any,
+  dict: import('@/types/store').Dictionary,
   language: string
 ) {
   const router = useRouter();

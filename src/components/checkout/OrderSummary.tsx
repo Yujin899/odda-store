@@ -1,9 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { useCartStore } from '@/store/useCartStore';
+import { Dictionary } from '@/types/store';
+import { formatPrice } from '@/lib/utils';
 
 interface OrderSummaryProps {
-  dict: any;
+  dict: Dictionary;
   language: string;
   totalAmount: number;
   shippingFee: number;
@@ -32,28 +34,28 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
             </div>
             <div className="flex-1">
               <h4 className="text-xs font-black uppercase tracking-tight">{language === 'ar' && item.nameAr ? item.nameAr : item.name}</h4>
-              <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1">{dict.trackingPage.qty}: {item.quantity}</p>
+              <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1">{(dict.trackingPage as any).qty}: {item.quantity}</p>
             </div>
-            <p className="text-xs font-black text-end">{(item.price * item.quantity).toLocaleString()} {dict.common.egp}</p>
+            <p className="text-xs font-black text-end">{formatPrice(item.price * item.quantity, language as 'en' | 'ar')}</p>
           </div>
         ))}
       </div>
       <div className="p-6 bg-slate-50/50 space-y-3">
         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           <span>{dict.checkoutPage.subtotal}</span>
-          <span>{totalAmount.toLocaleString()} {dict.common.egp}</span>
+          <span>{formatPrice(totalAmount, language as 'en' | 'ar')}</span>
         </div>
         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           <span>{dict.checkoutPage.shipping}</span>
           {shippingFee === 0 ? (
             <span className="text-emerald-600">{dict.checkoutPage.free}</span>
           ) : (
-            <span>{shippingFee.toLocaleString()} {dict.common.egp}</span>
+            <span>{formatPrice(shippingFee, language as 'en' | 'ar')}</span>
           )}
         </div>
         <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline">
-          <span className="text-xs font-black uppercase tracking-widest">{dict.trackingPage.total}</span>
-          <span className="text-xl md:text-2xl font-black">{grandTotal.toLocaleString()} {dict.common.egp}</span>
+          <span className="text-xs font-black uppercase tracking-widest">{(dict.trackingPage as any).total}</span>
+          <span className="text-xl md:text-2xl font-black">{formatPrice(grandTotal, language as 'en' | 'ar')}</span>
         </div>
       </div>
     </div>

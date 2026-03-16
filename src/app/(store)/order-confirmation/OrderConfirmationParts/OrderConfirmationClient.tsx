@@ -13,6 +13,7 @@ import {
   Info
 } from 'lucide-react';
 import { OrderTracker } from '@/components/store/OrderTracker';
+import { formatDate, formatPrice } from '@/lib/utils';
 
 interface OrderConfirmationClientProps {
   order: any;
@@ -48,7 +49,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
               <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">{dict.confirmationPage.orderNum}{order.orderNumber}</p>
               <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
               <p className="text-[10px] font-black text-(--primary) uppercase tracking-[0.3em]">
-                {dict.confirmationPage.placed} {new Date(order.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
+                {dict.confirmationPage.placed} {formatDate(order.createdAt, language)}
               </p>
             </div>
           </div>
@@ -106,13 +107,13 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                         <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1.5 flex items-center gap-2">
                           {dict.trackingPage.qty}: {item.quantity}
                           <span className="text-slate-200">|</span>
-                          {item.price.toLocaleString()} {dict.common.egp}
+                          {formatPrice(item.price, language)}
                         </p>
                       </div>
                     </div>
                     <div className="text-center sm:text-end self-end sm:self-auto shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-0 border-slate-100 mt-2 sm:mt-0">
                       <p className="text-sm font-black text-(--navy)">
-                        {(item.price * item.quantity).toLocaleString()} <span className="text-[9px] uppercase tracking-widest text-muted-foreground ms-1">{dict.common.egp}</span>
+                        {formatPrice(item.price * item.quantity, language)}
                       </p>
                     </div>
                   </div>
@@ -121,7 +122,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
               <div className="p-8 bg-slate-50/50 border-t border-slate-50 space-y-4">
                 <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
                   <span>{dict.checkoutPage.subtotal}</span>
-                  <span>{order.totalAmount.toLocaleString()} {dict.common.egp}</span>
+                  <span>{formatPrice(order.totalAmount, language)}</span>
                 </div>
                 <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
                   <span>{dict.checkoutPage.shipping}</span>
@@ -131,9 +132,8 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                   <span className="text-xs font-black uppercase tracking-[0.3em]">{dict.trackingPage.total}</span>
                   <div className="text-end">
                     <span className="text-3xl font-black text-(--primary) tracking-tighter">
-                      {order.totalAmount.toLocaleString()}
+                      {formatPrice(order.totalAmount, language)}
                     </span>
-                    <span className="text-[10px] font-black uppercase tracking-widest ms-2 text-muted-foreground">{dict.common.egp}</span>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@ import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
 export interface IOrderItem {
   productId: Types.ObjectId | string;
-  type: 'product' | 'bundle';
+  type: 'Product' | 'Bundle';
   quantity: number;
   price: number;
 }

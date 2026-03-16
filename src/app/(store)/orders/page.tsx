@@ -27,12 +27,14 @@ export default async function OrdersPage() {
     _id: o._id.toString(),
     orderNumber: o.orderNumber,
     customer: o.shippingAddress?.fullName || 'N/A',
+    paymentMethod: o.paymentMethod || 'COD',
     items: (o.items || []).map((item: any) => ({
       productId: item.productId?.toString() ?? null,
       name: item.name,
       price: item.price,
       quantity: item.quantity,
-      image: item.image ?? null
+      image: item.image ?? null,
+      type: item.type || 'Product'
     })),
     totalAmount: o.totalAmount,
     status: o.status,

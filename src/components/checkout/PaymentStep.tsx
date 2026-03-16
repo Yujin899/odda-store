@@ -16,6 +16,8 @@ interface PaymentStepProps {
   handleBack: () => void;
 }
 
+import { uploadImage } from '@/lib/upload';
+
 export const PaymentStep: React.FC<PaymentStepProps> = ({
   dict,
   paymentMethod,
@@ -41,19 +43,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
     setScreenshot(file);
     setIsUploadingScreenshot(true);
 
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
-    uploadFormData.append('folder', 'odda/payments');
-
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: uploadFormData,
-      });
-
-      if (!res.ok) throw new Error('Upload failed');
-
-      const data = await res.json();
+      const data = await uploadImage(file, 'odda/payments');
       setUploadedProofUrl(data.url);
     } catch (error) {
       addToast({

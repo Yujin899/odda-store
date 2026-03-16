@@ -24,19 +24,28 @@ async function getFooterData() {
     StoreSettings.findOne().lean()
   ]);
   return {
-    categories: categories.map((cat: any) => ({
+    categories: (categories as unknown as Array<{ _id: { toString(): string }, name: string, nameAr?: string, slug: string }>).map((cat) => ({
       id: cat._id.toString(),
       name: cat.name,
       nameAr: cat.nameAr,
       slug: cat.slug,
     })),
-    settings: settings ? {
-      id: settings._id.toString(),
-      socialLinks: settings.socialLinks,
-      whatsappNumber: settings.whatsappNumber,
-      storeDescription: settings.storeDescription,
-      storeDescriptionAr: settings.storeDescriptionAr,
-    } : null
+    settings: settings ? (() => {
+      const s = settings as unknown as { 
+        _id: { toString(): string }, 
+        socialLinks?: { facebook?: string, instagram?: string }, 
+        whatsappNumber?: string, 
+        storeDescription?: string, 
+        storeDescriptionAr?: string 
+      };
+      return {
+        id: s._id.toString(),
+        socialLinks: s.socialLinks,
+        whatsappNumber: s.whatsappNumber,
+        storeDescription: s.storeDescription,
+        storeDescriptionAr: s.storeDescriptionAr,
+      };
+    })() : null
   };
 }
 
@@ -120,7 +129,7 @@ export async function Footer() {
           <div className="space-y-8">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">{dict.common.categories}</h4>
             <ul className="space-y-4">
-              {categories.length > 0 ? categories.map((cat: any) => (
+              {categories.length > 0 ? categories.map((cat) => (
                 <li key={cat.id}>
                   <Link 
                     href={`/products?category=${cat.slug}`} 

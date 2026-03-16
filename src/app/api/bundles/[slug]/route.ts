@@ -4,6 +4,7 @@ import { Bundle } from '@/models/Bundle';
 import { auth } from '@/auth';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
 import { revalidateTag } from 'next/cache';
+import type { BundleDoc } from '@/types/models';
 
 export const revalidate = 3600; // Cache for 1 hour
 
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
     
     const bundle = await Bundle.findOne({
       $or: [{ slug: slug }, { _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }].filter(Boolean),
-    });
+    }).lean<BundleDoc>();
 
     if (!bundle) {
       return NextResponse.json({ message: 'Bundle not found' }, { status: 404 });
@@ -28,10 +29,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       description: bundle.description,
       descriptionAr: bundle.descriptionAr,
       price: bundle.price,
-      originalPrice: (bundle as any).compareAtPrice ?? null,
+      originalPrice: bundle.compareAtPrice ?? null,
       images: bundle.images,
       stock: bundle.stock,
-      featured: (bundle as any).featured,
+      featured: bundle.featured,
       bundleItems: bundle.bundleItems,
       bundleItemsAr: bundle.bundleItemsAr,
       createdAt: bundle.createdAt,
@@ -68,13 +69,13 @@ export const PUT = auth(async (req, { params }) => {
       }
     }
 
-    const updatedBundle = await Bundle.findByIdAndUpdate(bundle._id, updates, { new: true });
+    const updatedBundle = await Bundle.findByIdAndUpdate(bundle._id, updates, { new: true }).lean<BundleDoc>();
     if (!updatedBundle) {
       return NextResponse.json({ message: 'Failed to update bundle' }, { status: 500 });
     }
 
-    (revalidateTag as any)('bundles-list', 'page');
-    (revalidateTag as any)('products-list', 'page');
+    revalidateTag('bundles-list', 'page');
+    revalidateTag('products-list', 'page');
 
     const sanitizedBundle = {
       id: updatedBundle._id.toString(),
@@ -84,20 +85,21 @@ export const PUT = auth(async (req, { params }) => {
       description: updatedBundle.description,
       descriptionAr: updatedBundle.descriptionAr,
       price: updatedBundle.price,
-      originalPrice: (updatedBundle as any).compareAtPrice ?? null,
+      originalPrice: updatedBundle.compareAtPrice ?? null,
       images: updatedBundle.images,
       stock: updatedBundle.stock,
-      featured: (updatedBundle as any).featured,
+      featured: updatedBundle.featured,
       bundleItems: updatedBundle.bundleItems,
       bundleItemsAr: updatedBundle.bundleItemsAr,
       createdAt: updatedBundle.createdAt,
     };
 
     return NextResponse.json(sanitizedBundle);
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});
 
 export const DELETE = auth(async (req, { params }) => {
   if (req.auth?.user?.role !== 'admin') {
@@ -120,10 +122,11 @@ export const DELETE = auth(async (req, { params }) => {
 
     await Bundle.findByIdAndDelete(bundle._id);
     
-    (revalidateTag as any)('bundles-list', 'page');
+    revalidateTag('bundles-list', 'page');
 
     return NextResponse.json({ message: 'Deleted' });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ message }, { status: 500 });
   }
-}) as any;
+});
