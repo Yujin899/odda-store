@@ -70,7 +70,7 @@ export function MobileBottomNav() {
             {isActive && (
               <motion.div 
                 layoutId="activeTabTop"
-                className="absolute -top-[11px] w-8 h-1 bg-(--primary) rounded-b-full"
+                className="absolute -top-3 w-8 h-1 bg-(--primary) rounded-b-full"
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
               />
             )}

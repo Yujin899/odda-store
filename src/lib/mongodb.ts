@@ -24,6 +24,15 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
+/**
+ * Connects to MongoDB Atlas using a cached singleton connection.
+ * 
+ * Must be called as the FIRST line in every API route handler.
+ * Uses connection pooling (maxPoolSize: 10) for Vercel serverless survival.
+ * Safe to call multiple times — returns cached connection if already connected.
+ * 
+ * @throws Error if MONGODB_URI environment variable is not set
+ */
 export async function connectDB() {
   if (cached!.conn) {
     return cached!.conn;

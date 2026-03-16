@@ -636,6 +636,10 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 
 - **CustomersManager**: Refactored into `CustomersParts/`. Parent is layout only. All state and API calls in `useCustomers.ts`.
 
+- **JSDoc Standard**: All exported functions in `src/lib/` and all types in `src/types/` must have JSDoc comments. Focus on WHY and WHEN, not just WHAT.
+
+- **Swiper RTL**: Always pass `key={locale}` and `dir={isRtl ? 'rtl' : 'ltr'}` to every Swiper instance. The `key` prop forces re-mount on locale change, ensuring correct RTL behavior without a full page reload.
+
 ## Rules Index
 Load the relevant rule file as context for your task:
 - Architecture & Components → `.agent/rules/architecture.md`

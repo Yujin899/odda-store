@@ -1,6 +1,12 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+/**
+ * Merges Tailwind CSS classes with clsx logic.
+ * Use this for all dynamic class merging to avoid conflicts.
+ * @param inputs - Variadic list of class values
+ * @returns Merged class string
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -8,6 +14,13 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Formats a price amount with currency label.
  * Supports both EN and AR locales.
+ * @param amount - The numeric price to format
+ * @param locale - Site locale ('en' or 'ar')
+ * @param currency - Optional currency code (defaults to EGP)
+ * @returns Formatted price string with local currency symbol/label
+ * @example
+ * formatPrice(1500, 'ar') // '1,500 ج.م'
+ * formatPrice(1500, 'en') // '1,500 EGP'
  */
 export function formatPrice(
   amount: number,
@@ -22,7 +35,10 @@ export function formatPrice(
 
 /**
  * Formats a date string or Date object.
- * Supports both EN and AR locales.
+ * Supports both EN and AR locales with a numeric year and short month.
+ * @param date - The date to format
+ * @param locale - Site locale ('en' or 'ar')
+ * @returns Formatted date string in local format
  */
 export function formatDate(
   date: string | Date,
@@ -36,7 +52,9 @@ export function formatDate(
 
 /**
  * Maps order status to Tailwind color classes.
- * Used in both storefront and dashboard.
+ * Used for status badges in both storefront profiles and admin dashboard tables.
+ * @param status - The raw status string from MongoDB
+ * @returns Tailwind CSS classes for background and text colors
  */
 export function getStatusColor(status: string): string {
   const map: Record<string, string> = {
@@ -53,6 +71,10 @@ export function getStatusColor(status: string): string {
 
 /**
  * Truncates text to a max length with ellipsis.
+ * Useful for product descriptions in grid views.
+ * @param text - The string to truncate
+ * @param maxLength - Maximum characters allowed
+ * @returns Truncated string with '...' if it exceeded maxLength
  */
 export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;

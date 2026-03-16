@@ -48,6 +48,7 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
       
       <div className="relative group">
         <Swiper
+          key={language}
           modules={[Navigation, FreeMode, Autoplay]}
           navigation={{
             prevEl: '.related-prev',

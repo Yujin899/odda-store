@@ -1,5 +1,16 @@
+/**
+ * Server-side Mongoose document types for the Odda Store.
+ * 
+ * Use these in API routes with lean queries:
+ * const products = await Product.find().lean<ProductDoc[]>();
+ * 
+ * Never import these in client components.
+ * For client-side types, use src/types/store.ts instead.
+ */
+
 import { Types } from 'mongoose';
 
+/** Mongoose document shape for a Product after .lean() */
 export type ProductDoc = {
   _id: Types.ObjectId;
   name: string;
@@ -24,6 +35,7 @@ export type ProductDoc = {
   updatedAt: Date;
 };
 
+/** Mongoose document shape for a Category after .lean() */
 export type CategoryDoc = {
   _id: Types.ObjectId;
   name: string;
@@ -36,6 +48,7 @@ export type CategoryDoc = {
   updatedAt: Date;
 };
 
+/** Mongoose document shape for a Bundle after .lean() */
 export type BundleDoc = {
   _id: Types.ObjectId;
   name: string;
@@ -56,6 +69,7 @@ export type BundleDoc = {
   updatedAt: Date;
 };
 
+/** Mongoose document shape for an Order after .lean() */
 export type OrderDoc = {
   _id: Types.ObjectId;
   orderNumber: string;
@@ -84,6 +98,7 @@ export type OrderDoc = {
   updatedAt: Date;
 };
 
+/** Mongoose document shape for a User after .lean() */
 export type UserDoc = {
   _id: Types.ObjectId;
   name: string;
@@ -96,6 +111,7 @@ export type UserDoc = {
   updatedAt: Date;
 };
 
+/** Mongoose document shape for a Badge after .lean() */
 export type BadgeDoc = {
   _id: Types.ObjectId;
   name: string;
@@ -106,6 +122,7 @@ export type BadgeDoc = {
   updatedAt: Date;
 };
 
+/** Mongoose document shape for a Review after .lean() */
 export type ReviewDoc = {
   _id: Types.ObjectId;
   targetId: Types.ObjectId;

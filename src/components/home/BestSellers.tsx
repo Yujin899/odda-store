@@ -51,6 +51,8 @@ export function BestSellers({ products }: { products: Product[] }) {
         </div>
         
         <Swiper
+          key={language}
+          dir={language === 'ar' ? 'rtl' : 'ltr'}
           modules={[Navigation, FreeMode]}
           navigation={{
             prevEl: '.best-sellers-prev',

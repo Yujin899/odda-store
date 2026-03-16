@@ -1,9 +1,20 @@
+/**
+ * Client-side DTO types for the Odda Store frontend.
+ * 
+ * These match the shape returned by API routes after DTO mapping.
+ * Use in all React components and client-side hooks.
+ * 
+ * For server-side Mongoose types, use src/types/models.ts instead.
+ */
+
+/** Shape of an individual product image */
 export interface ProductImage {
   url: string;
   isPrimary: boolean;
   order: number;
 }
 
+/** Sanitized product data returned from GET /api/products */
 export interface Product {
   id: string;
   _id: string;
@@ -35,6 +46,7 @@ export interface Product {
   createdAt: string;
 }
 
+/** Sanitized bundle data returned from GET /api/bundles */
 export interface Bundle {
   id: string;
   _id: string;
@@ -55,6 +67,7 @@ export interface Bundle {
   createdAt?: string;
 }
 
+/** Sanitized category data */
 export interface Category {
   id: string;
   name: string;
@@ -65,6 +78,7 @@ export interface Category {
   image?: string | null;
 }
 
+/** Visual badge data for products/bundles */
 export interface Badge {
   name: string;
   nameAr?: string;
@@ -72,6 +86,7 @@ export interface Badge {
   textColor: string;
 }
 
+/** Order data for tracking and history */
 export interface Order {
   id?: string;
   _id?: string;
@@ -94,6 +109,7 @@ export interface Order {
   createdAt: string;
 }
 
+/** Individual item within an order */
 export interface OrderItem {
   productId: string;
   name: string;
@@ -105,6 +121,7 @@ export interface OrderItem {
   type: 'Product' | 'Bundle';
 }
 
+/** Sanitized review data */
 export interface Review {
   id: string;
   _id: string;
@@ -114,6 +131,7 @@ export interface Review {
   createdAt: string;
 }
 
+/** Minimal product shape for related results and carousels */
 export type RelatedProduct = {
   id: string;
   _id: string;

@@ -8,9 +8,12 @@ cloudinary.config({
 });
 
 /**
- * Uploads a file buffer to Cloudinary and returns the secure URL
- * @param file Buffer of the image
- * @param folder Cloudinary folder name
+ * Uploads a file buffer to Cloudinary and returns the secure URL and publicId.
+ * Used in server-side API routes for processing file uploads.
+ * 
+ * @param file - Buffer of the image to upload
+ * @param folder - Destination folder in Cloudinary
+ * @returns Object containing the secure URL and publicId
  */
 export async function uploadImage(file: Buffer, folder: string): Promise<{ url: string; publicId: string }> {
   return new Promise((resolve, reject) => {
@@ -31,8 +34,10 @@ export async function uploadImage(file: Buffer, folder: string): Promise<{ url: 
 }
 
 /**
- * Deletes an image from Cloudinary by its public ID
- * @param publicId The public ID of the image to delete
+ * Deletes an image from Cloudinary by its exact public ID.
+ * Low-level utility called by deleteCloudinaryImage.
+ * 
+ * @param publicId - The unique Cloudinary public ID of the image
  */
 export async function deleteImage(publicId: string): Promise<void> {
   try {
@@ -44,9 +49,13 @@ export async function deleteImage(publicId: string): Promise<void> {
 }
 
 /**
- * Extracts public_id from a Cloudinary URL and deletes it
- * URLs look like: https://res.cloudinary.com/[cloud]/image/upload/v123/[public_id].[ext]
- * @param imageUrl Full Cloudinary secure URL
+ * Deletes an image from Cloudinary by its full secure URL.
+ * Extracts the publicId automatically and handles the API call.
+ * 
+ * Call this whenever an entity with an image is deleted or its image is replaced.
+ * Only works for images hosted on res.cloudinary.com.
+ * 
+ * @param imageUrl - Full Cloudinary secure URL of the image to delete
  */
 export async function deleteCloudinaryImage(imageUrl: string): Promise<void> {
   if (!imageUrl || !imageUrl.includes('res.cloudinary.com')) return;
