@@ -640,6 +640,8 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 
 - **Swiper RTL**: Always pass `key={locale}` and `dir={isRtl ? 'rtl' : 'ltr'}` to every Swiper instance. The `key` prop forces re-mount on locale change, ensuring correct RTL behavior without a full page reload.
 
+- **RatingSummary**: Reusable star rating display. Returns null if no reviews. Used in ProductCard and BundleCard.
+
 ## Rules Index
 Load the relevant rule file as context for your task:
 - Architecture & Components → `.agent/rules/architecture.md`

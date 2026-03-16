@@ -148,6 +148,7 @@ export type RelatedProduct = {
   badgeId?: string | { _id: string; name: string; nameAr?: string; color: string; textColor: string } | null;
   averageRating?: number;
   numReviews?: number;
+  reviewCount?: number;
   stock?: number;
 };
 

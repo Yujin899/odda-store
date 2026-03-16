@@ -1,50 +1,62 @@
-'use client';
-
-import React from 'react';
 import { Star } from 'lucide-react';
-import { useLanguageStore } from '@/store/useLanguageStore';
 
 interface RatingSummaryProps {
-  rating: number;
-  numReviews: number;
-  className?: string;
+  averageRating?: number;
+  reviewCount?: number;
+  rating?: number; // compat
+  numReviews?: number; // compat
+  className?: string; // compat
 }
 
-export function RatingSummary({ rating, numReviews, className = "" }: RatingSummaryProps) {
-  const { language } = useLanguageStore();
-  const averageRating = rating || 0;
+/**
+ * Reusable star rating display.
+ * Returns null if no reviews.
+ * Used in ProductCard and BundleCard.
+ */
+export function RatingSummary({ 
+  averageRating, 
+  reviewCount, 
+  rating: propRating, 
+  numReviews, 
+  className 
+}: RatingSummaryProps) {
+  const finalRating = averageRating ?? propRating;
+  const finalCount = reviewCount ?? numReviews;
+
+  // Don't render if no ratings yet
+  if (!finalRating || !finalCount || finalCount === 0) return null;
+
+  const ratingValue = Math.min(5, Math.max(0, finalRating));
+  const fullStars = Math.floor(ratingValue);
+  const hasHalf = ratingValue % 1 >= 0.5;
 
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      <div className="flex text-yellow-400">
-        {[1, 2, 3, 4, 5].map((s) => {
-          const isFull = s <= Math.floor(averageRating);
-          const isHalf = !isFull && s <= Math.ceil(averageRating) && (averageRating % 1 >= 0.25 && averageRating % 1 <= 0.75);
-          const isAlmostFull = !isFull && !isHalf && s <= Math.ceil(averageRating) && averageRating % 1 > 0.75;
-          
-          return (
-            <div key={s} className="relative">
-              <Star className="size-[18px] text-slate-200 fill-current stroke-none" />
-              <div 
-                className="absolute inset-0 overflow-hidden text-yellow-400"
-                style={{ 
-                  width: isFull || isAlmostFull ? '100%' : isHalf ? '50%' : '0%' 
-                }}
-              >
-                <Star className="size-[18px] fill-current stroke-none" />
-              </div>
+    <div className={`flex items-center gap-1.5 mt-1 mb-2 ${className || ''}`}>
+      {/* Stars */}
+      <div className="flex items-center gap-0.5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="relative">
+            {/* Background star */}
+            <Star className="size-3 fill-slate-200 stroke-none" aria-hidden />
+            {/* Filled star */}
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{
+                width: i < fullStars ? '100%' : i === fullStars && hasHalf ? '50%' : '0%'
+              }}
+            >
+              <Star className="size-3 fill-yellow-400 stroke-none" aria-hidden />
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-bold text-foreground">
-          {averageRating?.toFixed(1) || '0.0'}
-        </span>
-        <span className="text-sm font-medium text-slate-500">
-          ({numReviews || 0} {language === 'ar' ? 'تقييم' : 'reviews'})
-        </span>
-      </div>
+      {/* Score + count */}
+      <span className="text-[10px] font-bold text-slate-500">
+        {ratingValue.toFixed(1)}
+      </span>
+      <span className="text-[10px] text-slate-400">
+        ({finalCount})
+      </span>
     </div>
   );
 }

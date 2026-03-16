@@ -43,6 +43,8 @@ export async function GET(req: NextRequest) {
       featured: b.featured,
       bundleItems: b.bundleItems,
       bundleItemsAr: b.bundleItemsAr,
+      averageRating: b.averageRating || 0,
+      reviewCount: b.numReviews || 0,
       createdAt: b.createdAt,
     }));
     return NextResponse.json(sanitizedBundles);

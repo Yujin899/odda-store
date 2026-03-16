@@ -6,6 +6,7 @@ import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import type { RelatedProduct } from '@/types/store';
 import { formatPrice } from '@/lib/utils';
+import { RatingSummary } from '@/components/shared/RatingSummary';
 
 interface ProductCardProps {
   product: RelatedProduct;
@@ -58,6 +59,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
       </div>
       <div className="p-6 flex flex-col flex-1">
         <h4 className="font-bold text-foreground group-hover:text-(--primary) transition-colors uppercase tracking-tight text-lg mb-1 truncate">{productName}</h4>
+        <RatingSummary averageRating={product.averageRating} reviewCount={product.reviewCount} />
         <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 font-bold">{categoryName}</p>
         <div className="mt-auto">
           <div className="flex items-center gap-3 mb-6">

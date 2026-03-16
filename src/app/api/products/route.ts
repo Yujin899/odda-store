@@ -94,6 +94,9 @@ export async function GET(req: NextRequest) {
         featured: p.featured,
         aiSummary: p.aiSummary ?? null,
         aiSummaryAr: p.aiSummaryAr ?? null,
+        averageRating: p.averageRating || 0,
+        numReviews: p.numReviews || 0,
+        reviewCount: p.numReviews || 0,
         createdAt: p.createdAt.toISOString(),
       };
     });

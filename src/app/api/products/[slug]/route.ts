@@ -60,6 +60,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       featured: product.featured,
       aiSummary: product.aiSummary ?? null,
       aiSummaryAr: product.aiSummaryAr ?? null,
+      averageRating: product.averageRating || 0,
+      numReviews: product.numReviews || 0,
+      reviewCount: product.numReviews || 0,
       createdAt: product.createdAt,
     };
 

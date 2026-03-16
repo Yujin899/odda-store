@@ -14,6 +14,8 @@ interface BundleCardProps {
   };
 }
 
+import { RatingSummary } from '@/components/shared/RatingSummary';
+
 export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
   const name = (locale === 'ar' && bundle.nameAr) ? bundle.nameAr : bundle.name;
   const items = (locale === 'ar' && bundle.bundleItemsAr && bundle.bundleItemsAr.length > 0) 
@@ -57,6 +59,7 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
           <h3 className="text-xl font-bold text-(--navy) mb-2 line-clamp-2 tracking-tight leading-snug group-hover:text-(--primary) transition-colors duration-300">
             {name}
           </h3>
+          <RatingSummary averageRating={bundle.averageRating} reviewCount={bundle.reviewCount} />
           <div className="w-12 h-1 bg-(--primary) rounded-full transform origin-left transition-transform duration-500 scale-x-0 group-hover:scale-x-100" />
         </div>
 
