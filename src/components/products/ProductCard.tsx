@@ -59,8 +59,13 @@ export function ProductCard({ product, locale }: ProductCardProps) {
       </div>
       <div className="p-6 flex flex-col flex-1">
         <h4 className="font-bold text-foreground group-hover:text-(--primary) transition-colors uppercase tracking-tight text-lg mb-1 truncate">{productName}</h4>
-        <RatingSummary averageRating={product.averageRating} reviewCount={product.reviewCount} />
-        <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-6 font-bold">{categoryName}</p>
+        <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2 font-bold">{categoryName}</p>
+        <RatingSummary 
+          rating={product.averageRating || 0} 
+          numReviews={product.numReviews || 0} 
+          variant="compact"
+          className="mb-4"
+        />
         <div className="mt-auto">
           <div className="flex items-center gap-3 mb-6">
             <span className="text-xl font-black text-foreground">{formatPrice(product.price, language as 'en' | 'ar')}</span>

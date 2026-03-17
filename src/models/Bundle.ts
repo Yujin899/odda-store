@@ -16,7 +16,6 @@ export interface IBundle {
   featured: boolean;
   averageRating: number;
   numReviews: number;
-  reviewCount?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

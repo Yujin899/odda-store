@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { ArrowRight, CheckCircle2, ShoppingBag } from 'lucide-react';
 import { IBundle } from '@/models/Bundle';
 import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
+import { RatingSummary } from '@/components/shared/RatingSummary';
 
 interface BundleCardProps {
   bundle: IBundle;
@@ -13,8 +14,6 @@ interface BundleCardProps {
     [key: string]: unknown;
   };
 }
-
-import { RatingSummary } from '@/components/shared/RatingSummary';
 
 export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
   const name = (locale === 'ar' && bundle.nameAr) ? bundle.nameAr : bundle.name;
@@ -59,7 +58,12 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
           <h3 className="text-xl font-bold text-(--navy) mb-2 line-clamp-2 tracking-tight leading-snug group-hover:text-(--primary) transition-colors duration-300">
             {name}
           </h3>
-          <RatingSummary averageRating={bundle.averageRating} reviewCount={bundle.reviewCount} />
+          <RatingSummary 
+            rating={bundle.averageRating} 
+            numReviews={bundle.numReviews} 
+            variant="compact"
+            className="mb-2"
+          />
           <div className="w-12 h-1 bg-(--primary) rounded-full transform origin-left transition-transform duration-500 scale-x-0 group-hover:scale-x-100" />
         </div>
 
