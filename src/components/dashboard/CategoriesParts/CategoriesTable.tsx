@@ -11,6 +11,7 @@ import {
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 import {
   Table,
   TableBody,
@@ -43,7 +44,6 @@ interface CategoriesTableProps {
   searchQuery: string;
   setSearchQuery: (val: string) => void;
   isLoading: boolean;
-  onEdit: (category: Category) => void;
   onDelete: (id: string) => void;
   dict: any;
   language: string;
@@ -54,7 +54,6 @@ export function CategoriesTable({
   searchQuery,
   setSearchQuery,
   isLoading,
-  onEdit,
   onDelete,
   dict,
   language
@@ -145,11 +144,13 @@ export function CategoriesTable({
                       <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-slate-400 text-start">{dict.dashboard.categoriesPage.table.actions}</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem 
-                        onClick={() => onEdit(category)}
+                        asChild
                         className="text-xs font-medium focus:bg-slate-50 cursor-pointer"
                       >
-                        <Pencil className="size-3 me-2" />
-                        {dict.common.edit}
+                        <Link href={`/dashboard/categories/${category._id}/edit`} className="flex items-center w-full px-2 py-1.5 translate-x-1">
+                          <Pencil className="size-3 me-2" />
+                          {dict.common.edit}
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem 
                         className="text-xs font-medium text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer"

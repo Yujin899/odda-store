@@ -3,9 +3,9 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CategoriesTable } from './CategoriesParts/CategoriesTable';
-import { CategoryDialog } from './CategoriesParts/CategoryDialog';
 import { DeleteCategoryDialog } from './CategoriesParts/DeleteCategoryDialog';
 import { useCategories } from './CategoriesParts/useCategories';
+import Link from 'next/link';
 
 interface CategoriesClientProps {
   dict: any;
@@ -16,28 +16,12 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
   const {
     categories,
     isLoading,
-    isSaving,
-    isUploading,
     searchQuery,
     setSearchQuery,
     deleteId,
     setDeleteId,
-    isModalOpen,
-    setIsModalOpen,
-    editingCategory,
-    formData,
-    setFormData,
-    isSlugManuallyEdited,
-    setIsSlugManuallyEdited,
-    isMagicFilling,
-    uploadProgress,
-    handleImageUpload,
-    handleSave,
-    handleMagicFill,
     handleDelete,
-    openModal,
-    addToast
-  } = useCategories(dict, language);
+  } = useCategories(dict);
 
   return (
     <div className="p-6 space-y-6 text-start" dir={language === 'ar' ? 'rtl' : 'ltr'}>
@@ -51,11 +35,13 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
           </p>
         </div>
         <Button 
-          onClick={() => openModal()}
+          asChild
           className="bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-(--primary)/20 rounded-sm"
         >
-          <Plus className="size-4 me-2" />
-          {dict.dashboard.categoriesPage.addCategory}
+          <Link href="/dashboard/categories/new">
+            <Plus className="size-4 me-2" />
+            {dict.dashboard.categoriesPage.addCategory}
+          </Link>
         </Button>
       </div>
 
@@ -64,30 +50,9 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         isLoading={isLoading}
-        onEdit={openModal}
         onDelete={setDeleteId}
         dict={dict}
         language={language}
-      />
-
-      <CategoryDialog 
-        isOpen={isModalOpen}
-        onClose={setIsModalOpen}
-        onSave={handleSave}
-        editingCategory={editingCategory}
-        isSaving={isSaving}
-        formData={formData}
-        setFormData={setFormData}
-        isUploading={isUploading}
-        uploadProgress={uploadProgress}
-        handleImageUpload={handleImageUpload}
-        handleMagicFill={handleMagicFill}
-        isMagicFilling={isMagicFilling}
-        isSlugManuallyEdited={isSlugManuallyEdited}
-        setIsSlugManuallyEdited={setIsSlugManuallyEdited}
-        dict={dict}
-        language={language}
-        addToast={addToast}
       />
 
       <DeleteCategoryDialog 
