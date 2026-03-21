@@ -43,11 +43,13 @@ export function CategoryForm({
   return (
     <div className="py-6 space-y-6">
       {/* AI Assistant Panel */}
-      <div className="bg-(--navy) text-white p-4 rounded-sm border border-white/10 shadow-lg space-y-4">
+      <div className="bg-white p-4 rounded-sm border border-slate-200 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="size-4 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-white">AI Assistant</span>
+            <div className="size-6 bg-(--primary)/10 rounded-sm flex items-center justify-center shrink-0">
+               <Sparkles className="size-3 text-(--primary)" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-(--navy)">AI Assistant</span>
           </div>
           <Button 
             type="button"
@@ -57,7 +59,7 @@ export function CategoryForm({
               addToast({ title: dict.toasts.promptCopied, description: dict.toasts.promptCopiedDesc, type: "success" });
             }}
             disabled={!formData.name}
-            className="bg-white text-(--navy) hover:bg-white/90 font-black uppercase tracking-widest text-[9px] h-7 px-3 rounded-sm border-none shadow-none"
+            className="bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-[9px] h-7 px-3 rounded-sm border-none shadow-none"
           >
             📝 Copy Prompt
           </Button>
@@ -66,11 +68,11 @@ export function CategoryForm({
           <Textarea 
             placeholder="Paste AI JSON output here..."
             id="cat-ai-json"
-            className="bg-white/5 border-white/10 text-white font-mono text-[10px] min-h-[60px] focus:border-primary focus:ring-0 placeholder:text-white/20"
+            className="bg-slate-50 border-slate-200 text-(--navy) font-mono text-[10px] min-h-[60px] focus:border-(--primary) focus:ring-0 placeholder:text-slate-300"
           />
           <Button 
             type="button"
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[9px] h-8 rounded-sm"
+            className="w-full bg-(--primary) hover:bg-(--primary)/90 text-white font-black uppercase tracking-widest text-[9px] h-8 rounded-sm shadow-md shadow-(--primary)/10"
             onClick={() => {
               const textarea = document.getElementById('cat-ai-json') as HTMLTextAreaElement;
               if (!textarea?.value) return;

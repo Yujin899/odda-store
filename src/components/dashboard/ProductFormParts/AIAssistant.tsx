@@ -88,17 +88,17 @@ JSON Schema:
   };
 
   return (
-    <div className="bg-(--navy) text-white p-6 rounded-sm border border-white/10 shadow-xl space-y-4">
+    <div className="bg-white p-6 rounded-sm border border-slate-200 shadow-sm space-y-4">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-start">
-          <div className="size-8 bg-(--primary) rounded-sm flex items-center justify-center shrink-0">
-            <Sparkles className="size-4 text-white" />
+          <div className="size-8 bg-(--primary)/10 rounded-sm flex items-center justify-center shrink-0">
+            <Sparkles className="size-4 text-(--primary)" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-white">
+            <h3 className="text-sm font-black uppercase tracking-widest text-(--navy)">
               🤖 {dict.dashboard.brandInitial} AI Assistant
             </h3>
-            <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
               SOTA Prompt Generator & JSON Importer
             </p>
           </div>
@@ -107,7 +107,7 @@ JSON Schema:
           type="button"
           onClick={handleCopyPrompt}
           disabled={!name}
-          className="bg-white text-(--navy) hover:bg-white/90 font-black uppercase tracking-widest text-[10px] h-9 px-4 rounded-sm disabled:opacity-50"
+          className="bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-[10px] h-9 px-4 rounded-sm disabled:opacity-50"
         >
           <Copy className="size-3 me-2" />
           {language === 'ar' ? 'نسخ المطالبة' : 'Copy AI Prompt'}
@@ -115,17 +115,17 @@ JSON Schema:
       </div>
 
       <div className="space-y-2 text-start">
-        <Label className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+        <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
           📥 {language === 'ar' ? 'اصق مخرجات AI هنا' : 'Paste AI JSON Output Here'}
         </Label>
         <Textarea 
           id="ai-json-input"
           placeholder='{ "nameAr": "...", "description": "...", "descriptionAr": "...", ... }'
-          className="bg-white/5 border-white/10 text-white font-mono text-xs min-h-[100px] focus:border-(--primary) focus:ring-0 placeholder:text-white/20"
+          className="bg-slate-50 border-slate-200 text-(--navy) font-mono text-xs min-h-[100px] focus:border-(--primary) focus:ring-0 placeholder:text-slate-300"
         />
         <Button 
           type="button"
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-10 rounded-sm"
+          className="w-full bg-(--primary) hover:bg-(--primary)/90 text-white font-black uppercase tracking-widest text-[10px] h-10 rounded-sm shadow-lg shadow-(--primary)/20"
           onClick={handleMagicFill}
         >
           <Sparkles className="size-3 me-2" />
