@@ -40,7 +40,6 @@ export function ProductForm({ initialData }: ProductFormProps) {
       description: initialData?.description || '',
       descriptionAr: initialData?.descriptionAr || '',
       price: Number(initialData?.price) || 0,
-      compareAtPrice: initialData?.compareAtPrice || '',
       originalPrice: initialData?.originalPrice || '',
       categoryId: typeof initialData?.categoryId === 'object' ? initialData.categoryId?._id : (initialData?.categoryId || ''),
       badgeId: typeof initialData?.badgeId === 'object' ? initialData.badgeId?._id : (initialData?.badgeId || null),

@@ -69,9 +69,6 @@ export function ProductCard({ product, locale }: ProductCardProps) {
         <div className="mt-auto">
           <div className="flex items-center gap-3 mb-6">
             <span className="text-xl font-black text-foreground">{formatPrice(product.price, language as 'en' | 'ar')}</span>
-            {product.originalPrice && (
-              <span className="text-sm text-muted-foreground line-through opacity-50 font-light">{formatPrice(product.originalPrice, language as 'en' | 'ar')}</span>
-            )}
           </div>
           
           <AddToCartButton 

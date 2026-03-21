@@ -8,7 +8,7 @@ export interface IBundle {
   description?: string;
   descriptionAr?: string;
   price: number;
-  compareAtPrice?: number;
+  originalPrice?: number;
   images: string[];
   bundleItems: string[];
   bundleItemsAr?: string[];
@@ -32,7 +32,7 @@ const BundleSchema = new Schema<IBundleDocument>(
     description: { type: String },
     descriptionAr: { type: String },
     price: { type: Number, required: true },
-    compareAtPrice: { type: Number },
+    originalPrice: { type: Number },
     images: [{ type: String }],
     bundleItems: [{ type: String }],
     bundleItemsAr: [{ type: String }],

@@ -82,9 +82,9 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
         {/* Price & Footer */}
         <div className={`pt-8 border-t border-slate-200/60 flex items-center justify-between ${locale === 'ar' ? 'flex-row-reverse' : ''}`}>
           <div className="flex flex-col gap-0.5">
-            {bundle.compareAtPrice && (
+            {bundle.originalPrice && (
               <span className="text-xs text-slate-300 line-through font-bold tracking-tighter">
-                {bundle.compareAtPrice} {dict.common.egp}
+                {bundle.originalPrice} {dict.common.egp}
               </span>
             )}
             <div className="flex items-baseline gap-1">

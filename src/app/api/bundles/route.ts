@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
       description: b.description,
       descriptionAr: b.descriptionAr,
       price: b.price,
-      originalPrice: b.compareAtPrice ?? null,
+      originalPrice: b.originalPrice ?? null,
       images: b.images,
       stock: b.stock,
       featured: b.featured,

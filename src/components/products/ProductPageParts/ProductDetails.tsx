@@ -3,7 +3,6 @@
 import { Truck, ShieldCheck, AlertCircle } from 'lucide-react';
 import { RatingSummary } from '@/components/shared/RatingSummary';
 import { RatingBreakdown } from '@/components/shared/RatingBreakdown';
-import { getDictionary } from '@/dictionaries';
 import type { Product, Review } from '@/types/store';
 import { formatPrice } from '@/lib/utils';
 
@@ -22,7 +21,6 @@ export function ProductDetails({
   reviews,
   language 
 }: ProductDetailsProps) {
-  const dict = getDictionary(language);
   const isRtl = language === 'ar';
 
   const productName = isRtl && product.nameAr ? product.nameAr : product.name;
@@ -58,16 +56,10 @@ export function ProductDetails({
         />
       </div>
 
-      {/* Pricing */}
       <div className="flex items-baseline gap-3 pt-2">
         <span className="text-3xl font-black text-(--primary)">
           {formatPrice(product.price, language)}
         </span>
-        {product.originalPrice && product.originalPrice > product.price && (
-          <span className="text-lg text-slate-400 line-through font-bold">
-            {formatPrice(product.originalPrice, language)}
-          </span>
-        )}
       </div>
 
       {/* Trust Badges Bar */}

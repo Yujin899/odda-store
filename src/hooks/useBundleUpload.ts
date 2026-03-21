@@ -1,12 +1,12 @@
-'use client';
-
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { BundleFormValues } from '@/lib/schemas';
 import { DropResult } from '@hello-pangea/dnd';
 
-export function useBundleUpload() {
-  const { setValue, watch } = useFormContext<BundleFormValues>();
+export function useBundleUpload(
+  setValue: UseFormSetValue<BundleFormValues>,
+  watch: UseFormWatch<BundleFormValues>
+) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState<{ id: string; file: File; progress: number; preview: string }[]>([]);
   const images = watch('images') || [];

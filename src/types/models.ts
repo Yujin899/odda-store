@@ -19,14 +19,12 @@ export type ProductDoc = {
   description?: string;
   descriptionAr?: string;
   price: number;
-  compareAtPrice?: number;
+  originalPrice?: number;
   images: Array<{ url: string; isPrimary: boolean; order: number; _id?: Types.ObjectId }>;
   categoryId?: Types.ObjectId;
   badgeId?: Types.ObjectId;
   stock: number;
   featured: boolean;
-  aiSummary?: string;
-  aiSummaryAr?: string;
   numReviews?: number;
   averageRating?: number;
   features?: string[];
@@ -57,7 +55,7 @@ export type BundleDoc = {
   description?: string;
   descriptionAr?: string;
   price: number;
-  compareAtPrice?: number;
+  originalPrice?: number;
   images: string[];
   stock: number;
   featured: boolean;

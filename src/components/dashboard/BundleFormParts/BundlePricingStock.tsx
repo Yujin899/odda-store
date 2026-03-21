@@ -27,8 +27,9 @@ export function BundlePricingStock({ language }: BundlePricingStockProps) {
           {errors.price && <p className="text-[10px] text-red-500 font-bold">{errors.price.message}</p>}
         </div>
         <div className={bcn("space-y-2", isRtl ? "text-end" : "text-start")}>
-          <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Compare at Price (EGP)</Label>
-          <Input type="number" {...register('compareAtPrice')} className="rounded-sm" />
+          <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Original Price (EGP)</Label>
+          <Input type="number" {...register('originalPrice')} className="rounded-sm" />
+          {errors.originalPrice && <p className="text-[10px] text-red-500 font-bold">{errors.originalPrice.message}</p>}
         </div>
       </div>
 

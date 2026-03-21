@@ -21,7 +21,7 @@ import { getDictionary } from '@/dictionaries';
 import { ProductFormValues } from '@/lib/schemas';
 
 interface Category {
-  _id: string;
+  id: string;
   name: string;
   nameAr: string;
 }
@@ -92,7 +92,7 @@ export function OrganizationFields() {
               </SelectTrigger>
               <SelectContent align={isRtl ? 'end' : 'start'}>
                 {categories.map(cat => (
-                  <SelectItem key={cat._id} value={cat._id} className={isRtl ? 'text-end flex-row-reverse' : ''}>
+                  <SelectItem key={cat.id} value={cat.id} className={isRtl ? 'text-end flex-row-reverse' : ''}>
                     {isRtl && cat.nameAr ? cat.nameAr : cat.name}
                   </SelectItem>
                 ))}
@@ -120,7 +120,7 @@ export function OrganizationFields() {
                 <SelectValue placeholder={dict.dashboard.productForm.placeholders.noBadge} />
               </SelectTrigger>
               <SelectContent align={isRtl ? 'end' : 'start'}>
-                <SelectItem value="none" className={isRtl ? 'text-end flex-row-reverse' : ''}>
+                <SelectItem key="none" value="none" className={isRtl ? 'text-end flex-row-reverse' : ''}>
                     {dict.dashboard.productForm.badges.none}
                 </SelectItem>
                 {badges.map(badge => (

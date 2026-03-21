@@ -24,7 +24,6 @@ export interface Product {
   description: string;
   descriptionAr?: string;
   price: number;
-  compareAtPrice?: number | null;
   originalPrice?: number | null;
   images: ProductImage[];
   image?: string;
@@ -37,8 +36,6 @@ export interface Product {
   badgeId?: string | { _id: string; name: string; nameAr?: string; color: string; textColor: string } | null;
   stock: number;
   featured: boolean;
-  aiSummary?: string | null;
-  aiSummaryAr?: string | null;
   averageRating?: number;
   numReviews?: number;
   features?: string[];

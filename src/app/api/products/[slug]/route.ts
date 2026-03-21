@@ -44,7 +44,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       description: product.description,
       descriptionAr: product.descriptionAr,
       price: product.price,
-      originalPrice: product.compareAtPrice ?? null,
+      originalPrice: product.originalPrice ?? null,
       images: product.images,
       categoryId: category?._id?.toString() ?? null,
       categoryName: category?.name ?? null,
@@ -58,8 +58,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       } : null,
       stock: product.stock,
       featured: product.featured,
-      aiSummary: product.aiSummary ?? null,
-      aiSummaryAr: product.aiSummaryAr ?? null,
       createdAt: product.createdAt,
     };
 
@@ -130,7 +128,7 @@ export const PUT = auth(async (req, { params }) => {
       description: updatedProduct.description,
       descriptionAr: updatedProduct.descriptionAr,
       price: updatedProduct.price,
-      originalPrice: updatedProduct.compareAtPrice ?? null,
+      originalPrice: updatedProduct.originalPrice ?? null,
       images: updatedProduct.images,
       categoryId: (updatedProduct.categoryId as unknown as CategoryDoc)?._id?.toString() ?? null,
       categoryName: (updatedProduct.categoryId as unknown as CategoryDoc)?.name ?? null,
@@ -144,8 +142,6 @@ export const PUT = auth(async (req, { params }) => {
       } : null,
       stock: updatedProduct.stock,
       featured: updatedProduct.featured,
-      aiSummary: updatedProduct.aiSummary ?? null,
-      aiSummaryAr: updatedProduct.aiSummaryAr ?? null,
       createdAt: updatedProduct.createdAt,
     };
 

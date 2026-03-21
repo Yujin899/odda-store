@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import dns from "node:dns/promises";
+
+dns.setServers(["8.8.8.8"]);
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -6,9 +9,9 @@ import mongoose from 'mongoose';
  * during API Route usage.
  */
 declare global {
-  var mongoose: { 
-    conn: typeof import('mongoose') | null; 
-    promise: Promise<typeof import('mongoose')> | null; 
+  var mongoose: {
+    conn: typeof import('mongoose') | null;
+    promise: Promise<typeof import('mongoose')> | null;
   } | undefined;
 }
 
@@ -44,7 +47,7 @@ export async function connectDB() {
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
-      family: 4, // Use IPv4 to avoid potential DNS issues in some serverless environments
+      family: 4,
     };
 
     cached!.promise = mongoose.connect(MONGODB_URI!, opts).then((m) => {

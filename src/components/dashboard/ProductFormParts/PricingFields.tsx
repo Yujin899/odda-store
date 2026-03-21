@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
-import { DollarSign, Package, TrendingDown, ShieldCheck } from 'lucide-react';
+import { DollarSign, Package, ShieldCheck } from 'lucide-react';
 import { FormInput } from '@/components/ui/FormInput';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
@@ -31,16 +31,6 @@ export function PricingFields() {
             icon={DollarSign}
             {...register('price')}
             error={errors.price?.message}
-            placeholder="0.00"
-            min="0"
-            step="0.01"
-          />
-          <FormInput 
-            label={isRtl ? 'السعر قبل الخصم' : 'Compare at Price'}
-            type="number"
-            icon={TrendingDown}
-            {...register('compareAtPrice')}
-            error={errors.compareAtPrice?.message}
             placeholder="0.00"
             min="0"
             step="0.01"

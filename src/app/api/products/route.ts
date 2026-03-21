@@ -81,7 +81,7 @@ export async function GET(req: NextRequest) {
         description: p.description || '',
         descriptionAr: p.descriptionAr || '',
         price: p.price,
-        originalPrice: p.compareAtPrice ?? null,
+        originalPrice: p.originalPrice ?? null,
         images: p.images.map((img) => ({ url: img.url, isPrimary: img.isPrimary, order: img.order })),
         categoryId: p.categoryId?.toString() ?? null,
         badge: badge ? {
@@ -92,8 +92,6 @@ export async function GET(req: NextRequest) {
         } : null,
         stock: p.stock,
         featured: p.featured,
-        aiSummary: p.aiSummary ?? null,
-        aiSummaryAr: p.aiSummaryAr ?? null,
         createdAt: p.createdAt.toISOString(),
       };
     });

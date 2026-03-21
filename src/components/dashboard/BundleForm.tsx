@@ -38,7 +38,7 @@ export function BundleForm({ initialData }: BundleFormProps) {
       description: initialData?.description || '',
       descriptionAr: initialData?.descriptionAr || '',
       price: initialData?.price || 0,
-      compareAtPrice: initialData?.compareAtPrice || 0,
+      originalPrice: initialData?.originalPrice || 0,
       stock: initialData?.stock || 0,
       bundleItems: initialData?.bundleItems || [''],
       bundleItemsAr: initialData?.bundleItemsAr || [''],
@@ -46,7 +46,7 @@ export function BundleForm({ initialData }: BundleFormProps) {
     }
   });
 
-  const { isUploading, uploadingFiles, handleImageUpload, removeImage, onDragEnd } = useBundleUpload();
+  const { isUploading, uploadingFiles, handleImageUpload, removeImage, onDragEnd } = useBundleUpload(methods.setValue, methods.watch);
 
   const onSubmit = async (values: BundleFormValues) => {
     setIsLoading(true);

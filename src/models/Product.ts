@@ -12,7 +12,6 @@ export interface IProduct {
   averageRating: number;
   numReviews: number;
   price: number;
-  compareAtPrice?: number;
   originalPrice?: number;
   images: {
     url: string;
@@ -26,8 +25,6 @@ export interface IProduct {
   badge?: string;
   inStock?: boolean;
   featured: boolean;
-  aiSummary?: string;
-  aiSummaryAr?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -46,7 +43,6 @@ const ProductSchema = new Schema<IProductDocument>(
     features: [{ type: String }],
     featuresAr: [{ type: String }],
     price: { type: Number, required: true },
-    compareAtPrice: { type: Number },
     originalPrice: { type: Number },
     averageRating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
