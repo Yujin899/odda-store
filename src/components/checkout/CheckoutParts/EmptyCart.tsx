@@ -29,7 +29,7 @@ export function EmptyCart() {
 
       <Button 
         asChild
-        className="mt-12 px-12 py-8 bg-(--navy) text-white font-black rounded-sm uppercase tracking-[0.3em] text-[10px] shadow-2xl hover:bg-(--primary) hover:-translate-y-1 transition-all duration-300 group border-none"
+        className="mt-12 px-12 py-8 bg-primary text-primary-foreground font-black rounded-sm uppercase tracking-[0.3em] text-[10px] shadow-2xl hover:bg-primary/90 hover:-translate-y-1 transition-all duration-300 group border-none"
       >
         <Link href="/products">
           <span className="flex items-center gap-2">

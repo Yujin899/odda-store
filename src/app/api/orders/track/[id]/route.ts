@@ -51,7 +51,8 @@ export async function GET(
           slug: item.productId.slug,
           image: item.productId.images?.[0]?.url || item.productId.image || ''
         } : null,
-        name: item.productId?.name || 'Product',
+        name: item.name || item.productId?.name || 'Product',
+        nameAr: item.nameAr || item.productId?.nameAr,
         price: item.price,
         quantity: item.quantity
       })),

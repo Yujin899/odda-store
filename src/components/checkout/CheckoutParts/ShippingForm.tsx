@@ -30,7 +30,7 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
   } = useFormContext<CheckoutFormValues>();
 
   return (
-    <div className="bg-white p-6 sm:p-10 rounded-[var(--radius)] border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="bg-white p-4 sm:p-10 rounded-[var(--radius)] border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className={isRtl ? 'text-end' : 'text-start'}>
         <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">
           {dict.checkoutPage.shippingTitle || 'Shipping Details'}
@@ -105,19 +105,22 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
         className={isRtl ? 'text-end' : 'text-start'}
       />
 
-      <div className={bcn("flex items-center gap-4 pt-6 border-t border-slate-100", isRtl ? "flex-row-reverse" : "flex-row")}>
+      <div className={bcn(
+        "flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100", 
+        isRtl ? "sm:flex-row-reverse" : "sm:flex-row"
+      )}>
         <Button 
           type="button"
           variant="ghost"
           onClick={onBack}
-          className="h-14 px-8 rounded-[var(--radius)] font-black uppercase tracking-widest text-[9px] text-slate-400 hover:text-primary"
+          className="w-full sm:w-auto h-14 px-8 rounded-[var(--radius)] font-black uppercase tracking-widest text-[9px] text-slate-400 hover:text-primary"
         >
           {isRtl ? 'رجوع' : 'Go Back'}
         </Button>
         <Button 
           type="button"
           onClick={onNext}
-          className="flex-1 h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-[var(--radius)] uppercase tracking-[0.2em] text-[10px] shadow-xl group"
+          className="w-full sm:flex-1 h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-[var(--radius)] uppercase tracking-[0.2em] text-[10px] shadow-xl group"
         >
           <span className="flex items-center gap-2">
             {dict.checkoutPage.proceedPayment || 'Next: Payment Method'}

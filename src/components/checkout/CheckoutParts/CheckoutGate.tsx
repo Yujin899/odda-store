@@ -20,7 +20,7 @@ export function CheckoutGate({ dict, session, onNext }: CheckoutGateProps) {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       {session ? (
-        <div className="bg-white p-8 rounded-sm border border-slate-200 shadow-sm text-center max-w-lg mx-auto">
+        <div className="bg-white p-5 sm:p-8 rounded-sm border border-slate-200 shadow-sm text-center max-w-lg mx-auto">
           <div className="size-16 bg-(--primary)/10 text-(--primary) rounded-full flex items-center justify-center mx-auto mb-6">
             <User className="size-8 stroke-[1.5px]" />
           </div>
@@ -44,7 +44,7 @@ export function CheckoutGate({ dict, session, onNext }: CheckoutGateProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {/* Guest Checkout Option */}
-          <div className="bg-white p-8 rounded-sm border border-slate-200 shadow-sm flex flex-col items-center text-center group hover:border-(--primary)/30 transition-colors">
+          <div className="bg-white p-5 sm:p-8 rounded-sm border border-slate-200 shadow-sm flex flex-col items-center text-center group hover:border-(--primary)/30 transition-colors">
             <div className="size-12 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mb-6 group-hover:bg-(--primary)/10 group-hover:text-(--primary) transition-colors">
               <ShoppingBag className="size-6 stroke-[1.5px]" />
             </div>
@@ -64,7 +64,7 @@ export function CheckoutGate({ dict, session, onNext }: CheckoutGateProps) {
           </div>
 
           {/* Sign In Option */}
-          <div className="bg-(--navy) p-8 rounded-sm border border-(--navy) shadow-xl flex flex-col items-center text-center">
+          <div className="bg-(--navy) p-5 sm:p-8 rounded-sm border border-(--navy) shadow-xl flex flex-col items-center text-center">
             <div className="size-12 bg-white/10 text-white rounded-full flex items-center justify-center mb-6">
               <User className="size-6 stroke-[1.5px]" />
             </div>

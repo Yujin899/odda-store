@@ -12,14 +12,34 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import { useState, useEffect } from 'react';
+
 export function LanguageSwitcher() {
   const router = useRouter();
   const { language, setLanguage } = useLanguageStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLanguageChange = (lang: 'en' | 'ar') => {
     setLanguage(lang);
     router.refresh();
   };
+
+  if (!mounted) {
+    return (
+      <Button 
+        variant="ghost" 
+        size="sm" 
+        className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-600 opacity-0"
+      >
+        <Globe className="size-4" />
+        <span>EN</span>
+      </Button>
+    );
+  }
 
   return (
     <DropdownMenu>

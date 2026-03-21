@@ -248,7 +248,12 @@ export const GET = auth(async (req) => {
       id: o._id.toString(),
       orderNumber: o.orderNumber,
       customer: o.shippingAddress?.fullName || 'N/A',
-      items: o.items,
+      items: o.items.map((item: any) => ({
+        ...item,
+        name: item.name || item.productId?.name || 'Product',
+        nameAr: item.nameAr || item.productId?.nameAr,
+        productId: item.productId?._id?.toString() || item.productId?.id?.toString() || item.productId?.toString(),
+      })),
       totalAmount: o.totalAmount,
       paymentMethod: o.paymentMethod,
       paymentScreenshot: o.paymentProof || null,

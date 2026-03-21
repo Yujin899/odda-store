@@ -85,7 +85,7 @@ export default async function BundlesPage() {
           <div className="flex items-center gap-4">
             <Link 
               href="/products"
-              className="px-8 py-4 rounded-(--radius) bg-white text-(--navy) font-black uppercase text-xs tracking-widest hover:bg-(--primary) hover:text-white transition-all duration-300"
+              className="px-8 py-4 rounded-(--radius) bg-white text-(--navy) font-black uppercase text-xs tracking-widest hover:bg-primary hover:text-white transition-all duration-300"
             >
               {dict.common.allProducts}
             </Link>

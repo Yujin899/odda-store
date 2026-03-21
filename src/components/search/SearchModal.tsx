@@ -59,9 +59,9 @@ export function SearchModal() {
   }, [searchValue]);
 
   const handleClose = () => {
+    closeSearch();
     setSearchValue('');
     setSearchResults([]);
-    closeSearch();
   };
 
   const handleSearchNavigation = (query: string) => {
@@ -72,7 +72,7 @@ export function SearchModal() {
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => inputRef.current?.focus(), 50);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -103,7 +103,7 @@ export function SearchModal() {
   };
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {isOpen && (
         <div 
           key="search-modal-container"
@@ -115,7 +115,7 @@ export function SearchModal() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             onClick={closeSearch}
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
           />
@@ -123,10 +123,11 @@ export function SearchModal() {
           {/* Modal Panel — slide in from right, constrained height */}
           <motion.div
             key="search-panel"
-            initial={{ y: -20, opacity: 0 }}
+            initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="relative w-full max-w-2xl bg-background rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] mb-4 sm:mb-8"
+            exit={{ y: -10, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="relative w-full max-w-2xl bg-background rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] mb-4 sm:mb-8 z-10"
           >
             {/* Search Input Area */}
             <div className="relative flex items-center px-4 sm:px-6 py-4 border-b border-border shrink-0 pe-14">
@@ -149,14 +150,20 @@ export function SearchModal() {
                 }}
                 className="flex-1 bg-transparent border-none outline-none text-lg text-foreground placeholder:text-muted-foreground/50 h-8"
               />
-              <Button 
-                variant="ghost"
-                size="icon"
-                onClick={handleClose}
-                className="absolute inset-e-3 sm:inset-e-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors text-muted-foreground flex items-center justify-center h-9 w-9 border-none"
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="absolute inset-e-3 sm:inset-e-6 top-1/2 -translate-y-1/2 z-20"
               >
-                <X className="size-5 stroke-[2.5px]" />
-              </Button>
+                <Button 
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleClose}
+                  className="p-2 hover:bg-muted rounded-full transition-colors text-muted-foreground flex items-center justify-center h-9 w-9 border-none cursor-pointer"
+                >
+                  <X className="size-5 stroke-[2.5px]" />
+                </Button>
+              </motion.div>
             </div>
 
             {/* Scrollable content area — scrollbar hidden */}

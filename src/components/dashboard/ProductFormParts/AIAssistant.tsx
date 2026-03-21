@@ -125,7 +125,7 @@ JSON Schema:
         />
         <Button 
           type="button"
-          className="w-full bg-(--primary) hover:bg-(--primary)/90 text-white font-black uppercase tracking-widest text-[10px] h-10 rounded-sm"
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-10 rounded-sm"
           onClick={handleMagicFill}
         >
           <Sparkles className="size-3 me-2" />

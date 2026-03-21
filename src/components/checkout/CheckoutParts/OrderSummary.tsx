@@ -18,7 +18,7 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
   const grandTotal = totalAmount + shippingFee;
 
   return (
-    <div className="bg-slate-50/50 p-6 sm:p-8 rounded-[var(--radius)] border border-slate-200 lg:sticky lg:top-24 h-fit animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="bg-slate-50/50 p-4 sm:p-8 rounded-[var(--radius)] border border-slate-200 lg:sticky lg:top-24 h-fit animate-in fade-in slide-in-from-bottom-4 duration-700">
       <h2 className={bcn(
         "text-sm font-black uppercase tracking-widest text-foreground pb-6 border-b border-slate-200 mb-6",
         isRtl ? "text-end" : "text-start"

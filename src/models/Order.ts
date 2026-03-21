@@ -3,6 +3,8 @@ import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 export interface IOrderItem {
   productId: Types.ObjectId | string;
   type: 'Product' | 'Bundle';
+  name: string;
+  nameAr?: string;
   quantity: number;
   price: number;
 }
@@ -44,6 +46,8 @@ const OrderSchema = new Schema<IOrder>(
           enum: ['Product', 'Bundle'],
           default: 'Product'
         },
+        name: { type: String, required: true },
+        nameAr: { type: String },
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
       },

@@ -46,7 +46,7 @@ export function CategoryForm({
       <div className="bg-(--navy) text-white p-4 rounded-sm border border-white/10 shadow-lg space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="size-4 text-(--primary)" />
+            <Sparkles className="size-4 text-primary" />
             <span className="text-[10px] font-black uppercase tracking-widest text-white">AI Assistant</span>
           </div>
           <Button 
@@ -66,11 +66,11 @@ export function CategoryForm({
           <Textarea 
             placeholder="Paste AI JSON output here..."
             id="cat-ai-json"
-            className="bg-white/5 border-white/10 text-white font-mono text-[10px] min-h-[60px] focus:border-(--primary) focus:ring-0 placeholder:text-white/20"
+            className="bg-white/5 border-white/10 text-white font-mono text-[10px] min-h-[60px] focus:border-primary focus:ring-0 placeholder:text-white/20"
           />
           <Button 
             type="button"
-            className="w-full bg-(--primary) hover:bg-(--primary)/90 text-white font-black uppercase tracking-widest text-[9px] h-8 rounded-sm"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[9px] h-8 rounded-sm"
             onClick={() => {
               const textarea = document.getElementById('cat-ai-json') as HTMLTextAreaElement;
               if (!textarea?.value) return;
@@ -111,7 +111,7 @@ export function CategoryForm({
                   size="sm"
                   onClick={handleMagicFill}
                   disabled={isMagicFilling || !formData.name}
-                  className="h-6 px-2 text-[9px] uppercase tracking-widest font-black text-(--primary) hover:text-(--primary) hover:bg-(--primary)/10"
+                  className="h-6 px-2 text-[9px] uppercase tracking-widest font-black text-primary hover:text-primary hover:bg-primary/10"
                 >
                   {isMagicFilling ? <Loader2 className="size-3 animate-spin me-1" /> : <Sparkles className="size-3 me-1" />}
                   ✨ AI Complete

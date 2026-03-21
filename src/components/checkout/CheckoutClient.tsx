@@ -41,10 +41,10 @@ export function CheckoutClient({ dict, language, session, settings }: CheckoutCl
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit} className="bg-background min-h-screen text-foreground font-sans">
-        <div className="max-w-[1200px] mx-auto px-6 py-12 lg:py-20">
+        <div className="max-w-[1200px] mx-auto px-3 sm:px-6 py-8 lg:py-20">
           
           <div className="flex flex-col items-center mb-16">
-            <h1 className="text-3xl font-black uppercase tracking-tighter mb-8 bg-linear-to-r from-(--navy) to-(--primary) bg-clip-text text-transparent">
+            <h1 className="text-3xl font-black uppercase tracking-tighter mb-8 text-(--navy)">
                {dict.checkoutPage.secureCheckout}
             </h1>
             <CheckoutStepper currentStep={currentStep} />
@@ -61,7 +61,7 @@ export function CheckoutClient({ dict, language, session, settings }: CheckoutCl
 
                 {currentStep === 1 && (
                   <motion.div key="summary" initial={{ opacity: 0, x: isRtl ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: isRtl ? 20 : -20 }} className="space-y-8">
-                     <div className="bg-white p-6 sm:p-10 rounded-sm border border-slate-200 shadow-sm">
+                     <div className="bg-white p-4 sm:p-10 rounded-sm border border-slate-200 shadow-sm">
                         <h2 className={bcn("text-xl font-black uppercase tracking-tight text-foreground mb-6", isRtl ? "text-end" : "text-start")}>
                           {dict.common.orderSummary}
                         </h2>
@@ -71,7 +71,7 @@ export function CheckoutClient({ dict, language, session, settings }: CheckoutCl
                         <Button 
                           type="button"
                           onClick={handleNext}
-                          className="w-full h-16 bg-(--navy) hover:bg-(--primary) text-white font-black rounded-sm uppercase tracking-[0.3em] text-[10px] shadow-2xl transition-all active:scale-95"
+                          className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-sm uppercase tracking-[0.3em] text-[10px] shadow-2xl transition-all active:scale-95"
                         >
                           {dict.checkoutPage.proceedShipping}
                         </Button>
