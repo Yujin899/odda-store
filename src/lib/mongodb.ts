@@ -45,9 +45,10 @@ export async function connectDB() {
     const opts = {
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000, // Increased from 5000 to handle slow DNS
       socketTimeoutMS: 45000,
-      family: 4,
+      family: 4, // Force IPv4 to avoid common DNS resolution issues on some local machines
+      connectTimeoutMS: 10000,
     };
 
     cached!.promise = mongoose.connect(MONGODB_URI!, opts).then((m) => {

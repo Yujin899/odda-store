@@ -34,6 +34,7 @@ const getCachedProducts = unstable_cache(
 
 export async function GET(req: NextRequest) {
   try {
+    
     const { searchParams } = new URL(req.url);
     
     const category = searchParams.get('category');
