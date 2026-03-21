@@ -53,16 +53,16 @@ export default async function HomeBundles() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div className="space-y-2">
-            <span className="text-(--primary) text-[10px] font-black uppercase tracking-[0.3em] block">
+            <span className="text-primary text-[10px] font-black uppercase tracking-[0.3em] block">
               {locale === 'ar' ? 'مجموعات حصرية' : 'Exclusive Collections'}
             </span>
-            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-wider text-(--navy)">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-(--navy)">
               {dict.home.starterKits}
             </h2>
           </div>
           <Link 
             href="/bundles"
-            className="group flex items-center gap-2 text-xs font-black uppercase tracking-widest text-(--navy) hover:text-(--primary) transition-colors"
+            className="group flex items-center gap-2 text-xs font-black uppercase tracking-widest text-(--navy) hover:text-primary transition-colors"
           >
             {locale === 'ar' ? 'تصفح كل العروض' : 'View All Bundles'}
             <ArrowRight className={`size-4 transition-transform group-hover:translate-x-1 ${locale === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />

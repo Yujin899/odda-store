@@ -38,7 +38,7 @@ export function BundleDetails({
       </div>
 
       <div className="flex flex-col text-start">
-        <h1 className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tight leading-tight mb-2">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-foreground uppercase tracking-tight leading-tight mb-2">
           {name}
         </h1>
         
@@ -92,7 +92,7 @@ export function BundleDetails({
           </h3>
           <div className="grid grid-cols-1 gap-3">
             {items.map((item: string, i: number) => (
-              <div key={i} className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-[var(--radius)] hover:border-primary/30 transition-colors">
+              <div key={i} className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-(--radius) hover:border-primary/30 transition-colors">
                 <div className="bg-primary/10 p-1.5 rounded-full shrink-0">
                   <CheckCircle2 className="size-4 text-primary stroke-[2.5px]" />
                 </div>

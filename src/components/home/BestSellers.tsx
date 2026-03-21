@@ -19,7 +19,7 @@ export function BestSellers({ products }: { products: Product[] }) {
     <section className="py-20 px-6 overflow-hidden w-full text-start">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl font-black uppercase tracking-wider text-(--navy)">{dict.home.bestSellers}</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-(--navy)">{dict.home.bestSellers}</h2>
           
           <div className="flex items-center gap-2">
             <Button

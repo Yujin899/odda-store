@@ -21,7 +21,7 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
     <section className="mt-16 md:mt-32 pt-8 md:pt-16 border-t border-slate-100 overflow-hidden w-full">
       <div className="flex items-center justify-between mb-8 sm:mb-16">
         <div className="text-start">
-          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight text-foreground">
             {isRtl ? 'أكمل مجموعتك' : 'Complete Your Kit'}
           </h2>
           <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2 px-1">

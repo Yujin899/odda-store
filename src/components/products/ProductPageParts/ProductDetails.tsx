@@ -45,7 +45,7 @@ export function ProductDetails({
 
       {/* Header Info */}
       <div className="text-start">
-        <h1 className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tight leading-tight mb-2">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-foreground uppercase tracking-tight leading-tight mb-2">
           {productName}
         </h1>
         

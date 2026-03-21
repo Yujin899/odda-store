@@ -44,23 +44,23 @@ export async function Navbar() {
     <header className="relative md:sticky md:top-0 z-40 px-6 lg:px-12 py-4 bg-background shadow-sm">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Left Segment: Logo (Mobile/Desktop) / Menu (Medium) */}
-        <div className="flex-1 flex items-center lg:flex-none">
+        <div className="flex-1 flex items-center lg:flex-none shrink-0">
           {/* Menu Trigger - Visible ONLY on Medium screens */}
           <div className="hidden md:block lg:hidden">
             <NavbarMobileMenuTrigger />
           </div>
 
           {/* Logo - Visible on Mobile (< md) and Desktop (lg+) */}
-          <div className="md:hidden lg:block">
+          <div className="md:hidden lg:block shrink-0">
             <Link href="/" className="shrink-0 flex items-center gap-2">
               <Image 
                 src="/logo.png" 
                 alt="Odda Logo" 
-                width={130} 
-                height={40} 
+                width={160} 
+                height={50} 
                 priority
                 unoptimized
-                className="object-contain w-[124px] h-[38px] lg:w-[130px] lg:h-[40px] transition-all duration-300" 
+                className="object-contain w-[90px] h-[40px] min-w-[90px] min-h-[40px] lg:w-[160px] lg:h-[50px] transition-all duration-300" 
               />
             </Link>
           </div>
@@ -74,11 +74,11 @@ export async function Navbar() {
               <Image 
                 src="/logo.png" 
                 alt="Odda Logo" 
-                width={124} 
-                height={38} 
+                width={140} 
+                height={44} 
                 priority
                 unoptimized
-                className="object-contain w-[124px] h-[38px] transition-all duration-300" 
+                className="object-contain w-[90px] h-[40px] min-w-[90px] min-h-[40px] transition-all duration-300" 
               />
             </Link>
           </div>
