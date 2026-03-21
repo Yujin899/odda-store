@@ -1,18 +1,7 @@
 import mongoose from 'mongoose';
-import dns from 'node:dns';
+import dns from "node:dns/promises";
 
-/**
- * Force Node.js to use specific DNS servers.
- * This resolves the "querySrv ECONNREFUSED" error common in local environments 
- * with MongoDB Atlas SRV records, especially on newer Node.js versions (v19+).
- */
-if (typeof dns.setServers === 'function') {
-  try {
-    dns.setServers(['8.8.8.8', '1.1.1.1']);
-  } catch (e) {
-    console.warn('MongoDB Connection: Failed to set custom DNS servers:', e);
-  }
-}
+dns.setServers(["8.8.8.8"]);
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -56,10 +45,9 @@ export async function connectDB() {
     const opts = {
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 10000, // Increased from 5000 to handle slow DNS
+      serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
-      family: 4, // Force IPv4 to avoid common DNS resolution issues on some local machines
-      connectTimeoutMS: 10000,
+      family: 4,
     };
 
     cached!.promise = mongoose.connect(MONGODB_URI!, opts).then((m) => {

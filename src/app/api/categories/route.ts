@@ -2,24 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import Category from '@/models/Category';
 import { auth } from '@/auth';
-import { revalidateTag, unstable_cache } from 'next/cache';
+import { revalidateTag, revalidatePath } from 'next/cache';
 import type { CategoryDoc } from '@/types/models';
-
-const getCachedCategories = unstable_cache(
-  async () => {
-    await connectDB();
-    return await Category.find({})
-      .select('_id name nameAr slug description descriptionAr image')
-      .sort({ name: 1 })
-      .lean<CategoryDoc[]>();
-  },
-  ['categories-list'],
-  { tags: ['categories-list'], revalidate: 3600 }
-);
 
 export async function GET() {
   try {
-    const categories = await getCachedCategories();
+    await connectDB();
+    const categories = await Category.find({})
+      .select('_id name nameAr slug description descriptionAr image')
+      .sort({ name: 1 })
+      .lean<CategoryDoc[]>();
+
     const sanitizedCategories = categories.map((c) => ({
       id: c._id.toString(),
       _id: c._id.toString(),
@@ -69,8 +62,11 @@ export async function POST(req: NextRequest) {
     });
     
     revalidateTag('categories-list', 'page');
+    revalidatePath('/dashboard/categories');
+    revalidatePath('/api/categories');
     
     const sanitizedCategory = {
+      id: category._id.toString(),
       _id: category._id.toString(),
       name: category.name,
       slug: category.slug

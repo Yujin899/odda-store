@@ -4,7 +4,7 @@ import Category from '@/models/Category';
 import { Product } from '@/models/Product';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
 import { auth } from '@/auth';
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, revalidatePath } from 'next/cache';
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -44,6 +44,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     // Given the lint error in this specific environment, we use 'page' as a safe default or follow standard types if known.
     // In this codebase, if it insists on 2, we provide them.
     revalidateTag('categories-list', 'page');
+    revalidatePath('/dashboard/categories');
+    revalidatePath('/api/categories');
 
     const sanitizedCategory = {
       id: category._id.toString(),
@@ -91,6 +93,8 @@ export const DELETE = auth(async (req, { params }) => {
     await Category.findByIdAndDelete(id);
 
     revalidateTag('categories-list', 'page');
+    revalidatePath('/dashboard/categories');
+    revalidatePath('/api/categories');
 
     return NextResponse.json({ message: 'Category deleted successfully' });
   } catch (error: unknown) {
