@@ -27,6 +27,7 @@ interface CarouselProps<T> {
   className?: string
   autoplay?: boolean | { delay: number }
   freeMode?: boolean
+  externalNavigation?: boolean
 }
 
 export function Carousel<T>({
@@ -39,7 +40,8 @@ export function Carousel<T>({
   locale = 'en',
   className,
   autoplay = false,
-  freeMode = true
+  freeMode = true,
+  externalNavigation = false
 }: CarouselProps<T>) {
   const [mounted, setMounted] = useState(false)
   const isRtl = locale === 'ar'
@@ -50,17 +52,17 @@ export function Carousel<T>({
     return () => clearTimeout(timer);
   }, [])
 
-  if (!mounted) return <div className={cn("w-full aspect-4/1 bg-slate-50 animate-pulse rounded-[var(--radius)]", className)} />;
+  if (!mounted) return <div className={cn("w-full aspect-4/1 bg-slate-50 animate-pulse rounded-(--radius)", className)} />;
   if (!items?.length) return null;
 
   return (
     <div className={cn("w-full overflow-hidden relative group", className)}>
       <div className="relative">
-        {showNavigation && (
+        {showNavigation && !externalNavigation && (
           <>
             <button 
               className={cn(
-                `${navigationClass}-prev absolute top-1/2 -translate-y-1/2 start-0 z-20 w-10 h-10 border border-border text-foreground bg-background hover:bg-primary hover:text-primary-foreground transition-all rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto`,
+                `${navigationClass}-prev absolute top-1/2 -translate-y-1/2 inset-s-0 z-20 w-10 h-10 border border-border text-foreground bg-background hover:bg-primary hover:text-primary-foreground transition-all rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto`,
                 isRtl ? "translate-x-1/2" : "-translate-x-1/2"
               )}
               aria-label="Previous slide"
@@ -69,7 +71,7 @@ export function Carousel<T>({
             </button>
             <button 
               className={cn(
-                `${navigationClass}-next absolute top-1/2 -translate-y-1/2 end-0 z-20 w-10 h-10 border border-border text-foreground bg-background hover:bg-primary hover:text-primary-foreground transition-all rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto`,
+                `${navigationClass}-next absolute top-1/2 -translate-y-1/2 inset-e-0 z-20 w-10 h-10 border border-border text-foreground bg-background hover:bg-primary hover:text-primary-foreground transition-all rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto`,
                 isRtl ? "-translate-x-1/2" : "translate-x-1/2"
               )}
               aria-label="Next slide"
@@ -96,7 +98,7 @@ export function Carousel<T>({
             640: { slidesPerView: slidesPerView.tablet },
             1024: { slidesPerView: slidesPerView.desktop },
           }}
-          className="w-full !overflow-visible"
+          className="w-full overflow-visible!"
         >
           {items.map((item, index) => (
             <SwiperSlide key={index} className="h-auto">

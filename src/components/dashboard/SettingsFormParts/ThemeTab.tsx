@@ -127,23 +127,29 @@ function ColorField({ label, name }: { label: string; name: string }) {
   }, []);
 
   return (
-    <div ref={ref} className="flex items-center gap-3 relative">
-      <label className="w-40 text-sm font-medium shrink-0">{label}</label>
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="size-10 rounded-sm border-2 border-border shadow-sm shrink-0"
-        style={{ backgroundColor: value }}
-      />
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(`theme.${name}`, e.target.value)}
-        className="w-28 font-mono text-sm px-2 py-1 border rounded-sm outline-none focus:border-(--primary)"
-        placeholder="#000000"
-      />
+    <div ref={ref} className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 relative">
+      <label className="w-full md:w-40 text-[10px] md:text-sm font-bold md:font-medium uppercase md:capitalize tracking-widest md:tracking-normal text-slate-500 md:text-foreground shrink-0 leading-none">
+        {label}
+      </label>
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="size-9 md:size-10 rounded-sm border-2 border-border shadow-sm shrink-0"
+          style={{ backgroundColor: value }}
+        />
+        <div className="relative group/input">
+          <Input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(`theme.${name}`, e.target.value)}
+            className="w-28 font-mono text-xs md:text-sm h-9 md:h-10 px-2.5 rounded-sm outline-none focus:border-(--primary) bg-slate-50 border-slate-200"
+            placeholder="#000000"
+          />
+        </div>
+      </div>
       {open && (
-        <div className="absolute top-12 start-40 z-50 shadow-xl rounded-sm border bg-white p-3">
+        <div className="absolute top-full md:top-12 left-0 md:inset-s-40 z-100 mt-2 md:mt-0 shadow-2xl rounded-sm border bg-white p-3 border-slate-200">
           <HexColorPicker color={value} onChange={(c) => setValue(`theme.${name}`, c)} />
         </div>
       )}

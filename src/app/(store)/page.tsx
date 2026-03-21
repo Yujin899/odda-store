@@ -34,6 +34,7 @@ async function getFeaturedProducts() {
   const products = await Product.find({ featured: true })
     .populate({ path: 'categoryId', strictPopulate: false })
     .populate({ path: 'badgeId', strictPopulate: false })
+    .sort({ createdAt: -1 })
     .limit(8)
     .lean<ProductDoc[]>();
     

@@ -11,6 +11,7 @@ import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import { BundleCard } from '@/components/bundles/BundleCard';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, ArrowRight, ShoppingBag } from 'lucide-react';
 
 import { unstable_cache } from 'next/cache';
@@ -60,10 +61,24 @@ export default async function BundlesPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Premium Hero Header */}
-      <section className="relative py-24 bg-(--navy) overflow-hidden">
+      <section className="relative py-24 bg-(--navy) overflow-hidden flex items-center justify-center">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/bundels.png"
+            alt="Bundles Background"
+            fill
+            priority
+            unoptimized
+            className="object-cover"
+          />
+          {/* Premium Overlay matching home hero */}
+          <div className="absolute inset-0 bg-black/60 backdrop-brightness-[0.85]" />
+        </div>
+
         {/* Decorative background elements */}
-        <div className="absolute top-0 inset-e-0 w-1/2 h-full bg-linear-to-l from-(--primary)/10 to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 inset-s-0 w-1/2 h-full bg-linear-to-r from-(--primary)/5 to-transparent pointer-events-none" />
+        <div className="absolute top-0 inset-e-0 w-1/2 h-full bg-linear-to-l from-(--primary)/10 to-transparent pointer-events-none z-1" />
+        <div className="absolute bottom-0 inset-s-0 w-1/2 h-full bg-linear-to-r from-(--primary)/5 to-transparent pointer-events-none z-1" />
         
         <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mb-6">

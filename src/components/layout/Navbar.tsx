@@ -14,6 +14,7 @@ import { NavbarCartTrigger } from './NavbarCartTrigger';
 import { NavbarUserDropdown } from './NavbarUserDropdown';
 import { NavbarCategoryDropdown } from './NavbarCategoryDropdown';
 import { NavbarMobileMenuTrigger } from './NavbarMobileMenuTrigger';
+import { auth } from '@/auth';
 
 async function getCategories() {
   await connectDB();
@@ -36,50 +37,75 @@ export async function Navbar() {
   const dict = language === 'en' ? en : ar;
   
   const categories = await getCategories();
+  const session = await auth();
+  const isAdmin = session?.user?.role === 'admin';
 
   return (
-    <header className="relative md:sticky md:top-0 z-40 border-b border-(--navy)/10 px-6 lg:px-12 py-4 bg-background">
-      <div className="max-w-7xl mx-auto flex items-center">
-        {/* Main Content Area: Logo + Desktop Nav */}
-        <div className="flex-1 flex items-center justify-between">
-          <div className="flex items-center gap-4 sm:gap-12">
-            {/* Mobile Menu Trigger - Hidden on mobile, only on desktop if needed, but usually redundant if bottom nav is present */}
-            <div className="hidden md:block">
-              <NavbarMobileMenuTrigger />
-            </div>
+    <header className="relative md:sticky md:top-0 z-40 px-6 lg:px-12 py-4 bg-background shadow-sm">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        {/* Left Segment: Logo (Mobile/Desktop) / Menu (Medium) */}
+        <div className="flex-1 flex items-center lg:flex-none">
+          {/* Menu Trigger - Visible ONLY on Medium screens */}
+          <div className="hidden md:block lg:hidden">
+            <NavbarMobileMenuTrigger />
+          </div>
 
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
+          {/* Logo - Visible on Mobile (< md) and Desktop (lg+) */}
+          <div className="md:hidden lg:block">
+            <Link href="/" className="shrink-0 flex items-center gap-2">
               <Image 
                 src="/logo.png" 
                 alt="Odda Logo" 
-                width={100} 
-                height={36} 
+                width={130} 
+                height={40} 
                 priority
                 unoptimized
-                className="object-contain w-[80px] sm:w-[100px]" 
+                className="object-contain w-[124px] h-[38px] lg:w-[130px] lg:h-[40px] transition-all duration-300" 
               />
             </Link>
-
-            {/* Desktop Nav Links */}
-            <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.home}</Link>
-              
-              <NavbarCategoryDropdown categories={categories} dict={dict} language={language} />
-
-              <Link href="/profile" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.profile || 'Profile'}</Link>
-              <Link href="/order-tracking" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.trackOrder}</Link>
-              <Link href="/bundles" className="text-sm font-bold text-emerald-600 hover:text-emerald-500 transition-colors flex items-center gap-1.5">
-                <Gift className="size-3.5" />
-                {dict.common.offersAndBundles}
-              </Link>
-              <Link href="/about" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.about}</Link>
-            </nav>
           </div>
         </div>
 
-        {/* Right Side: Actions */}
-        <div className="flex-1 flex items-center justify-end gap-1 sm:gap-2">
+        {/* Center Segment: Logo (Medium) / Nav Links (Desktop) */}
+        <div className="flex-2 flex items-center justify-center">
+          {/* Logo - Visible ONLY on Medium screens (md to lg) */}
+          <div className="hidden md:block lg:hidden">
+            <Link href="/" className="shrink-0 flex items-center gap-2">
+              <Image 
+                src="/logo.png" 
+                alt="Odda Logo" 
+                width={124} 
+                height={38} 
+                priority
+                unoptimized
+                className="object-contain w-[124px] h-[38px] transition-all duration-300" 
+              />
+            </Link>
+          </div>
+
+          {/* Desktop Nav Links (lg+) */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0">
+            <Link href="/" className="text-sm font-semibold text-navy hover:text-primary transition-colors whitespace-nowrap">{dict.common.home}</Link>
+            
+            <NavbarCategoryDropdown categories={categories} dict={dict} language={language} />
+
+            <Link href="/profile" className="text-sm font-semibold text-navy hover:text-primary transition-colors whitespace-nowrap">{dict.common.profile || 'Profile'}</Link>
+            <Link href="/order-tracking" className="text-sm font-semibold text-navy hover:text-primary transition-colors whitespace-nowrap">{dict.common.trackOrder}</Link>
+            <Link href="/bundles" className="text-sm font-bold text-emerald-600 hover:text-emerald-500 transition-colors flex items-center gap-1.5 whitespace-nowrap">
+              <Gift className="size-3.5" />
+              {dict.common.offersAndBundles}
+            </Link>
+            {isAdmin && (
+              <Link href="/dashboard" className="text-sm font-semibold text-navy hover:text-primary transition-colors whitespace-nowrap">
+                {dict.common.dashboard || 'Dashboard'}
+              </Link>
+            )}
+            <Link href="/about" className="text-sm font-semibold text-navy hover:text-primary transition-colors whitespace-nowrap">{dict.common.about}</Link>
+          </nav>
+        </div>
+
+        {/* Right Segment: Actions */}
+        <div className="flex-1 flex items-center justify-end gap-1 sm:gap-2 shrink-0">
           <NavbarSearchTrigger />
           <LanguageSwitcher />
 

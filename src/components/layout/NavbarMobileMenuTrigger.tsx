@@ -12,7 +12,7 @@ export function NavbarMobileMenuTrigger() {
       variant="ghost"
       size="icon"
       onClick={() => open()}
-      className="md:hidden flex items-center justify-center p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none"
+      className="lg:hidden flex items-center justify-center p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none"
       aria-label="Open mobile menu"
     >
       <Menu className="size-6 stroke-[2.5px]" />
