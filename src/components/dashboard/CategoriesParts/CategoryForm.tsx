@@ -1,18 +1,14 @@
 'use client';
 
 import { 
-  Plus, 
-  Image as ImageIcon,
-  Loader2,
-  Upload,
-  X,
-  Sparkles
+  Sparkles,
+  Loader2
 } from 'lucide-react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { ImageUploader } from '@/components/shared/ImageUploader';
 
 interface CategoryFormProps {
   formData: {
@@ -24,9 +20,6 @@ interface CategoryFormProps {
     image: string;
   };
   setFormData: (data: any) => void;
-  isUploading: boolean;
-  uploadProgress: number;
-  handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleMagicFill: () => void;
   isMagicFilling: boolean;
   isSlugManuallyEdited: boolean;
@@ -39,9 +32,6 @@ interface CategoryFormProps {
 export function CategoryForm({
   formData,
   setFormData,
-  isUploading,
-  uploadProgress,
-  handleImageUpload,
   handleMagicFill,
   isMagicFilling,
   isSlugManuallyEdited,
@@ -176,60 +166,12 @@ export function CategoryForm({
 
         <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
           <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2 ${language === 'ar' ? 'text-end' : ''}`}>{dict.dashboard.categoriesPage.modal.image}</Label>
-          <div className={`relative group aspect-video rounded-sm overflow-hidden border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center ${isUploading ? 'grayscale opacity-80' : ''}`}>
-            {formData.image && !isUploading ? (
-              <>
-                <Image src={formData.image} alt="Category" fill className="object-cover" />
-                <button 
-                  type="button"
-                  onClick={() => setFormData({ ...formData, image: '' })}
-                  className="absolute top-2 inset-e-2 size-6 bg-red-600 text-white rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X className="size-3" />
-                </button>
-              </>
-            ) : (
-              <div className="flex flex-col items-center w-full px-8">
-                {isUploading ? (
-                  <div className="w-full space-y-4">
-                    <div className={`flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-(--primary) animate-pulse">{dict.dashboard.productForm.messages.uploading}</span>
-                      <span className="text-[10px] font-bold text-slate-400">{uploadProgress}%</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-(--primary) transition-all duration-300 rounded-full"
-                        style={{ width: `${uploadProgress}%` }}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <ImageIcon className="size-6 text-slate-300 mb-2" />
-                    <div className="relative">
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleImageUpload}
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                        disabled={isUploading}
-                      />
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        size="sm" 
-                        className="rounded-sm text-[9px] uppercase tracking-widest h-8"
-                        disabled={isUploading}
-                      >
-                        <Upload className={`size-3 ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
-                        {dict.dashboard.categoriesPage.modal.uploadImage}
-                      </Button>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
+          <ImageUploader 
+            value={formData.image ? [{ url: formData.image, isPrimary: true, order: 0 }] : []}
+            onChange={(images) => setFormData({ ...formData, image: images[0]?.url || '' })}
+            folder="odda/categories"
+            maxImages={1}
+          />
         </div>
       </div>
 

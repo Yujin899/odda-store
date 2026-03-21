@@ -56,7 +56,7 @@ export function ProductGallery({ images, productName, stock }: ProductGalleryPro
       </div>
 
       {/* Thumbnails Selection Grid */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-2 sm:gap-4">
         {images.map((img, i) => (
           <button
             key={i}

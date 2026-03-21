@@ -33,3 +33,45 @@ export async function uploadImage(
 
   return res.json();
 }
+
+/**
+ * Uploads an image with progress tracking via XHR.
+ */
+export async function uploadImageWithProgress(
+  file: File,
+  folder: string,
+  onProgress: (percent: number, estimatedSecondsLeft: number) => void
+): Promise<{ url: string; publicId: string }> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', folder);
+
+    const startTime = Date.now();
+
+    xhr.upload.addEventListener('progress', (e) => {
+      if (e.lengthComputable) {
+        const percent = Math.round((e.loaded / e.total) * 100);
+        const elapsed = (Date.now() - startTime) / 1000;
+        const speed = e.loaded / elapsed; // bytes per second
+        // Check to prevent infinity if speed is 0
+        const remaining = speed > 0 ? (e.total - e.loaded) / speed : 0;
+        onProgress(percent, Math.ceil(remaining));
+      }
+    });
+
+    xhr.addEventListener('load', () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(JSON.parse(xhr.responseText));
+      } else {
+        reject(new Error('Upload failed'));
+      }
+    });
+
+    xhr.addEventListener('error', () => reject(new Error('Upload failed')));
+
+    xhr.open('POST', '/api/upload');
+    xhr.send(formData);
+  });
+}

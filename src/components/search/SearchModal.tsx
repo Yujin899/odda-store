@@ -10,7 +10,6 @@ import { useRecentlyViewedStore, RecentItem } from '@/store/useRecentlyViewedSto
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 import { Product, RelatedProduct } from '@/types/store';
 
 export function SearchModal() {
@@ -96,7 +95,7 @@ export function SearchModal() {
       name: product.name,
       nameAr: product.nameAr,
       price: product.price,
-      image: optimizeCloudinaryUrl(displayImage, { width: 200 }),
+      image: displayImage,
     });
     router.push(`/product/${(product as any).slug || (product as any)._id || (product as any).id}`);
     closeSearch();

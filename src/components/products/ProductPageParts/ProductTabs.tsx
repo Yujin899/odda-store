@@ -23,7 +23,7 @@ export function ProductTabs({ product, reviews, language, onReviewAdded }: Produ
     <div className="w-full mt-12 pt-12 border-t border-slate-100">
       <Tabs defaultValue="description" className="w-full" dir={isRtl ? 'rtl' : 'ltr'}>
         <div className="flex items-center justify-between mb-8 overflow-x-auto whitespace-nowrap scrollbar-hidden pb-1">
-          <TabsList className="bg-transparent h-auto p-0 gap-8 border-none">
+          <TabsList className="bg-transparent h-auto p-0 gap-4 sm:gap-8 border-none">
             <TabsTrigger 
               value="description" 
               className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"

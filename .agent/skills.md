@@ -307,13 +307,13 @@ odda-web/
 
       store/
 
-        MobileBottomNav.tsx
-
         OrderTracker.tsx
 
         OrdersList.tsx
 
     shared/
+
+        MobileBottomNav.tsx # Shared mobile navigation component
 
         ReviewSection.tsx # Polymorphic review handler (Products/Bundles)
 
@@ -621,7 +621,8 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 
   - **Navbar**: Real category data fetching for dropdowns.
 
-  - **Uploads**: Grayscale + Progress bar feedback ported to Category uploads.
+  - **Uploads**: All image uploads MUST use the shared `ImageUploader` component (`src/components/shared/ImageUploader.tsx`). NEVER implement custom drag-and-drop or ad-hoc upload logic.
+  - **Image Optimization**: Cloudinary URLs MUST be optimized using the context-based `optimizeCloudinaryUrl(url, ImageContext)` from `cloudinary-utils.ts`. Direct width/quality options are deprecated to ensure cross-app consistency.
 
 - **Storage Management**: Automated Cloudinary asset destruction via centralized `deleteCloudinaryImage` utility.
 
@@ -630,6 +631,7 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 - **Google OAuth Production Mismatch**: When deploying to Vercel, `NEXTAUTH_URL` and `AUTH_URL` must exactly match the production domain (no trailing slashes). In Google Cloud Console, the "Authorized redirect URIs" MUST be exactly `https://[your-domain]/api/auth/callback/google` to prevent `Error 400: redirect_uri_mismatch`.
 
 - **AddToCartSection.tsx**: Reusable quantity counter and add-to-cart button for product/bundle pages. Fixes mobile layout issues and centralizes cart logic.
+- **MobileBottomNav**: Single shared component in `src/components/shared/`. Used by both store and dashboard layouts. Accepts `NavItem[]` props — each item is either Link (href) or button (onClick). **Layout Rule**: Ensure main content areas (e.g., `<main>`) have sufficient bottom padding (e.g., `pb-24 lg:pb-0`) so content isn't hidden behind the fixed nav on mobile screens.
 - **Category URLs**: ALWAYS use `?category=slug`. Never `?categoryId=`. This applies to breadcrumbs, home page, and any other category link. The API resolves slug to `_id` server-side.
 
 - **CategoriesClient**: Refactored into `CategoriesParts/`. Parent handles state and API calls only. Children receive props.
@@ -639,6 +641,9 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 - **JSDoc Standard**: All exported functions in `src/lib/` and all types in `src/types/` must have JSDoc comments. Focus on WHY and WHEN, not just WHAT.
 
 - **Swiper RTL**: Always pass `key={locale}` and `dir={isRtl ? 'rtl' : 'ltr'}` to every Swiper instance. The `key` prop forces re-mount on locale change, ensuring correct RTL behavior without a full page reload.
+
+- **ImageUploader Enhancement**: The shared component now uses `uploadImageWithProgress()` from `src/lib/upload.ts` for XHR-based upload with real-time progress. Shows local preview immediately. Validates file type and size before upload. ProductForm requires at least 1 image before submit and automatically scrolls to `#images-section` via `onError` if validation fails.
+- **Cloudinary + next/image**: Never call `optimizeCloudinaryUrl()` on URLs passed to `next/image`. next/image handles optimization automatically. Only use `optimizeCloudinaryUrl()` with raw `<img>` tags.
 
 ## Rules Index
 Load the relevant rule file as context for your task:

@@ -8,7 +8,7 @@ import { useToastStore } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
 import { IBundle } from '@/models/Bundle';
-import { useBundleUpload } from '@/hooks/useBundleUpload';
+
 
 import { bundleSchema, BundleFormValues } from '@/lib/schemas';
 import { BundleFormHeader } from './BundleFormParts/BundleFormHeader';
@@ -46,7 +46,7 @@ export function BundleForm({ initialData }: BundleFormProps) {
     }
   });
 
-  const { isUploading, uploadingFiles, handleImageUpload, removeImage, onDragEnd } = useBundleUpload(methods.setValue, methods.watch);
+
 
   const onSubmit = async (values: BundleFormValues) => {
     setIsLoading(true);
@@ -80,7 +80,7 @@ export function BundleForm({ initialData }: BundleFormProps) {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6 sm:space-y-8 max-w-5xl mx-auto pb-20">
-        <BundleFormHeader initialData={initialData} language={language} isLoading={isLoading} isUploading={isUploading} dict={dict} />
+        <BundleFormHeader initialData={initialData} language={language} isLoading={isLoading} isUploading={false} dict={dict} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           <div className="lg:col-span-3"><BundleAIAssistant language={language} dict={dict} /></div>
           <div className="lg:col-span-2 space-y-6">
@@ -89,7 +89,7 @@ export function BundleForm({ initialData }: BundleFormProps) {
             <BundlePricingStock language={language} />
           </div>
           <div className="lg:col-span-1">
-            <BundleMediaSection language={language} isUploading={isUploading} uploadingFiles={uploadingFiles} handleImageUpload={handleImageUpload} removeImage={removeImage} onDragEnd={onDragEnd} />
+            <BundleMediaSection language={language} />
           </div>
         </div>
       </form>

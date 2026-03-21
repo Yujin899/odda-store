@@ -1,9 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Sidebar } from '@/components/dashboard/Sidebar';
-import { Menu, LogOut, User as UserIcon, ShoppingBag } from 'lucide-react';
-import { DashboardMobileNav } from '@/components/dashboard/DashboardMobileNav';
+import { 
+  Menu, 
+  LogOut, 
+  User as UserIcon, 
+  ShoppingBag, 
+  LayoutDashboard, 
+  ShoppingCart, 
+  Package, 
+  Users, 
+  Settings 
+} from 'lucide-react';
+import { MobileBottomNav } from '@/components/shared/MobileBottomNav';
 
 import { 
   DropdownMenu, 
@@ -27,6 +38,7 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children, session }: DashboardLayoutProps) {
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { language } = useLanguageStore();
   const dict = getDictionary(language);
@@ -116,7 +128,52 @@ export default function DashboardLayout({ children, session }: DashboardLayoutPr
         </main>
         
         {/* Mobile Navigation */}
-        <DashboardMobileNav onMoreClick={() => setIsSidebarOpen(true)} />
+        <MobileBottomNav 
+          items={[
+            { 
+              label: 'Overview', 
+              labelAr: dict.dashboard.sidebar.overview, 
+              icon: LayoutDashboard, 
+              href: '/dashboard', 
+              isActive: pathname === '/dashboard' 
+            },
+            { 
+              label: 'Orders', 
+              labelAr: dict.dashboard.sidebar.orders, 
+              icon: ShoppingCart, 
+              href: '/dashboard/orders', 
+              isActive: pathname.startsWith('/dashboard/orders') 
+            },
+            { 
+              label: 'Products', 
+              labelAr: dict.dashboard.sidebar.products, 
+              icon: Package, 
+              href: '/dashboard/products', 
+              isActive: pathname.startsWith('/dashboard/products') 
+            },
+            { 
+              label: 'Customers', 
+              labelAr: dict.dashboard.sidebar.customers, 
+              icon: Users, 
+              href: '/dashboard/customers', 
+              isActive: pathname.startsWith('/dashboard/customers') 
+            },
+            { 
+              label: 'Settings', 
+              labelAr: dict.dashboard.sidebar.settings, 
+              icon: Settings, 
+              href: '/dashboard/settings', 
+              isActive: pathname.startsWith('/dashboard/settings') 
+            },
+            { 
+              label: 'More', 
+              labelAr: dict.profile.more, 
+              icon: Menu, 
+              onClick: () => setIsSidebarOpen(true) 
+            },
+          ]} 
+          isAr={language === 'ar'} 
+        />
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToastStore } from '@/store/useToastStore';
-import { uploadImage } from '@/lib/upload';
 
 interface Category {
   _id?: string;
@@ -29,37 +28,8 @@ export function useCategoryForm(dict: any, language: string, initialData?: Categ
   });
 
   const [isSaving, setIsSaving] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [isMagicFilling, setIsMagicFilling] = useState(false);
   const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(!!initialData);
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploading(true);
-    setUploadProgress(0);
-    const interval = setInterval(() => {
-      setUploadProgress(prev => (prev >= 95 ? 95 : prev + 5));
-    }, 100);
-
-    try {
-      const uploadData = await uploadImage(file, 'odda/categories');
-      setUploadProgress(100);
-      setTimeout(() => {
-        setFormData(prev => ({ ...prev, image: uploadData.url }));
-        setIsUploading(false);
-        setUploadProgress(0);
-      }, 500);
-      addToast({ title: dict.toasts.success, description: language === 'ar' ? 'تم رفع الصورة بنجاح' : 'Image uploaded successfully', type: 'success' });
-    } catch (error: any) {
-      clearInterval(interval);
-      setIsUploading(false);
-      setUploadProgress(0);
-      addToast({ title: dict.toasts.error, description: error.message || dict.toasts.uploadFailed, type: 'error' });
-    }
-  };
 
   const handleMagicFill = async () => {
     if (!formData.name) {
@@ -130,12 +100,9 @@ export function useCategoryForm(dict: any, language: string, initialData?: Categ
     formData,
     setFormData,
     isSaving,
-    isUploading,
-    uploadProgress,
     isMagicFilling,
     isSlugManuallyEdited,
     setIsSlugManuallyEdited,
-    handleImageUpload,
     handleMagicFill,
     handleSave,
     addToast

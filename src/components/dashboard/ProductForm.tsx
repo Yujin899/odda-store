@@ -91,10 +91,30 @@ export function ProductForm({ initialData }: ProductFormProps) {
     }
   };
 
+  /**
+   * Handle Validation Errors
+   */
+  const onError = (errors: any) => {
+    if (errors.images) {
+      addToast({ 
+        title: dict.dashboard.productForm.messages.error, 
+        description: 'Please add at least one product image before saving', 
+        type: 'error' 
+      });
+      document.getElementById('images-section')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      addToast({ 
+        title: dict.dashboard.productForm.messages.error, 
+        description: 'Please fill in all required fields correctly', 
+        type: 'error' 
+      });
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <form 
-        onSubmit={methods.handleSubmit(onSubmit)} 
+        onSubmit={methods.handleSubmit(onSubmit, onError)} 
         className="space-y-6 sm:space-y-10 max-w-6xl mx-auto pb-24"
       >
         {/* Sticky Header */}

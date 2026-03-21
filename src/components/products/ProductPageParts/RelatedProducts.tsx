@@ -24,8 +24,8 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
   const isRtl = language === 'ar';
 
   return (
-    <section className="mt-32 pt-16 border-t border-slate-100">
-      <div className="flex items-end justify-between mb-16">
+    <section className="mt-16 md:mt-32 pt-8 md:pt-16 border-t border-slate-100">
+      <div className="flex items-end justify-between mb-8 sm:mb-16">
         <div className="text-start">
           <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground">
             {isRtl ? 'أكمل مجموعتك' : 'Complete Your Kit'}

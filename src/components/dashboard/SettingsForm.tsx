@@ -59,7 +59,6 @@ export function SettingsForm({ initialData }: { initialData?: Partial<SettingsFo
   const { language } = useLanguageStore();
   const dict = getDictionary(language);
   const [isLoading, setIsLoading] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('storefront');
 
   const methods = useForm<SettingsFormValues>({
@@ -127,7 +126,7 @@ export function SettingsForm({ initialData }: { initialData?: Partial<SettingsFo
           </div>
           <Button 
             type="submit" 
-            disabled={isLoading || isUploading}
+            disabled={isLoading}
             className="w-full sm:w-auto bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-(--primary)/20 rounded-sm"
           >
             {isLoading ? <Loader2 className="size-4 animate-spin ms-2" /> : <Save className="size-4 ms-2" />}
@@ -154,7 +153,7 @@ export function SettingsForm({ initialData }: { initialData?: Partial<SettingsFo
           </div>
 
           <TabsContent value="storefront" className="outline-none">
-            <StorefrontTab isUploading={isUploading} setIsUploading={setIsUploading} />
+            <StorefrontTab />
           </TabsContent>
 
           <TabsContent value="checkout" className="outline-none">

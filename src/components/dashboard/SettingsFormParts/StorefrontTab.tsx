@@ -1,76 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { 
   Plus, 
   Trash2, 
-  Upload, 
-  Image as ImageIcon,
   Globe,
   Facebook,
   Instagram,
   Phone,
-  Type,
-  Loader2
+  Type
 } from 'lucide-react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useToastStore } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
-import { uploadImage } from '@/lib/upload';
+import { ImageUploader } from '@/components/shared/ImageUploader';
 
-export function StorefrontTab({ isUploading, setIsUploading }: { isUploading: boolean, setIsUploading: (v: boolean) => void }) {
+export function StorefrontTab() {
   const { register, control, setValue, watch } = useFormContext();
   const { fields: announcements, append: addAnn, remove: removeAnn } = useFieldArray({ control, name: 'announcements' });
   const { fields: announcementsAr, append: addAnnAr, remove: removeAnnAr } = useFieldArray({ control, name: 'announcementsAr' });
   
   const { language } = useLanguageStore();
   const dict = getDictionary(language);
-  const { addToast } = useToastStore();
-
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   const heroImage = watch('hero.image');
   const defaultLang = watch('defaultLanguage');
 
-  const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
 
-    setIsUploading(true);
-    setUploadProgress(10);
-
-    const progressInterval = setInterval(() => {
-      setUploadProgress(prev => Math.min(prev + 10, 90));
-    }, 200);
-
-    try {
-      const data = await uploadImage(file, 'odda/hero');
-      
-      clearInterval(progressInterval);
-      setUploadProgress(100);
-      
-      setTimeout(() => {
-        setValue('hero.image', data.url);
-        setIsUploading(false);
-        setUploadProgress(0);
-      }, 400);
-    } catch (error: any) {
-      clearInterval(progressInterval);
-      setIsUploading(false);
-      addToast({ 
-        title: dict.dashboard.settingsPage.storefront.hero.uploadImage, 
-        description: error.message || dict.toasts.errorUploading, 
-        type: 'error' 
-      });
-    }
-  };
 
   return (
     <div className="space-y-6 outline-none">
@@ -154,42 +114,15 @@ export function StorefrontTab({ isUploading, setIsUploading }: { isUploading: bo
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Hero Image Upload */}
           <div className="space-y-4">
-            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block ${language === 'ar' ? 'text-end' : 'text-start'}`}>
+            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               {dict.dashboard.settingsPage.storefront.hero.bgImage}
             </Label>
-            <div className="relative group aspect-video rounded-sm overflow-hidden border-2 border-dashed border-slate-100 bg-slate-50 flex flex-col items-center justify-center transition-all hover:border-(--primary)/50">
-              {heroImage ? (
-                <>
-                  <Image src={heroImage} alt="Hero Preview" fill className="object-cover transition-transform group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                     <div className="relative">
-                        <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleHeroUpload} disabled={isUploading} />
-                        <Button type="button" variant="secondary" size="sm" className="h-8 text-[9px] uppercase tracking-widest font-bold">
-                          <Upload className={`size-3 ${language === 'ar' ? 'ms-2' : 'me-2'}`} /> {dict.dashboard.settingsPage.storefront.hero.changeImage}
-                        </Button>
-                     </div>
-                  </div>
-                </>
-              ) : (
-                <div className="flex flex-col items-center gap-3 py-10">
-                  <ImageIcon className="size-10 text-slate-200" />
-                  <div className="relative">
-                    <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleHeroUpload} disabled={isUploading} />
-                    <Button type="button" variant="outline" size="sm" className="h-8 text-[9px] uppercase tracking-widest font-bold">
-                      <Upload className={`size-3 ${language === 'ar' ? 'ms-2' : 'me-2'}`} /> {dict.dashboard.settingsPage.storefront.hero.uploadImage}
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {isUploading && (
-                <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center p-6 text-center">
-                  <Loader2 className="size-8 text-(--primary) animate-spin mb-4" />
-                  <Progress value={uploadProgress} className="h-1 w-full max-w-[200px] mb-2" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-(--primary)">{uploadProgress}% {dict.dashboard.settingsPage.storefront.hero.uploading}</span>
-                </div>
-              )}
-            </div>
+            <ImageUploader 
+              value={heroImage ? [{ url: heroImage, isPrimary: true, order: 0 }] : []}
+              onChange={(images) => setValue('hero.image', images[0]?.url || '')}
+              folder="odda/hero"
+              maxImages={1}
+            />
           </div>
 
           {/* Hero Text Settings */}

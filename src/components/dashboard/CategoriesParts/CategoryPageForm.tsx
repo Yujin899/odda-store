@@ -27,12 +27,9 @@ export function CategoryPageForm({ initialData, dict, language }: CategoryPageFo
     formData,
     setFormData,
     isSaving,
-    isUploading,
-    uploadProgress,
     isMagicFilling,
     isSlugManuallyEdited,
     setIsSlugManuallyEdited,
-    handleImageUpload,
     handleMagicFill,
     handleSave,
     addToast
@@ -71,7 +68,7 @@ export function CategoryPageForm({ initialData, dict, language }: CategoryPageFo
           </Button>
           <Button 
             onClick={handleSave}
-            disabled={isSaving || isUploading}
+            disabled={isSaving}
             className="bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-11 px-8 shadow-lg shadow-(--primary)/20 rounded-sm"
           >
             {isSaving ? <Loader2 className="size-4 animate-spin me-2" /> : <Check className="size-4 me-2" />}
@@ -84,9 +81,6 @@ export function CategoryPageForm({ initialData, dict, language }: CategoryPageFo
         <CategoryForm 
           formData={formData}
           setFormData={setFormData}
-          isUploading={isUploading}
-          uploadProgress={uploadProgress}
-          handleImageUpload={handleImageUpload}
           handleMagicFill={handleMagicFill}
           isMagicFilling={isMagicFilling}
           isSlugManuallyEdited={isSlugManuallyEdited}
@@ -109,7 +103,7 @@ export function CategoryPageForm({ initialData, dict, language }: CategoryPageFo
         </Button>
         <Button 
           onClick={handleSave}
-          disabled={isSaving || isUploading}
+          disabled={isSaving}
           className="bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-11 px-8 shadow-lg shadow-(--primary)/20 rounded-sm"
         >
           {isSaving ? <Loader2 className="size-4 animate-spin me-2" /> : <Check className="size-4 me-2" />}
