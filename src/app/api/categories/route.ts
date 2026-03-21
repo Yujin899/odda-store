@@ -22,6 +22,7 @@ export async function GET() {
     const categories = await getCachedCategories();
     const sanitizedCategories = categories.map((c) => ({
       id: c._id.toString(),
+      _id: c._id.toString(),
       name: c.name,
       nameAr: c.nameAr,
       slug: c.slug,

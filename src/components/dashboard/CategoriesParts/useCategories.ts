@@ -25,7 +25,7 @@ export function useCategories(dict: { [key: string]: any }) {
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/categories');
+      const res = await fetch('/api/categories', { cache: 'no-store' });
       const data = await res.json();
       if (res.ok) {
         setCategories(data.categories);

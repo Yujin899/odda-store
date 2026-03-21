@@ -46,6 +46,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     revalidateTag('categories-list', 'page');
 
     const sanitizedCategory = {
+      id: category._id.toString(),
       _id: category._id.toString(),
       name: category.name,
       slug: category.slug
