@@ -68,7 +68,7 @@ export function ProductPageClient({
   };
 
   return (
-    <div className="bg-background">
+    <div className="bg-background overflow-x-hidden">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 pb-24 lg:pb-12">
         <ProductBreadcrumbs 
           productName={language === 'ar' ? product.nameAr || product.name : product.name} 

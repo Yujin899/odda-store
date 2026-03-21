@@ -13,6 +13,7 @@ import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import { formatPrice } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 export function CartDrawer() {
   const router = useRouter();
@@ -54,9 +55,9 @@ export function CartDrawer() {
           <div className="flex items-center gap-3">
             <ShoppingBasket className="size-5 text-(--primary) stroke-[2.5px]" />
             <h2 className="text-xl font-bold tracking-tight text-foreground uppercase">{dict.common.cart}</h2>
-            <span className="bg-(--primary) text-white text-[10px] font-bold h-5 min-w-5 px-1 flex items-center justify-center rounded-full">
+            <Badge variant="default" className="text-[10px] h-5 min-w-5 px-1.5 flex items-center justify-center rounded-full transition-none">
               {items.reduce((acc, item) => acc + item.quantity, 0)}
-            </span>
+            </Badge>
           </div>
           <button onClick={closeCart} className="p-2 hover:bg-muted rounded-full transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent">
             <X className="size-5 text-muted-foreground stroke-[2.5px]" />

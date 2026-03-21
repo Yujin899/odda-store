@@ -3,6 +3,7 @@
 import { ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useCartUIStore } from '@/store/useCartUIStore';
+import { Badge } from '@/components/ui/badge';
 
 export function NavbarCartTrigger() {
   const { openCart } = useCartUIStore();
@@ -16,9 +17,9 @@ export function NavbarCartTrigger() {
     >
       <ShoppingBag className="size-5 stroke-[2.5px]" />
       {cartItemCount > 0 && (
-        <span className="absolute top-1 inset-e-1 bg-(--primary) text-background text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center">
+        <Badge variant="default" className="absolute -top-1 -inset-e-1 size-5 p-0 flex items-center justify-center rounded-full leading-none border-2 border-white shadow-sm ring-4 ring-navy/5 transition-none">
           {cartItemCount}
-        </span>
+        </Badge>
       )}
     </button>
   );

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { type LucideIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 
 export interface NavItem {
   label: string
@@ -48,9 +49,9 @@ export function MobileBottomNav({ items, isAr }: MobileBottomNavProps) {
                 )} 
               />
               {badge !== undefined && badge > 0 && (
-                <span className="absolute -top-1 -inset-e-1 bg-(--primary) text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white dir-ltr" dir="ltr">
+                <Badge variant="default" className="absolute -top-1 -inset-e-1 text-[9px] px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white transition-none dir-ltr" dir="ltr">
                   {badge}
-                </span>
+                </Badge>
               )}
             </div>
             <span className={cn(

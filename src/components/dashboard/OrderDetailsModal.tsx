@@ -186,7 +186,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
                 <div className="text-sm border p-4 rounded-sm bg-slate-50/50 space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">{dict.dashboard.ordersPage.modal.method}</span>
-                  <Badge variant="secondary" className="uppercase text-[10px] bg-slate-200 text-slate-700">
+                  <Badge variant="secondary">
                     {(dict.dashboard.statuses as Record<string, string>)[order.paymentMethod] || order.paymentMethod}
                   </Badge>
                 </div>

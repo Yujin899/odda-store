@@ -239,30 +239,32 @@ export function ProductsTable({
                           {product.stock}
                         </span>
                         {product.stock === 0 && (
-                          <Badge variant="destructive" className={`h-4 px-1.5 text-[8px] font-black uppercase ${language === 'ar' ? '' : 'tracking-tighter'}`}>{dict.dashboard.productsPage.badges.outOfStock}</Badge>
+                          <Badge variant="destructive">{dict.dashboard.productsPage.badges.outOfStock}</Badge>
                         )}
                         {product.stock < 10 && product.stock > 0 && (
-                          <Badge variant="outline" className={`h-4 px-1.5 text-[8px] font-black uppercase border-amber-200 text-amber-700 bg-amber-50 ${language === 'ar' ? '' : 'tracking-tighter'}`}>{dict.dashboard.productsPage.badges.lowStock}</Badge>
+                          <Badge variant="outline" className="border-amber-200 text-amber-700 bg-amber-50">
+                            {dict.dashboard.productsPage.badges.lowStock}
+                          </Badge>
                         )}
                       </div>
                     </TableCell>
                     <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                       <div className={`flex gap-1 flex-wrap w-full ${language === 'ar' ? 'justify-start' : ''}`}>
                         {product.featured && (
-                          <Badge variant="secondary" className="h-5 px-1.5 text-[9px] font-black uppercase tracking-widest bg-amber-50 text-amber-700 border-amber-200 shadow-sm">
+                          <Badge variant="secondary" className="bg-amber-50 text-amber-700 border-amber-200">
                             {dict.dashboard.productsPage.badges.featured}
                           </Badge>
                         )}
                         {product.badgeId && (
-                          <span 
-                            className={`px-1.5 py-0.5 rounded-sm text-[9px] font-black uppercase tracking-widest shadow-sm border border-black/5 ${language === 'ar' ? 'font-cairo' : ''}`}
+                          <Badge 
+                            className="border-white/10 shadow-sm"
                             style={{ 
                               backgroundColor: typeof product.badgeId === 'object' ? product.badgeId?.color : '', 
                               color: typeof product.badgeId === 'object' ? product.badgeId?.textColor : '' 
                             }}
                           >
                             {language === 'ar' && typeof product.badgeId === 'object' ? product.badgeId?.nameAr : (typeof product.badgeId === 'object' ? product.badgeId?.name : (typeof product.badgeId === 'string' ? product.badgeId : ''))}
-                          </span>
+                          </Badge>
                         )}
                       </div>
                     </TableCell>

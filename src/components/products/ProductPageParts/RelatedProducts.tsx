@@ -1,17 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, FreeMode, Autoplay } from 'swiper/modules';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductCard } from '@/components/products/ProductCard';
 import type { RelatedProduct } from '@/types/store';
-
-// Swiper styles are usually imported in the main layout or parent component
-// but including them in a client component index is safe if using Turbopack
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/free-mode';
+import { Carousel } from '@/components/shared/Carousel';
 
 interface RelatedProductsProps {
   products: RelatedProduct[];
@@ -24,7 +16,7 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
   const isRtl = language === 'ar';
 
   return (
-    <section className="mt-16 md:mt-32 pt-8 md:pt-16 border-t border-slate-100">
+    <section className="mt-16 md:mt-32 pt-8 md:pt-16 border-t border-slate-100 overflow-hidden w-full">
       <div className="flex items-end justify-between mb-8 sm:mb-16">
         <div className="text-start">
           <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground">
@@ -34,49 +26,18 @@ export function RelatedProducts({ products, language }: RelatedProductsProps) {
             {isRtl ? 'أدوات غالباً ما يتم شراؤها مع هذا المنتج' : 'Instruments often purchased with this tool'}
           </p>
         </div>
-        
-        {/* Customized Navigation Buttons */}
-        <div className="hidden sm:flex gap-3">
-          <button className="related-prev w-12 h-12 border border-slate-200 flex items-center justify-center hover:bg-(--navy) hover:text-white hover:border-(--navy) transition-all rounded-full text-(--navy) bg-white shadow-sm outline-none cursor-pointer">
-            <ChevronLeft className="size-5 stroke-[2.5px] rtl:rotate-180" />
-          </button>
-          <button className="related-next w-12 h-12 border border-slate-200 flex items-center justify-center hover:bg-(--navy) hover:text-white hover:border-(--navy) transition-all rounded-full text-(--navy) bg-white shadow-sm outline-none cursor-pointer">
-            <ChevronRight className="size-5 stroke-[2.5px] rtl:rotate-180" />
-          </button>
-        </div>
       </div>
       
-      <div className="relative group">
-        <Swiper
-          key={language}
-          modules={[Navigation, FreeMode, Autoplay]}
-          navigation={{
-            prevEl: '.related-prev',
-            nextEl: '.related-next',
-          }}
-          dir={isRtl ? 'rtl' : 'ltr'}
-          grabCursor={true}
-          freeMode={true}
-          slidesPerView={1.2}
-          spaceBetween={24}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: true,
-          }}
-          breakpoints={{
-            640: { slidesPerView: 2.2, spaceBetween: 24 },
-            1024: { slidesPerView: 3, spaceBetween: 32 },
-            1280: { slidesPerView: 4, spaceBetween: 32 },
-          }}
-          className="w-full overflow-visible!"
-        >
-          {products.map((p) => (
-            <SwiperSlide key={p.id} className="h-auto">
-              <ProductCard product={p} locale={language} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      <Carousel
+        items={products}
+        renderItem={(p) => <ProductCard product={p} locale={language} />}
+        slidesPerView={{ mobile: 1.2, tablet: 2.2, desktop: 4 }}
+        spaceBetween={24}
+        showNavigation={true}
+        navigationClass="related-products"
+        locale={language}
+        autoplay={{ delay: 5000 }}
+      />
     </section>
   );
 }

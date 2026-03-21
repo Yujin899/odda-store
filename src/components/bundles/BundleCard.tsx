@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle2, ShoppingBag } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { IBundle } from '@/models/Bundle';
 import { RatingSummary } from '@/components/shared/RatingSummary';
 
@@ -37,16 +37,7 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
         {/* Bottom Vignette for depth */}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent opacity-60 pointer-events-none" />
 
-        {/* Premium Bundle Badge - Glassmorphism */}
-        <div className="absolute top-5 inset-e-5 z-10">
-          <div className="backdrop-blur-md bg-white/20 border border-white/30 text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full shadow-2xl flex items-center gap-2.5">
-            <div className="relative">
-              <ShoppingBag className="size-3 relative z-10" />
-              <div className="absolute inset-0 bg-white blur-sm opacity-50 scale-150 animate-pulse" />
-            </div>
-            {dict.home.bundleAndSave}
-          </div>
-        </div>
+        {/* Removed Premium Bundle Badge */}
       </div>
 
       {/* Content Section */}

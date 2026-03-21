@@ -319,6 +319,8 @@ odda-web/
 
         AddToCartSection.tsx # Reusable quantity counter + add to cart
 
+        Carousel.tsx # Shared reusable Swiper wrapper with RTL support
+
     lib/
 
       catalog.ts       # Legacy  seed script only
@@ -549,6 +551,8 @@ odda-web/
 
 11. If the feature requires data fetching, implement it via a Next.js API Route under `src/app/api/`. Do not call MongoDB or Cloudinary directly from client components.
 
+12. Direct Swiper usage in pages/components is FORBIDDEN. Always use `<Carousel>` from `src/components/shared/Carousel.tsx`.
+
 12. Before copying an old pattern, check whether it is a known inconsistency (`font-display`, `.scrollbar-hide`, duplicate marquee block).
 
 ```tsx
@@ -606,6 +610,8 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 - **Global Settings Hub**: Single-document pattern for managing announcements, fees, and hero content. Decomposed into modular tabs (`StorefrontTab`, `CheckoutTab`, `EmailsTab`) using `FormProvider` to prevent God Component bloat.
 
 - **Cold Start Prevention**: UptimeRobot pings `/api/warmup` every 5 minutes to keep the serverless function and MongoDB connection alive on Vercel Free tier.
+
+- **Carousel**: Reusable Swiper wrapper in `src/components/shared/Carousel.tsx`. Always pass `locale` prop for RTL support. Use unique `navigationClass` per instance to avoid conflicts. Wrapper has `overflow-hidden` to prevent layout bleeding. Always prefer this over direct Swiper usage.
 
 - **UI/UX Polished Elements**:
 

@@ -244,22 +244,22 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
           <TabsTrigger value="verify" className="data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 h-full flex items-center gap-3">
             <ShieldCheck className="size-4 text-rose-500" />
             <span className="text-[10px] font-black uppercase tracking-widest">{dict.dashboard.ordersPage.tabs.verify}</span>
-            {stats.verify > 0 && <Badge className="bg-rose-500 hover:bg-rose-600 text-white text-[10px] px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-2 ring-rose-500/10">{stats.verify}</Badge>}
+            {stats.verify > 0 && <Badge variant="destructive" className="px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-2 ring-red-500/10 transition-none">{stats.verify}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="ship" className="data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 h-full flex items-center gap-3">
             <Package className="size-4 text-blue-500" />
             <span className="text-[10px] font-black uppercase tracking-widest">{dict.dashboard.ordersPage.tabs.ship}</span>
-            {stats.ship > 0 && <Badge className="bg-blue-500 hover:bg-blue-600 text-white text-[10px] px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-2 ring-blue-500/10">{stats.ship}</Badge>}
+            {stats.ship > 0 && <Badge className="bg-blue-500 text-white px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-2 ring-blue-500/10 transition-none">{stats.ship}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="transit" className="data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 h-full flex items-center gap-3">
             <Truck className="size-4 text-purple-500" />
             <span className="text-[10px] font-black uppercase tracking-widest">{dict.dashboard.ordersPage.tabs.transit}</span>
-            {stats.transit > 0 && <Badge className="bg-purple-500 hover:bg-purple-600 text-white text-[10px] px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-2 ring-purple-500/10">{stats.transit}</Badge>}
+            {stats.transit > 0 && <Badge className="bg-purple-500 text-white px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-2 ring-purple-500/10 transition-none">{stats.transit}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="delivered" className="data-[state=active]:bg-white data-[state=active]:shadow-sm px-6 h-full flex items-center gap-3">
             <CheckCircle2 className="size-4 text-emerald-500" />
             <span className="text-[10px] font-black uppercase tracking-widest">{dict.dashboard.ordersPage.tabs.delivered}</span>
-            {stats.delivered > 0 && <Badge variant="secondary" className="text-[10px] px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full bg-slate-200 text-slate-600">{stats.delivered}</Badge>}
+            {stats.delivered > 0 && <Badge variant="secondary" className="px-1.5 h-5 min-w-5 flex items-center justify-center rounded-full transition-none">{stats.delivered}</Badge>}
           </TabsTrigger>
         </TabsList>
 

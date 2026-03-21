@@ -6,6 +6,7 @@ import ar from '@/dictionaries/ar.json';
 import type { RelatedProduct } from '@/types/store';
 import { formatPrice } from '@/lib/utils';
 import { RatingSummary } from '@/components/shared/RatingSummary';
+import { Badge } from '@/components/ui/badge';
 
 interface ProductCardProps {
   product: RelatedProduct;
@@ -42,18 +43,23 @@ export function ProductCard({ product, locale }: ProductCardProps) {
         />
         {!inStock && (
           <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-20 flex items-center justify-center">
-            <span className="bg-foreground text-background text-[10px] font-black px-4 py-2 rounded-(--radius) uppercase tracking-[0.2em] shadow-2xl">
+            <Badge variant="destructive" className="px-6 py-2 text-[10px] tracking-[0.2em] shadow-2xl">
               {language === 'ar' ? 'نفذت الكمية' : 'Sold Out'}
-            </span>
+            </Badge>
           </div>
         )}
         {badge && (
-          <span 
-            className="absolute top-4 inset-s-4 text-[10px] font-black px-3 py-1.5 rounded-(--radius) uppercase tracking-widest z-10 shadow-lg"
-            style={{ backgroundColor: badge.color || '#0073E6', color: badge.textColor || '#FFFFFF' }}
-          >
-            {language === 'ar' && badge.nameAr ? badge.nameAr : (badge.name || badge.nameAr)}
-          </span>
+          <div className="absolute top-4 inset-s-4 z-10">
+            <Badge 
+              className="text-[9px] sm:text-[10px] px-3 py-1 shadow-lg border-white/10"
+              style={{ 
+                backgroundColor: badge.color || '#0073E6', 
+                color: badge.textColor || '#FFFFFF' 
+              }}
+            >
+              {language === 'ar' && badge.nameAr ? badge.nameAr : (badge.name || badge.nameAr)}
+            </Badge>
+          </div>
         )}
       </div>
       <div className="p-6 flex flex-col flex-1">

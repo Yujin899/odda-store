@@ -3,9 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
-import { getDictionary } from '@/dictionaries';
 
 interface BundleGalleryProps {
   images: string[];
@@ -15,7 +13,6 @@ interface BundleGalleryProps {
 
 export function BundleGallery({ images, bundleName, stock }: BundleGalleryProps) {
   const { language } = useLanguageStore();
-  const dict = getDictionary(language);
   const isRtl = language === 'ar';
 
   const [activeImage, setActiveImage] = useState(images[0]);
@@ -54,13 +51,7 @@ export function BundleGallery({ images, bundleName, stock }: BundleGalleryProps)
             </div>
           )}
 
-          {/* Bundle Badge */}
-          <div className="absolute top-6 start-6 z-10">
-            <div className="bg-(--primary) text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-xl shadow-(--primary)/30 flex items-center gap-2 whitespace-nowrap">
-              <ShoppingBag className="size-4" />
-              {dict.home.bundleAndSave}
-            </div>
-          </div>
+          {/* Removed Bundle & Save badge */}
         </div>
       </div>
 

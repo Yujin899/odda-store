@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 import { getStatusColor } from '@/lib/utils';
 
 interface StatusBadgeProps {
@@ -12,8 +14,11 @@ export function StatusBadge({ status, labelEn, labelAr, isAr }: StatusBadgeProps
   const label = isAr ? labelAr : labelEn;
   
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-sm text-[10px] font-black uppercase tracking-widest ${colorClass}`}>
+    <Badge 
+      variant="secondary" 
+      className={cn("px-2.5 py-1 text-[9px] font-black uppercase tracking-widest", colorClass)}
+    >
       {label}
-    </span>
+    </Badge>
   );
 }

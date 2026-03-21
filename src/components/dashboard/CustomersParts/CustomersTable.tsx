@@ -9,6 +9,7 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -121,7 +122,7 @@ export function CustomersTable({
                       <div className="flex flex-col">
                         <span className="font-medium text-sm flex items-center gap-2">
                           {user.name}
-                          {isSelf && <span className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full font-black border border-blue-100 uppercase tracking-tighter">{dict.dashboard.customersPage.table.you}</span>}
+                          {isSelf && <Badge variant="secondary" className="text-[9px] px-1.5 py-0.5 rounded-full border border-blue-100 bg-blue-50 text-blue-600 transition-none">{dict.dashboard.customersPage.table.you}</Badge>}
                         </span>
                         <span className="text-[10px] text-muted-foreground">{user.email}</span>
                       </div>
@@ -129,9 +130,7 @@ export function CustomersTable({
                     <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                       <Badge 
                         variant={user.role === 'admin' ? 'default' : 'secondary'}
-                        className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm ${
-                          user.role === 'admin' ? 'bg-(--navy) hover:bg-(--navy)/90 text-white' : ''
-                        } ${language === 'ar' ? 'font-cairo' : ''}`}
+                        className={language === 'ar' ? 'font-cairo' : ''}
                       >
                         {dict.dashboard.customersPage.roles[user.role]}
                       </Badge>
@@ -142,11 +141,12 @@ export function CustomersTable({
                     <TableCell className="text-center">
                       <Badge 
                         variant="outline" 
-                        className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 ${
+                        className={cn(
                           user.isBlocked 
                             ? 'bg-red-50 text-red-700 border-red-200' 
-                            : 'bg-green-100 text-green-800 border-green-200'
-                        } ${language === 'ar' ? 'font-cairo' : ''}`}
+                            : 'bg-green-100 text-green-800 border-green-200',
+                          language === 'ar' ? 'font-cairo' : ''
+                        )}
                       >
                         {user.isBlocked ? dict.dashboard.customersPage.statuses.blocked : dict.dashboard.customersPage.statuses.active}
                       </Badge>

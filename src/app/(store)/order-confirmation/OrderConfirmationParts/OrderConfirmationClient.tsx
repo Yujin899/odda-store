@@ -12,6 +12,7 @@ import {
   ShoppingBag, 
   Info
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { OrderTracker } from '@/components/store/OrderTracker';
 import { formatDate, formatPrice } from '@/lib/utils';
 
@@ -188,9 +189,9 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
               <div className="p-8 space-y-6">
                 <div className="flex items-center justify-between">
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{dict.trackingPage.method}</p>
-                  <span className="px-2.5 py-1 bg-slate-100 rounded-full text-[9px] font-black uppercase tracking-widest text-slate-700 border border-slate-200">
+                  <Badge variant="secondary" className="px-2.5 py-1 text-[9px] font-black uppercase tracking-widest bg-slate-100 text-slate-700 border border-slate-200 transition-none">
                     {order.paymentMethod === 'InstaPay' ? dict.checkoutPage.instapay : dict.checkoutPage.cod}
-                  </span>
+                  </Badge>
                 </div>
                 
                 {order.paymentMethod === 'InstaPay' && (
