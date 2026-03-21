@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { OrderTracker } from '@/components/store/OrderTracker';
 import { Search, Package, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 interface OrderTrackingClientProps {
   initialOrder: any;
@@ -57,7 +58,7 @@ export function OrderTrackingClient({ initialOrder, initialOrderId, dict, langua
 
           <form onSubmit={handleSearch} className="w-full max-w-md flex flex-col sm:flex-row gap-3 mt-8">
             <div className="relative flex-1 group">
-              <Search className="absolute start-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-(--primary) transition-colors" />
+              <Search className="absolute inset-s-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-(--primary) transition-colors" />
               <input 
                 type="text" 
                 value={inputVal}
@@ -66,13 +67,13 @@ export function OrderTrackingClient({ initialOrder, initialOrderId, dict, langua
                 className="w-full h-16 bg-white border-2 border-slate-100 rounded-(--radius) ps-12 pe-4 text-sm font-bold shadow-2xl focus:border-(--primary) transition-all outline-none"
               />
             </div>
-            <button 
+            <Button 
               type="submit"
               disabled={loading}
-              className="h-16 px-10 bg-foreground text-background font-black uppercase tracking-widest text-[10px] rounded-(--radius) hover:bg-(--primary) hover:text-white transition-all cursor-pointer disabled:opacity-50 shadow-2xl shrink-0"
+              className="h-16 px-10 bg-foreground text-background font-black uppercase tracking-widest text-[10px] rounded-sm hover:bg-(--primary) hover:text-white transition-all disabled:opacity-50 shadow-2xl shrink-0 border-none"
             >
               {loading ? <Loader2 className="size-4 animate-spin" /> : dict.trackingPage.trackBtn}
-            </button>
+            </Button>
           </form>
         </div>
 

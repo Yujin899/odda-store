@@ -2,6 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
+import { Button } from '@/components/ui/button';
 
 export function Hero({ hero, locale }: { hero?: {
   image?: string;
@@ -38,17 +39,21 @@ export function Hero({ hero, locale }: { hero?: {
 
       {/* Content strictly server-side rendered */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
-        <h1 className="text-4xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[1.1] mb-8 max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100">
+        <h1 className="text-4xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-wider leading-[1.1] mb-8 max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100">
           {heroData.heading}
         </h1>
 
         <div className="animate-in fade-in zoom-in-95 duration-1000 delay-300">
-          <Link href={heroData.buttonLink}>
-            <button className="px-10 py-4 mt-4 border-2 border-white text-white bg-transparent hover:bg-white hover:text-navy transition-all duration-300 ease-in-out font-black uppercase tracking-[0.2em] text-[10px] rounded-sm flex items-center gap-2 group cursor-pointer outline-none shadow-2xl">
-              {heroData.buttonText}
-              <ArrowRight className="size-4 rtl:-scale-x-100 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-            </button>
-          </Link>
+            <Button 
+              asChild
+              variant="outline"
+              className="px-10 py-4 mt-4 border-2 border-white text-white bg-transparent hover:bg-white hover:text-navy transition-all duration-300 ease-in-out font-black uppercase tracking-[0.2em] text-[10px] h-auto flex items-center justify-center gap-2 group cursor-pointer outline-none shadow-2xl"
+            >
+              <Link href={heroData.buttonLink}>
+                {heroData.buttonText}
+                <ArrowRight className="size-4 rtl:-scale-x-100 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+              </Link>
+            </Button>
         </div>
       </div>
     </section>

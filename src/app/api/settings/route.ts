@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import { StoreSettings } from '@/models/StoreSettings';
+import { StoreSettings, IStoreSettings } from '@/models/StoreSettings';
 import { auth } from '@/auth';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { deleteCloudinaryImage } from '@/lib/cloudinary';
 
-export const revalidate = 3600; // Cache for 1 hour
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -27,7 +27,19 @@ export async function GET() {
         contactEmail: "contact@oddastore.com",
         storeDescription: "Precision Clinical Instruments for the next generation of dental professionals.",
         socialLinks: { facebook: "", instagram: "" },
-        defaultLanguage: "en"
+        defaultLanguage: "en",
+        theme: {
+          primary: '#0073E6',
+          primaryForeground: '#FFFFFF',
+          secondary: '#F1F5F9',
+          secondaryForeground: '#0A192F',
+          accent: '#F8FAFC',
+          accentForeground: '#0A192F',
+          background: '#FFFFFF',
+          foreground: '#0A192F',
+          border: '#E2E8F0',
+          radius: '0.5rem',
+        }
       });
     }
 
@@ -45,7 +57,12 @@ export const PATCH = auth(async (req) => {
 
   try {
     await connectDB();
-    const body = await req.json();
+    const rawBody = await req.json();
+    const body = { ...rawBody } as Partial<IStoreSettings> & Record<string, unknown>;
+    delete body._id;
+    delete body.createdAt;
+    delete body.updatedAt;
+    delete body.__v;
     
     // IMAGE CLEANUP LOGIC: Delete removed hero image from Cloudinary
     if (body.hero?.image) {
@@ -60,11 +77,18 @@ export const PATCH = auth(async (req) => {
     const settings = await StoreSettings.findOneAndUpdate(
       {},
       { $set: body },
-      { new: true, upsert: true }
+      { returnDocument: 'after', upsert: true, setDefaultsOnInsert: true }
     );
+    
+    // CRITICAL: Ensure only one document exists to prevent read-write mismatch
+    const count = await StoreSettings.countDocuments();
+    if (count > 1) {
+      await StoreSettings.deleteMany({ _id: { $ne: settings._id } });
+    }
 
     // Purge the storefront cache so new settings reflect instantly
     revalidatePath('/', 'layout');
+    revalidateTag('store-settings', 'page');
     
     return NextResponse.json(settings);
   } catch (error: unknown) {

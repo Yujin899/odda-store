@@ -4,6 +4,7 @@ import { useLanguageStore } from '@/store/useLanguageStore';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +27,7 @@ export function LanguageSwitcher() {
         <Button 
           variant="ghost" 
           size="sm" 
-          className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-(--primary) transition-colors"
+          className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-primary transition-colors"
         >
           <Globe className="size-4" />
           <span>{language === 'en' ? 'EN' : 'AR'}</span>
@@ -35,13 +36,19 @@ export function LanguageSwitcher() {
       <DropdownMenuContent align="end" className="w-32 rounded-sm overflow-hidden border-slate-200">
         <DropdownMenuItem 
           onClick={() => handleLanguageChange('en')}
-          className={`text-xs font-bold uppercase tracking-widest cursor-pointer ${language === 'en' ? 'text-(--primary) bg-slate-50' : ''}`}
+          className={cn(
+            "text-xs font-bold uppercase tracking-widest cursor-pointer",
+            language === 'en' ? 'text-primary bg-slate-50' : ''
+          )}
         >
           English
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => handleLanguageChange('ar')}
-          className={`text-xs font-bold uppercase tracking-widest cursor-pointer ${language === 'ar' ? 'text-(--primary) bg-slate-50' : ''}`}
+          className={cn(
+            "text-xs font-bold uppercase tracking-widest cursor-pointer",
+            language === 'ar' ? 'text-primary bg-slate-50' : ''
+          )}
         >
           العربية
         </DropdownMenuItem>

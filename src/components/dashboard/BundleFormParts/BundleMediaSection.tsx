@@ -8,9 +8,10 @@ import { ImageUploader } from '@/components/shared/ImageUploader';
 
 interface BundleMediaSectionProps {
   language: string;
+  dict: any;
 }
 
-export function BundleMediaSection({ language }: BundleMediaSectionProps) {
+export function BundleMediaSection({ language, dict }: BundleMediaSectionProps) {
   const { watch, setValue } = useFormContext<BundleFormValues>();
   const images = watch('images') || [];
   const isRtl = language === 'ar';

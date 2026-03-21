@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { Button } from '@/components/ui/button';
 
 interface Category {
   id: string | null;
@@ -91,18 +92,19 @@ export function ProductFilters({
               const categoryName = locale === 'ar' && cat.nameAr ? cat.nameAr : cat.name;
               
               return (
-                <button
+                <Button
                   key={cat.slug || 'all'}
                   onClick={() => updateParams('category', cat.slug || null)}
-                  className={`w-full flex items-center gap-3 p-4 border transition-all rounded-(--radius) uppercase tracking-widest text-[10px] font-bold text-start cursor-pointer outline-none ${
+                  variant={isActive ? "default" : "outline"}
+                  className={`w-full flex items-center gap-3 p-4 h-auto transition-all rounded-[var(--radius)] uppercase tracking-widest text-[10px] font-bold text-start border ${
                     isActive 
-                      ? 'bg-(--primary) border-(--primary) text-white shadow-lg' 
-                      : 'bg-background border-slate-100 text-muted-foreground hover:border-(--primary)/30 hover:bg-slate-50'
+                      ? 'bg-primary border-primary text-primary-foreground shadow-lg' 
+                      : 'bg-background border-slate-100 text-muted-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground'
                   }`}
                 >
                   <Icon className="size-4 stroke-[2px]" />
                   <span className="flex-1">{categoryName}</span>
-                </button>
+                </Button>
               );
             })}
           </div>
@@ -115,30 +117,32 @@ export function ProductFilters({
               const Icon = s.icon;
               const isActive = currentSort === s.val;
               return (
-                <button
+                <Button
                   key={s.val}
                   onClick={() => updateParams('sort', s.val)}
-                  className={`w-full flex items-center gap-3 p-4 border transition-all rounded-(--radius) uppercase tracking-widest text-[10px] font-bold text-start cursor-pointer outline-none ${
+                  variant={isActive ? "default" : "outline"}
+                  className={`w-full flex items-center gap-3 p-4 h-auto transition-all rounded-[var(--radius)] uppercase tracking-widest text-[10px] font-bold text-start border ${
                     isActive 
-                      ? 'bg-(--primary) border-(--primary) text-white shadow-lg' 
-                      : 'bg-background border-slate-100 text-muted-foreground hover:border-(--primary)/30 hover:bg-slate-50'
+                      ? 'bg-primary border-primary text-primary-foreground shadow-lg' 
+                      : 'bg-background border-slate-100 text-muted-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground'
                   }`}
                 >
                   <Icon className="size-4 stroke-[2px]" />
                   <span className="flex-1">{s.label}</span>
-                </button>
+                </Button>
               );
             })}
           </div>
         </div>
         
-        <button 
+        <Button 
+          variant="outline"
           onClick={clearFilters}
-          className="w-full py-4 border border-(--primary)/20 text-(--primary) font-bold hover:bg-(--primary) hover:text-white transition-all flex items-center justify-center gap-2 rounded-(--radius) outline-none cursor-pointer uppercase tracking-widest text-[10px]"
+          className="w-full py-4 h-14 border border-primary/20 text-primary font-bold hover:bg-primary hover:text-primary-foreground transition-all flex items-center justify-center gap-2 rounded-[var(--radius)] uppercase tracking-widest text-[10px]"
         >
           <span>{dict.common.resetFilters}</span>
           <RefreshCw className="size-3.5 stroke-[2.5px]" />
-        </button>
+        </Button>
       </div>
     </aside>
   );

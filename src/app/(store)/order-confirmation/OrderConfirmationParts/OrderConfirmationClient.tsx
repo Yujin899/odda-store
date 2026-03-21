@@ -15,10 +15,32 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { OrderTracker } from '@/components/store/OrderTracker';
 import { formatDate, formatPrice } from '@/lib/utils';
+import { Dictionary } from '@/types/store';
 
 interface OrderConfirmationClientProps {
-  order: any;
-  dict: any;
+  order: {
+    orderNumber: string;
+    createdAt: string;
+    status: 'pending_payment' | 'pending_verification' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+    totalAmount: number;
+    paymentMethod: string;
+    shippingAddress: {
+      fullName: string;
+      address: string;
+      city: string;
+      phone: string;
+    };
+    items: Array<{
+      productId?: {
+        name?: string;
+        nameAr?: string;
+        images?: Array<{ url: string }>;
+      };
+      quantity: number;
+      price: number;
+    }>;
+  };
+  dict: Dictionary;
   language: 'en' | 'ar';
 }
 
@@ -90,7 +112,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                 </h2>
               </div>
               <div className="divide-y divide-slate-50">
-                {order.items.map((item: any, idx: number) => (
+                {order.items.map((item, idx) => (
                   <div key={idx} className="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 group border-b border-slate-50 last:border-0">
                     <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto flex-1">
                       <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-50 rounded-(--radius) overflow-hidden shrink-0 border border-slate-100 relative shadow-sm transition-transform group-hover:scale-105">
@@ -200,7 +222,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                       <Info className="size-3" />
                       {dict.confirmationPage.verificationNote}
                     </div>
-                    <p className="text-[8px] font-bold text-blue-600/80 uppercase tracking-[0.1em] leading-relaxed">
+                    <p className="text-[8px] font-bold text-blue-600/80 uppercase tracking-widest leading-relaxed">
                       {dict.confirmationPage.verificationDesc}
                     </p>
                   </div>

@@ -6,6 +6,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { useCartUIStore } from '@/store/useCartUIStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface AddToCartSectionProps {
   productId: string;
@@ -19,6 +20,7 @@ interface AddToCartSectionProps {
   dict: {
     addToCart: string;
   };
+  className?: string;
 }
 
 export function AddToCartSection({
@@ -30,7 +32,8 @@ export function AddToCartSection({
   slug,
   type,
   stock,
-  dict
+  dict,
+  className = ''
 }: AddToCartSectionProps) {
   const { language } = useLanguageStore();
   const isRtl = language === 'ar';
@@ -73,29 +76,33 @@ export function AddToCartSection({
           <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 px-1 text-start">
             {isRtl ? 'الكمية' : 'Quantity'}
           </span>
-          <div dir="ltr" className={bcn(
-            "bg-white h-14 border border-slate-200 rounded-sm flex items-center shadow-sm overflow-hidden",
+          <div dir="ltr" className={cn(
+            "bg-white h-14 border border-slate-200 rounded-[var(--radius)] flex items-center overflow-hidden",
             isOutOfStock ? "opacity-30 cursor-not-allowed" : ""
           )}>
-            <button 
+            <Button 
               type="button"
+              variant="ghost"
+              size="icon"
               disabled={isOutOfStock || quantity <= 1}
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="px-4 h-full hover:bg-slate-50 transition-colors text-slate-500 disabled:text-slate-200"
+              className="px-4 h-full hover:bg-slate-50 transition-colors text-slate-500 disabled:text-slate-200 border-none rounded-[var(--radius)]"
             >
               <Minus className="size-4" />
-            </button>
-            <span className="flex-1 min-w-[50px] text-center font-black text-sm text-(--navy)">
+            </Button>
+            <span className="flex-1 min-w-[50px] text-center font-black text-sm text-foreground">
               {quantity}
             </span>
-            <button 
+            <Button 
               type="button"
+              variant="ghost"
+              size="icon"
               disabled={isOutOfStock}
               onClick={() => setQuantity(quantity + 1)}
-              className="px-4 h-full hover:bg-slate-50 transition-colors text-slate-500 disabled:text-slate-200"
+              className="px-4 h-full hover:bg-slate-50 transition-colors text-slate-500 disabled:text-slate-200 border-none rounded-[var(--radius)]"
             >
               <Plus className="size-4" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -113,11 +120,11 @@ export function AddToCartSection({
       <Button 
         disabled={isOutOfStock || isAdding}
         onClick={handleAddToCart}
-        className={bcn(
-          "w-full h-16 rounded-sm font-black uppercase tracking-[0.3em] text-[11px] shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden",
-          isOutOfStock 
-            ? "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none" 
-            : "bg-(--navy) hover:bg-(--primary) text-white shadow-(--primary)/20"
+        variant={isOutOfStock ? "secondary" : "default"}
+        className={cn(
+          "w-full h-16 rounded-[var(--radius)] font-black uppercase tracking-[0.3em] text-[11px] transition-all active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden",
+          isOutOfStock && "opacity-50 cursor-not-allowed shadow-none",
+          className
         )}
       >
         {isAdding ? (
@@ -135,6 +142,4 @@ export function AddToCartSection({
   );
 }
 
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
-}
+

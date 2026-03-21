@@ -9,9 +9,10 @@ import { BundleFormValues } from '@/lib/schemas';
 
 interface BundleItemsSectionProps {
   language: string;
+  dict: any;
 }
 
-export function BundleItemsSection({ language }: BundleItemsSectionProps) {
+export function BundleItemsSection({ language, dict }: BundleItemsSectionProps) {
   const { control, register } = useFormContext<BundleFormValues>();
   const isRtl = language === 'ar';
 

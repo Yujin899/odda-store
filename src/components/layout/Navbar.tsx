@@ -38,7 +38,7 @@ export async function Navbar() {
   const categories = await getCategories();
 
   return (
-    <header className="relative md:sticky md:top-0 z-40 border-b border-navy/10 px-6 lg:px-12 py-4 bg-background/80 backdrop-blur-md">
+    <header className="relative md:sticky md:top-0 z-40 border-b border-(--navy)/10 px-6 lg:px-12 py-4 bg-background">
       <div className="max-w-7xl mx-auto flex items-center">
         {/* Main Content Area: Logo + Desktop Nav */}
         <div className="flex-1 flex items-center justify-between">
@@ -63,28 +63,25 @@ export async function Navbar() {
 
             {/* Desktop Nav Links */}
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.home}</Link>
+              <Link href="/" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.home}</Link>
               
               <NavbarCategoryDropdown categories={categories} dict={dict} language={language} />
 
-              <Link href="/profile" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.profile || 'Profile'}</Link>
-              <Link href="/order-tracking" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.trackOrder}</Link>
+              <Link href="/profile" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.profile || 'Profile'}</Link>
+              <Link href="/order-tracking" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.trackOrder}</Link>
               <Link href="/bundles" className="text-sm font-bold text-emerald-600 hover:text-emerald-500 transition-colors flex items-center gap-1.5">
                 <Gift className="size-3.5" />
                 {dict.common.offersAndBundles}
               </Link>
-              <Link href="/about" className="text-sm font-semibold text-navy hover:text-(--primary) transition-colors">{dict.common.about}</Link>
+              <Link href="/about" className="text-sm font-semibold text-(--navy) hover:text-(--primary) transient-colors">{dict.common.about}</Link>
             </nav>
           </div>
         </div>
 
         {/* Right Side: Actions */}
-        <div className="flex-1 flex items-center justify-end gap-2 sm:gap-6">
-          <NavbarSearchTrigger dict={dict} />
-
-          <div className="hidden lg:block border-l border-navy/10 h-6 mx-2" />
+        <div className="flex-1 flex items-center justify-end gap-1 sm:gap-2">
+          <NavbarSearchTrigger />
           <LanguageSwitcher />
-          <div className="hidden lg:block border-r border-navy/10 h-6 mx-2" />
 
           {/* User Area */}
           <NavbarUserDropdown dict={dict} />

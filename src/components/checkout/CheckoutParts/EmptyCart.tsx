@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
+import { Button } from '@/components/ui/button';
 
 export function EmptyCart() {
   const { language } = useLanguageStore();
@@ -26,17 +27,19 @@ export function EmptyCart() {
         </p>
       </div>
 
-      <Link 
-        href="/products" 
-        className="mt-12 px-12 py-5 bg-(--navy) text-white font-black rounded-sm uppercase tracking-[0.3em] text-[10px] shadow-2xl hover:bg-(--primary) hover:-translate-y-1 active:scale-95 transition-all duration-300 group"
+      <Button 
+        asChild
+        className="mt-12 px-12 py-8 bg-(--navy) text-white font-black rounded-sm uppercase tracking-[0.3em] text-[10px] shadow-2xl hover:bg-(--primary) hover:-translate-y-1 transition-all duration-300 group border-none"
       >
-        <span className="flex items-center gap-2">
-          {isRtl ? 'تصفح الكتالوج' : 'Browse Catalog'}
-          <span className={bcn("transition-transform duration-300 group-hover:translate-x-1", isRtl ? "rotate-180" : "")}>
-            →
+        <Link href="/products">
+          <span className="flex items-center gap-2">
+            {isRtl ? 'تصفح الكتالوج' : 'Browse Catalog'}
+            <span className={bcn("transition-transform duration-300 group-hover:translate-x-1", isRtl ? "rotate-180" : "")}>
+              →
+            </span>
           </span>
-        </span>
-      </Link>
+        </Link>
+      </Button>
     </div>
   );
 }

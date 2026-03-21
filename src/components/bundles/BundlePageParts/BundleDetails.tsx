@@ -32,7 +32,7 @@ export function BundleDetails({
     <div className="flex flex-col space-y-6">
       {/* Badges */}
       <div className="flex flex-wrap gap-2 text-start">
-        <span className="inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white rounded-sm bg-(--navy) shadow-sm">
+        <span className="inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-widest text-primary-foreground rounded-[calc(var(--radius)*0.6)] bg-primary">
           {isRtl ? 'مجموعة متميزة' : 'Premium Bundle'}
         </span>
       </div>
@@ -45,13 +45,13 @@ export function BundleDetails({
         <RatingSummary 
           rating={averageRating} 
           numReviews={numReviews} 
-          className="p-0 bg-transparent border-none text-[10px] font-black uppercase tracking-widest text-(--primary)"
+          className="p-0 bg-transparent border-none text-[10px] font-black uppercase tracking-widest text-primary"
         />
       </div>
 
       {/* Pricing & Savings */}
       <div className="flex items-baseline gap-3 pt-2">
-        <span className="text-4xl font-black text-(--primary)">
+        <span className="text-4xl font-black text-primary">
           {bundle.price.toLocaleString()} {dict.common.egp}
         </span>
         {bundle.originalPrice && bundle.originalPrice > bundle.price && (
@@ -63,20 +63,20 @@ export function BundleDetails({
 
       <div className="flex flex-wrap gap-4 py-4 border-y border-slate-100">
         {bundle.stock > 0 && (
-          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-emerald-50 text-emerald-600 border border-emerald-100">
+          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-[calc(var(--radius)*0.6)] bg-emerald-50 text-emerald-600 border border-emerald-100">
             <Truck className="size-3.5" />
             <span className="text-[9px] font-black uppercase tracking-widest">
               {dict.home.campusDelivery}
             </span>
           </div>
         )}
-        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-indigo-50 text-indigo-600 border border-indigo-100">
+        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-[calc(var(--radius)*0.6)] bg-indigo-50 text-indigo-600 border border-indigo-100">
           <ShieldCheck className="size-3.5" />
           <span className="text-[9px] font-black uppercase tracking-widest">
             {dict.home.securePayments}
           </span>
         </div>
-        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-slate-50 text-slate-500 border border-slate-100">
+        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-[calc(var(--radius)*0.6)] bg-slate-50 text-slate-500 border border-slate-100">
           <ShoppingBag className="size-3.5" />
           <span className="text-[9px] font-black uppercase tracking-widest">
             {dict.footer.builtForExcellence}
@@ -92,9 +92,9 @@ export function BundleDetails({
           </h3>
           <div className="grid grid-cols-1 gap-3">
             {items.map((item: string, i: number) => (
-              <div key={i} className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-sm shadow-sm hover:border-(--primary)/30 transition-colors">
-                <div className="bg-(--primary)/10 p-1.5 rounded-full shrink-0">
-                  <CheckCircle2 className="size-4 text-(--primary) stroke-[2.5px]" />
+              <div key={i} className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-[var(--radius)] hover:border-primary/30 transition-colors">
+                <div className="bg-primary/10 p-1.5 rounded-full shrink-0">
+                  <CheckCircle2 className="size-4 text-primary stroke-[2.5px]" />
                 </div>
                 <span className="text-sm font-bold text-slate-700 text-start">{item}</span>
               </div>

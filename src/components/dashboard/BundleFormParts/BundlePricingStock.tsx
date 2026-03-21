@@ -8,9 +8,10 @@ import { BundleFormValues } from '@/lib/schemas';
 
 interface BundlePricingStockProps {
   language: string;
+  dict: any;
 }
 
-export function BundlePricingStock({ language }: BundlePricingStockProps) {
+export function BundlePricingStock({ language, dict }: BundlePricingStockProps) {
   const { register, formState: { errors } } = useFormContext<BundleFormValues>();
   const isRtl = language === 'ar';
 

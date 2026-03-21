@@ -114,7 +114,7 @@ export function StorefrontTab() {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Hero Image Upload */}
           <div className="space-y-4">
-            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               {dict.dashboard.settingsPage.storefront.hero.bgImage}
             </Label>
             <ImageUploader 
@@ -155,7 +155,7 @@ export function StorefrontTab() {
 
             <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
               <div className="space-y-2 text-start">
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block text-start">{dict.dashboard.settingsPage.storefront.hero.btnTextEn}</Label>
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.settingsPage.storefront.hero.btnTextEn}</Label>
                 <Input 
                   {...register('hero.buttonText')}
                   placeholder="e.g. Shop Now"
@@ -163,7 +163,7 @@ export function StorefrontTab() {
                 />
               </div>
               <div className="space-y-2 text-end">
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block text-end">{dict.dashboard.settingsPage.storefront.hero.btnTextAr}</Label>
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 text-end">{dict.dashboard.settingsPage.storefront.hero.btnTextAr}</Label>
                 <Input 
                   {...register('hero.buttonTextAr')}
                   dir="rtl"
@@ -172,7 +172,7 @@ export function StorefrontTab() {
                 />
               </div>
               <div className="space-y-2">
-                <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.settingsPage.storefront.hero.btnLink}</Label>
+                <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.settingsPage.storefront.hero.btnLink}</Label>
                 <Input 
                   {...register('hero.buttonLink')}
                   placeholder="/products"

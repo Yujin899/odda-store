@@ -32,9 +32,9 @@ export function ProductDetails({
       <div className="flex flex-wrap gap-2">
         {product.badge && (
           <span 
-            className="inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white rounded-sm shadow-sm"
+            className="inline-flex items-center px-3 py-1 text-[10px] font-black uppercase tracking-widest text-primary-foreground rounded-[calc(var(--radius)*0.6)]"
             style={{ 
-              backgroundColor: product.badge.color || '#0073E6',
+              backgroundColor: product.badge.color || 'var(--primary)',
               color: product.badge.textColor || '#FFFFFF'
             }}
           >
@@ -52,12 +52,12 @@ export function ProductDetails({
         <RatingSummary 
           rating={averageRating} 
           numReviews={numReviews} 
-          className="p-0 bg-transparent border-none text-[10px] font-bold uppercase tracking-widest text-(--primary)"
+          className="p-0 bg-transparent border-none text-[10px] font-bold uppercase tracking-widest text-primary"
         />
       </div>
 
       <div className="flex items-baseline gap-3 pt-2">
-        <span className="text-3xl font-black text-(--primary)">
+        <span className="text-3xl font-black text-primary">
           {formatPrice(product.price, language)}
         </span>
       </div>
@@ -65,21 +65,21 @@ export function ProductDetails({
       {/* Trust Badges Bar */}
       <div className="flex flex-wrap gap-4 py-4 border-y border-slate-100">
         {product.stock > 0 ? (
-          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-emerald-50 text-emerald-600 border border-emerald-100">
+          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-[calc(var(--radius)*0.6)] bg-emerald-50 text-emerald-600 border border-emerald-100">
             <Truck className="size-3.5" />
             <span className="text-[9px] font-black uppercase tracking-widest">
               {isRtl ? 'توصيل سريع خلال 24 ساعة' : 'Fast Delivery in 24h'}
             </span>
           </div>
         ) : (
-          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-red-50 text-red-600 border border-red-100">
+          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-[calc(var(--radius)*0.6)] bg-red-50 text-red-600 border border-red-100">
             <AlertCircle className="size-3.5" />
             <span className="text-[9px] font-black uppercase tracking-widest">
               {isRtl ? 'نفذت الكمية' : 'Out of Stock'}
             </span>
           </div>
         )}
-        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-sm bg-slate-50 text-slate-500 border border-slate-100">
+        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-[calc(var(--radius)*0.6)] bg-slate-50 text-slate-500 border border-slate-100">
           <ShieldCheck className="size-3.5" />
           <span className="text-[9px] font-black uppercase tracking-widest">
             {isRtl ? 'دعم فني متميز' : 'Premium Support'}

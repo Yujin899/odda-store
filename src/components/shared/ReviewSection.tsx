@@ -8,6 +8,9 @@ import { useLanguageStore } from '@/store/useLanguageStore';
 import type { Review } from '@/types/store';
 import { formatDate } from '@/lib/utils';
 
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+
 interface ReviewSectionProps {
   targetId: string;
   targetSlug: string;
@@ -74,32 +77,34 @@ export function ReviewSection({
           </h4>
           <div className="flex items-center gap-1 mb-2">
             {[1, 2, 3, 4, 5].map((s) => (
-              <button
+              <Button
                 key={s}
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={() => setRating(s)}
-                className="focus:outline-none transition-transform active:scale-90 bg-transparent border-none cursor-pointer p-0"
+                className="size-8 p-0 hover:bg-transparent transition-transform active:scale-90"
               >
                 <Star 
                   className={`size-5 ${s <= rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-300'}`} 
                 />
-              </button>
+              </Button>
             ))}
           </div>
-          <textarea
+          <Textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder={language === 'ar' ? (targetType === 'Bundle' ? 'اكتب رأيك في هذا العرض...' : 'اكتب رأيك في هذا المنتج...') : `Share your thoughts about this ${targetType.toLowerCase()}...`}
             className={`w-full p-3 text-sm border border-slate-200 rounded-(--radius) bg-white focus:outline-none focus:border-(--primary) min-h-[80px] text-start ${language === 'ar' ? 'font-cairo' : ''}`}
             required
           />
-          <button
+          <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-(--primary) text-white py-2 rounded-(--radius) font-bold text-xs uppercase tracking-widest hover:bg-(--primary)/90 disabled:opacity-50 border-none cursor-pointer"
+            className="w-full h-12 rounded-sm font-black uppercase tracking-widest text-[10px] shadow-xl shadow-(--primary)/20"
           >
             {isSubmitting ? (language === 'ar' ? 'جاري الإرسال...' : 'Submitting...') : (language === 'ar' ? 'إرسال التقييم' : 'Post Review')}
-          </button>
+          </Button>
         </form>
       ) : (
         <div className="p-4 bg-slate-50 rounded-(--radius) border border-slate-100 text-center">

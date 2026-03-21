@@ -65,7 +65,7 @@ export async function Footer() {
     : (settings?.storeDescription || dict.footer.defaultDescription);
 
   return (
-    <footer className="w-full bg-navy pt-20 pb-10 text-white overflow-hidden">
+    <footer className="w-full bg-brand-dark pt-20 pb-10 text-primary-foreground overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Main 4-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
@@ -88,14 +88,14 @@ export async function Footer() {
               {description}
             </p>
             <div className="flex items-center gap-4">
-              <Link href={fbLink} className="size-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-(--primary) hover:border-(--primary) transition-all duration-300">
+              <Link href={fbLink} className="size-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-secondary hover:border-secondary transition-all duration-300">
                 <Facebook size={16} />
               </Link>
-              <Link href={igLink} className="size-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-(--primary) hover:border-(--primary) transition-all duration-300">
+              <Link href={igLink} className="size-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-secondary hover:border-secondary transition-all duration-300">
                 <Instagram size={16} />
               </Link>
               {waNumber && (
-                <Link href={`https://wa.me/${waNumber.replace(/\+/g, '').replace(/ /g, '')}`} target="_blank" className="size-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-(--primary) hover:border-(--primary) transition-all duration-300">
+                <Link href={`https://wa.me/${waNumber.replace(/\+/g, '').replace(/ /g, '')}`} target="_blank" className="size-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-secondary hover:border-secondary transition-all duration-300">
                   <MessageCircle size={16} />
                 </Link>
               )}
@@ -104,7 +104,7 @@ export async function Footer() {
 
           {/* Column 2: Quick Links */}
           <div className="space-y-8">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">{dict.common.quickLinks}</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">{dict.common.quickLinks}</h4>
             <ul className="space-y-4">
               {[
                 { label: dict.common.home, href: '/' },
@@ -117,7 +117,7 @@ export async function Footer() {
                     href={link.href} 
                     className="group text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2"
                   >
-                    <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary) ${language === 'ar' ? 'rotate-180' : ''}`} />
+                    <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-secondary ${language === 'ar' ? 'rotate-180' : ''}`} />
                     {link.label}
                   </Link>
                 </li>
@@ -127,7 +127,7 @@ export async function Footer() {
 
           {/* Column 3: Top Categories */}
           <div className="space-y-8">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-(--primary)">{dict.common.categories}</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">{dict.common.categories}</h4>
             <ul className="space-y-4">
               {categories.length > 0 ? categories.map((cat) => (
                 <li key={cat.id}>
@@ -135,7 +135,7 @@ export async function Footer() {
                     href={`/products?category=${cat.slug}`} 
                     className="group text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2"
                   >
-                    <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-(--primary) ${language === 'ar' ? 'rotate-180' : ''}`} />
+                    <ArrowRight className={`size-3 opacity-0 ${language === 'ar' ? 'translate-x-2' : '-translate-x-2'} group-hover:opacity-100 group-hover:translate-x-0 transition-all text-secondary ${language === 'ar' ? 'rotate-180' : ''}`} />
                     {language === 'ar' && cat.nameAr ? cat.nameAr : cat.name}
                   </Link>
                 </li>
@@ -159,16 +159,16 @@ export async function Footer() {
           </div>
           
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 sm:gap-6">
-            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
-              <ShieldCheck size={14} className="text-(--primary)" />
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-[var(--radius)] border border-white/10 group hover:border-secondary transition-colors">
+              <ShieldCheck size={14} className="text-secondary" />
               <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">{dict.footer.fullySecured}</span>
             </div>
-            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-sm border border-white/10 group hover:border-(--primary)/50 transition-colors">
-              <CreditCard size={14} className="text-(--primary)" />
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/5 rounded-[var(--radius)] border border-white/10 group hover:border-secondary transition-colors">
+              <CreditCard size={14} className="text-secondary" />
               <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">{dict.footer.instaPayReady}</span>
             </div>
-            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-(--primary)/10 border border-(--primary)/20 rounded-sm">
-              <Truck size={14} className="text-(--primary)" />
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-secondary/10 border border-secondary/20 rounded-[var(--radius)]">
+              <Truck size={14} className="text-secondary" />
               <span className="text-[9px] font-bold uppercase tracking-widest text-white">{dict.footer.campusExpress}</span>
             </div>
           </div>

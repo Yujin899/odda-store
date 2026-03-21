@@ -21,6 +21,8 @@ import { getDictionary } from '@/dictionaries';
 import { StorefrontTab } from './SettingsFormParts/StorefrontTab';
 import { CheckoutTab } from './SettingsFormParts/CheckoutTab';
 import { EmailsTab } from './SettingsFormParts/EmailsTab';
+import { ThemeTab } from './SettingsFormParts/ThemeTab';
+import { defaultTheme } from '@/lib/theme';
 
 const settingsSchema = z.object({
   announcements: z.array(z.string()),
@@ -49,6 +51,19 @@ const settingsSchema = z.object({
   shippedSubjectAr: z.string().min(1),
   shippedBodyAr: z.string().min(1),
   defaultLanguage: z.enum(['en', 'ar']),
+  theme: z.object({
+    primary: z.string(),
+    primaryForeground: z.string(),
+    secondary: z.string(),
+    secondaryForeground: z.string(),
+    accent: z.string(),
+    accentForeground: z.string(),
+    background: z.string(),
+    foreground: z.string(),
+    border: z.string(),
+    radius: z.string(),
+    brandDark: z.string()
+  }).optional()
 });
 
 type SettingsFormValues = z.infer<typeof settingsSchema>;
@@ -90,6 +105,7 @@ export function SettingsForm({ initialData }: { initialData?: Partial<SettingsFo
       shippedSubjectAr: initialData?.shippedSubjectAr || "عدة - تم شحن طلبك رقم {{orderNumber}}!",
       shippedBodyAr: initialData?.shippedBodyAr || "أخبار رائعة {{customerName}}!\n\nتم شحن طلبك رقم {{orderNumber}} وهو الآن في طريقه إليك.",
       defaultLanguage: initialData?.defaultLanguage || 'en',
+      theme: initialData?.theme || defaultTheme
     },
   });
 
@@ -149,6 +165,9 @@ export function SettingsForm({ initialData }: { initialData?: Partial<SettingsFo
                 <Mail className={`size-3 ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
                 {language === 'ar' ? 'قوالب البريد' : 'Email Templates'}
               </TabsTrigger>
+              <TabsTrigger value="theme" className="text-[10px] font-black uppercase tracking-widest px-6 data-[state=active]:bg-slate-100">
+                {language === 'ar' ? 'المظهر' : 'Theme'}
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -162,6 +181,10 @@ export function SettingsForm({ initialData }: { initialData?: Partial<SettingsFo
 
           <TabsContent value="emails" className="outline-none">
             <EmailsTab />
+          </TabsContent>
+
+          <TabsContent value="theme" className="outline-none">
+            <ThemeTab />
           </TabsContent>
         </Tabs>
       </form>

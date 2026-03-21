@@ -6,6 +6,8 @@ import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { cookies } from 'next/headers';
 import type { Metadata } from "next";
 
+export const dynamic = 'force-dynamic';
+
 const inter = localFont({
   src: [
     { path: "../../public/fonts/inter/Inter_28pt-Light.ttf", weight: "300", style: "normal" },
@@ -37,6 +39,51 @@ export const metadata: Metadata = {
   description: "Precision clinical instruments engineered for excellence in modern healthcare.",
 };
 
+import { connectDB } from '@/lib/mongodb';
+import { StoreSettings } from '@/models/StoreSettings';
+import { generateThemeCSS, defaultTheme } from '@/lib/theme';
+
+async function getStoreSettings() {
+  try {
+    await connectDB();
+    let settings = await StoreSettings.findOne().lean();
+    
+    // Migration & Robustness check: Ensure all default theme fields exist
+    if (settings && settings.theme) {
+      let needsUpdate = false;
+      const updatedTheme = { ...settings.theme };
+      
+      // Migrate old 'navy' to 'brandDark' if it exists
+      if (settings.theme.navy && !settings.theme.brandDark) {
+        updatedTheme.brandDark = settings.theme.navy;
+        delete updatedTheme.navy;
+        needsUpdate = true;
+      }
+
+      // Ensure all other default fields exist
+      Object.keys(defaultTheme).forEach(key => {
+        if (!(key in updatedTheme)) {
+          updatedTheme[key] = (defaultTheme as any)[key];
+          needsUpdate = true;
+        }
+      });
+
+      if (needsUpdate) {
+        settings = await StoreSettings.findOneAndUpdate(
+          { _id: settings._id },
+          { $set: { theme: updatedTheme } },
+          { returnDocument: 'after' }
+        ).lean();
+      }
+    }
+    
+    return settings ? JSON.parse(JSON.stringify(settings)) : null;
+  } catch (error) {
+    console.error('--- ERROR FETCHING SETTINGS ---', error);
+    return null;
+  }
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -45,9 +92,14 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
+  const settings = await getStoreSettings();
+  const themeCSS = generateThemeCSS(settings?.theme ?? defaultTheme);
 
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: themeCSS }} />
+      </head>
       <body className={`${inter.variable} ${cairo.variable} antialiased font-primary`}>
         <Providers>
           <ScrollToTop />

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, Copy, Check } from 'lucide-react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { formatDate } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface OrderHeaderProps {
   orderNumber: string;
@@ -58,9 +59,11 @@ export function OrderHeader({ orderNumber, createdAt }: OrderHeaderProps) {
               {isAr ? 'رقم الطلب:' : 'ORDER ID:'}
             </span>
             <code className="text-xs font-black text-(--navy) tracking-tight">{orderNumber}</code>
-            <button 
+            <Button 
+              variant="ghost"
+              size="icon"
               onClick={copyToClipboard}
-              className="ms-2 p-1.5 hover:bg-white hover:shadow-sm rounded-full transition-all text-muted-foreground hover:text-(--primary) active:scale-90"
+              className="ms-2 size-7 p-1 hover:bg-white hover:shadow-sm rounded-full transition-all text-muted-foreground hover:text-(--primary) active:scale-90"
               title={isAr ? 'نسخ' : 'Copy'}
             >
               <AnimatePresence mode="wait">
@@ -84,7 +87,7 @@ export function OrderHeader({ orderNumber, createdAt }: OrderHeaderProps) {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </button>
+            </Button>
           </div>
           
           <p className="text-[10px] font-black text-(--primary) uppercase tracking-[0.3em]">

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2, Check, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useToastStore } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
@@ -80,17 +82,43 @@ export function BundleForm({ initialData }: BundleFormProps) {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6 sm:space-y-8 max-w-5xl mx-auto pb-20">
-        <BundleFormHeader initialData={initialData} language={language} isLoading={isLoading} isUploading={false} dict={dict} />
+        <BundleFormHeader initialData={initialData} language={language} dict={dict} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           <div className="lg:col-span-3"><BundleAIAssistant language={language} dict={dict} /></div>
           <div className="lg:col-span-2 space-y-6">
             <BundleBasicInfo dict={dict} language={language} />
-            <BundleItemsSection language={language} />
-            <BundlePricingStock language={language} />
+            <BundleItemsSection language={language} dict={dict} />
+            <BundlePricingStock language={language} dict={dict} />
           </div>
           <div className="lg:col-span-1">
-            <BundleMediaSection language={language} />
+            <BundleMediaSection language={language} dict={dict} />
           </div>
+        </div>
+
+        {/* Action Footer */}
+        <div className="flex items-center gap-4 pt-8 border-t border-slate-200 mt-12 bg-white/50 p-6 rounded-none">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => router.back()}
+            disabled={isLoading}
+            className="flex-1 sm:flex-none font-bold uppercase tracking-widest text-[10px] h-12 px-8"
+          >
+            <X className={`size-4 ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
+            {dict.common.cancel}
+          </Button>
+          <Button 
+            type="submit" 
+            disabled={isLoading}
+            className="flex-1 sm:flex-none bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-12 px-10"
+          >
+            {isLoading ? (
+              <Loader2 className={`size-4 animate-spin ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
+            ) : (
+              <Check className={`size-4 ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
+            )}
+            {initialData ? (language === 'ar' ? 'تحديث' : 'Update') : (language === 'ar' ? 'إنشاء' : 'Create')}
+          </Button>
         </div>
       </form>
     </FormProvider>

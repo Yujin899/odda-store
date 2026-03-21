@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguageStore } from '@/store/useLanguageStore';
+import { Button } from '@/components/ui/button';
 
 interface ProductGalleryProps {
   images: { url: string; isPrimary?: boolean }[];
@@ -22,7 +23,7 @@ export function ProductGallery({ images, productName, stock }: ProductGalleryPro
   return (
     <div className="space-y-4">
       {/* Main Image View */}
-      <div className="bg-white p-4 border border-slate-200 rounded-(--radius) relative overflow-hidden group">
+      <div className="bg-white p-4 border border-slate-200 rounded-[var(--radius)] relative overflow-hidden group">
         <div className="w-full aspect-square relative">
           <AnimatePresence mode="wait">
             <motion.div
@@ -47,7 +48,7 @@ export function ProductGallery({ images, productName, stock }: ProductGalleryPro
           {/* Sold Out Overlay */}
           {stock <= 0 && (
             <div className="absolute inset-0 bg-white/60 backdrop-blur-md z-20 flex items-center justify-center">
-              <span className="bg-foreground text-background text-xs font-black px-8 py-3 rounded-(--radius) uppercase tracking-[0.3em] shadow-2xl">
+              <span className="bg-red-600 text-white text-xs font-black px-8 py-3 rounded-[calc(var(--radius)*0.6)] uppercase tracking-[0.3em] shadow-xl">
                 {isRtl ? 'نفذت الكمية' : 'Sold Out'}
               </span>
             </div>
@@ -58,13 +59,15 @@ export function ProductGallery({ images, productName, stock }: ProductGalleryPro
       {/* Thumbnails Selection Grid */}
       <div className="grid grid-cols-4 gap-2 sm:gap-4">
         {images.map((img, i) => (
-          <button
+          <Button
             key={i}
+            variant="ghost"
+            size="icon"
             onClick={() => setActiveImage(img.url)}
             className={bcn(
-              "aspect-square bg-white p-2 border rounded-(--radius) cursor-pointer transition-all relative overflow-hidden outline-none",
+              "aspect-square size-auto bg-white p-2 border rounded-[var(--radius)] transition-all relative overflow-hidden",
               activeImage === img.url 
-                ? "border-(--primary) shadow-md ring-2 ring-(--primary)/10" 
+                ? "border-primary ring-2 ring-primary/10" 
                 : "border-slate-200 opacity-60 hover:opacity-100 hover:border-slate-300"
             )}
             aria-label={`View image ${i + 1}`}
@@ -73,10 +76,10 @@ export function ProductGallery({ images, productName, stock }: ProductGalleryPro
               src={img.url} 
               fill 
               sizes="100px"
-              className="object-cover rounded-sm px-1 py-1" 
+              className="object-cover rounded-[var(--radius)] px-1 py-1" 
               alt={`${productName} thumbnail ${i + 1}`} 
             />
-          </button>
+          </Button>
         ))}
       </div>
     </div>

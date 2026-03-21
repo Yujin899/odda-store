@@ -8,6 +8,7 @@ import {
 import { Hero } from '@/components/home/Hero';
 import { BestSellers } from '@/components/home/BestSellers';
 import HomeBundles from '@/components/home/HomeBundles';
+import { Card, CardContent } from '@/components/ui/card';
 import { connectDB } from '@/lib/mongodb';
 import { Product } from '@/models/Product';
 import Category from '@/models/Category';
@@ -60,6 +61,8 @@ async function getFeaturedProducts() {
       textColor: (p.badgeId as unknown as BadgeDoc).textColor
     } : undefined,
     stock: p.stock ?? 0,
+    averageRating: p.averageRating ?? 0,
+    numReviews: p.numReviews ?? 0,
     featured: p.featured ?? false,
     createdAt: p.createdAt?.toISOString() ?? '',
   }));
@@ -174,7 +177,7 @@ export default async function Home() {
 
       {/* 4. Shop By Category */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-3xl font-black mb-12 uppercase tracking-tight text-(--navy)">{dict.home.shopByCategory}</h2>
+        <h2 className="text-3xl font-black mb-12 uppercase tracking-wider text-(--navy)">{dict.home.shopByCategory}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
           {categories.slice(0, 4).map((cat: { id: string; name: string; nameAr?: string; image?: string; slug: string }) => {
             const catName = (locale === 'ar' && cat.nameAr) ? cat.nameAr : cat.name;
@@ -182,17 +185,19 @@ export default async function Home() {
             <Link 
               key={cat.id}
               href={`/products?category=${cat.slug}`} 
-              className="group relative aspect-square w-full h-full overflow-hidden cursor-pointer rounded-sm"
+              className="group aspect-square block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
-                style={{ 
-                  backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('${cat.image || CATEGORY_FALLBACK_IMAGES[cat.name] || CATEGORY_FALLBACK_IMAGES['Default']}')` 
-                }}
-              ></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-white text-xl font-bold uppercase tracking-tighter">{catName}</span>
-              </div>
+              <Card className="relative w-full h-full overflow-hidden cursor-pointer border-none">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
+                  style={{ 
+                    backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('${cat.image || CATEGORY_FALLBACK_IMAGES[cat.name] || CATEGORY_FALLBACK_IMAGES['Default']}')` 
+                  }}
+                />
+                <CardContent className="absolute inset-0 flex items-center justify-center p-0">
+                  <span className="text-white text-xl font-bold uppercase tracking-wider">{catName}</span>
+                </CardContent>
+              </Card>
             </Link>
           )})}
           {categories.length === 0 && (

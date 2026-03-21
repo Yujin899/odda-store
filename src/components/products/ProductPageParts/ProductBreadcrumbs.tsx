@@ -1,7 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { 
+  Breadcrumb, 
+  BreadcrumbItem, 
+  BreadcrumbLink, 
+  BreadcrumbList, 
+  BreadcrumbPage, 
+  BreadcrumbSeparator 
+} from '@/components/ui/breadcrumb';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
 
@@ -23,25 +29,33 @@ export function ProductBreadcrumbs({
   const isRtl = language === 'ar';
 
   return (
-    <nav className="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto whitespace-nowrap scrollbar-hidden">
-      <Link href="/" className="hover:text-(--primary) transition-colors">
-        {dict.common.home}
-      </Link>
-      
-      <ChevronRight className="size-4 rtl:-scale-x-100 text-slate-300" />
-      
-      <Link 
-        href={`/products?category=${categorySlug}`} 
-        className="hover:text-(--primary) transition-colors"
-      >
-        {isRtl && categoryNameAr ? categoryNameAr : categoryName}
-      </Link>
-      
-      <ChevronRight className="size-4 rtl:-scale-x-100 text-slate-300" />
-      
-      <span className="text-foreground font-medium truncate max-w-[200px]">
-        {productName}
-      </span>
-    </nav>
+    <Breadcrumb className="mb-8 overflow-x-auto whitespace-nowrap scrollbar-hidden">
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/" className="hover:text-(--primary) transition-colors font-bold uppercase tracking-widest text-[10px]">
+            {dict.common.home}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        
+        <BreadcrumbSeparator />
+        
+        <BreadcrumbItem>
+          <BreadcrumbLink 
+            href={`/products?category=${categorySlug}`} 
+            className="hover:text-(--primary) transition-colors font-bold uppercase tracking-widest text-[10px]"
+          >
+            {isRtl && categoryNameAr ? categoryNameAr : categoryName}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        
+        <BreadcrumbSeparator />
+        
+        <BreadcrumbItem>
+          <BreadcrumbPage className="text-foreground font-black uppercase tracking-widest text-[10px] truncate max-w-[200px]">
+            {productName}
+          </BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 }

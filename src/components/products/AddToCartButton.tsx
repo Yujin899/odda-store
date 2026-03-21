@@ -4,7 +4,9 @@ import React from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useCartUIStore } from '@/store/useCartUIStore';
+import { Button } from '@/components/ui/button';
 
+import { cn } from '@/lib/utils';
 import { Dictionary } from '@/types/store';
 
 interface AddToCartButtonProps {
@@ -56,34 +58,34 @@ export function AddToCartButton({
 
   if (variant === 'card') {
     return (
-      <button 
+      <Button 
         disabled={!inStock}
+        variant={inStock ? 'default' : 'secondary'}
         onClick={handleAddToCart}
-        className={`w-full py-3 text-xs font-bold uppercase tracking-widest transition-colors rounded-sm outline-none border-none flex items-center justify-center gap-2 ${
-          !inStock 
-            ? 'bg-muted text-muted-foreground cursor-not-allowed' 
-            : 'bg-(--primary) hover:bg-navy text-white cursor-pointer'
-        } ${className}`}
+        className={cn(
+          "w-full py-2 sm:py-3 h-9 sm:h-12 text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all border-none flex items-center justify-center gap-1.5 sm:gap-2",
+          className
+        )}
       >
         <ShoppingCart className="size-4 stroke-[2px]" />
         {inStock ? dict.common.addToCart : (dict.common.soldOut || 'Sold Out')}
-      </button>
+      </Button>
     );
   }
 
   // PDP variant if needed later
   return (
-    <button 
+    <Button 
       disabled={!inStock}
+      variant={inStock ? 'default' : 'secondary'}
       onClick={handleAddToCart}
-      className={`w-full font-bold py-5 text-lg shadow-lg transition-all transform active:scale-95 rounded-(--radius) uppercase tracking-widest outline-none border-none flex items-center justify-center gap-3 ${
-        !inStock 
-          ? 'bg-muted text-muted-foreground cursor-not-allowed shadow-none' 
-          : 'bg-(--primary) hover:bg-(--primary)/90 text-white shadow-(--primary)/20 cursor-pointer'
-      } ${className}`}
+      className={cn(
+        "w-full font-bold py-5 text-lg transition-all transform active:scale-95 uppercase tracking-widest border-none flex items-center justify-center gap-3",
+        className
+      )}
     >
       <ShoppingCart className="size-5" />
       {dict.common.addToCart}
-    </button>
+    </Button>
   );
 }

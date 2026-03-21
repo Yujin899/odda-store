@@ -45,10 +45,13 @@ export function Carousel<T>({
   const isRtl = locale === 'ar'
 
   useEffect(() => {
-    setMounted(true)
+    // Delay setting mounted to the next tick to avoid "cascading render" lint
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, [])
 
-  if (!mounted || !items?.length) return null
+  if (!mounted) return <div className={cn("w-full aspect-4/1 bg-slate-50 animate-pulse rounded-[var(--radius)]", className)} />;
+  if (!items?.length) return null;
 
   return (
     <div className={cn("w-full overflow-hidden relative group", className)}>
@@ -57,7 +60,7 @@ export function Carousel<T>({
           <>
             <button 
               className={cn(
-                `${navigationClass}-prev absolute top-1/2 -translate-y-1/2 start-0 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-(--navy) shadow-lg hover:bg-(--navy) hover:text-white hover:border-(--navy) transition-all opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto outline-none cursor-pointer`,
+                `${navigationClass}-prev absolute top-1/2 -translate-y-1/2 start-0 z-20 w-10 h-10 border border-border text-foreground bg-background hover:bg-primary hover:text-primary-foreground transition-all rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto`,
                 isRtl ? "translate-x-1/2" : "-translate-x-1/2"
               )}
               aria-label="Previous slide"
@@ -66,7 +69,7 @@ export function Carousel<T>({
             </button>
             <button 
               className={cn(
-                `${navigationClass}-next absolute top-1/2 -translate-y-1/2 end-0 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-(--navy) shadow-lg hover:bg-(--navy) hover:text-white hover:border-(--navy) transition-all opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto outline-none cursor-pointer`,
+                `${navigationClass}-next absolute top-1/2 -translate-y-1/2 end-0 z-20 w-10 h-10 border border-border text-foreground bg-background hover:bg-primary hover:text-primary-foreground transition-all rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-0 pointer-events-auto`,
                 isRtl ? "-translate-x-1/2" : "translate-x-1/2"
               )}
               aria-label="Next slide"

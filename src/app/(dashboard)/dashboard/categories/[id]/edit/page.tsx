@@ -28,12 +28,12 @@ export default async function EditCategoryPage({ params }: Props) {
   }
 
   return (
-    <div className="p-6">
+    <>
       <CategoryPageForm 
         dict={dict} 
         language={locale} 
         initialData={JSON.parse(JSON.stringify(category))} 
       />
-    </div>
+    </>
   );
 }

@@ -336,6 +336,8 @@ odda-web/
       mongodb-adapter.ts
 
       utils.ts
+      
+      theme.ts         # Dynamic theming OKLCH convert/css generation
 
     models/
 
@@ -552,6 +554,9 @@ odda-web/
 11. If the feature requires data fetching, implement it via a Next.js API Route under `src/app/api/`. Do not call MongoDB or Cloudinary directly from client components.
 
 12. Direct Swiper usage in pages/components is FORBIDDEN. Always use `<Carousel>` from `src/components/shared/Carousel.tsx`.
+13. **Shadcn First Policy**: Direct implementation of custom UI components (Buttons, Badges, Inputs, Dialogs, etc.) is FORBIDDEN if a Shadcn equivalent exists. Always use components from `src/components/ui/` and extend them via variants in `class-variance-authority`.
+14. **Button Standardization**: All user-facing action buttons MUST use Shadcn `<Button>` from `src/components/ui/button`. Raw `<button>` elements are only allowed for non-themed interactive wrappers (carousel nav, image thumbnails). All colors must use CSS variables.
+15. **Design Consistency**: All UI components MUST utilize the CSS variables defined in `globals.css` (e.g., `--primary`, `--navy`, `--radius`) to ensure theme synchronization. Ad-hoc hex codes or arbitrary Tailwind classes for brand colors are discouraged.
 
 12. Before copying an old pattern, check whether it is a known inconsistency (`font-display`, `.scrollbar-hide`, duplicate marquee block).
 
@@ -638,6 +643,8 @@ export const useExampleUIStore = create<ExampleUIStore>((set) => ({
 
 - **AddToCartSection.tsx**: Reusable quantity counter and add-to-cart button for product/bundle pages. Fixes mobile layout issues and centralizes cart logic.
 - **MobileBottomNav**: Single shared component in `src/components/shared/`. Used by both store and dashboard layouts. Accepts `NavItem[]` props — each item is either Link (href) or button (onClick). **Layout Rule**: Ensure main content areas (e.g., `<main>`) have sufficient bottom padding (e.g., `pb-24 lg:pb-0`) so content isn't hidden behind the fixed nav on mobile screens.
+- **Dynamic Theming**: Shadcn CSS variables injected dynamically by root layout via `generateThemeCSS()`. globals.css keeps fallback defaults only. Live preview uses `generatePreviewCSS()` (HEX, client-safe). Never use `generateThemeCSS` client-side — it uses oklch conversion that needs server context.
+- **Button Theming**: Shadcn Button variants use CSS variables (bg-primary, text-primary-foreground). This ensures all buttons respond to the dynamic theme system. Never use hardcoded hex colors in button className.
 - **Category URLs**: ALWAYS use `?category=slug`. Never `?categoryId=`. This applies to breadcrumbs, home page, and any other category link. The API resolves slug to `_id` server-side.
 
 - **CategoriesClient**: Refactored into `CategoriesParts/`. Parent handles state and API calls only. Children receive props.

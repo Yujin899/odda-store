@@ -18,8 +18,8 @@ export default async function EditBundlePage({ params }: Props) {
   }
 
   return (
-    <div className="p-6">
+    <>
       <BundleForm initialData={JSON.parse(JSON.stringify(bundle))} />
-    </div>
+    </>
   );
 }

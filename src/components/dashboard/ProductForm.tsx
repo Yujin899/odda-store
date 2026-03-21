@@ -1,8 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2, Check, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useToastStore } from '@/store/useToastStore';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { getDictionary } from '@/dictionaries';
@@ -94,7 +96,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
   /**
    * Handle Validation Errors
    */
-  const onError = (errors: any) => {
+  const onError = (errors: FieldErrors<ProductFormValues>) => {
     if (errors.images) {
       addToast({ 
         title: dict.dashboard.productForm.messages.error, 
@@ -145,6 +147,32 @@ export function ProductForm({ initialData }: ProductFormProps) {
             {/* Categorization & Visibility */}
             <OrganizationFields />
           </div>
+        </div>
+
+        {/* Action Footer */}
+        <div className="flex items-center gap-4 pt-8 border-t border-slate-200 mt-12 bg-white/50 p-6 rounded-none">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => router.back()}
+            disabled={methods.formState.isSubmitting}
+            className="flex-1 sm:flex-none font-bold uppercase tracking-widest text-[10px] h-12 px-8"
+          >
+            <X className={`size-4 ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
+            {dict.dashboard.productForm.cancel}
+          </Button>
+          <Button 
+            type="submit" 
+            disabled={methods.formState.isSubmitting}
+            className="flex-1 sm:flex-none bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-12 px-10"
+          >
+            {methods.formState.isSubmitting ? (
+              <Loader2 className={`size-4 animate-spin ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
+            ) : (
+              <Check className={`size-4 ${language === 'ar' ? 'ms-2' : 'me-2'}`} />
+            )}
+            {initialData ? dict.dashboard.productForm.update : dict.dashboard.productForm.publish}
+          </Button>
         </div>
       </form>
     </FormProvider>

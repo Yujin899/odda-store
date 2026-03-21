@@ -18,8 +18,8 @@ export default async function EditProductPage({ params }: Props) {
   const { slug } = await params;
 
   // Register models
-  Category;
-  Badge;
+  void Category;
+  void Badge;
 
   const product = await Product.findOne({ slug })
     .populate({ path: 'categoryId', strictPopulate: false })
@@ -31,8 +31,8 @@ export default async function EditProductPage({ params }: Props) {
   }
 
   return (
-    <div className="p-6">
+    <>
       <ProductForm initialData={JSON.parse(JSON.stringify(product))} />
-    </div>
+    </>
   );
 }

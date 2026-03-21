@@ -12,6 +12,7 @@ import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import { useMobileMenuStore } from '@/store/useMobileMenuStore';
+import { Button } from '@/components/ui/button';
 
 export function MobileBottomNav() {
   const pathname = usePathname();
@@ -105,13 +106,14 @@ export function MobileBottomNav() {
         }
 
         return (
-          <button 
+          <Button 
+            variant="ghost"
             key={index} 
             onClick={item.onClick}
-            className="flex-1 py-1 border-none bg-transparent cursor-pointer outline-none"
+            className="flex-1 py-1 px-0 h-auto border-none bg-transparent cursor-pointer hover:bg-transparent"
           >
             {content}
-          </button>
+          </Button>
         );
       })}
     </nav>

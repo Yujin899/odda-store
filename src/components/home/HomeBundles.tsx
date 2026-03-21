@@ -56,7 +56,7 @@ export default async function HomeBundles() {
             <span className="text-(--primary) text-[10px] font-black uppercase tracking-[0.3em] block">
               {locale === 'ar' ? 'مجموعات حصرية' : 'Exclusive Collections'}
             </span>
-            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-(--navy)">
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-wider text-(--navy)">
               {dict.home.starterKits}
             </h2>
           </div>

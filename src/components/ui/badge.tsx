@@ -5,22 +5,22 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "group/badge inline-flex items-center rounded-[calc(var(--radius)*0.6)] border px-2.5 py-1 text-[10px] font-black uppercase tracking-widest transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
-        default: "bg-(--primary) text-white shadow-sm hover:bg-(--primary)/90",
+        default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 border-transparent",
         secondary:
-          "bg-slate-100 text-slate-900 shadow-sm hover:bg-slate-200",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 border-transparent",
         destructive:
-          "bg-red-500 text-white shadow-sm hover:bg-red-600",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 border-transparent",
         outline:
-          "border-slate-200 text-slate-900 bg-white hover:bg-slate-50 shadow-sm",
+          "border-border text-foreground bg-background hover:bg-accent shadow-sm",
         premium:
-          "bg-(--primary) text-white border-white/20 shadow-[0_10px_20px_rgba(0,115,230,0.3)] hover:shadow-[0_15px_25px_rgba(0,115,230,0.4)] transition-all duration-300",
+          "bg-primary text-primary-foreground border-white/20 shadow-[0_10px_20px_rgba(var(--primary-rgb),0.3)] hover:shadow-[0_15px_25px_rgba(var(--primary-rgb),0.4)] transition-all duration-300",
         ghost:
-          "hover:bg-slate-100 hover:text-slate-900",
-        link: "text-(--primary) underline-offset-4 hover:underline",
+          "hover:bg-accent hover:text-accent-foreground border-transparent",
+        link: "text-primary underline-offset-4 hover:underline border-transparent",
       },
     },
     defaultVariants: {

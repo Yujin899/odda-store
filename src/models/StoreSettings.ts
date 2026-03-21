@@ -32,6 +32,19 @@ export interface IStoreSettings extends Document {
   shippedSubjectAr: string;
   shippedBodyAr: string;
   defaultLanguage: 'en' | 'ar';
+  theme: {
+    primary: string;
+    primaryForeground: string;
+    secondary: string;
+    secondaryForeground: string;
+    accent: string;
+    accentForeground: string;
+    background: string;
+    foreground: string;
+    border: string;
+    radius: string;
+    brandDark: string;
+  };
 }
 
 const StoreSettingsSchema: Schema = new Schema(
@@ -94,10 +107,27 @@ const StoreSettingsSchema: Schema = new Schema(
       type: String, 
       enum: ['en', 'ar'], 
       default: 'en' 
+    },
+    theme: {
+      primary: { type: String, default: '#0073E6' },
+      primaryForeground: { type: String, default: '#FFFFFF' },
+      secondary: { type: String, default: '#F1F5F9' },
+      secondaryForeground: { type: String, default: '#0A192F' },
+      accent: { type: String, default: '#F8FAFC' },
+      accentForeground: { type: String, default: '#0A192F' },
+      background: { type: String, default: '#FFFFFF' },
+      foreground: { type: String, default: '#0A192F' },
+      border: { type: String, default: '#E2E8F0' },
+      radius: { type: String, default: '0.5rem' },
+      brandDark: { type: String, default: '#0A192F' },
     }
   },
   { timestamps: true }
 );
 
-// This ensures we only have one settings document
+// This ensures we only have one settings document. 
+// We delete from models in dev to ensure schema changes are picked up.
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.StoreSettings;
+}
 export const StoreSettings = mongoose.models.StoreSettings || mongoose.model<IStoreSettings>('StoreSettings', StoreSettingsSchema);

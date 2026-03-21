@@ -14,12 +14,13 @@ import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import { formatPrice } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export function CartDrawer() {
   const router = useRouter();
   const { isOpen, closeCart } = useCartUIStore();
   const { items, totalAmount, updateQuantity, removeItem } = useCartStore();
-  const [settings, setSettings] = useState<any>(null);
+  const [settings, setSettings] = useState<{ shippingFee: number } | null>(null);
   const { language } = useLanguageStore();
   const dict = language === 'en' ? en : ar;
 
@@ -55,22 +56,27 @@ export function CartDrawer() {
           <div className="flex items-center gap-3">
             <ShoppingBasket className="size-5 text-(--primary) stroke-[2.5px]" />
             <h2 className="text-xl font-bold tracking-tight text-foreground uppercase">{dict.common.cart}</h2>
-            <Badge variant="default" className="text-[10px] h-5 min-w-5 px-1.5 flex items-center justify-center rounded-full transition-none">
+            <Badge variant="default" className="text-[10px] h-5 min-w-5 px-1.5 flex items-center justify-center rounded-full transition-none bg-primary text-primary-foreground">
               {items.reduce((acc, item) => acc + item.quantity, 0)}
             </Badge>
           </div>
-          <button onClick={closeCart} className="p-2 hover:bg-muted rounded-full transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={closeCart} 
+            className="rounded-full size-10"
+          >
             <X className="size-5 text-muted-foreground stroke-[2.5px]" />
-          </button>
+          </Button>
         </div>
         
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
           {items.length > 0 ? (
             <>
               {/* Free Delivery Banner */}
-              <div className="px-4 sm:px-6 py-3 flex items-center gap-3 border-b border-(--primary)/10 shrink-0">
-                <Truck className="size-4 text-(--primary) stroke-[2.5px]" />
-                <p className="text-[10px] sm:text-xs font-bold text-(--primary) uppercase tracking-widest text-center w-full">
+              <div className="px-4 sm:px-6 py-3 flex items-center gap-3 border-b border-primary/10 shrink-0">
+                <Truck className="size-4 text-primary stroke-[2.5px]" />
+                <p className="text-[10px] sm:text-xs font-bold text-primary uppercase tracking-widest text-center w-full">
                   {dict.cart.freeDeliveryApplied}
                 </p>
               </div>
@@ -93,7 +99,7 @@ export function CartDrawer() {
                         closeCart();
                       }}
                     >
-                      <div className="size-20 sm:size-24 bg-muted shrink-0 overflow-hidden border border-slate-100 rounded-(--radius) relative">
+                      <div className="size-20 sm:size-24 bg-muted shrink-0 overflow-hidden border border-slate-100 rounded-[var(--radius)] relative">
                         <Image 
                           alt={(language === 'ar' && item.nameAr) ? item.nameAr : item.name} 
                           fill 
@@ -108,30 +114,36 @@ export function CartDrawer() {
                             <h3 className="font-bold text-foreground leading-tight uppercase tracking-tight text-[11px] sm:text-sm truncate sm:whitespace-normal">
                               {(language === 'ar' && item.nameAr) ? item.nameAr : item.name}
                             </h3>
-                            <button 
+                            <Button
+                              variant="ghost"
+                              size="icon"
                               onClick={() => removeItem(item.id)}
-                              className="text-muted-foreground hover:text-(--danger) transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent shrink-0"
+                              className="size-8 text-muted-foreground hover:text-red-500 hover:bg-red-50 transition-colors"
                             >
                               <Trash2 className="size-4 stroke-[2.5px]" />
-                            </button>
+                            </Button>
                           </div>
                           <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-widest font-bold truncate">{dict.cart.premiumMaterials}</p>
                         </div>
                         <div className="flex justify-between items-end gap-2 mt-2">
-                          <div className="flex items-center border border-slate-200 h-7 sm:h-8 px-1 rounded-(--radius)">
-                            <button 
+                          <div className="flex items-center border border-slate-200 h-8 rounded-[var(--radius)] overflow-hidden bg-white">
+                            <Button 
+                              variant="ghost"
+                              size="icon"
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="p-1 hover:text-(--primary) transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent"
+                              className="size-8 rounded-[var(--radius)] hover:text-primary hover:bg-slate-50"
                             >
                               <Minus className="size-3 sm:size-4 stroke-[3px]" />
-                            </button>
-                            <span className="px-2 sm:px-3 text-[10px] sm:text-xs font-bold text-foreground">{item.quantity}</span>
-                            <button 
+                            </Button>
+                            <span className="px-3 text-[10px] sm:text-xs font-black text-foreground min-w-[30px] text-center">{item.quantity}</span>
+                            <Button 
+                              variant="ghost"
+                              size="icon"
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="p-1 hover:text-(--primary) transition-colors flex items-center justify-center border-none outline-none cursor-pointer bg-transparent"
+                              className="size-8 rounded-[var(--radius)] hover:text-primary hover:bg-slate-50"
                             >
                               <Plus className="size-3 sm:size-4 stroke-[3px]" />
-                            </button>
+                            </Button>
                           </div>
                           <p className="font-black text-foreground text-xs sm:text-sm whitespace-nowrap">{formatPrice(item.price * item.quantity, language as 'en' | 'ar')}</p>
                         </div>
@@ -151,7 +163,7 @@ export function CartDrawer() {
                   <div className="flex justify-between text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     <span>{dict.common.shipping}</span>
                     {currentShippingFee === 0 ? (
-                      <span className="text-(--primary)">{dict.common.free}</span>
+                      <span className="text-primary">{dict.common.free}</span>
                     ) : (
                       <span>{formatPrice(currentShippingFee, language as 'en' | 'ar')}</span>
                     )}
@@ -162,13 +174,14 @@ export function CartDrawer() {
                   </div>
                 </div>
                 <div className="pt-2 flex flex-col">
-                  <button 
+                  <Button 
                     onClick={handleCheckout}
-                    className="w-full bg-(--primary) hover:bg-foreground hover:text-background text-white font-bold py-4 sm:py-5 flex items-center justify-center gap-2 transition-all active:scale-[0.98] rounded-(--radius) border-none outline-none cursor-pointer uppercase tracking-widest text-[10px] sm:text-xs shadow-xl"
+                    size="lg"
+                    className="w-full flex items-center justify-center gap-2 uppercase tracking-widest text-[11px] font-black shadow-xl shrink-0"
                   >
                     <span>{dict.common.proceedToCheckout}</span>
                     <ArrowRight className="size-4 stroke-[2.5px] rtl:-scale-x-100" />
-                  </button>
+                  </Button>
                   <p className="text-center text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest mt-4 sm:mt-6 font-bold">{dict.cart.secureCheckout}</p>
                 </div>
               </div>
@@ -180,12 +193,13 @@ export function CartDrawer() {
               <p className="text-xs text-muted-foreground mt-2 max-w-[200px] font-medium uppercase tracking-widest leading-loose">
                 {dict.cart.emptyMessage}
               </p>
-              <button 
+              <Button 
+                variant="outline"
                 onClick={handleContinueShopping}
-                className="mt-8 px-8 py-4 bg-muted hover:bg-foreground hover:text-white transition-all rounded-(--radius) border-none outline-none cursor-pointer text-[10px] font-bold uppercase tracking-widest"
+                className="mt-8 px-10 h-12 rounded-sm font-black uppercase tracking-widest text-[10px]"
               >
                 {dict.cart.continueShopping}
-              </button>
+              </Button>
             </div>
           )}
         </div>

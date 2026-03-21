@@ -7,6 +7,7 @@ import { deleteCloudinaryImage } from '@/app/actions/image-actions';
 import { cn } from '@/lib/utils';
 import { optimizeCloudinaryUrl } from '@/lib/cloudinary-utils';
 import { useToastStore } from '@/store/useToastStore';
+import { Button } from '@/components/ui/button';
 
 export interface UploadedImage {
   url: string;
@@ -149,43 +150,50 @@ export function ImageUploader({
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {/* Render already uploaded images */}
         {value.map((image, idx) => (
-          <div
-            key={image.url}
-            className={cn(
-              "relative aspect-square rounded-sm overflow-hidden border-2 group cursor-pointer",
-              image.isPrimary ? "border-blue-500" : "border-zinc-200 dark:border-zinc-800"
-            )}
-            onClick={() => setPrimary(idx)}
-          >
-            {/* Image display */}
-            <img
-              src={optimizeCloudinaryUrl ? optimizeCloudinaryUrl(image.url, 'admin') : image.url}
-              alt={`Upload ${idx + 1}`}
-              className="w-full h-full object-cover"
-            />
-            
-            {/* Primary Indicator */}
-            {image.isPrimary && maxImages > 1 && (
-              <div className="absolute top-2 left-2 bg-blue-500 text-white p-1 rounded-full shadow-md z-10">
-                <Star className="w-3 h-3 fill-current" />
-              </div>
-            )}
-            
-            {/* Remove Button */}
+          <div key={image.url} className="space-y-2">
+            <div
+              className={cn(
+                "relative aspect-square rounded-sm overflow-hidden border-2 cursor-pointer group",
+                image.isPrimary ? "border-blue-500" : "border-zinc-200 dark:border-zinc-800"
+              )}
+              onClick={() => setPrimary(idx)}
+            >
+              {/* Image display */}
+              <img
+                src={optimizeCloudinaryUrl ? optimizeCloudinaryUrl(image.url, 'admin') : image.url}
+                alt={`Upload ${idx + 1}`}
+                className="w-full h-full object-cover"
+              />
+              
+              {/* Primary Indicator */}
+              {image.isPrimary && maxImages > 1 && (
+                <div className="absolute top-2 left-2 bg-blue-500 text-white p-1 rounded-full shadow-md z-10">
+                  <Star className="w-3 h-3 fill-current" />
+                </div>
+              )}
+              
+              {/* Remove Button (Desktop Hover Only - Optional to keep, but user asked for below) */}
+              {/* I will keep it but also add the one below as requested */}
+            </div>
+
+            {/* Accessible Remove Button Below Image */}
             {!disabled && (
-              <button
+              <Button
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleRemove(idx);
                 }}
-                className="absolute top-2 right-2 bg-white/80 dark:bg-black/80 text-red-500 p-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-white dark:hover:bg-black"
+                className="w-full h-8 text-[9px] font-black uppercase tracking-widest text-red-500 hover:text-red-600 hover:bg-red-50 border-zinc-200 dark:border-zinc-800"
               >
-                <X className="w-4 h-4" />
-              </button>
+                <X className="w-3 h-3 me-1" />
+                {maxImages > 1 ? `Remove #${idx + 1}` : 'Delete Image'}
+              </Button>
             )}
           </div>
         ))}
@@ -210,8 +218,8 @@ export function ImageUploader({
           </div>
         ))}
 
-        {/* Upload Button */}
-        {value.length + uploadingImages.length < maxImages && (
+        {/* Upload Button - Hidden while uploading for "Safer/Advanced" flow */}
+        {value.length < maxImages && uploadingImages.length === 0 && (
           <div
             className={cn(
               "relative aspect-square rounded-sm border-2 border-dashed flex flex-col items-center justify-center transition-colors",
@@ -226,7 +234,9 @@ export function ImageUploader({
             }}
           >
             <ImagePlus className="w-6 h-6 text-zinc-400 mb-2" />
-            <span className="text-xs text-zinc-500 font-medium tracking-widest uppercase">Add Image</span>
+            <span className="text-xs text-zinc-500 font-medium tracking-widest uppercase text-center px-2">
+              {value.length === 0 ? 'Add Image' : 'Add Another'}
+            </span>
             <input
               type="file"
               ref={fileInputRef}

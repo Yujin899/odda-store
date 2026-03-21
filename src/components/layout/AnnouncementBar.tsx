@@ -38,7 +38,7 @@ export function AnnouncementBar() {
   const displayMessages = [...messages, ...messages, ...messages];
 
   return (
-    <div className="w-full bg-navy h-10 overflow-hidden flex items-center relative z-50">
+    <div className="w-full bg-brand-dark h-10 overflow-hidden flex items-center relative z-50">
       <div className={`${language === 'ar' ? 'animate-marquee-rtl' : 'animate-marquee'} whitespace-nowrap flex items-center`}>
         {displayMessages.map((msg, idx) => (
           <React.Fragment key={idx}>

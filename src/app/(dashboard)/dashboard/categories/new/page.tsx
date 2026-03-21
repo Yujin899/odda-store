@@ -8,8 +8,8 @@ export default async function NewCategoryPage() {
   const dict = getDictionary(locale as 'en' | 'ar');
 
   return (
-    <div className="p-6">
+    <>
       <CategoryPageForm dict={dict} language={locale} />
-    </div>
+    </>
   );
 }

@@ -11,6 +11,7 @@ import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
 import { Product, RelatedProduct } from '@/types/store';
+import { Button } from '@/components/ui/button';
 
 export function SearchModal() {
   const { isOpen, closeSearch } = useSearchUIStore();
@@ -129,12 +130,14 @@ export function SearchModal() {
           >
             {/* Search Input Area */}
             <div className="relative flex items-center px-4 sm:px-6 py-4 border-b border-border shrink-0 pe-14">
-              <button 
+              <Button 
+                variant="ghost"
+                size="icon"
                 onClick={() => handleSearchNavigation(searchValue)}
-                className="p-1 hover:bg-muted rounded-md transition-colors me-3 outline-none border-none bg-transparent cursor-pointer text-muted-foreground"
+                className="p-1 hover:bg-muted rounded-md transition-colors me-3 text-muted-foreground border-none"
               >
                 <Search className="size-5 stroke-[2.5px]" />
-              </button>
+              </Button>
               <input
                 ref={inputRef}
                 type="text"
@@ -146,12 +149,14 @@ export function SearchModal() {
                 }}
                 className="flex-1 bg-transparent border-none outline-none text-lg text-foreground placeholder:text-muted-foreground/50 h-8"
               />
-              <button 
+              <Button 
+                variant="ghost"
+                size="icon"
                 onClick={handleClose}
-                className="absolute inset-e-3 sm:inset-e-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors outline-none border-none cursor-pointer text-muted-foreground flex items-center justify-center h-9 w-9 bg-transparent"
+                className="absolute inset-e-3 sm:inset-e-6 top-1/2 -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors text-muted-foreground flex items-center justify-center h-9 w-9 border-none"
               >
                 <X className="size-5 stroke-[2.5px]" />
-              </button>
+              </Button>
             </div>
 
             {/* Scrollable content area — scrollbar hidden */}

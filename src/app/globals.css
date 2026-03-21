@@ -30,13 +30,19 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
   --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -44,8 +50,9 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --color-primary: #0073E6;
-  --color-navy: #0A192F;
+
+  --color-brand-dark: var(--brand-dark);
+  --color-navy: var(--brand-dark);
 }
 
 :root {
@@ -61,30 +68,26 @@ body {
 }
 
 :root {
-  --primary: #0073E6;
-  --navy: #0A192F;
-  --background: #FFFFFF;
-  --foreground: #0A192F;
-  --muted: #F1F5F9;
-  --muted-foreground: #64748B;
-  --accent: #F8FAFC;
-  --accent-foreground: #0A192F;
-  --border: #E2E8F0;
-  --danger: #ef4444;
-  --warning: #facc15;
+  /* === Odda Brand Variables (never dynamic) === */
   --success: #059669;
-  --card: #FFFFFF;
-  --card-foreground: #0A192F;
-  --popover: #FFFFFF;
-  --popover-foreground: #0A192F;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F1F5F9;
-  --secondary-foreground: #0A192F;
-  --destructive: #ef4444;
-  --destructive-foreground: #FFFFFF;
-  --input: #E2E8F0;
-  --ring: #0073E6;
-  --radius: 8px;
+  --warning: #facc15;
+  --danger: #ef4444;
+
+  /* === Dynamic Variables (Injected from Layout) === */
+  /* These fallbacks are here to prevent invisible elements before JS/Layout loads */
+  --primary: oklch(0.524 0.196 255.1);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.985 0 0);
+  --accent-foreground: oklch(0.145 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.524 0.196 255.1);
+  --radius: 0rem; 
+  --brand-dark: oklch(0.145 0 0);
 }
 
 .dark {

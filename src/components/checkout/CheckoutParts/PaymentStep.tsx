@@ -71,7 +71,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
   };
 
   return (
-    <div className="bg-white p-6 sm:p-10 rounded-sm border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="bg-white p-6 sm:p-10 rounded-[var(--radius)] border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="text-start">
         <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">
           {dict.checkoutPage.choosePayment}
@@ -85,8 +85,8 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* COD Option */}
         <label className={bcn(
-          "relative flex flex-col items-center justify-center p-6 border-2 rounded-sm cursor-pointer transition-all duration-300",
-          paymentMethod === 'cod' ? "border-(--primary) bg-(--primary)/5 shadow-lg shadow-(--primary)/5" : "border-slate-100 hover:border-slate-200"
+          "relative flex flex-col items-center justify-center p-6 border-2 rounded-[var(--radius)] cursor-pointer transition-all duration-300",
+          paymentMethod === 'cod' ? "border-primary bg-primary/5 shadow-lg shadow-primary/5" : "border-slate-100 hover:border-slate-200"
         )}>
           <input 
             type="radio" 
@@ -94,20 +94,20 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
             value="cod" 
             className="sr-only" 
           />
-          <Truck className={bcn("size-8 mb-4 stroke-[1.5px]", paymentMethod === 'cod' ? "text-(--primary)" : "text-slate-300")} />
+          <Truck className={bcn("size-8 mb-4 stroke-[1.5px]", paymentMethod === 'cod' ? "text-primary" : "text-slate-300")} />
           <h3 className="text-[10px] font-black uppercase tracking-widest text-foreground">
             {dict.checkoutPage.cod}
           </h3>
           <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
             {dict.checkoutPage.codDesc}
           </p>
-          {paymentMethod === 'cod' && <CheckCircle2 className="absolute top-2 end-2 size-4 text-(--primary)" />}
+          {paymentMethod === 'cod' && <CheckCircle2 className="absolute top-2 inset-e-2 size-4 text-primary" />}
         </label>
 
         {/* InstaPay Option */}
         <label className={bcn(
-          "relative flex flex-col items-center justify-center p-6 border-2 rounded-sm cursor-pointer transition-all duration-300",
-          paymentMethod === 'instapay' ? "border-(--primary) bg-(--primary)/5 shadow-lg shadow-(--primary)/5" : "border-slate-100 hover:border-slate-200"
+          "relative flex flex-col items-center justify-center p-6 border-2 rounded-[var(--radius)] cursor-pointer transition-all duration-300",
+          paymentMethod === 'instapay' ? "border-primary bg-primary/5 shadow-lg shadow-primary/5" : "border-slate-100 hover:border-slate-200"
         )}>
           <input 
             type="radio" 
@@ -115,29 +115,29 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
             value="instapay" 
             className="sr-only" 
           />
-          <Smartphone className={bcn("size-8 mb-4 stroke-[1.5px]", paymentMethod === 'instapay' ? "text-(--primary)" : "text-slate-300")} />
+          <Smartphone className={bcn("size-8 mb-4 stroke-[1.5px]", paymentMethod === 'instapay' ? "text-primary" : "text-slate-300")} />
           <h3 className="text-[10px] font-black uppercase tracking-widest text-foreground">
             {dict.checkoutPage.instapay}
           </h3>
           <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
             {dict.checkoutPage.instapayDesc}
           </p>
-          {paymentMethod === 'instapay' && <CheckCircle2 className="absolute top-2 end-2 size-4 text-(--primary)" />}
+          {paymentMethod === 'instapay' && <CheckCircle2 className="absolute top-2 inset-e-2 size-4 text-primary" />}
         </label>
       </div>
 
       {/* InstaPay Upload Section */}
       {paymentMethod === 'instapay' && (
-        <div className="bg-slate-50 p-6 rounded-sm border border-slate-100 space-y-6 animate-in zoom-in-95 duration-300">
+        <div className="bg-slate-50 p-6 rounded-[var(--radius)] border border-slate-100 space-y-6 animate-in zoom-in-95 duration-300">
           <div className={bcn("flex items-start gap-4", isRtl ? "flex-row-reverse" : "flex-row")}>
-            <div className="size-10 bg-white border border-slate-200 rounded-sm flex items-center justify-center shrink-0 text-(--primary)">
+            <div className="size-10 bg-white border border-slate-200 rounded-[var(--radius)] flex items-center justify-center shrink-0 text-primary">
               <Smartphone className="size-5" />
             </div>
             <div className={bcn("flex-1", isRtl ? "text-end" : "text-start")}>
               <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground mb-1">
                 {isRtl ? 'تحويل عبر إنستاباي' : 'Transfer via InstaPay'}
               </h4>
-              <p className="text-[10px] font-mono font-bold text-(--primary) select-all">
+              <p className="text-[10px] font-mono font-bold text-primary select-all">
                 {instapayNumber}
               </p>
             </div>
@@ -149,18 +149,19 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
                   {dict.checkoutPage.uploadScreenshot}
                 </span>
                 {proofUrl && (
-                  <button 
-                    type="button" 
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
                     onClick={() => setValue('paymentProof', '')}
-                    className="text-[8px] font-bold uppercase tracking-widest text-red-400 hover:text-red-500 flex items-center gap-1"
+                    className="h-auto p-0 text-[8px] font-bold uppercase tracking-widest text-red-400 hover:text-red-500 hover:bg-transparent flex items-center gap-1 border-none"
                   >
                     <X className="size-3" /> {isRtl ? 'حذف' : 'Remove'}
-                  </button>
+                  </Button>
                 )}
              </div>
 
              {proofUrl ? (
-               <div className="relative aspect-video rounded-sm border border-slate-200 overflow-hidden bg-white group">
+               <div className="relative aspect-video rounded-[var(--radius)] border border-slate-200 overflow-hidden bg-white group">
                  <Image 
                    src={proofUrl} 
                    alt="Proof" 
@@ -182,12 +183,12 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
                    disabled={isUploading}
                  />
                  <div className={bcn(
-                   "h-32 rounded-sm border-2 border-dashed flex flex-col items-center justify-center transition-all",
-                   isUploading ? "bg-white border-(--primary)/20" : "bg-white border-slate-200 hover:border-(--primary)/30"
+                   "h-32 rounded-[var(--radius)] border-2 border-dashed flex flex-col items-center justify-center transition-all",
+                   isUploading ? "bg-white border-primary/20" : "bg-white border-slate-200 hover:border-primary/30"
                  )}>
                    {isUploading ? (
                      <div className="flex flex-col items-center gap-2">
-                        <Loader2 className="size-5 text-(--primary) animate-spin" />
+                        <Loader2 className="size-5 text-primary animate-spin" />
                         <Progress value={uploadProgress} className="w-24 h-1" />
                      </div>
                    ) : (
@@ -215,7 +216,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
          <Button 
             type="submit"
             disabled={isSubmitting || isUploading}
-            className="w-full h-16 bg-(--navy) hover:bg-(--primary) text-white font-black rounded-sm uppercase tracking-[0.3em] text-[11px] shadow-2xl transition-all duration-300 active:scale-95 group relative overflow-hidden"
+            className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-[var(--radius)] uppercase tracking-[0.3em] text-[11px] shadow-2xl transition-all duration-300 active:scale-95 group relative overflow-hidden"
          >
            <span className="flex items-center justify-center gap-3 relative z-10">
              {isSubmitting ? (

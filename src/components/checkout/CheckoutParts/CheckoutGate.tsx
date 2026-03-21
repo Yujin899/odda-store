@@ -32,7 +32,8 @@ export function CheckoutGate({ dict, session, onNext }: CheckoutGateProps) {
           </p>
           <Button 
             onClick={onNext}
-            className="w-full h-14 bg-(--navy) hover:bg-(--primary) text-white font-black rounded-sm uppercase tracking-[0.2em] text-[10px] shadow-xl transition-all duration-300"
+            variant="secondary"
+            className="w-full h-14 font-black rounded-sm uppercase tracking-[0.2em] text-[10px] shadow-xl transition-all duration-300"
           >
             <span className="flex items-center gap-2">
               {dict.checkoutPage.proceedShipping}
@@ -73,12 +74,14 @@ export function CheckoutGate({ dict, session, onNext }: CheckoutGateProps) {
             <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest mb-8 leading-relaxed">
               {dict.checkoutPage.signInDesc || 'Sign in for faster checkout and to track your orders easily.'}
             </p>
-            <Link 
-              href={`/login?callbackUrl=/checkout`}
+            <Button
+              asChild
               className="mt-auto w-full h-12 bg-white text-(--navy) flex items-center justify-center font-black rounded-sm uppercase tracking-[0.15em] text-[10px] hover:bg-(--primary) hover:text-white transition-all shadow-lg"
             >
-              {dict.checkoutPage.loginNow || 'Log In Now'}
-            </Link>
+              <Link href={`/login?callbackUrl=/checkout`}>
+                {dict.checkoutPage.loginNow || 'Log In Now'}
+              </Link>
+            </Button>
           </div>
         </div>
       )}

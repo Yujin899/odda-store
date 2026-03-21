@@ -220,6 +220,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
       isPrimary: img.isPrimary,
       order: img.order
     })),
+    stock: p.stock ?? 0,
     averageRating: p.averageRating || 0,
     numReviews: p.numReviews || 0
   }));

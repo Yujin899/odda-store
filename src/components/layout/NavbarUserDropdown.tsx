@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { User as UserIcon, LogOut, Package } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 interface Dict {
   common: Record<string, string>;
@@ -32,7 +33,7 @@ export function NavbarUserDropdown({ dict }: { dict: Dict }) {
     return (
       <Link 
         href="/login"
-        className="hidden md:flex p-2 rounded-sm text-navy hover:bg-navy/5 transition-colors items-center justify-center font-semibold text-sm"
+        className="hidden md:flex p-2 rounded-[var(--radius)] text-foreground hover:bg-primary/5 transition-colors items-center justify-center font-semibold text-sm"
       >
         {dict.common.login}
       </Link>
@@ -41,9 +42,11 @@ export function NavbarUserDropdown({ dict }: { dict: Dict }) {
 
   return (
     <div className="relative hidden md:flex" ref={dropdownRef}>
-      <button
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex p-[0.35rem] rounded-full hover:bg-navy/5 transition-colors items-center justify-center border border-navy/10 bg-white"
+        className="flex p-[0.35rem] rounded-full hover:bg-primary/5 transition-colors items-center justify-center border border-primary/10 bg-white size-9"
         aria-label="Account Settings"
       >
         {session.user?.image ? (
@@ -55,11 +58,11 @@ export function NavbarUserDropdown({ dict }: { dict: Dict }) {
             className="rounded-full"
           />
         ) : (
-          <div className="bg-(--primary)/10 text-(--primary) size-7 rounded-full flex items-center justify-center font-bold text-xs uppercase">
+          <div className="bg-primary/10 text-primary size-7 rounded-full flex items-center justify-center font-bold text-xs uppercase">
             {session.user?.name?.charAt(0) || session.user?.email?.charAt(0) || 'U'}
           </div>
         )}
-      </button>
+      </Button>
 
       <AnimatePresence mode="wait">
         {isOpen && (
@@ -99,17 +102,17 @@ export function NavbarUserDropdown({ dict }: { dict: Dict }) {
             </div>
 
             <div className="border-t border-border py-1">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setIsOpen(false);
                   signOut({ callbackUrl: '/' });
                 }}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 w-full text-start transition-colors"
-                style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
+                className="flex items-center justify-start gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 w-full transition-colors border-none font-semibold"
               >
                 <LogOut className="size-4" />
                 {dict.common.logout}
-              </button>
+              </Button>
             </div>
           </motion.div>
         )}

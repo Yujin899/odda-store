@@ -57,11 +57,12 @@ export function ColorPicker({ color, onChange, label }: ColorPickerProps) {
           <div className="space-y-3">
             <div className="grid grid-cols-7 gap-1.5">
               {PRESET_COLORS.map((preset) => (
-                <button
+                <Button
                   key={preset}
                   type="button"
+                  variant="outline"
                   className={cn(
-                    "size-7 rounded-sm border border-slate-100 transition-all hover:scale-110",
+                    "size-7 rounded-sm p-0 border border-slate-100 transition-all hover:scale-110 shrink-0",
                     color.toLowerCase() === preset.toLowerCase() ? "ring-2 ring-(--primary) ring-offset-2" : ""
                   )}
                   style={{ backgroundColor: preset }}

@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import en from '@/dictionaries/en.json';
 import ar from '@/dictionaries/ar.json';
+import { Button } from '@/components/ui/button';
 
 export function MobileMenu() {
   const { isOpen, close } = useMobileMenuStore();
@@ -62,7 +63,7 @@ export function MobileMenu() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] md:hidden"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-100 md:hidden"
           />
 
           {/* Drawer */}
@@ -71,19 +72,21 @@ export function MobileMenu() {
             animate={{ x: 0 }}
             exit={{ x: language === 'ar' ? '100%' : '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200, duration: 0.25 }}
-            className="fixed top-0 inset-s-0 bottom-0 w-[80%] max-w-sm bg-background z-[101] md:hidden shadow-2xl flex flex-col"
+            className="fixed top-0 inset-s-0 bottom-0 w-[80%] max-w-sm bg-background z-101 md:hidden shadow-2xl flex flex-col"
           >
             {/* Header */}
             <div className="p-6 flex items-center justify-between border-b border-navy/10">
               <Link href="/" onClick={close} className="flex items-center gap-2">
                 <Image src="/logo.png" alt="Odda Logo" width={80} height={28} className="object-contain" />
               </Link>
-              <button 
+              <Button 
+                variant="ghost"
+                size="icon"
                 onClick={close}
-                className="p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none outline-none cursor-pointer bg-transparent"
+                className="p-2 rounded-(--radius) text-navy hover:bg-navy/5 transition-colors border-none"
               >
                 <X className="size-6 stroke-[2.5px]" />
-              </button>
+              </Button>
             </div>
 
               <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">

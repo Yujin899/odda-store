@@ -18,7 +18,7 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
   const grandTotal = totalAmount + shippingFee;
 
   return (
-    <div className="bg-slate-50/50 p-6 sm:p-8 rounded-sm border border-slate-200 lg:sticky lg:top-24 h-fit animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="bg-slate-50/50 p-6 sm:p-8 rounded-[var(--radius)] border border-slate-200 lg:sticky lg:top-24 h-fit animate-in fade-in slide-in-from-bottom-4 duration-700">
       <h2 className={bcn(
         "text-sm font-black uppercase tracking-widest text-foreground pb-6 border-b border-slate-200 mb-6",
         isRtl ? "text-end" : "text-start"
@@ -30,7 +30,7 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
       <div className="space-y-4 max-h-[300px] overflow-y-auto pe-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent mb-8">
         {items.map((item) => (
           <div key={item.id} className={bcn("flex items-center gap-4", isRtl ? "flex-row-reverse" : "flex-row")}>
-            <div className="size-14 bg-white rounded-sm border border-slate-100 shrink-0 relative overflow-hidden">
+            <div className="size-14 bg-white rounded-[var(--radius)] border border-slate-100 shrink-0 relative overflow-hidden">
                <Image 
                  src={item.image} 
                  alt={isRtl && item.nameAr ? item.nameAr : item.name} 
@@ -47,7 +47,7 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
                 {item.quantity} × {item.price.toLocaleString()} {dict.common.egp}
               </p>
             </div>
-            <div className="text-[10px] font-black text-(--navy)">
+            <div className="text-[10px] font-black text-primary">
               {(item.quantity * item.price).toLocaleString()}
             </div>
           </div>
@@ -66,7 +66,7 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
             {shippingFee === 0 ? dict.common.free : `${shippingFee.toLocaleString()} ${dict.common.egp}`}
           </span>
         </div>
-        <div className={bcn("flex items-center justify-between text-base font-black uppercase tracking-tighter text-(--navy) pt-4 border-t border-slate-200", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className={bcn("flex items-center justify-between text-base font-black uppercase tracking-tighter text-primary pt-4 border-t border-slate-200", isRtl ? "flex-row-reverse" : "flex-row")}>
           <span>{dict.common.total}</span>
           <span className="text-xl">
              {grandTotal.toLocaleString()} {dict.common.egp}
