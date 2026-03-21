@@ -28,7 +28,7 @@ async function getBundles() {
     description: b.description ?? null,
     descriptionAr: b.descriptionAr ?? null,
     price: b.price,
-    originalPrice: b.compareAtPrice ?? null,
+    originalPrice: b.originalPrice ?? null,
     images: (b.images ?? []).map((url: string) => url),
     stock: b.stock ?? 0,
     featured: b.featured ?? false,

@@ -54,9 +54,9 @@ export function BundleDetails({
         <span className="text-4xl font-black text-(--primary)">
           {bundle.price.toLocaleString()} {dict.common.egp}
         </span>
-        {bundle.compareAtPrice && bundle.compareAtPrice > bundle.price && (
-          <span className="text-xl text-slate-400 line-through font-bold">
-            {bundle.compareAtPrice.toLocaleString()} {dict.common.egp}
+        {bundle.originalPrice && bundle.originalPrice > bundle.price && (
+          <span className="text-sm text-slate-400 line-through font-medium">
+            {bundle.originalPrice.toLocaleString()} {dict.common.egp}
           </span>
         )}
       </div>

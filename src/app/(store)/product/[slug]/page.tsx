@@ -30,13 +30,13 @@ export async function generateMetadata(
   const brandEn = 'Odda | Dental Student Gear';
 
   const titlePrefix = isAr ? (product.nameAr || product.name) : product.name;
-  const title = isAr 
+  const title = isAr
     ? `${titlePrefix.slice(0, 60 - brandAr.length - 3)} | ${brandAr}`
     : `${titlePrefix.slice(0, 60 - brandEn.length - 3)} | ${brandEn}`;
 
   const rawDescription = isAr ? product.descriptionAr || product.description : product.description;
   let description = rawDescription?.slice(0, 155) || '';
-  
+
   if (isAr && description.length < 120) {
     description += ' لطلاب الـ Preclinical والـ Clinical';
   }
@@ -88,9 +88,9 @@ async function getProduct(slug: string) {
   const product = await Product.findOne({
     $or: [{ slug: slug }, { _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : undefined }].filter(Boolean)
   })
-  .populate({ path: 'categoryId', strictPopulate: false })
-  .populate({ path: 'badgeId', strictPopulate: false })
-  .lean<ProductDoc>();
+    .populate({ path: 'categoryId', strictPopulate: false })
+    .populate({ path: 'badgeId', strictPopulate: false })
+    .lean<ProductDoc>();
 
   if (!product) return null;
   return {
@@ -116,9 +116,9 @@ async function getRelatedProducts(categoryId: string, currentProductId: string) 
     categoryId: categoryId,
     _id: { $ne: currentProductId }
   })
-  .populate({ path: 'badgeId', strictPopulate: false })
-  .limit(4)
-  .lean<ProductDoc[]>();
+    .populate({ path: 'badgeId', strictPopulate: false })
+    .limit(4)
+    .lean<ProductDoc[]>();
 
   return products.map((p) => ({
     ...p,
@@ -146,7 +146,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
 
   // Normalize for Client Component which expects .category instead of .categoryId
   const categoryData = (product.categoryId as unknown as CategoryDoc) || { _id: '', name: 'Uncategorized', nameAr: 'غير مصنف', slug: 'uncategorized' };
-  
+
   const productWithCategory = {
     ...product,
     category: categoryData
@@ -183,7 +183,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     description: productWithCategory.description,
     descriptionAr: productWithCategory.descriptionAr,
     price: productWithCategory.price,
-    compareAtPrice: productWithCategory.compareAtPrice,
+    originalPrice: productWithCategory.originalPrice ?? null,
     images: (productWithCategory.images || []).map((img: { url: string; isPrimary: boolean; order: number }) => ({
       url: img.url,
       isPrimary: img.isPrimary,
@@ -230,11 +230,11 @@ export default async function ProductDetailsPage({ params }: { params: Params })
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ProductPageClient 
-        product={sanitizedProduct as unknown as ProductType} 
-        relatedProducts={sanitizedRelated as unknown as RelatedProduct[]} 
-        initialReviews={reviews} 
-        locale={locale} 
+      <ProductPageClient
+        product={sanitizedProduct as unknown as ProductType}
+        relatedProducts={sanitizedRelated as unknown as RelatedProduct[]}
+        initialReviews={reviews}
+        locale={locale}
       />
     </>
   );

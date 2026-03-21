@@ -50,7 +50,7 @@ interface Bundle {
   nameAr?: string;
   slug: string;
   price: number;
-  compareAtPrice?: number;
+  originalPrice?: number;
   images: string[];
   stock: number;
 }
@@ -201,9 +201,9 @@ export function BundlesTable({
                         <span className="font-black text-xs text-(--navy)">
                           {language === 'ar' ? '' : 'EGP'} {bundle.price.toLocaleString()} {language === 'ar' ? 'ج.م' : ''}
                         </span>
-                        {bundle.compareAtPrice && (
-                          <span className="text-[10px] font-bold text-muted-foreground line-through opacity-70">
-                            {language === 'ar' ? '' : 'EGP'} {bundle.compareAtPrice.toLocaleString()} {language === 'ar' ? 'ج.م' : ''}
+                        {bundle.originalPrice && (
+                          <span className="text-xs text-slate-400 line-through font-medium">
+                            {language === 'ar' ? '' : 'EGP'} {bundle.originalPrice.toLocaleString()} {language === 'ar' ? 'ج.م' : ''}
                           </span>
                         )}
                       </div>

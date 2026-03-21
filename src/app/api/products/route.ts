@@ -150,7 +150,8 @@ export const POST = auth(async (req) => {
       _id: product._id.toString(),
       name: product.name,
       slug: product.slug,
-      price: product.price
+      price: product.price,
+      originalPrice: product.originalPrice
     };
 
     return NextResponse.json(sanitizedProduct, { status: 201 });

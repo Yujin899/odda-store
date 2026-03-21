@@ -36,7 +36,7 @@ async function getAllBundles() {
         nameAr: b.nameAr,
         slug: b.slug,
         price: b.price,
-        compareAtPrice: b.compareAtPrice,
+        originalPrice: b.originalPrice,
         images: b.images,
         stock: b.stock,
         featured: b.featured,

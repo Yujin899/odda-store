@@ -45,7 +45,7 @@ async function getFeaturedProducts() {
     description: p.description || '',
     descriptionAr: p.descriptionAr || undefined,
     price: p.price,
-    originalPrice: p.compareAtPrice ?? undefined,
+    originalPrice: p.originalPrice ?? undefined,
     images: (p.images ?? []).map((img) => ({
       url: typeof img === 'string' ? img : img.url,
       isPrimary: typeof img === 'string' ? false : (img.isPrimary ?? false),
@@ -61,8 +61,6 @@ async function getFeaturedProducts() {
     } : undefined,
     stock: p.stock ?? 0,
     featured: p.featured ?? false,
-    aiSummary: p.aiSummary ?? undefined,
-    aiSummaryAr: p.aiSummaryAr ?? undefined,
     createdAt: p.createdAt?.toISOString() ?? '',
   }));
 }

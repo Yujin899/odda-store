@@ -34,7 +34,7 @@ async function getSearchResults(query: string) {
         nameAr: p.nameAr ?? null,
         slug: p.slug,
         price: p.price,
-        compareAtPrice: p.compareAtPrice ?? null,
+        originalPrice: p.originalPrice ?? null,
         images: (p.images ?? []).map((img) => ({
           url: img.url,
           isPrimary: img.isPrimary ?? false,

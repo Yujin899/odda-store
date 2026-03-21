@@ -17,7 +17,7 @@ interface BundleData {
   nameAr?: string;
   slug: string;
   price: number;
-  compareAtPrice?: number;
+  originalPrice?: number;
   images: string[];
   stock: number;
   bundleItems: string[];

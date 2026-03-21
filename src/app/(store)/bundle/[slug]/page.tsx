@@ -114,7 +114,7 @@ export default async function BundleDetailsPage({ params }: { params: Params }) 
     description: bundle.description,
     descriptionAr: bundle.descriptionAr,
     price: bundle.price,
-    compareAtPrice: bundle.compareAtPrice,
+    originalPrice: bundle.originalPrice,
     images: (bundle.images || []).map((url: string) => url),
     stock: bundle.stock,
     bundleItems: bundle.bundleItems || [],

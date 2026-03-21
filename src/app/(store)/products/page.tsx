@@ -101,7 +101,7 @@ async function getProducts(searchParams: { [key: string]: string | string[] | un
           nameAr: p.nameAr,
           slug: p.slug,
           price: p.price,
-          compareAtPrice: p.compareAtPrice,
+          originalPrice: p.originalPrice ?? null,
           images: (p.images || []).map((img, idx) => ({
             url: img.url,
             isPrimary: img.isPrimary,
