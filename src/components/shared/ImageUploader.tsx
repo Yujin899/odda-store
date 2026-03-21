@@ -69,9 +69,10 @@ export function ImageUploader({
       return;
     }
 
+    const preview = URL.createObjectURL(file);
     setUploadingImages((prev) => [
       ...prev,
-      { file, preview: '', percent: 0, estimatedSeconds: 0 }
+      { file, preview, percent: 0, estimatedSeconds: 0 }
     ]);
 
     try {
@@ -202,19 +203,29 @@ export function ImageUploader({
         {uploadingImages.map((u, idx) => (
           <div
             key={`uploading-${idx}`}
-            className="relative aspect-square rounded-sm overflow-hidden border-2 border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex flex-col items-center justify-center p-3 sm:p-4"
+            className="relative aspect-square rounded-sm overflow-hidden border border-slate-100 bg-white shadow-sm flex flex-col items-center justify-center p-3 sm:p-4"
           >
-            {/* progress bar */}
-            <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden mb-2">
-              <div 
-                className="h-full bg-(--primary) transition-all duration-300"
-                style={{ width: `${u.percent}%` }}
+            {u.preview && (
+              <img 
+                src={u.preview} 
+                alt="Uploading preview" 
+                className="absolute inset-0 w-full h-full object-cover opacity-30" 
               />
+            )}
+            
+            {/* progress bar */}
+            <div className="relative z-10 w-full flex flex-col items-center">
+              <div className="w-full h-1 bg-slate-100 dark:bg-zinc-800 rounded-full overflow-hidden mb-2">
+                <div 
+                  className="h-full bg-blue-500 transition-all duration-300"
+                  style={{ width: `${u.percent}%` }}
+                />
+              </div>
+              {/* text */}
+              <span className="text-navy/70 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-center mt-1">
+                {u.percent}% {u.estimatedSeconds > 0 ? `• ~${u.estimatedSeconds}s` : ''}
+              </span>
             </div>
-            {/* text */}
-            <span className="text-zinc-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-center mt-1">
-              {u.percent}% {u.estimatedSeconds > 0 ? `• ~${u.estimatedSeconds}s` : ''}
-            </span>
           </div>
         ))}
 
@@ -222,10 +233,10 @@ export function ImageUploader({
         {value.length < maxImages && uploadingImages.length === 0 && (
           <div
             className={cn(
-              "relative aspect-square rounded-sm border-2 border-dashed flex flex-col items-center justify-center transition-colors",
+              "relative aspect-square rounded-sm border-2 border-dashed flex flex-col items-center justify-center transition-all duration-300",
               disabled 
                 ? "border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/50 cursor-not-allowed" 
-                : "border-zinc-300 hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:border-zinc-600 dark:hover:bg-zinc-800/50 cursor-pointer"
+                : "border-zinc-200 bg-white hover:border-blue-500 shadow-sm cursor-pointer group"
             )}
             onClick={() => {
               if (!disabled) {
