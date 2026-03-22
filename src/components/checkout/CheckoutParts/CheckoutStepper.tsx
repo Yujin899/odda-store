@@ -27,7 +27,7 @@ export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
       
       {/* Active Progress Line (Logical Properties) */}
       <div
-        className="absolute top-5 inset-s-6 h-[2px] bg-(--primary) transition-all duration-500 -z-10"
+        className="absolute top-5 inset-s-6 h-[2px] bg-primary transition-all duration-500 -z-10"
         style={{ 
           width: `calc(${(currentStep / (steps.length - 1)) * 100}% - 3rem)`
         }}
@@ -43,8 +43,8 @@ export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
             <div key={s.id} className="flex flex-col items-center gap-2">
               <div className={bcn(
                 "size-10 rounded-full flex items-center justify-center border-2 transition-all duration-300",
-                isActive ? 'bg-(--primary) border-(--primary) text-white shadow-lg scale-110' :
-                (isCompleted ? 'bg-white border-(--primary) text-(--primary)' : 'bg-white border-slate-200 text-slate-300')
+                isActive ? 'bg-primary border-primary text-white shadow-lg scale-110' :
+                (isCompleted ? 'bg-white border-primary text-primary' : 'bg-white border-slate-200 text-slate-300')
               )}>
                 {isCompleted ? (
                    <Check className="size-5 stroke-[3px]" />

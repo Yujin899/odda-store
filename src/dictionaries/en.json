@@ -222,7 +222,7 @@
         "descriptionAr": "Description (AR)",
         "images": "Images",
         "price": "Price (EGP)",
-        "originalPrice": "Original Price (EGP)",
+        "originalPrice": "Price Before Discount (EGP) (Optional)",
         "stock": "Stock Qty",
         "category": "Category",
         "badge": "Badge",
@@ -235,7 +235,7 @@
         "descriptionEn": "Product description in English...",
         "descriptionAr": "وصف المنتج بالعربي...",
         "price": "0.00",
-        "originalPrice": "Optional",
+        "originalPrice": "e.g. 500 — leave empty if no discount",
         "selectCategory": "Select a category",
         "noBadge": "No Badge",
         "featuredDescription": "Show on homepage"

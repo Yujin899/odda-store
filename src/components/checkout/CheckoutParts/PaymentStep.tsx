@@ -71,7 +71,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
   };
 
   return (
-    <div className="bg-white p-4 sm:p-10 rounded-[var(--radius)] border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="bg-white p-4 sm:p-10 rounded-(--radius) border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="text-start">
         <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">
           {dict.checkoutPage.choosePayment}
@@ -85,7 +85,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* COD Option */}
         <label className={bcn(
-          "relative flex flex-col items-center justify-center p-6 border-2 rounded-[var(--radius)] cursor-pointer transition-all duration-300",
+          "relative flex flex-col items-center justify-center p-6 border-2 rounded-(--radius) cursor-pointer transition-all duration-300",
           paymentMethod === 'cod' ? "border-primary bg-primary/5 shadow-lg shadow-primary/5" : "border-slate-100 hover:border-slate-200"
         )}>
           <input 
@@ -106,7 +106,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
 
         {/* InstaPay Option */}
         <label className={bcn(
-          "relative flex flex-col items-center justify-center p-6 border-2 rounded-[var(--radius)] cursor-pointer transition-all duration-300",
+          "relative flex flex-col items-center justify-center p-6 border-2 rounded-(--radius) cursor-pointer transition-all duration-300",
           paymentMethod === 'instapay' ? "border-primary bg-primary/5 shadow-lg shadow-primary/5" : "border-slate-100 hover:border-slate-200"
         )}>
           <input 
@@ -128,12 +128,12 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
 
       {/* InstaPay Upload Section */}
       {paymentMethod === 'instapay' && (
-        <div className="bg-slate-50 p-6 rounded-[var(--radius)] border border-slate-100 space-y-6 animate-in zoom-in-95 duration-300">
-          <div className={bcn("flex items-start gap-4", isRtl ? "flex-row-reverse" : "flex-row")}>
-            <div className="size-10 bg-white border border-slate-200 rounded-[var(--radius)] flex items-center justify-center shrink-0 text-primary">
+        <div className="bg-slate-50 p-6 rounded-(--radius) border border-slate-100 space-y-6 animate-in zoom-in-95 duration-300">
+          <div className="flex items-start gap-4">
+            <div className="size-10 bg-white border border-slate-200 rounded-(--radius) flex items-center justify-center shrink-0 text-primary">
               <Smartphone className="size-5" />
             </div>
-            <div className={bcn("flex-1", isRtl ? "text-end" : "text-start")}>
+            <div className="flex-1 text-start">
               <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground mb-1">
                 {isRtl ? 'تحويل عبر إنستاباي' : 'Transfer via InstaPay'}
               </h4>
@@ -144,7 +144,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
           </div>
 
           <div className="space-y-4">
-             <div className={bcn("flex items-center justify-between", isRtl ? "flex-row-reverse" : "flex-row")}>
+             <div className="flex items-center justify-between">
                 <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500">
                   {dict.checkoutPage.uploadScreenshot}
                 </span>
@@ -161,7 +161,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
              </div>
 
              {proofUrl ? (
-               <div className="relative aspect-video rounded-[var(--radius)] border border-slate-200 overflow-hidden bg-white group">
+               <div className="relative aspect-video rounded-(--radius) border border-slate-200 overflow-hidden bg-white group">
                  <Image 
                    src={proofUrl} 
                    alt="Proof" 
@@ -183,7 +183,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
                    disabled={isUploading}
                  />
                  <div className={bcn(
-                   "h-32 rounded-[var(--radius)] border-2 border-dashed flex flex-col items-center justify-center transition-all",
+                   "h-32 rounded-(--radius) border-2 border-dashed flex flex-col items-center justify-center transition-all",
                    isUploading ? "bg-white border-primary/20" : "bg-white border-slate-200 hover:border-primary/30"
                  )}>
                    {isUploading ? (
@@ -203,7 +203,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
                </div>
              )}
              {errors.paymentProof && (
-               <p className={bcn("text-[9px] font-bold text-red-500 uppercase tracking-widest", isRtl ? "text-end" : "text-start")}>
+               <p className="text-[9px] font-bold text-red-500 uppercase tracking-widest text-start">
                  {errors.paymentProof.message}
                </p>
              )}
@@ -216,7 +216,7 @@ export function PaymentStep({ dict, instapayNumber }: PaymentStepProps) {
          <Button 
             type="submit"
             disabled={isSubmitting || isUploading}
-            className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-[var(--radius)] uppercase tracking-[0.3em] text-[11px] shadow-2xl transition-all duration-300 active:scale-95 group relative overflow-hidden"
+            className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-(--radius) uppercase tracking-[0.3em] text-[11px] shadow-2xl transition-all duration-300 active:scale-95 group relative overflow-hidden"
          >
            <span className="flex items-center justify-center gap-3 relative z-10">
              {isSubmitting ? (

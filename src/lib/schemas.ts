@@ -36,7 +36,7 @@ export const bundleSchema = z.object({
   description: z.string().min(1, 'Description is required'),
   descriptionAr: z.string().min(1, 'Arabic description is required'),
   price: z.coerce.number().min(0, 'Price must be positive'),
-  originalPrice: z.coerce.number().optional(),
+  originalPrice: z.coerce.number().min(0).optional().or(z.literal('')),
   stock: z.coerce.number().min(0, 'Stock must be positive'),
   bundleItems: z.array(z.string().min(1, 'Item name cannot be empty')).min(1, 'At least one item is required'),
   bundleItemsAr: z.array(z.string().optional()).optional(),

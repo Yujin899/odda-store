@@ -44,7 +44,7 @@ export function CheckoutClient({ dict, language, session, settings }: CheckoutCl
         <div className="max-w-[1200px] mx-auto px-3 sm:px-6 py-8 lg:py-20">
           
           <div className="flex flex-col items-center mb-16">
-            <h1 className="text-3xl font-black uppercase tracking-tighter mb-8 text-(--navy)">
+            <h1 className="text-3xl font-black uppercase tracking-tighter mb-8 text-navy">
                {dict.checkoutPage.secureCheckout}
             </h1>
             <CheckoutStepper currentStep={currentStep} />

@@ -124,7 +124,7 @@ export function OrdersList({ orders }: OrdersListProps) {
             <div className={`mt-6 flex ${isRtl ? 'justify-start' : 'justify-end'}`}>
               <Link 
                 href={`/order-tracking?order=${order.orderNumber}`}
-                className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-(--primary) hover:underline group"
+                className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-primary hover:underline group"
               >
                 {dict.orders.viewDetails}
                 <ChevronRight className={`size-3 transition-transform ${isRtl ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />

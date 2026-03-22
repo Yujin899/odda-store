@@ -191,7 +191,7 @@ export function SearchModal() {
                             className="object-cover group-hover:scale-110 transition-all duration-700" 
                           />
                         </div>
-                        <h4 className="text-[11px] font-bold uppercase tracking-tight text-foreground truncate mb-1 group-hover:text-(--primary) transition-colors">
+                        <h4 className="text-[11px] font-bold uppercase tracking-tight text-foreground truncate mb-1 group-hover:text-primary transition-colors">
                           {(language === 'ar' && product.nameAr) ? product.nameAr : product.name}
                         </h4>
                         <div className="flex items-center gap-2 flex-wrap">
@@ -212,8 +212,8 @@ export function SearchModal() {
                     </h3>
                     {isLoading && (
                       <div className="flex items-center gap-2">
-                        <div className="size-3 border-2 border-(--primary)/20 border-t-(--primary) rounded-full animate-spin" />
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-(--primary)">
+                        <div className="size-3 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-primary">
                           {language === 'ar' ? 'جاري البحث...' : 'Searching...'}
                         </span>
                       </div>
@@ -236,7 +236,7 @@ export function SearchModal() {
                           />
                         </div>
                         <div className="flex flex-col justify-center min-w-0">
-                          <h4 className="text-xs font-bold uppercase tracking-tight text-foreground truncate group-hover:text-(--primary) transition-colors">
+                          <h4 className="text-xs font-bold uppercase tracking-tight text-foreground truncate group-hover:text-primary transition-colors">
                             {(language === 'ar' && product.nameAr) ? product.nameAr : product.name}
                           </h4>
                           <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold mt-1">

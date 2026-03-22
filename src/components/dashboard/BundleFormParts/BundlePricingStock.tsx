@@ -28,9 +28,22 @@ export function BundlePricingStock({ language, dict }: BundlePricingStockProps) 
           {errors.price && <p className="text-[10px] text-red-500 font-bold">{errors.price.message}</p>}
         </div>
         <div className={bcn("space-y-2", isRtl ? "text-end" : "text-start")}>
-          <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Original Price (EGP)</Label>
-          <Input type="number" {...register('originalPrice')} className="rounded-sm" />
+          <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+            {dict.dashboard.productForm.labels.originalPrice}
+          </Label>
+          <Input 
+            type="number" 
+            {...register('originalPrice')} 
+            className="rounded-sm" 
+            placeholder={dict.dashboard.productForm.placeholders.originalPrice}
+          />
           {errors.originalPrice && <p className="text-[10px] text-red-500 font-bold">{errors.originalPrice.message}</p>}
+          <p className="text-[8px] font-bold uppercase tracking-widest text-slate-400 mt-1">
+            {isRtl 
+              ? "اختياري. إذا تم تحديده، سيظهر هذا السعر مشطوباً بجانب سعر البيع. اتركه فارغاً إذا لم يوجد خصم."
+              : "Optional. If set, this price appears crossed out next to the sale price. Leave empty if there is no discount."
+            }
+          </p>
         </div>
       </div>
 

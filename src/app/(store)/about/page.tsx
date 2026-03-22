@@ -29,7 +29,7 @@ export default async function AboutPage() {
 
   const features = [
     {
-      icon: <ShieldCheck className="size-8 text-(--primary) stroke-[1.5px]" />,
+      icon: <ShieldCheck className="size-8 text-primary stroke-[1.5px]" />,
       title: dict.aboutPage.clinicalTools,
       description: dict.aboutPage.clinicalDesc
     },
@@ -74,7 +74,7 @@ export default async function AboutPage() {
 
           {/* Features Grid */}
           <div className="w-full pt-16">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-(--primary) mb-12">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-12">
               {dict.aboutPage.whyOdda}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

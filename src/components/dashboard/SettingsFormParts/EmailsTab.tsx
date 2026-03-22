@@ -31,7 +31,7 @@ export function EmailsTab() {
       <div className="bg-white p-6 rounded-sm border border-slate-200 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-start">
-            <div className="size-8 bg-(--primary) rounded-sm flex items-center justify-center shrink-0">
+            <div className="size-8 bg-primary rounded-sm flex items-center justify-center shrink-0">
               <Sparkles className="size-4 text-white" />
             </div>
             <div>
@@ -54,7 +54,7 @@ export function EmailsTab() {
           </Label>
           <Textarea 
             placeholder='{ "confirmationSubjectEn": "...", "confirmationBodyEn": "...", ... }'
-            className="bg-slate-50 border-slate-200 text-navy font-mono text-xs min-h-[100px] focus:border-(--primary) focus:ring-0 placeholder:text-slate-300"
+            className="bg-slate-50 border-slate-200 text-navy font-mono text-xs min-h-[100px] focus:border-primary focus:ring-0 placeholder:text-slate-300"
             id="email-ai-json"
           />
           <Button 
@@ -75,10 +75,10 @@ export function EmailsTab() {
       {/* 1. Confirmation Email Section */}
       <div className="space-y-6">
          <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-            <div className="size-8 rounded bg-(--primary)/5 text-(--primary) flex items-center justify-center">
+            <div className="size-8 rounded bg-primary/5 text-primary flex items-center justify-center">
               <Mail className="size-4" />
             </div>
-            <h4 className="text-sm font-black uppercase tracking-tighter text-(--navy)">
+            <h4 className="text-sm font-black uppercase tracking-tighter text-navy">
               {language === 'ar' ? 'رسالة تأكيد الطلب' : 'Confirmation Email'}
             </h4>
          </div>
@@ -102,7 +102,7 @@ export function EmailsTab() {
                   <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Body</Label>
                   <textarea 
                     {...register('confirmationBodyEn')}
-                    className="w-full min-h-[200px] p-4 text-sm font-mono bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-(--primary) transition-all"
+                    className="w-full min-h-[200px] p-4 text-sm font-mono bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                   />
                 </div>
               </div>
@@ -127,7 +127,7 @@ export function EmailsTab() {
                   <textarea 
                     {...register('confirmationBodyAr')}
                     dir="rtl"
-                    className="w-full min-h-[200px] p-4 text-sm bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-(--primary) transition-all text-end font-cairo"
+                    className="w-full min-h-[200px] p-4 text-sm bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all text-end font-cairo"
                   />
                 </div>
               </div>
@@ -141,7 +141,7 @@ export function EmailsTab() {
             <div className="size-8 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <Truck className="size-4" />
             </div>
-            <h4 className="text-sm font-black uppercase tracking-tighter text-(--navy)">
+            <h4 className="text-sm font-black uppercase tracking-tighter text-navy">
               {language === 'ar' ? 'رسالة تم الشحن' : 'Shipped Email'}
             </h4>
          </div>
@@ -165,7 +165,7 @@ export function EmailsTab() {
                   <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email Body</Label>
                   <textarea 
                     {...register('shippedBodyEn')}
-                    className="w-full min-h-[200px] p-4 text-sm font-mono bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-(--primary) transition-all"
+                    className="w-full min-h-[200px] p-4 text-sm font-mono bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                   />
                 </div>
               </div>
@@ -190,7 +190,7 @@ export function EmailsTab() {
                   <textarea 
                     {...register('shippedBodyAr')}
                     dir="rtl"
-                    className="w-full min-h-[200px] p-4 text-sm bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-(--primary) transition-all text-end font-cairo"
+                    className="w-full min-h-[200px] p-4 text-sm bg-slate-50 border border-slate-200 rounded-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all text-end font-cairo"
                   />
                 </div>
               </div>

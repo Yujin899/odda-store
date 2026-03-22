@@ -129,7 +129,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
         <DialogHeader>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <DialogTitle className="text-xl flex items-center gap-2">
-              <Package className="size-5 text-(--primary)" />
+              <Package className="size-5 text-primary" />
               {dict.dashboard.ordersPage.modal.title} #{order?.orderNumber?.slice(-6)}
             </DialogTitle>
             {order && (
@@ -152,21 +152,21 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
               </Select>
             )}
           </div>
-          <DialogDescription className={language === 'ar' ? 'text-end' : 'text-start'}>
+          <DialogDescription className="text-start">
             {order ? `${dict.dashboard.ordersPage.modal.createdOn} ${formatDate(order.createdAt, language as 'en' | 'ar')}` : dict.dashboard.ordersPage.modal.loading}
           </DialogDescription>
         </DialogHeader>
 
         {loading ? (
           <div className="h-64 flex items-center justify-center">
-            <Loader2 className="size-8 animate-spin text-(--primary)" />
+            <Loader2 className="size-8 animate-spin text-primary" />
           </div>
         ) : order ? (
           <div className="space-y-6 pt-4">
             {/* Customer & Address */}
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-3">
-                    <div className="text-xs font-bold uppercase tracking-widest text-(--navy)/50 flex items-center gap-1">
+                    <div className="text-xs font-bold uppercase tracking-widest text-navy/50 flex items-center gap-1">
                   <MapPin className="size-3" />
                   {dict.dashboard.ordersPage.modal.shippingAddress}
                 </div>
@@ -179,7 +179,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
               </div>
 
               <div className="space-y-3">
-                    <div className="text-xs font-bold uppercase tracking-widest text-(--navy)/50 flex items-center gap-1">
+                    <div className="text-xs font-bold uppercase tracking-widest text-navy/50 flex items-center gap-1">
                   <CreditCard className="size-3" />
                   {dict.dashboard.ordersPage.modal.paymentInfo}
                 </div>
@@ -194,8 +194,8 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
                 {order.paymentMethod === 'InstaPay' && (
                   <div className="pt-2 border-t border-slate-100">
                     <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-1">{dict.dashboard.ordersPage.modal.instapayNumber}</p>
-                    <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${language === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
-                      <span className="text-lg sm:text-xl font-black tracking-tight text-(--navy) break-all">{currentInstapayNumber}</span>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <span className="text-lg sm:text-xl font-black tracking-tight text-navy break-all">{currentInstapayNumber}</span>
                       <Button 
                         variant="ghost" 
                         size="icon-sm"
@@ -213,7 +213,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
 
                 <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                   <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">{dict.dashboard.ordersPage.modal.grandTotal}</span>
-                  <span className="font-black text-lg text-(--primary)">{formatPrice(order.totalAmount, language as 'en' | 'ar')}</span>
+                  <span className="font-black text-lg text-primary">{formatPrice(order.totalAmount, language as 'en' | 'ar')}</span>
                 </div>
               </div>
             </div>
@@ -221,7 +221,7 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
 
           {/* Items */}
           <div className="space-y-3">
-            <div className="text-xs font-bold uppercase tracking-widest text-(--navy)/50">
+            <div className="text-xs font-bold uppercase tracking-widest text-navy/50">
               {dict.dashboard.ordersPage.modal.orderItems}
             </div>
             <div className="border rounded-sm divide-y">
@@ -243,14 +243,14 @@ export function OrderDetailsModal({ orderId, isOpen, onClose, focusPayment = fal
           {order.paymentMethod === 'InstaPay' && order.paymentScreenshot && (
             <div className="space-y-3" ref={paymentSectionRef}>
               <div className="flex items-center justify-between">
-                <div className="text-xs font-bold uppercase tracking-widest text-(--navy)/50">
+                <div className="text-xs font-bold uppercase tracking-widest text-navy/50">
                   {dict.dashboard.ordersPage.modal.paymentProof}
                 </div>
                 <a 
                   href={order.paymentScreenshot} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="text-[10px] font-bold uppercase tracking-widest text-(--primary) flex items-center gap-1 hover:underline underline-offset-4"
+                  className="text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-1 hover:underline underline-offset-4"
                 >
                   {dict.dashboard.ordersPage.modal.openOriginal}
                   <ExternalLink className="size-3" />

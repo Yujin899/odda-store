@@ -70,7 +70,7 @@ export function CategoriesTable({
           <Search className="absolute inset-s-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
           <Input 
             placeholder={dict.dashboard.categoriesPage.searchPlaceholder}
-            className={`h-10 border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 rounded-sm text-sm ${language === 'ar' ? 'pe-10' : 'ps-10'}`}
+            className={`h-10 border-slate-200 focus:border-primary focus:ring-primary/10 rounded-sm text-sm ${language === 'ar' ? 'pe-10' : 'ps-10'}`}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -91,7 +91,7 @@ export function CategoriesTable({
           {isLoading ? (
             <TableRow>
               <TableCell colSpan={5} className="h-24 text-center text-sm text-slate-500 italic">
-                <div className={`flex items-center justify-center gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <div className="flex items-center justify-center gap-2">
                   <Loader2 className="size-4 animate-spin" />
                   {dict.dashboard.categoriesPage.loading}
                 </div>
@@ -122,7 +122,7 @@ export function CategoriesTable({
                     )}
                   </div>
                 </TableCell>
-                <TableCell className={`font-bold text-(--navy) text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
+                <TableCell className={`font-bold text-navy text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
                   {language === 'ar' && category.nameAr ? category.nameAr : category.name}
                 </TableCell>
                 <TableCell className="text-start">

@@ -60,7 +60,7 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
         {/* Bundle Items List */}
         <div className="space-y-4 mb-10 grow">
           {items?.slice(0, 4).map((item: string, idx: number) => (
-            <div key={idx} className={`flex items-start gap-3.5 ${locale === 'ar' ? 'flex-row-reverse text-end' : 'text-start'}`}>
+            <div key={idx} className="flex items-start gap-3.5 text-start">
               <div className="mt-1 flex items-center justify-center bg-white shadow-sm border border-slate-100 p-1 rounded-full group-hover:bg-primary group-hover:border-primary transition-all duration-300">
                 <CheckCircle2 className="size-2.5 text-primary group-hover:text-white transition-colors" />
               </div>
@@ -70,9 +70,9 @@ export function BundleCard({ bundle, locale, dict }: BundleCardProps) {
         </div>
 
         {/* Price & Footer */}
-        <div className={`pt-8 border-t border-slate-200/60 flex items-center justify-between ${locale === 'ar' ? 'flex-row-reverse' : ''}`}>
+        <div className="pt-8 border-t border-slate-200/60 flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
-            {bundle.originalPrice && (
+            {bundle.originalPrice && bundle.originalPrice > bundle.price && (
               <span className="text-xs text-slate-300 line-through font-bold tracking-tighter">
                 {bundle.originalPrice} {dict.common.egp}
               </span>

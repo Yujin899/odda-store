@@ -122,7 +122,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                 </TableCell>
                 <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                   <div className={`flex flex-col py-1 ${language === 'ar' ? 'text-end' : ''}`}>
-                    <span className="font-black text-[11px] uppercase tracking-tight text-(--navy)">
+                    <span className="font-black text-[11px] uppercase tracking-tight text-navy">
                       {(order.userId && typeof order.userId === 'object' ? order.userId.name : null) || (language === 'ar' ? 'زائر' : 'Guest')}
                     </span>
                     <span className="text-[9px] font-bold text-muted-foreground tracking-tighter">
@@ -131,7 +131,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
                   </div>
                 </TableCell>
                 <TableCell className="text-center">
-                  <span className="font-black text-xs text-(--primary)">{formatPrice(order.totalAmount, language as 'en' | 'ar')}</span>
+                  <span className="font-black text-xs text-primary">{formatPrice(order.totalAmount, language as 'en' | 'ar')}</span>
                 </TableCell>
                 <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                   <StatusBadge 
@@ -226,7 +226,7 @@ export function OrdersManager({ orders: initialOrders }: OrdersManagerProps) {
           <Search className={`absolute ${language === 'ar' ? 'inset-e-3' : 'inset-s-3'} top-1/2 -translate-y-1/2 size-4 text-muted-foreground drop-shadow-sm`} />
           <Input 
             placeholder={dict.dashboard.ordersPage.searchPlaceholder} 
-            className={`${language === 'ar' ? 'pe-9' : 'ps-9'} h-11 text-xs border-slate-200 focus:ring-(--primary)/20 rounded-md font-bold uppercase tracking-widest`}
+            className={`${language === 'ar' ? 'pe-9' : 'ps-9'} h-11 text-xs border-slate-200 focus:ring-primary/20 rounded-md font-bold uppercase tracking-widest`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

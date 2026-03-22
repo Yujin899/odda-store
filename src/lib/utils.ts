@@ -58,13 +58,13 @@ export function formatDate(
  */
 export function getStatusColor(status: string): string {
   const map: Record<string, string> = {
-    confirmed:            'bg-primary/10 text-(--primary)',
-    pending_verification: 'bg-warning/10 text-(--warning)',
-    pending_payment:      'bg-warning/10 text-(--warning)',
-    processing:           'bg-primary/10 text-(--primary)',
-    shipped:              'bg-primary/10 text-(--primary)',
-    delivered:            'bg-success/10 text-(--success)',
-    cancelled:            'bg-danger/10 text-(--danger)',
+    confirmed:            'bg-primary/10 text-primary',
+    pending_verification: 'bg-warning/10 text-warning',
+    pending_payment:      'bg-warning/10 text-warning',
+    processing:           'bg-primary/10 text-primary',
+    shipped:              'bg-primary/10 text-primary',
+    delivered:            'bg-success/10 text-success',
+    cancelled:            'bg-danger/10 text-danger',
   };
   return map[status] ?? 'bg-muted text-muted-foreground';
 }

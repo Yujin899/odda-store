@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { 
   FolderTree, 
@@ -67,16 +67,13 @@ export function OrganizationFields() {
 
   return (
     <div className="bg-white p-6 rounded-sm border border-slate-200 shadow-sm space-y-6">
-      <h3 className={bcn(
-        "text-xs font-black uppercase tracking-widest text-slate-400 mb-4 pb-2 border-b border-slate-100",
-        isRtl ? "text-end" : "text-start"
-      )}>
+      <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 pb-2 border-b border-slate-100 text-start">
         {dict.dashboard.productForm.sections.organization}
       </h3>
       
       {/* Category Selection */}
       <div className="space-y-2">
-        <div className={bcn("flex items-center gap-2", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className="flex items-center gap-2">
           <FolderTree className="size-3 text-slate-400" />
           <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
             {dict.dashboard.productForm.labels.category}
@@ -87,12 +84,12 @@ export function OrganizationFields() {
           control={control}
           render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className={bcn("rounded-sm border-slate-200 h-11", isRtl ? "flex-row-reverse" : "flex-row")}>
+              <SelectTrigger className="rounded-sm border-slate-200 h-11">
                 <SelectValue placeholder={dict.dashboard.productForm.placeholders.selectCategory} />
               </SelectTrigger>
               <SelectContent align={isRtl ? 'end' : 'start'}>
                 {categories.map(cat => (
-                  <SelectItem key={cat.id} value={cat.id} className={isRtl ? 'text-end flex-row-reverse' : ''}>
+                  <SelectItem key={cat.id} value={cat.id} className={isRtl ? 'text-end' : ''}>
                     {isRtl && cat.nameAr ? cat.nameAr : cat.name}
                   </SelectItem>
                 ))}
@@ -105,7 +102,7 @@ export function OrganizationFields() {
 
       {/* Brand Badge */}
       <div className="space-y-2 text-start">
-        <div className={bcn("flex items-center gap-2", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className="flex items-center gap-2">
           <Award className="size-3 text-slate-400" />
           <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
             {dict.dashboard.productForm.labels.badge}
@@ -116,16 +113,16 @@ export function OrganizationFields() {
           control={control}
           render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value || 'none'}>
-              <SelectTrigger className={bcn("rounded-sm border-slate-200 h-11", isRtl ? "flex-row-reverse" : "flex-row")}>
+              <SelectTrigger className="rounded-sm border-slate-200 h-11">
                 <SelectValue placeholder={dict.dashboard.productForm.placeholders.noBadge} />
               </SelectTrigger>
               <SelectContent align={isRtl ? 'end' : 'start'}>
-                <SelectItem key="none" value="none" className={isRtl ? 'text-end flex-row-reverse' : ''}>
+                <SelectItem key="none" value="none" className={isRtl ? 'text-end' : ''}>
                     {dict.dashboard.productForm.badges.none}
                 </SelectItem>
                 {badges.map(badge => (
-                  <SelectItem key={badge._id} value={badge._id} className={isRtl ? 'text-end flex-row-reverse' : ''}>
-                    <span className={bcn("flex items-center gap-2", isRtl ? "flex-row-reverse" : "flex-row")}>
+                  <SelectItem key={badge._id} value={badge._id} className={isRtl ? 'text-end' : ''}>
+                    <span className="flex items-center gap-2">
                       <div className="size-2 rounded-full" style={{ backgroundColor: badge.color }} />
                       {isRtl && badge.nameAr ? badge.nameAr : badge.name}
                     </span>
@@ -139,10 +136,10 @@ export function OrganizationFields() {
 
       {/* Featured Toggle */}
       <div className="pt-6 border-t border-slate-50">
-        <div className={bcn("flex items-center justify-between", isRtl ? "flex-row-reverse" : "flex-row")}>
-          <div className={bcn("space-y-0.5", isRtl ? "text-end" : "text-start")}>
-            <div className={bcn("flex items-center gap-2 mb-1", isRtl ? "flex-row-reverse" : "flex-row")}>
-              <ToggleRight className="size-3 text-(--primary)" />
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5 text-start">
+            <div className="flex items-center gap-2 mb-1">
+              <ToggleRight className="size-3 text-primary" />
               <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-600">
                 {dict.dashboard.productForm.labels.featured}
               </Label>
@@ -165,8 +162,4 @@ export function OrganizationFields() {
       </div>
     </div>
   );
-}
-
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
 }

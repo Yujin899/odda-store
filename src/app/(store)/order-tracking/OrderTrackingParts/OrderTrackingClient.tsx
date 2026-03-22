@@ -48,7 +48,7 @@ export function OrderTrackingClient({ initialOrder, initialOrderId, dict, langua
     <div className="bg-background min-h-screen text-foreground">
       <div className="max-w-4xl mx-auto px-6 py-20 lg:py-32">
         <div className="flex flex-col items-center text-center space-y-6 mb-16">
-          <div className="size-16 rounded-full bg-(--primary)/10 flex items-center justify-center text-(--primary) shadow-inner border border-(--primary)/20">
+          <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary shadow-inner border border-primary/20">
             <Package size={32} />
           </div>
           <div className="space-y-2">
@@ -58,19 +58,19 @@ export function OrderTrackingClient({ initialOrder, initialOrderId, dict, langua
 
           <form onSubmit={handleSearch} className="w-full max-w-md flex flex-col sm:flex-row gap-3 mt-8">
             <div className="relative flex-1 group">
-              <Search className="absolute inset-s-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-(--primary) transition-colors" />
+              <Search className="absolute inset-s-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <input 
                 type="text" 
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 placeholder={dict.trackingPage.placeholder}
-                className="w-full h-16 bg-white border-2 border-slate-100 rounded-(--radius) ps-12 pe-4 text-sm font-bold shadow-2xl focus:border-(--primary) transition-all outline-none"
+                className="w-full h-16 bg-white border-2 border-slate-100 rounded-(--radius) ps-12 pe-4 text-sm font-bold shadow-2xl focus:border-primary transition-all outline-none"
               />
             </div>
             <Button 
               type="submit"
               disabled={loading}
-              className="h-16 px-10 bg-foreground text-background font-black uppercase tracking-widest text-[10px] rounded-sm hover:bg-(--primary) hover:text-white transition-all disabled:opacity-50 shadow-2xl shrink-0 border-none"
+              className="h-16 px-10 bg-foreground text-background font-black uppercase tracking-widest text-[10px] rounded-sm hover:bg-primary hover:text-white transition-all disabled:opacity-50 shadow-2xl shrink-0 border-none"
             >
               {loading ? <Loader2 className="size-4 animate-spin" /> : dict.trackingPage.trackBtn}
             </Button>
@@ -140,7 +140,7 @@ export function OrderTrackingClient({ initialOrder, initialOrderId, dict, langua
                         </p>
                       </div>
                       <div className="text-center sm:text-end shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-                        <p className="text-sm font-black text-(--navy)">
+                        <p className="text-sm font-black text-navy">
                           {(item.price * item.quantity).toLocaleString()} 
                           <span className="text-[8px] uppercase tracking-widest text-muted-foreground ms-1">{dict.common.egp}</span>
                         </p>

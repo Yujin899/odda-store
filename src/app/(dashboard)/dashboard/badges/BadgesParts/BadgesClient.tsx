@@ -185,12 +185,12 @@ export function BadgesClient({ dict, language }: BadgesClientProps) {
     <div className="p-6 space-y-6 text-start" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="text-start">
-          <h1 className="text-2xl font-black uppercase tracking-tighter text-[var(--navy)]">{dict.dashboard.badgesPage.title}</h1>
+          <h1 className="text-2xl font-black uppercase tracking-tighter text-navy">{dict.dashboard.badgesPage.title}</h1>
           <p className="text-sm text-slate-500 font-medium">{dict.dashboard.badgesPage.subtitle}</p>
         </div>
         <Button 
           onClick={() => openModal()}
-          className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-[var(--primary)]/20 rounded-sm"
+          className="bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-primary/20 rounded-sm"
         >
           <Plus className="size-4 me-2" />
           {dict.dashboard.badgesPage.addBadge}
@@ -203,7 +203,7 @@ export function BadgesClient({ dict, language }: BadgesClientProps) {
             <Search className="absolute inset-s-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
             <Input 
               placeholder={dict.dashboard.badgesPage.searchPlaceholder} 
-              className="h-10 border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 rounded-sm text-sm ps-10"
+              className="h-10 border-slate-200 focus:border-primary focus:ring-primary/10 rounded-sm text-sm ps-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -223,7 +223,7 @@ export function BadgesClient({ dict, language }: BadgesClientProps) {
             {isLoading ? (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center text-sm text-slate-500 italic">
-                  <div className={`flex items-center justify-center gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className="flex items-center justify-center gap-2">
                     <Loader2 className="size-4 animate-spin" />
                     {dict.dashboard.badgesPage.loading}
                   </div>
@@ -246,7 +246,7 @@ export function BadgesClient({ dict, language }: BadgesClientProps) {
                       {language === 'ar' && badge.nameAr ? badge.nameAr : badge.name}
                     </span>
                   </TableCell>
-                  <TableCell className={`font-bold text-[var(--navy)] text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
+                  <TableCell className={`font-bold text-navy text-start ${language === 'ar' ? 'font-cairo' : ''}`}>
                     {language === 'ar' && badge.nameAr ? badge.nameAr : badge.name}
                   </TableCell>
                   <TableCell className="text-start">
@@ -319,7 +319,7 @@ export function BadgesClient({ dict, language }: BadgesClientProps) {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g. Discount"
-                    className="rounded-sm border-slate-200 focus:border-(--primary) text-sm"
+                    className="rounded-sm border-slate-200 focus:border-primary text-sm"
                     required
                   />
                 </div>
@@ -330,7 +330,7 @@ export function BadgesClient({ dict, language }: BadgesClientProps) {
                     value={formData.nameAr}
                     onChange={(e) => setFormData({ ...formData, nameAr: e.target.value })}
                     placeholder="مثال: خصم"
-                    className="rounded-sm border-slate-200 focus:border-(--primary) text-sm font-cairo"
+                    className="rounded-sm border-slate-200 focus:border-primary text-sm font-cairo"
                   />
                 </div>
               </div>
@@ -373,7 +373,7 @@ export function BadgesClient({ dict, language }: BadgesClientProps) {
               <Button 
                 type="submit" 
                 disabled={isSaving}
-                className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-[var(--primary)]/20 rounded-sm"
+                className="bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-primary/20 rounded-sm"
               >
                 {isSaving ? <Loader2 className="size-4 animate-spin me-2" /> : <Check className="size-4 me-2" />}
                 {editingBadge ? dict.dashboard.badgesPage.modal.update : dict.dashboard.badgesPage.modal.create}

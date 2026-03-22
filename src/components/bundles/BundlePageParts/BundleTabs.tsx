@@ -29,7 +29,7 @@ export function BundleTabs({ bundle, reviews, language, onReviewAdded }: BundleT
           <TabsList className="bg-transparent h-auto p-0 gap-8 border-none">
             <TabsTrigger 
               value="description" 
-              className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
+              className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-primary data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-primary after:transition-all"
             >
               {isRtl ? 'الوصف' : 'Description'}
             </TabsTrigger>
@@ -37,7 +37,7 @@ export function BundleTabs({ bundle, reviews, language, onReviewAdded }: BundleT
             {bundleItems && bundleItems.length > 0 && (
               <TabsTrigger 
                 value="specifications" 
-                className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
+                className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-primary data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-primary after:transition-all"
               >
                 {isRtl ? 'محتويات الطقم' : 'Kit Contents'}
               </TabsTrigger>
@@ -45,7 +45,7 @@ export function BundleTabs({ bundle, reviews, language, onReviewAdded }: BundleT
 
             <TabsTrigger 
               value="reviews" 
-              className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-(--primary) data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-(--primary) after:transition-all"
+              className="bg-transparent border-none px-4 py-2 h-auto font-black uppercase tracking-widest text-[11px] data-[state=active]:text-primary data-[state=active]:shadow-none relative after:absolute after:bottom-[-12px] after:inset-s-0 after:w-0 data-[state=active]:after:w-full after:h-[2px] after:bg-primary after:transition-all"
             >
               {isRtl ? 'التقييمات' : 'Reviews'} ({reviews.length})
             </TabsTrigger>
@@ -64,7 +64,7 @@ export function BundleTabs({ bundle, reviews, language, onReviewAdded }: BundleT
               {bundleItems.map((item: string, i: number) => (
                 <div key={i} className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-100 rounded-sm">
                   <div className="size-8 rounded-full bg-white border border-slate-100 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="size-4 text-(--primary)" />
+                    <CheckCircle2 className="size-4 text-primary" />
                   </div>
                   <span className="text-sm font-bold text-slate-700 text-start">
                     {item}

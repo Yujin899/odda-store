@@ -66,9 +66,9 @@ async function SearchResultsContent({ searchParams }: { searchParams: { [key: st
     <main className="max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-24 py-12">
       <div className="mb-10">
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-4 uppercase tracking-widest font-bold">
-          <Link href="/" className="hover:text-(--primary) transition-colors">Home</Link>
+          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           <ChevronRight className="size-3 text-muted-foreground stroke-[3px]" />
-          <Link href="/products" className="hover:text-(--primary) transition-colors">All Instruments</Link>
+          <Link href="/products" className="hover:text-primary transition-colors">All Instruments</Link>
           <ChevronRight className="size-3 text-muted-foreground stroke-[3px]" />
           <span className="text-foreground">Search</span>
         </nav>
@@ -111,7 +111,7 @@ async function SearchResultsContent({ searchParams }: { searchParams: { [key: st
               </p>
               <Link
                 href="/products"
-                className="mt-10 px-10 py-4 bg-(--primary) text-white font-bold rounded-(--radius) uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 transition-all inline-block"
+                className="mt-10 px-10 py-4 bg-primary text-white font-bold rounded-(--radius) uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 transition-all inline-block"
               >
                 Back to Products
               </Link>
@@ -126,7 +126,7 @@ async function SearchResultsContent({ searchParams }: { searchParams: { [key: st
             </p>
             <Link
               href="/products"
-              className="mt-10 px-10 py-4 border border-(--primary)/20 text-(--primary) font-bold rounded-(--radius) uppercase tracking-widest text-[10px] shadow-sm hover:bg-slate-100 transition-all inline-block"
+              className="mt-10 px-10 py-4 border border-primary/20 text-primary font-bold rounded-(--radius) uppercase tracking-widest text-[10px] shadow-sm hover:bg-slate-100 transition-all inline-block"
             >
               Browse Products
             </Link>

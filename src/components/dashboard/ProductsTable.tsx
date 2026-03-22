@@ -219,7 +219,7 @@ export function ProductsTable({
                     </TableCell>
                     <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                       <div className="flex flex-col">
-                        <span className="font-black text-xs text-(--navy)">
+                        <span className="font-black text-xs text-navy">
                           {language === 'ar' ? '' : 'EGP'} {product.price.toLocaleString()} {language === 'ar' ? 'ج.م' : ''}
                         </span>
                         {product.originalPrice && (
@@ -279,7 +279,7 @@ export function ProductsTable({
                           <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 py-3">{dict.dashboard.productsPage.table.actions}</DropdownMenuLabel>
                           <DropdownMenuSeparator className="bg-slate-100" />
                           <DropdownMenuItem onClick={() => router.push(`/dashboard/products/${product.slug}/edit`)} className="text-[10px] font-black uppercase tracking-widest focus:bg-slate-50 cursor-pointer p-3 group">
-                            <Pencil className="me-2 h-3.5 w-3.5 text-slate-400 group-hover:text-(--navy) transition-colors" />
+                            <Pencil className="me-2 h-3.5 w-3.5 text-slate-400 group-hover:text-navy transition-colors" />
                             {dict.common.edit}
                           </DropdownMenuItem>
                           <DropdownMenuItem 
@@ -337,7 +337,7 @@ export function ProductsTable({
       <AlertDialog open={!!deleteId} onOpenChange={() => { if(!isPending) { setDeleteId(null); setDeleteSlug(null); } }}>
         <AlertDialogContent className="rounded-sm border-slate-200">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-black uppercase tracking-tighter text-xl text-(--navy)">{dict.dashboard.productsPage.deleteDialog.title}</AlertDialogTitle>
+            <AlertDialogTitle className="font-black uppercase tracking-tighter text-xl text-navy">{dict.dashboard.productsPage.deleteDialog.title}</AlertDialogTitle>
             <AlertDialogDescription className="text-xs font-bold text-slate-500 leading-relaxed">
               {dict.dashboard.productsPage.deleteDialog.description}
             </AlertDialogDescription>

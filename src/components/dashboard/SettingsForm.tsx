@@ -135,15 +135,15 @@ export function SettingsForm({ initialData }: { initialData?: Partial<SettingsFo
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-8 max-w-5xl mx-auto pb-20" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-        <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between sticky top-0 bg-slate-50/80 backdrop-blur-sm py-4 z-10 border-b border-slate-200 -mx-4 px-4 sm:-mx-6 sm:px-6 gap-4 ${language === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
-          <div className={language === 'ar' ? 'text-end' : 'text-start'}>
-            <h1 className="text-2xl font-black uppercase tracking-tighter text-(--navy)">{dict.dashboard.settingsPage.title}</h1>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between sticky top-0 bg-slate-50/80 backdrop-blur-sm py-4 z-10 border-b border-slate-200 -mx-4 px-4 sm:-mx-6 sm:px-6 gap-4">
+          <div className="text-start">
+            <h1 className="text-2xl font-black uppercase tracking-tighter text-navy">{dict.dashboard.settingsPage.title}</h1>
             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{dict.dashboard.settingsPage.subtitle}</p>
           </div>
           <Button 
             type="submit" 
             disabled={isLoading}
-            className="w-full sm:w-auto bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-(--primary)/20 rounded-sm"
+            className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-[10px] h-10 px-8 shadow-lg shadow-primary/20 rounded-sm"
           >
             {isLoading ? <Loader2 className="size-4 animate-spin ms-2" /> : <Save className="size-4 ms-2" />}
             {dict.dashboard.settingsPage.save}

@@ -140,7 +140,7 @@ export function BundlesTable({
         
         <Button 
           onClick={() => router.push('/dashboard/bundles/new')}
-          className="bg-(--primary) text-white font-black uppercase tracking-widest text-[10px] h-9 px-4 rounded-sm"
+          className="bg-primary text-white font-black uppercase tracking-widest text-[10px] h-9 px-4 rounded-sm"
         >
           <PackagePlus className="size-3.5 me-2" />
           {language === 'ar' ? 'إضافة عرض جديد' : 'Add New Bundle'}
@@ -198,7 +198,7 @@ export function BundlesTable({
                     </TableCell>
                     <TableCell className={language === 'ar' ? 'text-end' : 'text-start'}>
                       <div className="flex flex-col">
-                        <span className="font-black text-xs text-(--navy)">
+                        <span className="font-black text-xs text-navy">
                           {language === 'ar' ? '' : 'EGP'} {bundle.price.toLocaleString()} {language === 'ar' ? 'ج.م' : ''}
                         </span>
                         {bundle.originalPrice && (
@@ -224,7 +224,7 @@ export function BundlesTable({
                           <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 py-3">{dict.dashboard.productsPage.table.actions}</DropdownMenuLabel>
                           <DropdownMenuSeparator className="bg-slate-100" />
                           <DropdownMenuItem onClick={() => router.push(`/dashboard/bundles/${bundle.slug}/edit`)} className="text-[10px] font-black uppercase tracking-widest focus:bg-slate-50 cursor-pointer p-3 group">
-                            <Pencil className="me-2 h-3.5 w-3.5 text-slate-400 group-hover:text-(--navy) transition-colors" />
+                            <Pencil className="me-2 h-3.5 w-3.5 text-slate-400 group-hover:text-navy transition-colors" />
                             {dict.common.edit}
                           </DropdownMenuItem>
                           <DropdownMenuItem 
@@ -282,7 +282,7 @@ export function BundlesTable({
       <AlertDialog open={!!deleteId} onOpenChange={() => { if(!isPending) { setDeleteId(null); setDeleteSlug(null); } }}>
         <AlertDialogContent className="rounded-sm border-slate-200">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-black uppercase tracking-tighter text-xl text-(--navy)">{dict.dashboard.productsPage.deleteDialog.title}</AlertDialogTitle>
+            <AlertDialogTitle className="font-black uppercase tracking-tighter text-xl text-navy">{dict.dashboard.productsPage.deleteDialog.title}</AlertDialogTitle>
             <AlertDialogDescription className="text-xs font-bold text-slate-500 leading-relaxed">
               {language === 'ar' ? 'هل أنت متأكد من حذف هذا العرض؟ سيتم إزالته نهائياً.' : 'Are you sure you want to delete this bundle? This will permanently remove it.'}
             </AlertDialogDescription>

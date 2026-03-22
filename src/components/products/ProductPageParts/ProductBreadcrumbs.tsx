@@ -32,7 +32,7 @@ export function ProductBreadcrumbs({
     <Breadcrumb className="mb-8 overflow-x-auto whitespace-nowrap scrollbar-hidden">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="hover:text-(--primary) transition-colors font-bold uppercase tracking-widest text-[10px]">
+          <BreadcrumbLink href="/" className="hover:text-primary transition-colors font-bold uppercase tracking-widest text-[10px]">
             {dict.common.home}
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -42,7 +42,7 @@ export function ProductBreadcrumbs({
         <BreadcrumbItem>
           <BreadcrumbLink 
             href={`/products?category=${categorySlug}`} 
-            className="hover:text-(--primary) transition-colors font-bold uppercase tracking-widest text-[10px]"
+            className="hover:text-primary transition-colors font-bold uppercase tracking-widest text-[10px]"
           >
             {isRtl && categoryNameAr ? categoryNameAr : categoryName}
           </BreadcrumbLink>

@@ -24,7 +24,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
           <input
             type={type}
             className={cn(
-              "w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) text-sm font-medium outline-none focus:border-(--primary) focus:bg-white transition-all",
+              "w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) text-sm font-medium outline-none focus:border-primary focus:bg-white transition-all",
               Icon ? "ps-12 pe-4" : "px-4",
               error ? "border-red-500 focus:border-red-500" : "",
               className

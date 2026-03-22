@@ -14,7 +14,7 @@ export function AddProductButton() {
   return (
     <Button 
       onClick={() => router.push('/dashboard/products/new')}
-      className="bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-(--primary)/20 rounded-sm"
+      className="bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-primary/20 rounded-sm"
     >
       <Plus className="size-4 me-2" />
       {dict.dashboard.productsPage.addProduct}

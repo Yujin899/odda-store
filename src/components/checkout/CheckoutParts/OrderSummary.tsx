@@ -18,19 +18,16 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
   const grandTotal = totalAmount + shippingFee;
 
   return (
-    <div className="bg-slate-50/50 p-4 sm:p-8 rounded-[var(--radius)] border border-slate-200 lg:sticky lg:top-24 h-fit animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <h2 className={bcn(
-        "text-sm font-black uppercase tracking-widest text-foreground pb-6 border-b border-slate-200 mb-6",
-        isRtl ? "text-end" : "text-start"
-      )}>
+    <div className="bg-slate-50/50 p-4 sm:p-8 rounded-(--radius) border border-slate-200 lg:sticky lg:top-24 h-fit animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <h2 className="text-sm font-black uppercase tracking-widest text-foreground pb-6 border-b border-slate-200 mb-6 text-start">
         {dict.common.orderSummary}
       </h2>
 
       {/* Items List */}
       <div className="space-y-4 max-h-[300px] overflow-y-auto pe-2 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent mb-8">
         {items.map((item) => (
-          <div key={item.id} className={bcn("flex items-center gap-4", isRtl ? "flex-row-reverse" : "flex-row")}>
-            <div className="size-14 bg-white rounded-[var(--radius)] border border-slate-100 shrink-0 relative overflow-hidden">
+          <div key={item.id} className="flex items-center gap-4">
+            <div className="size-14 bg-white rounded-(--radius) border border-slate-100 shrink-0 relative overflow-hidden">
                <Image 
                  src={item.image} 
                  alt={isRtl && item.nameAr ? item.nameAr : item.name} 
@@ -39,7 +36,7 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
                  className="object-cover"
                />
             </div>
-            <div className={bcn("flex-1 min-w-0", isRtl ? "text-end" : "text-start")}>
+            <div className="flex-1 min-w-0 text-start">
               <h3 className="text-[10px] font-black uppercase tracking-tight text-foreground truncate">
                 {isRtl && item.nameAr ? item.nameAr : item.name}
               </h3>
@@ -56,17 +53,17 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
 
       {/* Totals Section */}
       <div className="space-y-4 pt-6 border-t border-slate-200">
-        <div className={bcn("flex items-center justify-between text-[10px] uppercase font-bold tracking-widest text-slate-500", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className="flex items-center justify-between text-[10px] uppercase font-bold tracking-widest text-slate-500">
           <span>{dict.common.subtotal}</span>
           <span>{totalAmount.toLocaleString()} {dict.common.egp}</span>
         </div>
-        <div className={bcn("flex items-center justify-between text-[10px] uppercase font-bold tracking-widest text-slate-500", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className="flex items-center justify-between text-[10px] uppercase font-bold tracking-widest text-slate-500">
           <span>{dict.common.shipping}</span>
           <span className={shippingFee === 0 ? "text-green-600" : ""}>
             {shippingFee === 0 ? dict.common.free : `${shippingFee.toLocaleString()} ${dict.common.egp}`}
           </span>
         </div>
-        <div className={bcn("flex items-center justify-between text-base font-black uppercase tracking-tighter text-primary pt-4 border-t border-slate-200", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className="flex items-center justify-between text-base font-black uppercase tracking-tighter text-primary pt-4 border-t border-slate-200">
           <span>{dict.common.total}</span>
           <span className="text-xl">
              {grandTotal.toLocaleString()} {dict.common.egp}
@@ -75,8 +72,4 @@ export function OrderSummary({ dict, shippingFee }: OrderSummaryProps) {
       </div>
     </div>
   );
-}
-
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
 }

@@ -81,7 +81,7 @@ export function Sidebar({ isOpen, onClose, excludeHrefs = [] }: SidebarProps) {
                 onClick={onClose}
                 className={`flex items-center gap-3 px-3 py-3 rounded-sm transition-all outline-none group ${
                   isActive 
-                    ? 'bg-(--primary) text-white shadow-lg' 
+                    ? 'bg-primary text-white shadow-lg' 
                     : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
                 title={item.label}

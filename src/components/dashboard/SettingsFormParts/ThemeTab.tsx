@@ -143,7 +143,7 @@ function ColorField({ label, name }: { label: string; name: string }) {
             type="text"
             value={value}
             onChange={(e) => setValue(`theme.${name}`, e.target.value)}
-            className="w-28 font-mono text-xs md:text-sm h-9 md:h-10 px-2.5 rounded-sm outline-none focus:border-(--primary) bg-slate-50 border-slate-200"
+            className="w-28 font-mono text-xs md:text-sm h-9 md:h-10 px-2.5 rounded-sm outline-none focus:border-primary bg-slate-50 border-slate-200"
             placeholder="#000000"
           />
         </div>
@@ -221,7 +221,7 @@ export function ThemeTab() {
                 onClick={() => applyPreset(preset)}
                 className={`flex flex-col items-center justify-center p-3 border rounded-sm transition-all ${
                   currentTheme?.primary === preset.primary && currentTheme?.radius === preset.radius
-                    ? 'border-(--primary) bg-(--primary)/5 ring-2 ring-(--primary)/20'
+                    ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
                     : 'border-border hover:border-slate-300 bg-white'
                 }`}
               >
@@ -248,7 +248,7 @@ export function ThemeTab() {
                 onClick={() => setValue('theme.radius', opt.value)}
                 className={`px-4 py-2 text-xs font-medium border transition-colors ${
                   currentTheme?.radius === opt.value
-                    ? 'bg-(--primary) text-white border-(--primary)'
+                    ? 'bg-primary text-white border-primary'
                     : 'bg-white text-foreground border-border hover:bg-slate-50'
                 }`}
                 style={{ borderRadius: opt.value }}
@@ -293,7 +293,7 @@ export function ThemeTab() {
           
           <div className="mt-6 p-4 bg-blue-50 text-blue-800 rounded-sm border border-blue-100 text-sm">
             <p className="font-semibold mb-1">How it works</p>
-            <p>Changes made here are previewed instantly on the right. Once you click "Save", the new theme is injected via the root layout and applies to all Shadcn components across the storefront and dashboard.</p>
+            <p>Changes made here are previewed instantly on the right. Once you click &quot;Save&quot;, the new theme is injected via the root layout and applies to all Shadcn components across the storefront and dashboard.</p>
           </div>
         </div>
       </div>

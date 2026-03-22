@@ -33,7 +33,7 @@ export function DashboardOverviewClient({
   return (
     <div className="space-y-6" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div>
-        <h2 className={`text-2xl font-black uppercase tracking-tighter text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>{dict.dashboard.overview}</h2>
+        <h2 className={`text-2xl font-black uppercase tracking-tighter text-navy ${language === 'ar' ? 'text-end' : ''}`}>{dict.dashboard.overview}</h2>
         <p className={`text-sm font-medium text-muted-foreground uppercase tracking-widest mt-1 ${language === 'ar' ? 'text-end' : ''}`}>
           {dict.dashboard.storeMetrics}
         </p>
@@ -46,13 +46,13 @@ export function DashboardOverviewClient({
             <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               {dict.dashboard.totalRevenue}
             </CardTitle>
-            <div className="size-8 rounded-full bg-(--primary)/10 flex items-center justify-center text-(--primary)">
+            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <TrendingUp className="size-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-black text-(--navy)">
-              {revenue.toLocaleString()} <span className="text-lg text-(--primary)">EGP</span>
+            <div className="text-2xl font-black text-navy">
+              {revenue.toLocaleString()} <span className="text-lg text-primary">EGP</span>
             </div>
             <p className="text-xs font-medium text-muted-foreground mt-1">{dict.dashboard.revenueConfirmed}</p>
           </CardContent>
@@ -63,12 +63,12 @@ export function DashboardOverviewClient({
             <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               {dict.dashboard.totalOrders}
             </CardTitle>
-            <div className="size-8 rounded-full bg-(--primary)/10 flex items-center justify-center text-(--primary)">
+            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <ShoppingCart className="size-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-black text-(--navy)">{totalOrders}</div>
+            <div className="text-2xl font-black text-navy">{totalOrders}</div>
             <p className="text-xs font-medium text-muted-foreground mt-1">{dict.dashboard.ordersAllTime}</p>
           </CardContent>
         </Card>
@@ -78,12 +78,12 @@ export function DashboardOverviewClient({
             <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               {dict.dashboard.customers}
             </CardTitle>
-            <div className="size-8 rounded-full bg-(--primary)/10 flex items-center justify-center text-(--primary)">
+            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <Users className="size-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-black text-(--navy)">{totalCustomers}</div>
+            <div className="text-2xl font-black text-navy">{totalCustomers}</div>
             <p className="text-xs font-medium text-muted-foreground mt-1">{dict.dashboard.customersRegistered}</p>
           </CardContent>
         </Card>
@@ -93,12 +93,12 @@ export function DashboardOverviewClient({
             <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               {dict.dashboard.products}
             </CardTitle>
-            <div className="size-8 rounded-full bg-(--primary)/10 flex items-center justify-center text-(--primary)">
+            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <Package className="size-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-black text-(--navy)">{totalProducts}</div>
+            <div className="text-2xl font-black text-navy">{totalProducts}</div>
             <p className="text-xs font-medium text-muted-foreground mt-1">{dict.dashboard.productsActive}</p>
           </CardContent>
         </Card>
@@ -108,7 +108,7 @@ export function DashboardOverviewClient({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 min-w-0">
         <Card className="md:col-span-2 border-border shadow-sm overflow-hidden flex flex-col min-h-[400px]">
           <CardHeader className="shrink-0">
-            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>
+            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-navy ${language === 'ar' ? 'text-end' : ''}`}>
               {dict.dashboard.revenueLast7Days}
             </CardTitle>
           </CardHeader>
@@ -127,7 +127,7 @@ export function DashboardOverviewClient({
 
         <Card className="md:col-span-1 border-border shadow-sm overflow-hidden flex flex-col min-h-[400px]">
           <CardHeader className="shrink-0">
-            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>
+            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-navy ${language === 'ar' ? 'text-end' : ''}`}>
               {dict.dashboard.orderStatus}
             </CardTitle>
           </CardHeader>
@@ -145,7 +145,7 @@ export function DashboardOverviewClient({
       <div className="grid gap-4">
         <Card className="border-border shadow-sm flex flex-col min-h-[400px]">
           <CardHeader className="shrink-0">
-            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-(--navy) ${language === 'ar' ? 'text-end' : ''}`}>
+            <CardTitle className={`text-sm font-bold uppercase tracking-widest text-navy ${language === 'ar' ? 'text-end' : ''}`}>
               {dict.dashboard.topProducts}
             </CardTitle>
           </CardHeader>

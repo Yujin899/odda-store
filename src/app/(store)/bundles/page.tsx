@@ -61,7 +61,7 @@ export default async function BundlesPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Premium Hero Header */}
-      <section className="relative py-24 bg-(--navy) overflow-hidden flex items-center justify-center">
+      <section className="relative py-24 bg-navy overflow-hidden flex items-center justify-center">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -77,14 +77,14 @@ export default async function BundlesPage() {
         </div>
 
         {/* Decorative background elements */}
-        <div className="absolute top-0 inset-e-0 w-1/2 h-full bg-linear-to-l from-(--primary)/10 to-transparent pointer-events-none z-1" />
-        <div className="absolute bottom-0 inset-s-0 w-1/2 h-full bg-linear-to-r from-(--primary)/5 to-transparent pointer-events-none z-1" />
+        <div className="absolute top-0 inset-e-0 w-1/2 h-full bg-linear-to-l from-primary/10 to-transparent pointer-events-none z-1" />
+        <div className="absolute bottom-0 inset-s-0 w-1/2 h-full bg-linear-to-r from-primary/5 to-transparent pointer-events-none z-1" />
         
         <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--primary) opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-(--primary)"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
             {locale === 'ar' ? 'عروض لفترة محدودة' : 'Limited Time Offers'}
           </div>
@@ -100,7 +100,7 @@ export default async function BundlesPage() {
           <div className="flex items-center gap-4">
             <Link 
               href="/products"
-              className="px-8 py-4 rounded-(--radius) bg-white text-(--navy) font-black uppercase text-xs tracking-widest hover:bg-primary hover:text-white transition-all duration-300"
+              className="px-8 py-4 rounded-(--radius) bg-white text-navy font-black uppercase text-xs tracking-widest hover:bg-primary hover:text-white transition-all duration-300"
             >
               {dict.common.allProducts}
             </Link>
@@ -127,12 +127,12 @@ export default async function BundlesPage() {
               <div className="bg-slate-50 p-8 rounded-full mb-8">
                 <ShoppingBag className="size-12 text-slate-300" />
               </div>
-              <h3 className="text-2xl font-bold text-(--navy) mb-4">
+              <h3 className="text-2xl font-bold text-navy mb-4">
                 {dict.bundlesPage.noBundles}
               </h3>
               <Link 
                 href="/products"
-                className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-(--primary) hover:underline"
+                className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-primary hover:underline"
               >
                 {locale === 'ar' ? <ArrowLeft className="size-4" /> : <ArrowRight className="size-4" />}
                 {locale === 'ar' ? 'تصفح الأدوات الفردية' : 'Browse individual tools'}

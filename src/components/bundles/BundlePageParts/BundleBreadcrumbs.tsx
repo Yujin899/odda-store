@@ -23,7 +23,7 @@ export function BundleBreadcrumbs({ bundleName }: BundleBreadcrumbsProps) {
     <Breadcrumb className="mb-8 overflow-x-auto whitespace-nowrap scrollbar-hidden">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="hover:text-(--primary) transition-colors font-bold uppercase tracking-widest text-[10px]">
+          <BreadcrumbLink href="/bundles" className="hover:text-primary transition-colors font-bold uppercase tracking-widest text-[10px]">
             {dict.common.home}
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -31,7 +31,7 @@ export function BundleBreadcrumbs({ bundleName }: BundleBreadcrumbsProps) {
         <BreadcrumbSeparator />
         
         <BreadcrumbItem>
-          <BreadcrumbLink href="/bundles" className="hover:text-(--primary) transition-colors font-bold uppercase tracking-widest text-[10px]">
+          <BreadcrumbLink href="/bundles" className="hover:text-primary transition-colors font-bold uppercase tracking-widest text-[10px]">
             {dict.common.offersAndBundles}
           </BreadcrumbLink>
         </BreadcrumbItem>

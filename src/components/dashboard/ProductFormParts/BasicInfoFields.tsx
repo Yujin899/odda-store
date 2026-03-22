@@ -57,7 +57,7 @@ export function BasicInfoFields() {
             id="name"
             {...register('name')}
             placeholder={dict.dashboard.productForm.placeholders.nameEn}
-            className="rounded-sm border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10"
+            className="rounded-sm border-slate-200 focus:border-primary focus:ring-primary/10"
           />
           {errors.name && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.name.message}</p>}
         </div>
@@ -72,7 +72,7 @@ export function BasicInfoFields() {
             dir="rtl"
             {...register('nameAr')}
             placeholder={dict.dashboard.productForm.placeholders.nameAr}
-            className="rounded-sm border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 text-end font-cairo"
+            className="rounded-sm border-slate-200 focus:border-primary focus:ring-primary/10 text-end font-cairo"
           />
         </div>
       </div>
@@ -91,7 +91,7 @@ export function BasicInfoFields() {
             setValue('slug', value);
           }}
           placeholder={dict.dashboard.productForm.placeholders.slug}
-          className="rounded-sm font-mono text-xs border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10"
+          className="rounded-sm font-mono text-xs border-slate-200 focus:border-primary focus:ring-primary/10"
         />
         {errors.slug && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.slug.message}</p>}
       </div>
@@ -107,7 +107,7 @@ export function BasicInfoFields() {
             id="description"
             {...register('description')}
             placeholder={dict.dashboard.productForm.placeholders.descriptionEn}
-            className="rounded-sm min-h-[100px] border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10"
+            className="rounded-sm min-h-[100px] border-slate-200 focus:border-primary focus:ring-primary/10"
           />
           {errors.description && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.description.message}</p>}
         </div>
@@ -122,7 +122,7 @@ export function BasicInfoFields() {
              dir="rtl"
              {...register('descriptionAr')}
              placeholder={dict.dashboard.productForm.placeholders.descriptionAr}
-             className="rounded-sm min-h-[100px] border-slate-200 focus:border-(--primary) focus:ring-(--primary)/10 text-end font-cairo"
+             className="rounded-sm min-h-[100px] border-slate-200 focus:border-primary focus:ring-primary/10 text-end font-cairo"
           />
         </div>
       </div>

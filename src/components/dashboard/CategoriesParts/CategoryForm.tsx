@@ -46,10 +46,10 @@ export function CategoryForm({
       <div className="bg-white p-4 rounded-sm border border-slate-200 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="size-6 bg-(--primary)/10 rounded-sm flex items-center justify-center shrink-0">
-               <Sparkles className="size-3 text-(--primary)" />
+            <div className="size-6 bg-primary/10 rounded-sm flex items-center justify-center shrink-0">
+               <Sparkles className="size-3 text-primary" />
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-(--navy)">AI Assistant</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-navy">AI Assistant</span>
           </div>
           <Button 
             type="button"
@@ -68,11 +68,11 @@ export function CategoryForm({
           <Textarea 
             placeholder="Paste AI JSON output here..."
             id="cat-ai-json"
-            className="bg-slate-50 border-slate-200 text-(--navy) font-mono text-[10px] min-h-[60px] focus:border-(--primary) focus:ring-0 placeholder:text-slate-300"
+            className="bg-slate-50 border-slate-200 text-navy font-mono text-[10px] min-h-[60px] focus:border-primary focus:ring-0 placeholder:text-slate-300"
           />
           <Button 
             type="button"
-            className="w-full bg-(--primary) hover:bg-(--primary)/90 text-white font-black uppercase tracking-widest text-[9px] h-8 rounded-sm shadow-md shadow-(--primary)/10"
+            className="w-full bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-[9px] h-8 rounded-sm shadow-md shadow-primary/10"
             onClick={() => {
               const textarea = document.getElementById('cat-ai-json') as HTMLTextAreaElement;
               if (!textarea?.value) return;
@@ -105,7 +105,7 @@ export function CategoryForm({
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className={`space-y-2 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
-              <div className={`flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className="flex items-center justify-between">
                 <Label htmlFor="cat-name" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{dict.dashboard.categoriesPage.modal.nameEn}</Label>
                 <Button 
                   type="button" 
@@ -131,7 +131,7 @@ export function CategoryForm({
                   setFormData({ ...formData, ...updates });
                 }}
                 placeholder="e.g. Dental Tools"
-                className="rounded-sm border-slate-200 focus:border-(--primary) text-sm"
+                className="rounded-sm border-slate-200 focus:border-primary text-sm"
                 required
                 dir="ltr"
               />
@@ -144,7 +144,7 @@ export function CategoryForm({
                 value={formData.nameAr}
                 onChange={(e) => setFormData({ ...formData, nameAr: e.target.value })}
                 placeholder={dict.dashboard.categoriesPage.modal.nameAr.includes('Name') ? 'مثال: أدوات طب الأسنان' : dict.dashboard.categoriesPage.modal.nameAr}
-                className="rounded-sm border-slate-200 focus:border-(--primary) text-sm text-end font-cairo"
+                className="rounded-sm border-slate-200 focus:border-primary text-sm text-end font-cairo"
               />
             </div>
           </div>
@@ -159,7 +159,7 @@ export function CategoryForm({
                 setFormData({ ...formData, slug: e.target.value.toLowerCase().replace(/[^\w-]+/g, '').replace(/ +/g, '-') });
               }}
               placeholder="dental-tools"
-              className="rounded-sm border-slate-200 focus:border-(--primary) text-xs font-mono"
+              className="rounded-sm border-slate-200 focus:border-primary text-xs font-mono"
               required
               dir="ltr"
             />
@@ -185,7 +185,7 @@ export function CategoryForm({
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             placeholder={dict.dashboard.categoriesPage.modal.descPlaceholderEn}
-            className="rounded-sm min-h-[100px] border-slate-200 focus:border-(--primary) text-sm"
+            className="rounded-sm min-h-[100px] border-slate-200 focus:border-primary text-sm"
             dir="ltr"
           />
         </div>
@@ -197,7 +197,7 @@ export function CategoryForm({
             value={formData.descriptionAr}
             onChange={(e) => setFormData({ ...formData, descriptionAr: e.target.value })}
             placeholder={dict.dashboard.categoriesPage.modal.descPlaceholderAr}
-            className="rounded-sm min-h-[100px] border-slate-200 focus:border-(--primary) text-sm text-end font-cairo"
+            className="rounded-sm min-h-[100px] border-slate-200 focus:border-primary text-sm text-end font-cairo"
           />
         </div>
       </div>

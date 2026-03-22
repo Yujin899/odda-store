@@ -45,7 +45,7 @@ export function PricingFields() {
               icon={ShieldCheck}
               {...register('originalPrice')}
               error={errors.originalPrice?.message}
-              placeholder="0.00"
+              placeholder={dict.dashboard.productForm.placeholders.originalPrice}
               min="0"
               step="0.01"
             />
@@ -54,8 +54,8 @@ export function PricingFields() {
               isRtl ? "text-end" : "text-start"
             )}>
               {isRtl 
-                ? "سعر التكلفة الأصلي الذي دفعته للمورد. هذا السعر مخفي عن العملاء."
-                : "Original cost price you paid to the supplier. This is hidden from customers."
+                ? "اختياري. إذا تم تحديده، سيظهر هذا السعر مشطوباً بجانب سعر البيع. اتركه فارغاً إذا لم يوجد خصم."
+                : "Optional. If set, this price appears crossed out next to the sale price. Leave empty if there is no discount."
               }
             </p>
           </div>

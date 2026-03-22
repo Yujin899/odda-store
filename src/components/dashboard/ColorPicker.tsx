@@ -63,7 +63,7 @@ export function ColorPicker({ color, onChange, label }: ColorPickerProps) {
                   variant="outline"
                   className={cn(
                     "size-7 rounded-sm p-0 border border-slate-100 transition-all hover:scale-110 shrink-0",
-                    color.toLowerCase() === preset.toLowerCase() ? "ring-2 ring-(--primary) ring-offset-2" : ""
+                    color.toLowerCase() === preset.toLowerCase() ? "ring-2 ring-primary ring-offset-2" : ""
                   )}
                   style={{ backgroundColor: preset }}
                   onClick={() => onChange(preset)}
@@ -80,7 +80,7 @@ export function ColorPicker({ color, onChange, label }: ColorPickerProps) {
                 value={color}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder="#000000"
-                className="h-8 text-xs font-mono rounded-sm border-slate-200 focus:border-(--primary)"
+                className="h-8 text-xs font-mono rounded-sm border-slate-200 focus:border-primary"
               />
             </div>
           </div>

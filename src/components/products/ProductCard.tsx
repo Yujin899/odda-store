@@ -84,7 +84,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
           <div className="mt-auto">
             <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
               <span className="font-black text-sm sm:text-base text-foreground">{product.price.toLocaleString()} {dict.common.egp}</span>
-              {product.originalPrice && (
+              {product.originalPrice && product.originalPrice > product.price && (
                 <span className="text-[10px] sm:text-sm text-muted-foreground line-through opacity-70">{product.originalPrice.toLocaleString()} {dict.common.egp}</span>
               )}
             </div>

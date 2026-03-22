@@ -196,7 +196,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
       <main className="max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-24 py-12">
         <div className="mb-10">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-4 uppercase tracking-widest font-bold">
-            <Link href="/" className="hover:text-(--primary) transition-colors">{dict.common.home}</Link>
+            <Link href="/" className="hover:text-primary transition-colors">{dict.common.home}</Link>
             <ChevronRight className="size-3 text-muted-foreground stroke-[3px] rtl:-scale-x-100" />
             <span className="text-foreground">{dict.productsPage.instruments}</span>
           </nav>
@@ -259,7 +259,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
                 <p className="text-xs text-muted-foreground mt-4 font-medium uppercase tracking-widest leading-loose max-w-sm">{dict.productsPage.noMatchMsg}</p>
                 <Link 
                    href="/products"
-                   className="mt-10 px-10 py-4 bg-(--primary) text-white font-bold rounded-(--radius) uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 transition-all outline-none border-none cursor-pointer"
+                   className="mt-10 px-10 py-4 bg-primary text-white font-bold rounded-(--radius) uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 transition-all outline-none border-none cursor-pointer"
                 >
                   {dict.productsPage.clearAllFilters}
                 </Link>

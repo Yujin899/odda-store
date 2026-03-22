@@ -54,7 +54,7 @@ const PaginationLink = ({
         size,
       }),
       "rounded-sm font-bold text-xs uppercase tracking-widest transition-all",
-      isActive && "border-(--primary) text-(--primary) bg-(--primary)/5",
+      isActive && "border-primary text-primary bg-primary/5",
       className
     )}
     {...props}

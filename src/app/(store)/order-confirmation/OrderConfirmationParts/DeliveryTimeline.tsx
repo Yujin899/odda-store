@@ -30,7 +30,7 @@ export function DeliveryTimeline({ status }: DeliveryTimelineProps) {
     <div className="bg-white border border-slate-100 rounded-(--radius) shadow-xl overflow-hidden">
       <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
         <h2 className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-          <Clock className="size-4 text-(--primary)" />
+          <Clock className="size-4 text-primary" />
           {isAr ? 'الجدول الزمني للطلب' : 'ORDER TIMELINE'}
         </h2>
       </div>
@@ -38,7 +38,7 @@ export function DeliveryTimeline({ status }: DeliveryTimelineProps) {
       <div className="p-8">
         <div className="relative flex flex-col sm:flex-row justify-between items-start ps-8 sm:ps-0 group">
           {/* Vertical line for mobile, horizontal for desktop */}
-          <div className="absolute top-0 bottom-0 inset-s-[1.2rem] w-[2px] sm:w-full sm:h-[1.5px] sm:top-5 sm:inset-s-0 sm:bottom-auto bg-slate-100 -z-0"></div>
+          <div className="absolute top-0 bottom-0 inset-s-[1.2rem] w-[2px] sm:w-full sm:h-[1.5px] sm:top-5 sm:inset-s-0 sm:bottom-auto bg-slate-100 z-0"></div>
           
           {steps.map((step, index) => {
             const isCompleted = index < activeIndex;
@@ -61,12 +61,12 @@ export function DeliveryTimeline({ status }: DeliveryTimelineProps) {
 
                 <div className="text-start sm:text-center space-y-1">
                   <p className={`text-[9px] font-black uppercase tracking-widest ${
-                    isCompleted || isActive ? 'text-(--navy)' : 'text-slate-400'
+                    isCompleted || isActive ? 'text-navy' : 'text-slate-400'
                   }`}>
                     {isAr ? step.labelAr : step.labelEn}
                   </p>
                   {isActive && (
-                    <span className="block text-[7px] font-black text-(--primary) uppercase tracking-tighter">
+                    <span className="block text-[7px] font-black text-primary uppercase tracking-tighter">
                       {isAr ? 'الحالة الحالية' : 'CURRENT STEP'}
                     </span>
                   )}

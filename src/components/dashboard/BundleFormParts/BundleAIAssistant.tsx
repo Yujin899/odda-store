@@ -67,13 +67,13 @@ JSON Schema:
 
   return (
     <div className="bg-white p-6 rounded-sm border border-slate-200 shadow-sm space-y-4">
-      <div className={bcn("flex flex-col md:flex-row md:items-center justify-between gap-4", isRtl ? "flex-row-reverse" : "flex-row")}>
-        <div className={bcn("flex items-center gap-2", isRtl ? "flex-row-reverse text-end" : "flex-row text-start")}>
-          <div className="size-8 bg-(--primary)/10 rounded-sm flex items-center justify-center shrink-0">
-            <Sparkles className="size-4 text-(--primary)" />
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-start">
+          <div className="size-8 bg-primary/10 rounded-sm flex items-center justify-center shrink-0">
+            <Sparkles className="size-4 text-primary" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-(--navy)">🤖 ODDA AI Assistant (Bundles)</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-navy">🤖 ODDA AI Assistant (Bundles)</h3>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">SOTA Prompt Generator & JSON Importer</p>
           </div>
         </div>
@@ -87,18 +87,18 @@ JSON Schema:
         </Button>
       </div>
 
-      <div className={bcn("space-y-2", isRtl ? "text-end" : "text-start")}>
+      <div className="space-y-2 text-start">
         <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
           📥 {isRtl ? 'الصق مخرجات AI هنا' : 'Paste AI JSON Output Here'}
         </Label>
         <Textarea 
           id="ai-json-input"
           placeholder='{ "nameAr": "...", "description": "...", ... }'
-          className="bg-slate-50 border-slate-200 text-(--navy) font-mono text-xs min-h-[100px] focus:border-(--primary) focus:ring-0 placeholder:text-slate-300"
+          className="bg-slate-50 border-slate-200 text-navy font-mono text-xs min-h-[100px] focus:border-primary focus:ring-0 placeholder:text-slate-300"
         />
         <Button 
           type="button"
-          className="w-full bg-(--primary) hover:bg-(--primary)/90 text-white font-black uppercase tracking-widest text-[10px] h-10 rounded-sm shadow-lg shadow-(--primary)/20"
+          className="w-full bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-[10px] h-10 rounded-sm shadow-lg shadow-primary/20"
           onClick={handleMagicFill}
         >
           ✨ {isRtl ? 'تعبئة سحرية للنموذج' : 'Magic Fill Form'}
@@ -106,8 +106,4 @@ JSON Schema:
       </div>
     </div>
   );
-}
-
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
 }

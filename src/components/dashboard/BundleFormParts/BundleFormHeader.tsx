@@ -15,7 +15,7 @@ export function BundleFormHeader({ initialData, language, dict }: BundleFormHead
 
   return (
     <div className={bcn("flex flex-col gap-1 mb-10 pb-6 border-b border-slate-200", isRtl ? "text-end" : "text-start")}>
-      <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tighter text-(--navy)">
+      <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tighter text-navy">
         {initialData ? (isRtl ? 'تعديل العرض' : 'Edit Bundle') : (isRtl ? 'عرض جديد' : 'New Bundle')}
       </h1>
       <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest truncate max-w-[200px] sm:max-w-none">

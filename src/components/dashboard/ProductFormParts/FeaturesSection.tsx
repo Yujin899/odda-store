@@ -6,12 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLanguageStore } from '@/store/useLanguageStore';
-import { getDictionary } from '@/dictionaries';
 import { ProductFormValues } from '@/lib/schemas';
 
 export function FeaturesSection() {
   const { language } = useLanguageStore();
-  const dict = getDictionary(language);
   const { control, register } = useFormContext<ProductFormValues>();
 
   const { 
@@ -34,10 +32,7 @@ export function FeaturesSection() {
 
   return (
     <div className="bg-white p-6 rounded-sm border border-slate-200 shadow-sm space-y-6">
-      <h3 className={bcn(
-        "text-xs font-black uppercase tracking-widest text-slate-400 mb-4 pb-2 border-b border-slate-100",
-        language === 'ar' ? 'text-end' : 'text-start'
-      )}>
+      <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 pb-2 border-b border-slate-100 text-start">
         {language === 'ar' ? 'مميزات المنتج' : 'Product Features'}
       </h3>
 
@@ -87,7 +82,7 @@ export function FeaturesSection() {
 
         {/* Arabic Features */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between flex-row-reverse">
+          <div className="flex items-center justify-between">
             <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-cairo">
               المميزات (بالعربية)
             </Label>
@@ -103,12 +98,12 @@ export function FeaturesSection() {
           </div>
           <div className="space-y-2">
             {arFields.map((field, index) => (
-              <div key={field.id} className="flex gap-2 flex-row-reverse">
+              <div key={field.id} className="flex gap-2">
                 <Input 
                   {...register(`featuresAr.${index}` as const)}
                   dir="rtl"
                   placeholder="مثال: ستانلس ستيل طبي عالي الجودة"
-                  className="rounded-sm border-slate-200 text-xs text-end font-cairo h-10"
+                  className="rounded-sm border-slate-200 text-xs text-start font-cairo h-10"
                 />
                 <Button 
                   type="button" 
@@ -131,8 +126,4 @@ export function FeaturesSection() {
       </div>
     </div>
   );
-}
-
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
 }

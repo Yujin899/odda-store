@@ -13,15 +13,15 @@ export function CommunityCTA() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="bg-(--navy) rounded-(--radius) shadow-2xl overflow-hidden relative group"
+      className="bg-navy rounded-(--radius) shadow-2xl overflow-hidden relative group"
     >
-      <div className="absolute top-0 inset-s-0 bottom-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)]"></div>
+      <div className="absolute top-0 inset-s-0 bottom-0 opacity-10 bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_70%)]"></div>
       
       <div className="p-8 relative z-10 space-y-6">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="w-8 h-px bg-(--primary)"></span>
-            <span className="text-[8px] font-black text-(--primary) uppercase tracking-[0.4em]">
+            <span className="w-8 h-px bg-primary"></span>
+            <span className="text-[8px] font-black text-primary uppercase tracking-[0.4em]">
               {isAr ? 'مجتمع طلاب الأسنان' : 'DENTAL STUDENT COMMUNITY'}
             </span>
           </div>

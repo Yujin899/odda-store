@@ -18,12 +18,12 @@ export function BundleMediaSection({ language, dict }: BundleMediaSectionProps) 
 
   return (
     <div className="bg-white p-6 rounded-sm border border-slate-200 shadow-sm">
-      <h3 className={bcn("text-xs font-black uppercase tracking-widest text-slate-400 mb-4 pb-2 border-b border-slate-100", isRtl ? "text-end" : "text-start")}>
+      <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 pb-2 border-b border-slate-100 text-start">
         {isRtl ? 'الصور والوسائط' : 'Media Library'}
       </h3>
       
       <div className="space-y-4">
-        <div className={bcn("flex items-center justify-between", isRtl ? "flex-row-reverse" : "flex-row")}>
+        <div className="flex items-center justify-between flex-row">
           <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Images ({images.length})</Label>
         </div>
 
@@ -36,8 +36,4 @@ export function BundleMediaSection({ language, dict }: BundleMediaSectionProps) 
       </div>
     </div>
   );
-}
-
-function bcn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(' ');
 }

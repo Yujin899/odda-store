@@ -30,7 +30,7 @@ export function OrderHeader({ orderNumber, createdAt }: OrderHeaderProps) {
       animate={{ opacity: 1, y: 0 }}
       className="bg-white border border-slate-100 p-8 rounded-(--radius) shadow-xl relative overflow-hidden text-center space-y-6"
     >
-      <div className="absolute top-0 inset-s-0 w-full h-1.5 bg-(--primary)"></div>
+      <div className="absolute top-0 inset-s-0 w-full h-1.5 bg-primary"></div>
       
       <div className="flex justify-center">
         <motion.div 
@@ -44,7 +44,7 @@ export function OrderHeader({ orderNumber, createdAt }: OrderHeaderProps) {
       </div>
 
       <div className="space-y-4">
-        <h1 className="text-3xl font-black uppercase tracking-tighter italic text-(--navy)">
+        <h1 className="text-3xl font-black uppercase tracking-tighter italic text-navy">
           {isAr ? 'تم تأكيد طلبك!' : 'ORDER CONFIRMED!'}
         </h1>
         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest max-w-sm mx-auto leading-relaxed">
@@ -58,12 +58,12 @@ export function OrderHeader({ orderNumber, createdAt }: OrderHeaderProps) {
             <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
               {isAr ? 'رقم الطلب:' : 'ORDER ID:'}
             </span>
-            <code className="text-xs font-black text-(--navy) tracking-tight">{orderNumber}</code>
+            <code className="text-xs font-black text-navy tracking-tight">{orderNumber}</code>
             <Button 
               variant="ghost"
               size="icon"
               onClick={copyToClipboard}
-              className="ms-2 size-7 p-1 hover:bg-white hover:shadow-sm rounded-full transition-all text-muted-foreground hover:text-(--primary) active:scale-90"
+              className="ms-2 size-7 p-1 hover:bg-white hover:shadow-sm rounded-full transition-all text-muted-foreground hover:text-primary active:scale-90"
               title={isAr ? 'نسخ' : 'Copy'}
             >
               <AnimatePresence mode="wait">
@@ -90,7 +90,7 @@ export function OrderHeader({ orderNumber, createdAt }: OrderHeaderProps) {
             </Button>
           </div>
           
-          <p className="text-[10px] font-black text-(--primary) uppercase tracking-[0.3em]">
+          <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">
             {isAr ? 'بتاريخ' : 'PLACED ON'} {formatDate(createdAt, language as 'en' | 'ar')}
           </p>
         </div>

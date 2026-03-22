@@ -75,7 +75,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
         
         {/* Active Progress Line */}
         <motion.div 
-          className="absolute top-0 inset-s-[1.4rem] w-[2px] sm:w-[2px] sm:h-[2px] sm:top-6 sm:inset-s-0 sm:bottom-auto bg-(--primary) -z-10 rounded-full shadow-[0_0_10px_rgba(0,115,230,0.3)]"
+          className="absolute top-0 inset-s-[1.4rem] w-[2px] sm:w-[2px] sm:h-[2px] sm:top-6 sm:inset-s-0 sm:bottom-auto bg-primary -z-10 rounded-full shadow-[0_0_10px_rgba(0,115,230,0.3)]"
           initial={{ height: "0%", width: "0%" }}
           animate={{ 
             height: typeof window !== 'undefined' && window.innerWidth < 640 ? `${(activeIndex / (steps.length - 1)) * 100}%` : "100%",
@@ -101,7 +101,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                   color: isCompleted || isActive ? "#fff" : "#94a3b8"
                 }}
                 className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 shadow-sm ${
-                  isActive ? "ring-4 ring-(--primary)/10 shadow-lg" : ""
+                  isActive ? "ring-4 ring-primary/10 shadow-lg" : ""
                 }`}
               >
                 {isCompleted ? (
@@ -124,7 +124,7 @@ export function OrderTracker({ status }: OrderTrackerProps) {
                   <motion.p 
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-[8px] font-bold text-(--primary) uppercase tracking-widest"
+                    className="text-[8px] font-bold text-primary uppercase tracking-widest"
                   >
                     Current Status
                   </motion.p>

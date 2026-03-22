@@ -38,7 +38,7 @@ export default async function ProfilePage() {
               />
             </div>
           ) : (
-            <div className="bg-(--primary)/10 text-(--primary) size-24 md:size-32 rounded-full flex items-center justify-center font-bold text-3xl md:text-4xl uppercase shadow-inner border border-(--primary)/20">
+            <div className="bg-primary/10 text-primary size-24 md:size-32 rounded-full flex items-center justify-center font-bold text-3xl md:text-4xl uppercase shadow-inner border border-primary/20">
               {session.user.name?.charAt(0) || session.user.email?.charAt(0) || "U"}
             </div>
           )}
@@ -56,7 +56,7 @@ export default async function ProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
         <Link 
           href="/orders" 
-          className="group flex items-center justify-between p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-(--primary)/30 transition-all"
+          className="group flex items-center justify-between p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
         >
           <div className="flex items-center gap-4">
             <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -67,7 +67,7 @@ export default async function ProfilePage() {
               <p className="text-xs text-slate-400">{dict.profile.viewOrders}</p>
             </div>
           </div>
-          <ChevronRight className="size-5 text-slate-300 group-hover:text-(--primary) transition-colors ms-auto rtl:rotate-180" />
+          <ChevronRight className="size-5 text-slate-300 group-hover:text-primary transition-colors ms-auto rtl:rotate-180" />
         </Link>
 
         <div 
@@ -87,10 +87,10 @@ export default async function ProfilePage() {
         {isAdmin && (
           <Link 
             href="/dashboard" 
-            className="md:col-span-2 group flex items-center justify-between p-6 bg-(--primary)/5 border border-(--primary)/20 rounded-2xl shadow-sm hover:shadow-md hover:border-(--primary)/50 transition-all"
+            className="md:col-span-2 group flex items-center justify-between p-6 bg-primary/5 border border-primary/20 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/50 transition-all"
           >
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-(--primary) text-white rounded-xl">
+              <div className="p-3 bg-primary text-white rounded-xl">
                 <ShieldCheck className="size-6" />
               </div>
               <div>
@@ -98,7 +98,7 @@ export default async function ProfilePage() {
                 <p className="text-xs text-slate-500">{dict.profile.adminDesc}</p>
               </div>
             </div>
-            <ChevronRight className="size-5 text-(--primary) ms-auto rtl:rotate-180" />
+            <ChevronRight className="size-5 text-primary ms-auto rtl:rotate-180" />
           </Link>
         )}
       </div>

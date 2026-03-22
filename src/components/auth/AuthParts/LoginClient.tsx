@@ -74,7 +74,7 @@ export function LoginClient({ dict, language }: LoginClientProps) {
         className="max-w-md w-full"
       >
         <div className="bg-white border border-slate-100 p-10 rounded-(--radius) shadow-2xl space-y-8 relative overflow-hidden">
-          <div className="absolute top-0 inset-s-0 w-full h-1 bg-(--primary)"></div>
+          <div className="absolute top-0 inset-s-0 w-full h-1 bg-primary"></div>
 
           <div className="flex flex-col items-center space-y-4">
             <Link href="/">
@@ -115,7 +115,7 @@ export function LoginClient({ dict, language }: LoginClientProps) {
             />
 
             <div className="space-y-2">
-              <div className={`flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse ps-0 pe-1' : 'ps-1'}`}>
+              <div className="flex items-center justify-between ps-1">
                 <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{language === 'ar' ? 'كلمة المرور' : 'Password'}</label>
                 <Button 
                   type="button" 

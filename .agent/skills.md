@@ -5,665 +5,136 @@
 ## 1. Project Overview
 
 - Brand: `Odda | Premium Dental Tools` — High-end aesthetic for medical professionals.
-
 - App type: Enterprise-ready Next.js App Router storefront and management system.
-
 - Public routes: home, product listing, product details, bundle details (/bundle/[slug]), checkout, order confirmation, custom 404, public order tracking.
-
 - Planned backend: Next.js API Routes (`src/app/api/`) as the server layer, MongoDB as the database (dedicated collections for Products and Bundles), and Cloudinary for image hosting and delivery.
-
-- Current state: all data is served dynamically from MongoDB via API routes (`src/app/api/products` and `/api/bundles`). MongoDB is the sole source of truth.
-
-- Global chrome (`AnnouncementBar`, `Navbar`, `Footer`, `CartDrawer`, `SearchModal`, `ToastContainer`) is mounted in `src/app/(store)/layout.tsx`. Auth pages (`/login`, `/register`) have no chrome.
-
-- **Enterprise Status**: Optimized for production with connection pooling, ISR caching (`StoreSettings`), and automated DevOps cleanup via Vercel Cron.
-
-- **Limit Protection**: Strategic usage of free-tier resources (Resend 3k/mo limit, Cloudinary storage reclamation). We strictly support ONLY TWO transactional emails: "Order Confirmation" and "Order Shipped" to protect quotas.
-
-- **Global Configuration**: Centrally managed `StoreSettings` controlling the storefront UI, business parameters, `defaultLanguage` ('en' or 'ar'), and fallback email text to prevent empty dispatches.
+- Current state: all data is served dynamically from MongoDB via API routes. MongoDB is the sole source of truth.
+- Global chrome (`AnnouncementBar`, `Navbar`, `Footer`, `CartDrawer`, `SearchModal`, `ToastContainer`) is mounted in `src/app/(store)/layout.tsx`.
+- **Enterprise Status**: Optimized for production with connection pooling, ISR caching, and automated DevOps cleanup via Vercel Cron.
+- **Limit Protection**: Strategic usage of free-tier resources (Resend 3k/mo limit, Cloudinary storage reclamation).
 
 ## 2. Tech Stack & Versions
 
 - Next.js `16.1.6`
-
 - React `19.2.3`
-
-- React DOM `19.2.3`
-
-- TypeScript `^5` with `strict: true`
-
+- TypeScript `^5` (strict)
 - Tailwind CSS `^4`
-
 - Zustand `^5.0.11`
-
 - Framer Motion `^12.35.2`
-
 - Swiper `^12.1.2`
-
-- Lucide React `^0.577.0`. Lucide React is the only icon library. No CDN icons.
-
+- Lucide React `^0.577.0`
 - Mongoose (`mongoose`)
-
 - NextAuth v5 (`next-auth@beta`)
-
-- MongoDB Auth Adapter (`@auth/mongodb-adapter`)
-
-- bcryptjs (`bcryptjs`)
-
 - Cloudinary (`cloudinary`)
-
-- Resend (`resend`) — Optimized for transactional notifications.
-- Vercel Cron — For automated maintenance tasks.
+- Resend (`resend`)
 
 ## 3. Project Structure (actual file tree)
 
-- Store pages use Server Components to fetch from internal API routes.
-
 ```text
-
 odda-web/
-
-  scripts/
-
-    seed.ts
-
-    migrate.ts
-
   src/
-
     app/
-
-      api/
-
-        auth/
-
-          register/
-
-            route.ts
-
-          [...nextauth]/
-
-            route.ts
-
-        badges/
-
-          route.ts
-
-          [id]/
-
-            route.ts
-
-        bundles/         # Dedicated Bundle Collection API
-
-          route.ts
-
-          [slug]/
-
-            route.ts
-
-        categories/
-
-          route.ts
-
-          [id]/
-
-            route.ts
-
-        cron/
-
-          cleanup-orders/ # Daily data/asset recycling
-
-        notifications/   # In-app alert system
-
-        orders/
-
-          route.ts
-
-          [id]/
-
-          track/         # Public Amazon-style tracker
-
-        products/
-
-          route.ts
-
-          [slug]/
-
-            route.ts
-
-            reviews/     # Authenticated product reviews
-
-              route.ts
-
-        settings/        # Global Storefront Configuration
-
-          route.ts
-
-        warmup/          # Cold start prevention
-
-          route.ts
-
-        users/           # Admin customer management
-
-      (dashboard)/
-
-        dashboard/
-
-          badges/
-
-          bundles/       # Dedicated Bundle Management
-
-          categories/
-
-          customers/
-
-          notifications/ # Admin activity center
-
-          orders/
-
-          products/
-
-          settings/      # Multi-tab Admin Settings Hub
-
-      (auth)/
-
-        login/
-
-          page.tsx
-
-        register/
-
-          page.tsx
-
-      (store)/
-
-        layout.tsx
-
-        page.tsx
-
-        about/
-
-          page.tsx
-
-        checkout/
-
-          page.tsx
-
-        order-confirmation/
-
-          page.tsx
-
-        orders/
-
-          loading.tsx
-
-          page.tsx
-
-        product/
-
-          [slug]/
-
-            loading.tsx
-
-            page.tsx
-
-        products/
-
-          loading.tsx
-
-          page.tsx
-
-        search/
-
-          loading.tsx
-
-          page.tsx
-
-        bundle/
-
-          [slug]/
-
-            page.tsx
-
-        bundles/
-
-          page.tsx
-
-        profile/
-
-          page.tsx
-
+      api/               # All server-side logic and DB interactions
+      (dashboard)/       # Admin management views
+      (store)/           # Public storefront pages
     components/
-
-      home/
-
-        Hero.tsx         # Premium Minimalist Hero
-
-        HomeBundles.tsx  # Premium grid for Starter Kits
-
-      bundles/           # Bundle-specific UI
-
-        BundlePageClient.tsx
-
-        BundleCard.tsx # Reusable premium card for bundles
-
-      dashboard/
-
-        Sidebar.tsx
-
-        AddProductButton.tsx
-
-        ColorPicker.tsx # Custom swatch selector
-
-        CustomersManager.tsx # Layout orchestrator (~100 lines)
-
-        CustomersParts/
-          CustomersTable.tsx
-          EditUserDialog.tsx
-          ResetPasswordDialog.tsx
-          BlockUserDialog.tsx
-          DeleteUserDialog.tsx
-          useCustomers.ts
-
-        NotificationBell.tsx # Real-time polling alert
-
-        NotificationsList.tsx
-
-        OrderDetailsModal.tsx # With auto-scroll to proof
-
-        OrdersManager.tsx # Tabbed "Inbox Zero" workflow
-
-        CategoriesClient.tsx # State + fetch logic only (~100 lines)
-
-        CategoriesParts/
-          CategoriesTable.tsx
-          CategoryDialog.tsx
-          CategoryForm.tsx
-          DeleteCategoryDialog.tsx
-
-        ProductForm.tsx # With BYOAI "Magic Fill" logic
-
-        ProductsTable.tsx
-
-        SettingsForm.tsx # Form provider + submit handler (~100 lines)
-
-        SettingsFormParts/ # Form decomposition directory
-
-          StorefrontTab.tsx
-
-          CheckoutTab.tsx
-
-          EmailsTab.tsx
-
-          useSettingsAI.ts # Shared settings generation logic
-
-      products/
-
-        ProductCard.tsx
-
-        ProductFilters.tsx
-
-        ProductPageClient.tsx # Multi-tab (Overview/Specs/Reviews)
-
-      store/
-
-        OrderTracker.tsx
-
-        OrdersList.tsx
-
-    shared/
-
-        MobileBottomNav.tsx # Shared mobile navigation component
-
-        ReviewSection.tsx # Polymorphic review handler (Products/Bundles)
-
-        AddToCartSection.tsx # Reusable quantity counter + add to cart
-
-        Carousel.tsx # Shared reusable Swiper wrapper with RTL support
-
-    lib/
-
-      catalog.ts       # Legacy  seed script only
-
-      api.ts           # Consolidated fetch helpers
-
-      cloudinary.ts
-
-      cloudinary-utils.ts
-
-      mongodb.ts
-
-      mongodb-adapter.ts
-
-      utils.ts
-      
-      theme.ts         # Dynamic theming OKLCH convert/css generation
-
-    models/
-
-      Badge.ts
-
-      Bundle.ts          # Dedicated Mongoose Schema for Kits
-
-      Category.ts
-
-      Notification.ts # Alert tracking
-
-      Order.ts
-
-      Product.ts
-
-      Review.ts          # Polymorphic Reviews (Scalable Collection)
-
-      StoreSettings.ts   # Global Config (Hero, InstaPay, etc.)
-
-      User.ts
-
-    store/
-
-      useCartStore.ts
-
-      useCartUIStore.ts
-
-      useLanguageStore.ts
-
-      useMobileMenuStore.ts
-
-      useRecentlyViewedStore.ts
-
-      useSearchUIStore.ts
-
-      useToastStore.ts
-
-    types/
-
-      next-auth.d.ts
-
-    auth.config.ts
-
-    auth.ts
-
-    middleware.ts
-
+      shared/            # Reusable components across store/dashboard
+      home/              # Home-page specific premium sections
+      dashboard/         # Admin-only UI parts
+      ui/                # Base Shadcn components
+    lib/                 # Core logic, theme generation, API clients
+    models/              # Mongoose Schemas
+    store/               # Zustand state Management
+    types/               # TypeScript type definitions (Models vs DTOs)
 ```
 
-## 7. State Management
+**Key Files:**
+- `src/components/shared/Carousel.tsx` (Reusable Swiper wrapper)
+- `src/components/shared/ImageUploader.tsx` (Universal upload handler)
+- `src/lib/cloudinary.ts` (Image optimization and deletion logic)
+- `src/lib/theme.ts` (Dynamic theme generation)
+- `src/types/models.ts` (Server types) vs `src/types/store.ts` (Client types)
 
-### Zustand Stores
+## 4. Design System & Tailwind Rules
 
-- `src/store/useCartUIStore.ts` (UI Only: isOpen, openCart, closeCart)
+- **Tailwind v4 tokens**: Use `bg-primary`, `bg-navy`, `text-foreground`, `border-border`.
+- **Navy Variable**: `--navy` is NOT a CSS variable in `:root`. It is a theme token `--color-navy`. NEVER use `bg-(--navy)`. Use `bg-navy`.
+- **Dynamic Radius**: Use `rounded-(--radius)` for elements that should respect the admin's radius setting.
+- **Glassmorphism**: Use `bg-white/80 backdrop-blur-md` for floating elements like Navbars and Sticky Headers.
 
-- `src/store/useSearchUIStore.ts` (UI Only: isOpen, openSearch, closeSearch)
+## 5. UI Component Rules
 
-- `src/store/useMobileMenuStore.ts` (UI Only: isOpen, open, close, toggle)
+- **Shadcn First**: Always check `src/components/ui/` before building custom components.
+- **StatusBadges**: Use `<StatusBadge status={status} />` for order/item statuses.
+- **Buttons**: Every user-facing action must use the Shadcn `<Button>`. Link buttons use `asChild`.
 
-- `src/store/useCartStore.ts`
+## 6. Logic & State Management
 
-  - Manages cart data: `items`, `totalAmount`.
+- **Zustand**: Use for ephemeral UI state (Cart, Search, Toasts) and site-wide settings (Language).
+- **Server Actions**: Not used. All data writes go through `src/app/api/`.
 
-  - Actions: `addItem`, `removeItem`, `updateQuantity`, `clearCart`.
+## 7. i18n & RTL Rules
 
-- `src/store/useToastStore.ts`
+- **Directionality**: Every main container must have `dir={language === 'ar' ? 'rtl' : 'ltr'}`.
+- **Logical Properties**: Always prefer `ps-`, `pe-`, `ms-`, `me-`, `text-start`, `text-end`.
+- **Swiper RTL**: Always pass `key={locale}` to Swiper instances to ensure re-mount on language change.
 
-  - Manages global notifications: `toasts: Toast[]`.
+## 8. Routing Patterns
 
-  - Actions: `addToast`, `removeToast`.
+- **Slug-based**: Public products and bundles are accessed via `/product/[slug]` and `/bundle/[slug]`.
+- **Internal API**: Components fetch from `/api/products/[slug]` to retrieve data.
 
-  - Convenient export: `toast` object for quick usage (`toast.success(description)`).
+## 9. Performance & Image Rules
 
-  - IMPORTANT: Notifications use `description` property, not `message`.
+- **Cloudinary Optimization**: Use `optimizeCloudinaryUrl(url, context)` for all raw `<img>` tags.
+- **next/image**: Use for static assets or full-bleed heroes. next/image handles its own optimization; do NOT pass optimized Cloudinary URLs to it.
 
-  - **Clean UX Rule**: When an action results in a major UI state change (e.g., opening the Cart Drawer upon clicking "Add to Cart"), DO NOT fire a success Toast simultaneously. The visual feedback is sufficient.
+## 10. Forms & Validation
 
-- `src/store/useRecentlyViewedStore.ts`
+- **React Hook Form + Zod**: Every form (Product, Category, Settings) must have a schema in `src/lib/schemas.ts` or local Zod definition.
+- **Image Priority**: In multi-image uploads, the first image selected is the primary image.
 
-  - Manages viewed history: `items: Product[]` (max 4).
+## 11. Security & Auth
 
-  - Actions: `addViewedItem`.
+- **Role Gate**: `/dashboard` routes are protected by middleware and higher-order layout checks for `role: 'admin'`.
+- **Password Hashing**: Always use `bcryptjs` for auth-related password logic.
 
-- `src/store/useLanguageStore.ts`
+## 12. Business Parameters (Admin Settings)
 
-  - Manages site-wide locale state (`en` vs `ar`).
-
-  - Persists preference across sessions.
-
-## 8. Routing
-
-- `/` -> Home
-
-- `/products` -> Product listing with filters.
-
-- `/bundles` -> Dedicated storefront catalog page listing all active Bundles and Starter Kits (kept strictly separate from `/products`).
-
-- `/bundle/[slug]` -> Dedicated storefront page for Bundles/Starter Kits.
-
-- `/dashboard` -> Admin-only overview with stats and charts.
-
-- `/dashboard/orders` -> Admin-only orders management.
-
-- `/dashboard/bundles` -> Admin-only bundle management.
-
-- `/dashboard/settings` -> Admin-only configuration hub (Tabs: Storefront, Payments, Contact).
-
-- `/dashboard/customers` -> Admin-only registered users list.
-
-- **Products**: `/product/[slug]` — The param is the product slug (SEO-friendly). Always look up by `slug` in MongoDB.
-
-- **Category Filter**: `/products?category=slug` — Standardized filtering uses category slug. The API resolves the slug to a MongoDB `_id` server-side via `Category.findOne({ slug })`.
-
-- **Search**: `/search?q=query`  Results filtered by name.
-
-- `/checkout` -> Multi-step checkout process. Now wired to `POST /api/orders`.
-
-- `/order-confirmation` -> Post-accumulation landing. Reads `orderNumber` from URL params.
-
-- `/orders` -> User's order history, requires auth.
-
-- `/about` -> Brand mission and features.
-
-- `/login` -> User auth.
-
-- `/register` -> New user registration. Wired to `POST /api/auth/register`.
-
-- `/profile` -> **Role-Based Profile Hub**: Acts as the central user hub. Conditionally renders the "Admin Dashboard" link card ONLY if `session?.user?.role === 'admin'`. Floating Admin buttons are strictly forbidden.
-
-- API Routes:
-
-  - `POST /api/auth/register`: User creation.
-
-  - `GET /api/products`: Paginated/Filtered product list. Supports `featured`, `categoryId`, `search`, `sort` params.
-
-  - `GET /api/categories`: Returns all product categories.
-
-  - `POST /api/categories`: Admin category creation.
-
-  - `PATCH/DELETE /api/categories/[id]`: Admin category management (includes `revalidatePath('/')` and Cloudinary cleanup).
-
-  - `GET /api/badges`: Returns all product badges.
-
-  - `POST /api/badges`: Admin badge creation.
-
-  - `PUT/DELETE /api/badges/[id]`: Admin badge management.
-
-  - `GET /api/products/[slug]`: Single product lookup (SEO slug or ID).
-
-  - `POST /api/products`: Admin product creation + Cloudinary upload.
-
-  - `PUT /api/products/[slug]`: Admin product update.
-
-  - `DELETE /api/products/[slug]`: Admin product removal + Cloudinary cleanup.
-
-  - `GET /api/bundles`: Returns all bundles (filtered by `stock` in storefront).
-
-  - `GET /api/bundles/[slug]`: Single bundle lookup.
-
-  - `POST /api/bundles`: Admin bundle creation.
-
-  - `PUT /api/bundles/[slug]`: Admin bundle update.
-
-  - `DELETE /api/bundles/[slug]`: Admin bundle removal.
-
-  - `GET /api/settings`: Returns Global Store Settings (Hero, Announcements, Fees).
-
-  - `PATCH /api/settings`: Admin settings update (with instant ISR revalidation).
-
-  - `POST /api/orders`: Order placement (triggers real-time stock deduction).
-
-  - `GET /api/orders`: Admin order list.
-
-  - `GET /api/orders/[id]`: Order details.
-
-  - `PATCH /api/orders/[id]`: Admin order status update (Restores stock automatically on 'cancelled' status).
-
-  - `GET /api/orders/track/[id]`: Public order tracking status.
-
-  - `POST /api/products/[slug]/reviews`: Authenticated product review submission.
-
-  - `POST /api/bundles/[slug]/reviews`: Authenticated bundle review submission.
-
-  - `GET /api/notifications`: Admin alerts list.
-
-  - `POST /api/cron/cleanup-orders`: Daily recycling of data/assets.
-
-  - `POST /api/upload`: Generic image upload (supports `folder` param and 10MB limit).
-
-- Route Grouping: `(store)` group has the global chrome layout; `(auth)` group has none.
+Admin can configure the following in Dashboard -> Settings:
+- **Announcements**: List of marquee messages (bilingual).
+- **InstaPay**: Dedicated number for manual payment verification.
+- **Shipping Fee**: Flat rate applied at checkout.
+- **WhatsApp**: Direct contact for customer support.
+- **Dynamic Theme**: 6 presets + custom color picker for brand primary.
 
 ## 13. Checklist for adding a new feature
 
-1. Put the file in the correct folder.
+1. Define Zod schema (if form/API).
+2. Create Mongoose model (if new collection).
+3. Implement API route under `src/app/api/`.
+4. Create reusable UI parts in `components/`.
+5. Wire to Zustand store if shared state is needed.
 
-2. Reuse existing CSS variables from `globals.css`.
+## 14. Project Gotchas
 
-3. Keep corners small unless there is a clear exception.
+- **Type Separation**: Never import `src/types/models.ts` in Client Components. Use `src/types/store.ts`.
+- **Status Colors**: Centralized in `src/lib/utils.ts` via `getStatusColor()`. Import and use specifically in `<StatusBadge>`.
+- **Carousel Navigation**: Swiper buttons must have unique classes per page to avoid navigation conflicts.
+- **UptimeRobot**: Pings `/api/warmup` every 5 min to keep Vercel and MongoDB active.
 
-4. Use `Link` for static navigation and `router.push()` only for client-side handlers.
+## 15. Forbidden Patterns
 
-5. Keep state local unless it is truly shared UI state.
+- **RTL Reversal**: NEVER use `flex-row-reverse` for general layout; it breaks when `dir="rtl"` is active.
+- **Direct Swiper**: NEVER use raw `<Swiper>`. Use `<Carousel>`.
+- **Direct Upload**: NEVER call `fetch('/api/upload')` directly in components. Use `src/lib/upload.ts` helpers.
+- **generateThemeCSS client-side**: Never call this on the client. It is for server-side CSS injection ONLY. Use `generatePreviewCSS` for live previews.
+- **Navy Variable**: Never use `bg-(--navy)` or `text-(--navy)`. Always use the token `bg-navy`.
 
-6. If shared UI state is needed, add a small Zustand store under `src/store/`.
-
-7. If remote images are used, confirm the hostname is already allowed.
-
-8. Prefer CSS transitions first; use Framer Motion only for real enter/exit animation.
-
-9. Match the existing scrollbar convention.
-
-10. Test both mobile and desktop layout behavior, ensuring tables use `overflow-x-auto` and action bars stack correctly on small screens.
-
-11. If the feature requires data fetching, implement it via a Next.js API Route under `src/app/api/`. Do not call MongoDB or Cloudinary directly from client components.
-
-12. Direct Swiper usage in pages/components is FORBIDDEN. Always use `<Carousel>` from `src/components/shared/Carousel.tsx`.
-13. **Shadcn First Policy**: Direct implementation of custom UI components (Buttons, Badges, Inputs, Dialogs, etc.) is FORBIDDEN if a Shadcn equivalent exists. Always use components from `src/components/ui/` and extend them via variants in `class-variance-authority`.
-14. **Button Standardization**: All user-facing action buttons MUST use Shadcn `<Button>` from `src/components/ui/button`. Raw `<button>` elements are only allowed for non-themed interactive wrappers (carousel nav, image thumbnails). All colors must use CSS variables.
-15. **Design Consistency**: All UI components MUST utilize the CSS variables defined in `globals.css` (e.g., `--primary`, `--navy`, `--radius`) to ensure theme synchronization. Ad-hoc hex codes or arbitrary Tailwind classes for brand colors are discouraged.
-
-12. Before copying an old pattern, check whether it is a known inconsistency (`font-display`, `.scrollbar-hide`, duplicate marquee block).
-
-```tsx
-
-// New static route link
-
-<Link href="/products">Browse</Link>
-
-// New UI-only store naming pattern
-
-export const useExampleUIStore = create<ExampleUIStore>((set) => ({
-
-  isOpen: false,
-
-  open: () => set({ isOpen: true }),
-
-  close: () => set({ isOpen: false }),
-
-}))
-
-```
-
-## 14. Known Inconsistencies & Gotchas
-
-- **Tailwind v4 syntax**: Lint prefers `rounded-(--radius)` over `rounded-[var(--radius)]`.
-
-- **Image handling**: `next/image` is used in layout; pages still use raw `<img>` with `loading="lazy"`.
-
-- **Checkout Auth**: Multi-step checkout with an authentication gate (Step 0) providing options for guest checkout or account sign-in.
-
-- **Payment Verification**: Instapay requires a manual screenshot upload.
-
-- **Material Symbols**: Fully removed and replaced with Lucide React SVG components.
-
-- **Auth Pages**: Login and Register forms are fully wired to NextAuth credentials and Google OAuth.
-
-- **Checkout**: Fully wired to real API routes for orders and payment uploads.
-
-- **Order Confirmation**: Reads `orderNumber` from URL search params.
-
-- **Accordions**: Use `Accordion` from `src/components/ui/accordion.tsx` instead of building custom toggle states.
-
-- **Google Sign-In**: Google OAuth is fully wired via `signIn('google')`.
-
-- **Navbar Session**: Navbar shows Sign In link for guests and a user dropdown with My Orders + Sign Out for authenticated users.
-
-- **NextAuth v5 Configuration**: Uses `src/auth.ts` as the main config and `src/auth.config.ts` for Edge-compatible settings (required by middleware). JWT strategy is used to keep roles in the token. DB models must NOT be imported in `auth.config.ts`.
-
-- **Seed Script**: Run `npm run seed` to populate MongoDB with products. Safe to run multiple times  skips existing slugs.
-
-- **Dashboard**: Admin-only route group at `(dashboard)/`. Protected at both middleware and layout level. Includes comprehensive Products, Categories, Badges, and Global Settings management.
-
-- **Inventory Management**: Absolute stock management (deduction on order, restoration on cancellation). Stock sufficiency check occurs during `POST /api/orders`.
-- **Arabic Search**: `GET /api/products` searches both `name` and `nameAr` fields using `$or`. Arabic text uses `.includes()` not `.toLowerCase().includes()`.
-- **Global Settings Hub**: Single-document pattern for managing announcements, fees, and hero content. Decomposed into modular tabs (`StorefrontTab`, `CheckoutTab`, `EmailsTab`) using `FormProvider` to prevent God Component bloat.
-
-- **Cold Start Prevention**: UptimeRobot pings `/api/warmup` every 5 minutes to keep the serverless function and MongoDB connection alive on Vercel Free tier.
-
-- **Carousel**: Reusable Swiper wrapper in `src/components/shared/Carousel.tsx`. Always pass `locale` prop for RTL support. Use unique `navigationClass` per instance to avoid conflicts. Wrapper has `overflow-hidden` to prevent layout bleeding. Always prefer this over direct Swiper usage.
-
-- **UI/UX Polished Elements**:
-
-  - **Hero**: Minimalist static image with Ghost Button (fill-on-hover effect).
-
-  - **Footer**: Professional 4-column dynamic grid fueled by `StoreSettings`.
-
-  - **Cart**: Dynamic badge using Zustand `useCartStore` real quantities.
-
-  - **Checkout**: Shadcn "Check Email" toast triggered post-success.
-
-  - **Pagination**: Server-side pagination UI for the public Products grid.
-
-  - **Navbar**: Real category data fetching for dropdowns.
-
-  - **Uploads**: All image uploads MUST use the shared `ImageUploader` component (`src/components/shared/ImageUploader.tsx`). NEVER implement custom drag-and-drop or ad-hoc upload logic.
-  - **Image Optimization**: Cloudinary URLs MUST be optimized using the context-based `optimizeCloudinaryUrl(url, ImageContext)` from `cloudinary-utils.ts`. Direct width/quality options are deprecated to ensure cross-app consistency.
-
-- **Storage Management**: Automated Cloudinary asset destruction via centralized `deleteCloudinaryImage` utility.
-
-- **Scalable Reviews Data**: Reviews are NO LONGER embedded. They use a dedicated `Review` collection with a Polymorphic Association (`targetId` and `targetType` for 'Product' or 'Bundle'). Average ratings and review counts are updated automatically on the parent document via MongoDB Aggregation Pipelines during review submission.
-
-- **Google OAuth Production Mismatch**: When deploying to Vercel, `NEXTAUTH_URL` and `AUTH_URL` must exactly match the production domain (no trailing slashes). In Google Cloud Console, the "Authorized redirect URIs" MUST be exactly `https://[your-domain]/api/auth/callback/google` to prevent `Error 400: redirect_uri_mismatch`.
-
-- **AddToCartSection.tsx**: Reusable quantity counter and add-to-cart button for product/bundle pages. Fixes mobile layout issues and centralizes cart logic.
-- **MobileBottomNav**: Single shared component in `src/components/shared/`. Used by both store and dashboard layouts. Accepts `NavItem[]` props — each item is either Link (href) or button (onClick). **Layout Rule**: Ensure main content areas (e.g., `<main>`) have sufficient bottom padding (e.g., `pb-24 lg:pb-0`) so content isn't hidden behind the fixed nav on mobile screens.
-- **Dynamic Theming**: Shadcn CSS variables injected dynamically by root layout via `generateThemeCSS()`. globals.css keeps fallback defaults only. Live preview uses `generatePreviewCSS()` (HEX, client-safe). Never use `generateThemeCSS` client-side — it uses oklch conversion that needs server context.
-- **Button Theming**: Shadcn Button variants use CSS variables (bg-primary, text-primary-foreground). This ensures all buttons respond to the dynamic theme system. Never use hardcoded hex colors in button className.
-- **Category URLs**: ALWAYS use `?category=slug`. Never `?categoryId=`. This applies to breadcrumbs, home page, and any other category link. The API resolves slug to `_id` server-side.
-
-- **CategoriesClient**: Refactored into `CategoriesParts/`. Parent handles state and API calls only. Children receive props.
-
-- **CustomersManager**: Refactored into `CustomersParts/`. Parent is layout only. All state and API calls in `useCustomers.ts`.
-
-- **JSDoc Standard**: All exported functions in `src/lib/` and all types in `src/types/` must have JSDoc comments. Focus on WHY and WHEN, not just WHAT.
-
-- **Swiper RTL**: Always pass `key={locale}` and `dir={isRtl ? 'rtl' : 'ltr'}` to every Swiper instance. The `key` prop forces re-mount on locale change, ensuring correct RTL behavior without a full page reload.
-
-- **ImageUploader Enhancement**: The shared component now uses `uploadImageWithProgress()` from `src/lib/upload.ts` for XHR-based upload with real-time progress. Shows local preview immediately. Validates file type and size before upload. ProductForm requires at least 1 image before submit and automatically scrolls to `#images-section` via `onError` if validation fails.
-- **Cloudinary + next/image**: Never call `optimizeCloudinaryUrl()` on URLs passed to `next/image`. next/image handles optimization automatically. Only use `optimizeCloudinaryUrl()` with raw `<img>` tags.
-
-## Rules Index
+## 16. Rules Index
 Load the relevant rule file as context for your task:
-- Architecture & Components → `.agent/rules/architecture.md`
-- Security & Auth → `.agent/rules/security.md`
-- Performance & Caching → `.agent/rules/performance.md`
+- Architecture → `.agent/rules/architecture.md`
+- Performance → `.agent/rules/performance.md`
 - i18n & RTL → `.agent/rules/i18n.md`
-- Forbidden Rules → `.agent/rules/forbidden.md`
-- TypeScript Types → `.agent/rules/types.md`
 - Design System → `.agent/rules/design-system.md`
+- Forbidden Rules → `.agent/rules/forbidden.md`

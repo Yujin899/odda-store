@@ -71,26 +71,26 @@ export function MobileBottomNav() {
             {isActive && (
               <motion.div 
                 layoutId="activeTabTop"
-                className="absolute -top-2 w-8 h-1 bg-(--primary) rounded-full"
+                className="absolute -top-2 w-8 h-1 bg-primary rounded-full"
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
               />
             )}
             <div className={`p-1.5 rounded-xl transition-colors ${
-              isActive ? "bg-(--primary)/10" : "bg-transparent"
+              isActive ? "bg-primary/10" : "bg-transparent"
             }`}>
               <Icon 
                 className={`size-5 transition-colors duration-200 ${
-                  isActive ? 'text-(--primary) stroke-[2.5px]' : 'text-slate-400 stroke-[2px]'
+                  isActive ? 'text-primary stroke-[2.5px]' : 'text-slate-400 stroke-[2px]'
                 }`} 
               />
               {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -top-1 -inset-e-1 bg-(--primary) text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white">
+                <span className="absolute -top-1 -inset-e-1 bg-primary text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none flex items-center justify-center min-w-[16px] h-4 border-2 border-white">
                   {item.badge}
                 </span>
               )}
             </div>
             <span className={`text-[10px] font-black uppercase tracking-tighter transition-colors duration-200 text-center px-1 truncate w-full ${
-              isActive ? 'text-(--primary)' : 'text-slate-400 font-bold'
+              isActive ? 'text-primary' : 'text-slate-400 font-bold'
             }`}>
               {item.label}
             </span>

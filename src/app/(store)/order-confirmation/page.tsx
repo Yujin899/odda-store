@@ -62,7 +62,7 @@ async function OrderConfirmationContent({ searchParams }: PageProps) {
             </div>
           </div>
           <div className="space-y-4">
-            <h1 className="text-2xl font-black uppercase tracking-tighter italic text-(--navy)">{dict.confirmationPage.notFoundTitle}</h1>
+            <h1 className="text-2xl font-black uppercase tracking-tighter italic text-navy">{dict.confirmationPage.notFoundTitle}</h1>
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed px-8">
               {dict.confirmationPage.notFoundDesc}
             </p>

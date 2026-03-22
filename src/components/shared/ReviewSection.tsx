@@ -95,13 +95,13 @@ export function ReviewSection({
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder={language === 'ar' ? (targetType === 'Bundle' ? 'اكتب رأيك في هذا العرض...' : 'اكتب رأيك في هذا المنتج...') : `Share your thoughts about this ${targetType.toLowerCase()}...`}
-            className={`w-full p-3 text-sm border border-slate-200 rounded-(--radius) bg-white focus:outline-none focus:border-(--primary) min-h-[80px] text-start ${language === 'ar' ? 'font-cairo' : ''}`}
+            className={`w-full p-3 text-sm border border-slate-200 rounded-(--radius) bg-white focus:outline-none focus:border-primary min-h-[80px] text-start ${language === 'ar' ? 'font-cairo' : ''}`}
             required
           />
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full h-12 rounded-sm font-black uppercase tracking-widest text-[10px] shadow-xl shadow-(--primary)/20"
+            className="w-full h-12 rounded-sm font-black uppercase tracking-widest text-[10px] shadow-xl shadow-primary/20"
           >
             {isSubmitting ? (language === 'ar' ? 'جاري الإرسال...' : 'Submitting...') : (language === 'ar' ? 'إرسال التقييم' : 'Post Review')}
           </Button>
@@ -113,7 +113,7 @@ export function ReviewSection({
           </p>
           <Link 
             href="/login" 
-            className="text-(--primary) text-xs font-black uppercase tracking-widest hover:underline font-cairo"
+            className="text-primary text-xs font-black uppercase tracking-widest hover:underline font-cairo"
           >
             {language === 'ar' ? 'تسجيل الدخول' : 'Sign In'}
           </Link>
@@ -124,7 +124,7 @@ export function ReviewSection({
       <div className="space-y-4">
         {isLoading ? (
            <div className="py-8 flex justify-center">
-             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-(--primary)"></div>
+             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
            </div>
         ) : reviews.length > 0 ? (
           reviews.map((rev, i: number) => (

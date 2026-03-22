@@ -55,7 +55,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
           animate={{ opacity: 1, y: 0 }}
           className="bg-white border border-slate-100 p-8 rounded-(--radius) shadow-xl relative overflow-hidden text-center space-y-6"
         >
-          <div className="absolute top-0 inset-s-0 w-full h-1.5 bg-(--primary)"></div>
+          <div className="absolute top-0 inset-s-0 w-full h-1.5 bg-primary"></div>
           
           <div className="flex justify-center">
             <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shadow-md border border-emerald-100">
@@ -64,14 +64,14 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
           </div>
 
           <div className="space-y-3">
-            <h1 className="text-3xl font-black uppercase tracking-tighter italic text-(--navy)">{dict.confirmationPage.thankYou}</h1>
+            <h1 className="text-3xl font-black uppercase tracking-tighter italic text-navy">{dict.confirmationPage.thankYou}</h1>
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest max-w-sm mx-auto leading-relaxed">
               {dict.confirmationPage.emailSent}
             </p>
             <div className="flex items-center justify-center gap-3 pt-2">
               <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">{dict.confirmationPage.orderNum}{order.orderNumber}</p>
               <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
-              <p className="text-[10px] font-black text-(--primary) uppercase tracking-[0.3em]">
+              <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">
                 {dict.confirmationPage.placed} {formatDate(order.createdAt, language)}
               </p>
             </div>
@@ -87,7 +87,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
         >
           <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
             <h2 className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-              <Package className="size-4 text-(--primary)" />
+              <Package className="size-4 text-primary" />
               {dict.confirmationPage.orderStatus}
             </h2>
           </div>
@@ -107,7 +107,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
             >
               <div className="px-8 py-6 border-b border-slate-50">
                 <h2 className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                  <ShoppingBag className="size-4 text-(--primary)" />
+                  <ShoppingBag className="size-4 text-primary" />
                   {dict.confirmationPage.itemsOrdered}
                 </h2>
               </div>
@@ -124,7 +124,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-black uppercase tracking-tight truncate group-hover:text-(--primary) transition-colors">
+                        <h4 className="text-xs font-black uppercase tracking-tight truncate group-hover:text-primary transition-colors">
                           {(language === 'ar' && item.productId?.nameAr) ? item.productId.nameAr : (item.productId?.name || 'Legacy Product')}
                         </h4>
                         <p className="text-[10px] text-muted-foreground font-bold uppercase mt-1.5 flex items-center gap-2">
@@ -135,7 +135,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                       </div>
                     </div>
                     <div className="text-center sm:text-end self-end sm:self-auto shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-0 border-slate-100 mt-2 sm:mt-0">
-                      <p className="text-sm font-black text-(--navy)">
+                      <p className="text-sm font-black text-navy">
                         {formatPrice(item.price * item.quantity, language)}
                       </p>
                     </div>
@@ -154,7 +154,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                 <div className="pt-4 border-t border-slate-200 flex justify-between items-baseline">
                   <span className="text-xs font-black uppercase tracking-[0.3em]">{dict.trackingPage.total}</span>
                   <div className="text-end">
-                    <span className="text-3xl font-black text-(--primary) tracking-tighter">
+                    <span className="text-3xl font-black text-primary tracking-tighter">
                       {formatPrice(order.totalAmount, language)}
                     </span>
                   </div>
@@ -173,14 +173,14 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
             >
               <div className="px-8 py-6 border-b border-slate-50">
                 <h2 className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                  <MapPin className="size-4 text-(--primary)" />
+                  <MapPin className="size-4 text-primary" />
                   {dict.confirmationPage.shippingTo}
                 </h2>
               </div>
               <div className="p-8 space-y-6">
                 <div className="space-y-1">
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{dict.confirmationPage.recipient}</p>
-                  <p className="text-xs font-black uppercase tracking-tight text-(--navy)">{order.shippingAddress.fullName}</p>
+                  <p className="text-xs font-black uppercase tracking-tight text-navy">{order.shippingAddress.fullName}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{dict.checkoutPage.address}</p>
@@ -191,7 +191,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
                 </div>
                 <div className="space-y-1">
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{dict.checkoutPage.phone}</p>
-                  <p className="text-xs font-black tracking-tight text-(--navy)">{order.shippingAddress.phone}</p>
+                  <p className="text-xs font-black tracking-tight text-navy">{order.shippingAddress.phone}</p>
                 </div>
               </div>
             </motion.div>
@@ -204,7 +204,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
             >
               <div className="px-8 py-6 border-b border-slate-50">
                 <h2 className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                  <CreditCard className="size-4 text-(--primary)" />
+                  <CreditCard className="size-4 text-primary" />
                   {dict.confirmationPage.paymentDetails}
                 </h2>
               </div>
@@ -234,7 +234,7 @@ export function OrderConfirmationClient({ order, dict, language }: OrderConfirma
               </div>
             </motion.div>
 
-            <Link href="/products" className="group w-full h-16 bg-foreground text-background flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:bg-(--primary) transition-all active:scale-95">
+            <Link href="/products" className="group w-full h-16 bg-foreground text-background flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-[0.3em] rounded-(--radius) shadow-2xl hover:bg-primary transition-all active:scale-95">
               {dict.confirmationPage.continueShopping}
               <ChevronRight className="size-4 transition-transform stroke-[2px] rtl:-scale-x-100 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1" />
             </Link>

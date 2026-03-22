@@ -222,7 +222,7 @@
         "descriptionAr": "الوصف (AR)",
         "images": "الصور",
         "price": "السعر (ج.م)",
-        "originalPrice": "السعر الأصلي (ج.م)",
+        "originalPrice": "السعر قبل الخصم (ج.م) (اختياري)",
         "stock": "الكمية",
         "category": "القسم",
         "badge": "الوسام",
@@ -235,7 +235,7 @@
         "descriptionEn": "وصف المنتج بالإنجليزي...",
         "descriptionAr": "وصف المنتج بالعربي...",
         "price": "0.00",
-        "originalPrice": "اختياري",
+        "originalPrice": "مثال: 500 — اتركه فارغاً إذا لم يوجد خصم",
         "selectCategory": "اختر القسم",
         "noBadge": "بدون وسام",
         "featuredDescription": "ظهور في الصفحة الرئيسية"

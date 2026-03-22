@@ -164,7 +164,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           <Button 
             type="submit" 
             disabled={methods.formState.isSubmitting}
-            className="flex-1 sm:flex-none bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-12 px-10"
+            className="flex-1 sm:flex-none bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-[10px] h-12 px-10"
           >
             {methods.formState.isSubmitting ? (
               <Loader2 className={`size-4 animate-spin ${language === 'ar' ? 'ms-2' : 'me-2'}`} />

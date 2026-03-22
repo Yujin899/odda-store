@@ -96,7 +96,7 @@ export default function DashboardLayout({ children, session }: DashboardLayoutPr
               <DropdownMenuContent className="w-56 mt-2 shadow-2xl border-slate-200 bg-white" align="end">
                 <DropdownMenuLabel className="font-normal p-4">
                   <div className="flex flex-col gap-1">
-                    <p className="text-[11px] font-black uppercase tracking-tight leading-none text-(--navy)">{session.user?.name}</p>
+                    <p className="text-[11px] font-black uppercase tracking-tight leading-none text-navy">{session.user?.name}</p>
                     <p className="text-[10px] font-bold text-slate-400 truncate leading-none">{session.user?.email}</p>
                   </div>
                 </DropdownMenuLabel>

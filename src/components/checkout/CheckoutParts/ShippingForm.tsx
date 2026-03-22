@@ -30,8 +30,8 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
   } = useFormContext<CheckoutFormValues>();
 
   return (
-    <div className="bg-white p-4 sm:p-10 rounded-[var(--radius)] border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className={isRtl ? 'text-end' : 'text-start'}>
+    <div className="bg-white p-4 sm:p-10 rounded-(--radius) border border-slate-200 shadow-sm space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="text-start">
         <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-1">
           {dict.checkoutPage.shippingTitle || 'Shipping Details'}
         </h2>
@@ -47,7 +47,7 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
           placeholder={dict.checkoutPage.fullNamePlaceholder || 'e.g. Dr. Omar Ahmed'}
           icon={User}
           error={errors.fullName?.message}
-          className={isRtl ? 'text-end' : 'text-start'}
+          className="text-start"
         />
 
         <FormInput 
@@ -57,7 +57,7 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
           icon={Mail}
           error={errors.email?.message}
           type="email"
-          className={isRtl ? 'text-end' : 'text-start'}
+          className="text-start"
         />
 
         <FormInput 
@@ -66,11 +66,11 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
           placeholder="01xxxxxxxxx"
           icon={Phone}
           error={errors.phone?.message}
-          className={isRtl ? 'text-end' : 'text-start'}
+          className="text-start"
         />
 
         <div className="space-y-2 w-full">
-          <label className={bcn("text-[10px] font-black uppercase tracking-widest text-muted-foreground ps-1 block", isRtl ? "text-end" : "text-start")}>
+          <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ps-1 block text-start">
             {dict.checkoutPage.city || 'City / Governorate'}
           </label>
           <div className="relative group">
@@ -78,9 +78,9 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
             <select
               {...register('city')}
               className={bcn(
-                "w-full h-14 bg-slate-50 border border-slate-100 rounded-[var(--radius)] text-sm font-medium outline-none focus:border-primary focus:bg-white transition-all appearance-none ps-12 pe-10",
+                "w-full h-14 bg-slate-50 border border-slate-100 rounded-(--radius) text-sm font-medium outline-none focus:border-primary focus:bg-white transition-all appearance-none ps-12 pe-10",
                 errors.city ? "border-red-500" : "",
-                isRtl ? "text-end direction-rtl" : "text-start"
+                isRtl ? "direction-rtl text-start" : "text-start"
               )}
             >
               {EGYPT_CITIES.map(city => (
@@ -89,7 +89,7 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
             </select>
           </div>
           {errors.city && (
-            <p className={bcn("text-[9px] font-bold text-red-500 uppercase tracking-widest ps-1", isRtl ? "text-end" : "text-start")}>
+            <p className="text-[9px] font-bold text-red-500 uppercase tracking-widest ps-1 text-start">
               {errors.city.message}
             </p>
           )}
@@ -102,25 +102,22 @@ export function ShippingForm({ dict, onNext, onBack }: ShippingFormProps) {
         placeholder={dict.checkoutPage.addressPlaceholder || 'e.g. 15 Clinic Street, 4th Floor'}
         icon={MapPin}
         error={errors.address?.message}
-        className={isRtl ? 'text-end' : 'text-start'}
+        className="text-start"
       />
 
-      <div className={bcn(
-        "flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100", 
-        isRtl ? "sm:flex-row-reverse" : "sm:flex-row"
-      )}>
+      <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100">
         <Button 
           type="button"
           variant="ghost"
           onClick={onBack}
-          className="w-full sm:w-auto h-14 px-8 rounded-[var(--radius)] font-black uppercase tracking-widest text-[9px] text-slate-400 hover:text-primary"
+          className="w-full sm:w-auto h-14 px-8 rounded-(--radius) font-black uppercase tracking-widest text-[9px] text-slate-400 hover:text-primary"
         >
           {isRtl ? 'رجوع' : 'Go Back'}
         </Button>
         <Button 
           type="button"
           onClick={onNext}
-          className="w-full sm:flex-1 h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-[var(--radius)] uppercase tracking-[0.2em] text-[10px] shadow-xl group"
+          className="w-full sm:flex-1 h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-(--radius) uppercase tracking-[0.2em] text-[10px] shadow-xl group"
         >
           <span className="flex items-center gap-2">
             {dict.checkoutPage.proceedPayment || 'Next: Payment Method'}

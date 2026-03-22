@@ -14,7 +14,7 @@ export function EmptyCart() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="relative mb-8">
-        <div className="absolute inset-0 bg-(--primary)/5 rounded-full scale-150 blur-2xl animate-pulse"></div>
+        <div className="absolute inset-0 bg-primary/5 rounded-full scale-150 blur-2xl animate-pulse"></div>
         <ShoppingBag className="size-20 text-muted-foreground/20 relative z-10 stroke-[1.25px]" />
       </div>
       

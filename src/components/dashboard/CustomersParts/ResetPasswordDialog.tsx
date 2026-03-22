@@ -38,7 +38,7 @@ export function ResetPasswordDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md rounded-sm">
         <form onSubmit={onConfirm} dir={language === 'ar' ? 'rtl' : 'ltr'}>
-          <DialogHeader className={language === 'ar' ? 'text-end' : 'text-start'}>
+          <DialogHeader className="text-start">
             <DialogTitle className={`font-black uppercase tracking-tighter text-xl ${language === 'ar' ? 'font-cairo' : ''}`}>
               {dict.dashboard.customersPage.modals.reset.title}
             </DialogTitle>
@@ -48,7 +48,7 @@ export function ResetPasswordDialog({
           </DialogHeader>
           <div className="py-6 space-y-4">
             <div className="space-y-2">
-              <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 block ${language === 'ar' ? 'text-end' : 'text-start'}`}>
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block text-start">
                 {dict.dashboard.customersPage.modals.reset.password}
               </Label>
               <Input 
@@ -56,7 +56,7 @@ export function ResetPasswordDialog({
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder={dict.dashboard.customersPage.modals.reset.placeholder}
-                className={`rounded-sm border-slate-200 text-sm ${language === 'ar' ? 'text-end' : ''}`}
+                className="rounded-sm border-slate-200 text-sm text-start"
                 required
               />
             </div>
@@ -67,7 +67,7 @@ export function ResetPasswordDialog({
               </p>
             </div>
           </div>
-          <DialogFooter className={`gap-3 ${language === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+          <DialogFooter className="gap-3">
             <Button type="button" variant="outline" onClick={onClose} className="flex-1 sm:flex-none rounded-sm font-bold uppercase tracking-widest text-[10px] h-10 px-6 border-slate-200">
               {dict.dashboard.customersPage.modals.reset.cancel}
             </Button>

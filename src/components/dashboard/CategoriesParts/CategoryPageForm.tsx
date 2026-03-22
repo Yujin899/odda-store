@@ -42,12 +42,12 @@ export function CategoryPageForm({ initialData, dict, language }: CategoryPageFo
       <div className="flex flex-col gap-1 mb-10 pb-6 border-b border-slate-200">
         <Link 
           href="/dashboard/categories" 
-          className="flex items-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-(--primary) transition-colors mb-2"
+          className="flex items-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors mb-2"
         >
           <ArrowLeft className={`size-3 ${language === 'ar' ? 'ms-1' : 'me-1'}`} />
           {dict.dashboard.categoriesPage.backToList || 'Back to categories'}
         </Link>
-        <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tighter text-(--navy)">
+        <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tighter text-navy">
           {isEditing ? dict.dashboard.categoriesPage.modal.editTitle : dict.dashboard.categoriesPage.modal.newTitle}
         </h1>
         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest truncate">
@@ -83,7 +83,7 @@ export function CategoryPageForm({ initialData, dict, language }: CategoryPageFo
         <Button 
           onClick={handleSave}
           disabled={isSaving}
-          className="flex-1 sm:flex-none bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-[10px] h-12 px-10"
+          className="flex-1 sm:flex-none bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-[10px] h-12 px-10"
         >
           {isSaving ? <Loader2 className="size-4 animate-spin me-2" /> : <Check className="size-4 me-2" />}
           {isEditing ? dict.dashboard.categoriesPage.modal.update : dict.dashboard.categoriesPage.modal.create}

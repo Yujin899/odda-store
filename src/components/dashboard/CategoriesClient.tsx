@@ -27,7 +27,7 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
     <div className="p-6 space-y-6 text-start" dir={language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="text-start">
-          <h1 className="text-2xl font-black uppercase tracking-tighter text-(--navy)">
+          <h1 className="text-2xl font-black uppercase tracking-tighter text-navy">
             {dict.dashboard.categoriesPage.title}
           </h1>
           <p className="text-sm text-slate-500 font-medium">
@@ -36,7 +36,7 @@ export function CategoriesClient({ dict, language }: CategoriesClientProps) {
         </div>
         <Button 
           asChild
-          className="bg-(--primary) hover:bg-(--primary)/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-(--primary)/20 rounded-sm"
+          className="bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-primary/20 rounded-sm"
         >
           <Link href="/dashboard/categories/new">
             <Plus className="size-4 me-2" />

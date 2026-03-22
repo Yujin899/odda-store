@@ -158,27 +158,27 @@ export default async function Home() {
       <section className="border-b border-navy/10 py-6 bg-background">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="flex items-center gap-3 justify-center md:justify-start">
-            <ShieldCheck className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.trustedBy}</span>
+            <ShieldCheck className="size-5 text-navy/60 stroke-[2px]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-navy/70">{dict.home.trustedBy}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
-            <Stethoscope className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.clinicalGrade}</span>
+            <Stethoscope className="size-5 text-navy/60 stroke-[2px]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-navy/70">{dict.home.clinicalGrade}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
-            <Truck className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.campusDelivery}</span>
+            <Truck className="size-5 text-navy/60 stroke-[2px]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-navy/70">{dict.home.campusDelivery}</span>
           </div>
           <div className="flex items-center gap-3 justify-center md:justify-start">
-            <Lock className="size-5 text-(--navy)/60 stroke-[2px]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-(--navy)/70">{dict.home.securePayments}</span>
+            <Lock className="size-5 text-navy/60 stroke-[2px]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-navy/70">{dict.home.securePayments}</span>
           </div>
         </div>
       </section>
 
       {/* 4. Shop By Category */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-12 uppercase tracking-wider text-(--navy)">{dict.home.shopByCategory}</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-12 uppercase tracking-wider text-navy">{dict.home.shopByCategory}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
           {categories.slice(0, 4).map((cat: { id: string; name: string; nameAr?: string; image?: string; slug: string }) => {
             const catName = (locale === 'ar' && cat.nameAr) ? cat.nameAr : cat.name;

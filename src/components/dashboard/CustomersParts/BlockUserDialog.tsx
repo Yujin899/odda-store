@@ -34,7 +34,7 @@ export function BlockUserDialog({
   return (
     <AlertDialog open={isOpen} onOpenChange={isOpen ? onClose : () => {}}>
       <AlertDialogContent className="rounded-sm" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-        <AlertDialogHeader className={language === 'ar' ? 'text-end' : 'text-start'}>
+        <AlertDialogHeader className="text-start">
           <AlertDialogTitle className={`font-black uppercase tracking-tighter ${language === 'ar' ? 'font-cairo' : ''}`}>
             {isBlocked ? dict.dashboard.customersPage.modals.block.unblockTitle : dict.dashboard.customersPage.modals.block.title}
           </AlertDialogTitle>
@@ -44,7 +44,7 @@ export function BlockUserDialog({
               : dict.dashboard.customersPage.modals.block.description}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className={`gap-3 ${language === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+        <AlertDialogFooter className="gap-3">
           <AlertDialogCancel className="rounded-sm font-bold uppercase tracking-widest text-[10px]">
             {dict.dashboard.customersPage.modals.block.cancel}
           </AlertDialogCancel>

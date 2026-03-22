@@ -69,7 +69,7 @@ export function StorefrontTab() {
           </div>
 
           <div className="space-y-4">
-            <div className={`flex items-center justify-between mb-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <div className="flex items-center justify-between mb-2">
               <Button type="button" variant="outline" size="sm" onClick={() => addAnnAr('')} className="h-6 text-[8px] uppercase tracking-widest">
                 <Plus className={`size-3 ${language === 'ar' ? 'ms-1' : 'me-1'}`} /> {dict.dashboard.settingsPage.storefront.announcements.addAr}
               </Button>
@@ -77,7 +77,7 @@ export function StorefrontTab() {
             </div>
             <div className="space-y-3">
               {announcementsAr.map((field, idx) => (
-                <div key={field.id} className="flex gap-2 text-end">
+                <div key={field.id} className="flex gap-2">
                   <Button 
                     type="button" 
                     variant="ghost" 
@@ -114,7 +114,7 @@ export function StorefrontTab() {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Hero Image Upload */}
           <div className="space-y-4">
-            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between">
               {dict.dashboard.settingsPage.storefront.hero.bgImage}
             </Label>
             <ImageUploader 
@@ -141,14 +141,14 @@ export function StorefrontTab() {
                 </div>
               </div>
               <div className="space-y-2 text-end">
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2 justify-end">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
                   {dict.dashboard.settingsPage.storefront.hero.headingAr} <Type className="size-3" />
                 </Label>
                 <Input 
                   {...register('hero.headingAr')}
                   dir="rtl"
                   placeholder="العنوان بالعربية"
-                  className="font-bold tracking-tight rounded-sm text-end"
+                  className="font-bold tracking-tight rounded-sm text-start"
                 />
               </div>
             </div>
@@ -163,16 +163,16 @@ export function StorefrontTab() {
                 />
               </div>
               <div className="space-y-2 text-end">
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 text-end">{dict.dashboard.settingsPage.storefront.hero.btnTextAr}</Label>
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.settingsPage.storefront.hero.btnTextAr}</Label>
                 <Input 
                   {...register('hero.buttonTextAr')}
                   dir="rtl"
                   placeholder="مثال: تسوق الآن"
-                  className="rounded-sm text-end font-cairo"
+                  className="rounded-sm text-start font-cairo"
                 />
               </div>
               <div className="space-y-2">
-                <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 ${language === 'ar' ? 'text-end' : 'text-start'}`}>{dict.dashboard.settingsPage.storefront.hero.btnLink}</Label>
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 text-start">{dict.dashboard.settingsPage.storefront.hero.btnLink}</Label>
                 <Input 
                   {...register('hero.buttonLink')}
                   placeholder="/products"
@@ -185,7 +185,7 @@ export function StorefrontTab() {
               <div className={`size-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 ${language === 'ar' ? 'ms-4' : 'me-4'}`}>
                 <Globe className="size-4" />
               </div>
-              <div className={`space-y-1 ${language === 'ar' ? 'text-end' : 'text-start'}`}>
+              <div className="space-y-1 text-start">
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">{dict.dashboard.settingsPage.storefront.hero.noticeTitle}</p>
                 <p className="text-[9px] text-slate-400 font-medium leading-relaxed uppercase">
                   {dict.dashboard.settingsPage.storefront.hero.noticeDesc}
@@ -201,7 +201,7 @@ export function StorefrontTab() {
         <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">{dict.dashboard.settingsPage.storefront.brand.title}</h3>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-2">
-            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
               <Phone className="size-3" /> {dict.dashboard.settingsPage.storefront.brand.whatsapp}
             </Label>
             <Input 
@@ -212,7 +212,7 @@ export function StorefrontTab() {
           </div>
 
           <div className="space-y-2">
-            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
               <Facebook className="size-3" /> {dict.dashboard.settingsPage.storefront.brand.facebook}
             </Label>
             <Input 
@@ -223,7 +223,7 @@ export function StorefrontTab() {
           </div>
 
           <div className="space-y-2 md:col-start-2">
-            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
               <Instagram className="size-3" /> {dict.dashboard.settingsPage.storefront.brand.instagram}
             </Label>
             <Input 
@@ -242,7 +242,7 @@ export function StorefrontTab() {
         </h3>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-2">
-            <Label className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
               <Globe className="size-3" /> 
               {language === 'ar' ? 'لغة المتجر الافتراضية' : 'Default Store Language'}
             </Label>
@@ -258,7 +258,7 @@ export function StorefrontTab() {
                 <SelectItem value="ar" className="text-[10px] font-bold uppercase tracking-widest">العربية</SelectItem>
               </SelectContent>
             </Select>
-            <p className={`text-[9px] text-slate-400 uppercase font-medium mt-1 ${language === 'ar' ? 'text-end' : ''}`}>
+            <p className="text-[9px] text-slate-400 uppercase font-medium mt-1 text-start">
               {language === 'ar' ? 'اللغة التي تظهر للعملاء الجدد تلقائياً' : 'The language new customers see by default'}
             </p>
           </div>
